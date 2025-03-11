@@ -19,6 +19,7 @@ export default function Home() {
       </Button>
       <div>
         <h1> This is demo website for Bighil</h1>
+        <p>Hello World</p>
       </div>
     </div>
   );
