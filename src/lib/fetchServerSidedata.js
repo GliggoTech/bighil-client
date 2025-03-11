@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { getBackendUrl } from "./getBackendUrl";
 import { getToken } from "./getToken";
 
+export const dynamic = "force-dynamic";
+
 export async function fetchServerData(endpoint, options = {}) {
   // Get authentication token
   const token = await getToken();
