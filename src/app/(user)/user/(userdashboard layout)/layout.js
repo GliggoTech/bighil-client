@@ -23,20 +23,15 @@ export const metadata = {
 
 export default async function UserDashboard_Layout({ children }) {
   const token = await getToken();
-  if (!token) {
-    redirect("/");
-  }
+  console.log(token);
+  // if (!token) {
+  //   redirect("/");
+  // }
   return (
-    // <html lang="en">
-    //   <body
-    //     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    //   >
     <SocketProvider>
       <Toaster />
       <UserNavbar />
       {children}
     </SocketProvider>
-    //   </body>
-    // </html>
   );
 }
