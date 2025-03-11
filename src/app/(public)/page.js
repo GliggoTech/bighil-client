@@ -17,6 +17,9 @@ export default function Home() {
         {" "}
         <Link href={"/client/client-login"}>Client Login</Link>{" "}
       </Button>
+      <div>
+        <h1> This is demo website for Bighil</h1>
+      </div>
     </div>
   );
 }
