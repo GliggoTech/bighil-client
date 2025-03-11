@@ -25,7 +25,7 @@ const FilePreview = ({ file }) => {
         className="absolute inset-0 flex items-center justify-center 
                       bg-background-secondary dark:bg-surface-dark"
       >
-        {file.path.startsWith("http") ? (
+        {file.path?.startsWith("http") ? (
           <img
             src={file.path}
             alt={file.fileName}
