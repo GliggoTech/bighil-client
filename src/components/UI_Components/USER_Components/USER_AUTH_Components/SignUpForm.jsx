@@ -373,6 +373,15 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                   >
                     {mode === "signup" ? "Sign in" : "Sign up"}
                   </Link>
+                  <div className="flex justify-center flex-col gap-2 mt-6">
+                    <p className="text-center">
+                      <span className="font-bold">EMAIL : </span>
+                      vijay.r20799@gmail
+                    </p>
+                    <p className="text-center">
+                      <span className="font-bold">PASSWORD : </span>123
+                    </p>
+                  </div>
                 </div>
               </form>
             </Form>

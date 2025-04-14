@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,44 +9,50 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function PaginationControls({ currentPage, totalPages }) {
-  const hasPreviousPage = currentPage > 1;
-  const hasNextPage = currentPage < totalPages;
-
+export default function PaginationControls({
+  currentPage,
+  totalPages,
+  hasPreviousPage,
+  hasNextPage,
+  onPageChange,
+}) {
   const generatePaginationRange = () => {
     const range = [];
     const maxVisiblePages = 5;
-
     let start = Math.max(1, currentPage - 2);
     let end = Math.min(start + maxVisiblePages - 1, totalPages);
 
+    // Adjust start if we're near the end
     if (end - start < maxVisiblePages - 1) {
       start = Math.max(1, end - maxVisiblePages + 1);
     }
 
-    for (let i = start; i <= end; i++) {
-      if (
-        i === 1 ||
-        i === totalPages ||
-        (i >= currentPage - 1 && i <= currentPage + 1)
-      ) {
-        range.push(i);
-      } else if (i === currentPage - 2 || i === currentPage + 2) {
-        range.push("...");
-      }
+    // Always show first page
+    if (start > 1) {
+      range.push(1);
+      if (start > 2) range.push("...");
     }
 
-    if (start > 1) range.unshift("...");
-    if (end < totalPages) range.push("...");
+    // Generate middle range
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    // Always show last page
+    if (end < totalPages) {
+      if (end < totalPages - 1) range.push("...");
+      range.push(totalPages);
+    }
 
     return range;
   };
 
-  if (totalPages <= 0) return null;
+  if (totalPages <= 1) return null;
 
   return (
     <div className="flex flex-col gap-4 w-full sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-1.5 flex-wrap justify-center">
+        {/* First Page Button */}
         <Button
           variant="outline"
           size="sm"
@@ -55,18 +60,14 @@ export default function PaginationControls({ currentPage, totalPages }) {
             "h-8 gap-1 px-2.5",
             !hasPreviousPage && "opacity-50 pointer-events-none"
           )}
-          asChild={hasPreviousPage}
+          onClick={() => onPageChange(1)}
+          disabled={!hasPreviousPage}
         >
-          <Link
-            href={`?page=1`}
-            aria-label="First page"
-            className="max-sm:hidden"
-          >
-            <ChevronsLeftRight className="w-4 h-4 -mr-1" />
-            First
-          </Link>
+          <ChevronsLeftRight className="w-4 h-4 -mr-1" />
+          <span className="max-sm:hidden">First</span>
         </Button>
 
+        {/* Previous Page Button */}
         <Button
           variant="outline"
           size="sm"
@@ -74,18 +75,18 @@ export default function PaginationControls({ currentPage, totalPages }) {
             "h-8 w-8 p-0",
             !hasPreviousPage && "opacity-50 pointer-events-none"
           )}
-          asChild={hasPreviousPage}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!hasPreviousPage}
         >
-          <Link href={`?page=${currentPage - 1}`} aria-label="Previous page">
-            <ChevronLeft className="w-4 h-4" />
-          </Link>
+          <ChevronLeft className="w-4 h-4" />
         </Button>
 
+        {/* Page Numbers */}
         <div className="flex items-center gap-1.5">
           {generatePaginationRange().map((page, index) =>
             page === "..." ? (
               <Button
-                key={index}
+                key={`ellipsis-${index}`}
                 variant="ghost"
                 size="sm"
                 className="w-8 h-8 p-0"
@@ -95,27 +96,23 @@ export default function PaginationControls({ currentPage, totalPages }) {
               </Button>
             ) : (
               <Button
-                key={index}
+                key={page}
                 variant={page === currentPage ? "default" : "outline"}
                 size="sm"
                 className={cn(
                   "h-8 min-w-8 px-2 hidden sm:inline-flex",
                   page === currentPage && "font-bold"
                 )}
-                asChild={page !== currentPage}
+                onClick={() => typeof page === "number" && onPageChange(page)}
+                disabled={page === currentPage}
               >
-                {page === currentPage ? (
-                  <span>{page}</span>
-                ) : (
-                  <Link href={`?page=${page}`} aria-label={`Page ${page}`}>
-                    {page}
-                  </Link>
-                )}
+                {page}
               </Button>
             )
           )}
         </div>
 
+        {/* Next Page Button */}
         <Button
           variant="outline"
           size="sm"
@@ -123,13 +120,13 @@ export default function PaginationControls({ currentPage, totalPages }) {
             "h-8 w-8 p-0",
             !hasNextPage && "opacity-50 pointer-events-none"
           )}
-          asChild={hasNextPage}
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!hasNextPage}
         >
-          <Link href={`?page=${currentPage + 1}`} aria-label="Next page">
-            <ChevronRight className="w-4 h-4" />
-          </Link>
+          <ChevronRight className="w-4 h-4" />
         </Button>
 
+        {/* Last Page Button */}
         <Button
           variant="outline"
           size="sm"
@@ -137,19 +134,15 @@ export default function PaginationControls({ currentPage, totalPages }) {
             "h-8 gap-1 px-2.5",
             !hasNextPage && "opacity-50 pointer-events-none"
           )}
-          asChild={hasNextPage}
+          onClick={() => onPageChange(totalPages)}
+          disabled={!hasNextPage}
         >
-          <Link
-            href={`?page=${totalPages}`}
-            aria-label="Last page"
-            className="max-sm:hidden"
-          >
-            Last
-            <ChevronsLeftRight className="w-4 h-4 -ml-1" />
-          </Link>
+          <span className="max-sm:hidden">Last</span>
+          <ChevronsLeftRight className="w-4 h-4 -ml-1" />
         </Button>
       </div>
 
+      {/* Page Count */}
       <div className="text-sm font-medium text-muted-foreground text-center sm:text-right">
         Page {currentPage} of {totalPages}
       </div>

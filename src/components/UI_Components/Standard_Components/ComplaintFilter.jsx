@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 
 import { Search, HashIcon, FilterIcon, Calendar1 } from "lucide-react";
 import { debounce } from "lodash";
@@ -33,8 +39,8 @@ const ComplaintFilter = () => {
   });
   const [clientName, setClientName] = useState("");
   const searchParams = useSearchParams();
-  const page = searchParams.get("page") || 1;
-
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const initialMount = useRef(true);
   const [complaints, setComplaints] = useState([]);
   const [totalComplaints, setTotalComplaints] = useState(0);
   const [activeFilters, setActiveFilters] = useState([]);
@@ -43,15 +49,16 @@ const ComplaintFilter = () => {
   const token = useAccessToken();
   const { loading, fetchData, error } = useFetch();
 
-  // Memoized filter parameters
+  // Memoized filter parameters with page
   const filterParams = useMemo(
     () => ({
       complaintNumber,
       status,
       dateFilter,
       clientName,
+      page,
     }),
-    [complaintNumber, status, dateFilter, clientName]
+    [complaintNumber, status, dateFilter, clientName, page]
   );
 
   // Active filters calculation
@@ -86,6 +93,7 @@ const ComplaintFilter = () => {
           queryParams.append("companyName", params.clientName);
           shouldResetPage = true;
         }
+        queryParams.append("page", params.page.toString());
 
         // Date filter handling
         const { type, day, month, year } = params.dateFilter || {};
@@ -131,12 +139,25 @@ const ComplaintFilter = () => {
         console.log("Error fetching complaints:", err);
       }
     }, 300),
-    [token, page]
+    [token]
   );
-  // Search effect with cleanup
+  // Search effect with initial load handling
   useEffect(() => {
-    if (token) debouncedSearch(filterParams);
-    return () => debouncedSearch.cancel();
+    if (!token) return;
+
+    // Handle initial load
+    if (initialMount.current) {
+      initialMount.current = false;
+      debouncedSearch(filterParams);
+      return;
+    }
+
+    // Subsequent searches
+    const handler = setTimeout(() => debouncedSearch(filterParams), 100);
+    return () => {
+      clearTimeout(handler);
+      debouncedSearch.cancel();
+    };
   }, [filterParams, debouncedSearch, token]);
 
   // Clear filters
@@ -181,6 +202,11 @@ const ComplaintFilter = () => {
       console.error("Export error:", error);
       // Handle error state
     }
+  };
+  // Handle page changes from pagination controls
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -317,6 +343,7 @@ const ComplaintFilter = () => {
               totalPages={response.totalPages}
               hasNextPage={response.hasNextPage}
               hasPreviousPage={response.hasPreviousPage}
+              onPageChange={handlePageChange}
             />
           )}
         </div>
