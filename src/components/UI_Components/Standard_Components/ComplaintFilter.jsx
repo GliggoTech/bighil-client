@@ -64,7 +64,7 @@ const ComplaintFilter = () => {
   // Active filters calculation
   useEffect(() => {
     const filters = [];
-    if (complaintNumber) filters.push("Number");
+    if (complaintNumber) filters.push("complaintNumber");
     if (status) filters.push("Status");
     if (dateFilter.day || dateFilter.month || dateFilter.year)
       filters.push("Date");
@@ -110,9 +110,9 @@ const ComplaintFilter = () => {
           shouldResetPage = true;
         }
 
-        // Pagination handling
-        const currentPage = shouldResetPage ? 1 : page;
-        queryParams.append("page", currentPage);
+        // // Pagination handling
+        // const currentPage = shouldResetPage ? 1 : page;
+        // queryParams.append("page", currentPage);
 
         // API call
         const url = getBackendUrl();

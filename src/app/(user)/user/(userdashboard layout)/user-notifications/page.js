@@ -1,4 +1,4 @@
-import PaginationControls from "@/components/UI_Components/Standard_Components/PaginationControls";
+import PaginationControlsWrapper from "@/components/UI_Components/Standard_Components/PaginationControlsWrapper";
 import Notification_Component from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/Notification_Component";
 import { fetchServerData } from "@/lib/fetchServerSidedata";
 
@@ -19,7 +19,7 @@ export default async function User_Notification_Page({ searchParams }) {
       <Notification_Component notifications={notifications} />
       {res.hasNextPage && (
         <div className="w-full flex justify-between items-center">
-          <PaginationControls
+          <PaginationControlsWrapper
             currentPage={res.currentPage}
             totalPages={res.totalPages}
             hasNextPage={res.hasNextPage}

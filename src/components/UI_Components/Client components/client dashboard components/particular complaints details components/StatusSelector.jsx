@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -11,85 +11,82 @@ import {
 import useFetch from "@/custome hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custome hooks/useAccessToken";
-// import socketClient from "@/lib/socket";
 import { useSocket } from "@/context/socketContext";
+import { Loader2, AlertTriangle } from "lucide-react";
 
 const StatusSelector = ({ status, setStatus, complaintId, onStatusChange }) => {
   const { loading, success, error, fetchData } = useFetch();
   const token = useAccessToken();
   const socket = useSocket();
 
-  // useEffect(() => {
-  //   if (!socket || !complaintId) return;
-
-  //   // Use normalized complaint ID format
-  //   const normalizedId = `complaint_${complaintId}`;
-
-  //   const handleNewStatus = (data) => {
-  //     console.log("Status update received:", data);
-  //     setStatus(data.status_of_client);
-  //     onStatusChange(data.timelineEvent);
-  //   };
-
-  //   // Join using client method
-  //   socket.joinComplaintRoom(normalizedId);
-  //   socket.on("status_change", handleNewStatus);
-
-  //   return () => {
-  //     socket.off("status_change", handleNewStatus);
-  //   };
-  // }, [socket, complaintId, onStatusChange]);
-
   const handleChange = async (value) => {
     const url = getBackendUrl();
-
-    const res = await fetchData(
+    await fetchData(
       `${url}/api/client/change-status/${complaintId}`,
       "PATCH",
       { status: value },
       token,
       false
     );
-    // console.log(res);
-    // if (res.success) {
-    //   setStatus(res.data.status_of_client);
-    //   onStatusChange(res.data.timelineEvent);
-    // }
   };
 
-  // If status is Resolved, show a simple badge and do not allow changes.
+  // If status is Resolved, show a disabled badge
   if (status === "Resolved") {
     return (
-      <div className="w-[180px] px-3 py-2 border rounded-md bg-gray-200 text-gray-600 text-center">
+      <div className="w-[180px] px-4 py-2 border rounded-md bg-gray-100 text-gray-600 text-center text-sm font-medium shadow-sm">
         {status}
       </div>
     );
   }
 
   return (
-    <Select value={status} onValueChange={handleChange} className="">
-      <SelectTrigger className="w-[180px] ">
-        <SelectValue value={status} placeholder="Select status" />
-      </SelectTrigger>
-      <SelectContent className="rounded-xl bg-primary text-white z-50 cursor-pointer">
-        <SelectItem
-          value="Pending"
-          className="border-b-[1px] border-white cursor-pointer"
+    <div className="relative w-[180px]">
+      <Select value={status} onValueChange={handleChange} disabled={loading}>
+        <SelectTrigger
+          className={`w-full rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition ${
+            loading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
         >
-          Pending
-        </SelectItem>
-        <SelectItem
-          value="In Progress"
-          className="border-b-[1px] border-white cursor-pointer"
-        >
-          In Progress
-        </SelectItem>
-        {/* <SelectItem value="Resolved">Resolved</SelectItem> */}
-        <SelectItem value="Unwanted" className="cursor-pointer">
-          Unwanted
-        </SelectItem>
-      </SelectContent>
-    </Select>
+          {loading ? (
+            <div className="flex items-center space-x-2">
+              <Loader2 className="animate-spin h-4 w-4" />
+              <span>Updating...</span>
+            </div>
+          ) : (
+            <SelectValue placeholder="Select status" />
+          )}
+        </SelectTrigger>
+
+        <SelectContent className="rounded-xl bg-white text-gray-800 shadow-lg">
+          <SelectItem
+            value="Pending"
+            className="hover:bg-gray-100 cursor-pointer text-sm"
+          >
+            Pending
+          </SelectItem>
+          <SelectItem
+            value="In Progress"
+            className="hover:bg-gray-100 cursor-pointer text-sm"
+          >
+            In Progress
+          </SelectItem>
+          <SelectItem
+            value="Unwanted"
+            className="hover:bg-gray-100 cursor-pointer text-sm"
+          >
+            Unwanted
+          </SelectItem>
+        </SelectContent>
+      </Select>
+
+      {/* Error State */}
+      {error && (
+        <div className="mt-2 flex items-center text-red-500 text-xs">
+          <AlertTriangle className="h-4 w-4 mr-1" />
+          <span>Something went wrong!</span>
+        </div>
+      )}
+    </div>
   );
 };
 
