@@ -336,7 +336,11 @@ const ComplaintFilter = () => {
       </div>
       {!error ? (
         <div className=" flex flex-col gap-3">
-          <ComplaintsTable complaints={complaints} isLoading={loading} />
+          <ComplaintsTable
+            complaints={complaints}
+            isLoading={loading}
+            error={error}
+          />
           {response && response.totalPages > 1 && (
             <PaginationControls
               currentPage={response.currentPage}

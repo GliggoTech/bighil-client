@@ -376,7 +376,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                   <div className="flex justify-center flex-col gap-2 mt-6">
                     <p className="text-center">
                       <span className="font-bold">EMAIL : </span>
-                      vijay.r20799@gmail
+                      vijay.r20799@gmail.com
                     </p>
                     <p className="text-center">
                       <span className="font-bold">PASSWORD : </span>123

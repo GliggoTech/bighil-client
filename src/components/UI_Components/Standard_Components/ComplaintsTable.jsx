@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,14 +14,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/formatDateFun";
 
-import { AlertCircle, Calendar } from "lucide-react";
+import { AlertCircle, Calendar, Loader2 } from "lucide-react";
 import {
   getPriorityBadge,
   getStatusBadge,
 } from "@/utils/complaintsAdditionbadges";
-import { pdfDownalod } from "@/utils/exportUtils";
+import { pdfDownload } from "@/utils/exportUtils";
 
-const ComplaintsTable = ({ complaints = [], isLoading = false }) => {
+const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
+  const [downloadingId, setDownloadingId] = useState(null); // ID of the row being downloaded
+  const [downloadError, setDownloadError] = useState(null);
   // Loading skeleton component
   const TableSkeleton = () => (
     <TableRow>
@@ -58,12 +60,35 @@ const ComplaintsTable = ({ complaints = [], isLoading = false }) => {
       </TableCell>
     </TableRow>
   );
+  // Error state component
+  const ErrorState = () => (
+    <TableRow>
+      <TableCell colSpan={6} className="h-64 text-center">
+        <div className="flex flex-col items-center justify-center h-full space-y-3">
+          <div className="rounded-full bg-destructive/10 p-3 text-destructive">
+            <AlertCircle className="h-8 w-8" />
+          </div>
+          <h3 className="font-semibold text-lg text-destructive">
+            Something went wrong
+          </h3>
+          <p className="text-muted-foreground max-w-xs">
+            We couldn’t fetch the complaints data. Please try again later.
+          </p>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
 
   const handlePdfDownload = async (complaintId) => {
+    setDownloadingId(complaintId);
+    setDownloadError(null);
     try {
-      await pdfDownalod(complaintId);
+      await pdfDownload(complaintId);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setDownloadError(complaintId);
+    } finally {
+      setDownloadingId(null);
     }
   };
 
@@ -99,8 +124,12 @@ const ComplaintsTable = ({ complaints = [], isLoading = false }) => {
           <TableBody>
             {isLoading ? (
               <TableSkeleton />
+            ) : error ? (
+              <ErrorState />
+            ) : complaints?.length === 0 ? (
+              <EmptyState />
             ) : (
-              complaints?.map((complaint) => {
+              complaints.map((complaint) => {
                 const statusBadge = getStatusBadge(complaint.status_of_client);
                 const priorityBadge = getPriorityBadge(complaint.priority);
 
@@ -114,10 +143,6 @@ const ComplaintsTable = ({ complaints = [], isLoading = false }) => {
                         {complaint.complaintId}
                       </span>
                     </TableCell>
-
-                    {/* <TableCell>
-                      <div className="font-medium">{complaint.companyName}</div>
-                    </TableCell> */}
 
                     <TableCell>
                       <div
@@ -151,24 +176,36 @@ const ComplaintsTable = ({ complaints = [], isLoading = false }) => {
                         {complaint.priority}
                       </div>
                     </TableCell>
-                    <TableCell className="p-2 text-center flex items-center justify-center">
-                      <div className="">
-                        <Link
-                          href={`/client/client-complaints/${complaint._id}`}
-                          className="inline-block w-full h-full"
-                        >
-                          <Button className="w-[80%] mx-auto bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">
-                            View Case
-                          </Button>
-                        </Link>
-                      </div>
-                      {complaint.status_of_client == "Resolved" && (
-                        <Button
-                          onClick={() => handlePdfDownload(complaint._id)}
-                          className="w-fit bg-accent-success/10 text-accent-success text-center py-1 rounded-md  hover:bg-accent-success hover:text-text-light"
-                        >
-                          Download
+
+                    <TableCell className="p-2 text-center flex items-center justify-center  ">
+                      <Link
+                        href={`/client/client-complaints/${complaint._id}`}
+                        className="inline-block w-full h-full"
+                      >
+                        <Button className="w-[80%] mx-auto bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">
+                          View Case
                         </Button>
+                      </Link>
+                      {complaint.status_of_client === "Resolved" && (
+                        <div className="">
+                          <Button
+                            onClick={() => handlePdfDownload(complaint._id)}
+                            className="w-fit bg-accent-success/10 text-accent-success text-center py-1 rounded-md hover:bg-accent-success hover:text-text-light"
+                            disabled={downloadingId === complaint._id}
+                          >
+                            {downloadingId === complaint._id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              "Download"
+                            )}
+                          </Button>
+
+                          {downloadError === complaint._id && (
+                            <p className="text-xs text-red-500 mt-1">
+                              Failed to download PDF
+                            </p>
+                          )}
+                        </div>
                       )}
                     </TableCell>
                   </TableRow>

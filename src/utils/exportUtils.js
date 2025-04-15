@@ -28,7 +28,7 @@ export const handleServerExport = async (token, filters, format = "csv") => {
   document.body.removeChild(a);
 };
 
-export const pdfDownalod = async (complaintId) => {
+export const pdfDownload = async (complaintId) => {
   try {
     const token = await getToken();
     const response = await fetch(

@@ -60,23 +60,23 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/90 via-secondary to-accent-info">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-secondary/20 to-accent-info/10">
       <div className="w-full max-w-md px-8 py-12">
         {/* Card with glass effect */}
         <div className="relative backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-white/10 dark:bg-gray-900/10">
           {/* Accent border at top */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent-info"></div>
 
-          <div className="px-8 pt-10 pb-8">
+          <div className="px-8 pt-10 pb-8 bg-accent-success">
             {/* Header */}
             <div className="flex flex-col items-center mb-8">
               <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mb-4 shadow-lg">
-                <Shield className="h-8 w-8 text-white" />
+                <Shield className="h-8 w-8 text-black" />
               </div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-2xl font-bold text-black tracking-tight">
                 Client Portal
               </h1>
-              <p className="text-white/70 mt-1 text-sm">
+              <p className="text-black/70 mt-1 text-sm">
                 Enter your credentials to continue
               </p>
             </div>
@@ -92,7 +92,7 @@ export default function LoginForm() {
                   name="email"
                   render={({ field }) => (
                     <FormItem className="space-y-2.5">
-                      <FormLabel className="text-white/80 text-sm font-medium">
+                      <FormLabel className="text-black text-sm font-medium">
                         Email Address
                       </FormLabel>
                       <FormControl>
@@ -100,7 +100,7 @@ export default function LoginForm() {
                           <div
                             className={cn(
                               "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center transition-colors",
-                              isEmailFocused ? "text-white" : "text-white/50"
+                              isEmailFocused ? "text-white" : "black"
                             )}
                           >
                             <Mail className="h-5 w-5" />
@@ -129,12 +129,12 @@ export default function LoginForm() {
                   render={({ field }) => (
                     <FormItem className="space-y-2.5">
                       <div className="flex items-center justify-between">
-                        <FormLabel className="text-white/80 text-sm font-medium">
+                        <FormLabel className="text-black text-sm font-medium">
                           Password
                         </FormLabel>
                         <Link
                           href="/client/forgot-password"
-                          className="text-white hover:text-accent-warning text-xs transition-colors"
+                          className="text-black hover:text-white underline text-xs transition-colors"
                         >
                           Forgot password?
                         </Link>
@@ -144,7 +144,7 @@ export default function LoginForm() {
                           <div
                             className={cn(
                               "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center transition-colors",
-                              isPasswordFocused ? "text-white" : "text-white/50"
+                              isPasswordFocused ? "text-white" : "black"
                             )}
                           >
                             <Lock className="h-5 w-5" />
@@ -214,6 +214,24 @@ export default function LoginForm() {
                 </Button>
               </form>
             </Form>
+            <div className="">
+              <div>
+                <p>Super Admin</p>
+                <p>Email : vijayakumar.r@gliggo.com</p>
+                <p>Password : 123456</p>
+              </div>
+              <div>
+                <p>Admin</p>
+                <p>Email : mohammed.shahul@gliggo.com</p>
+                <p>Password : 123456</p>
+              </div>
+
+              <div>
+                <p> Sub Admin</p>
+                <p>Email : muruganantham.s@gliggo.com</p>
+                <p>Password : 123456</p>
+              </div>
+            </div>
 
             {/* Divider with text */}
             <div className="relative flex items-center justify-center mt-8 mb-6">
