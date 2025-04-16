@@ -195,7 +195,11 @@ const ComplaintsTable = ({
 
                     <TableCell className="p-2 text-center flex items-center justify-center w-60  ">
                       <Link
-                        href={`/client/client-complaints/${complaint._id}`}
+                        href={
+                          bighil
+                            ? `/bighil/bighil-complaints/${complaint._id}`
+                            : `/client/client-complaints/${complaint._id}`
+                        }
                         className="inline-block w-full h-full"
                       >
                         <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">

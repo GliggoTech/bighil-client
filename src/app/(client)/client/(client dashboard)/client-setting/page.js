@@ -1,6 +1,6 @@
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import SettingsContainer from "@/components/UI_Components/Standard_Components/Settings components/SettingsContainer";
-import { fetchServerData } from "@/lib/fetchServerSidedata";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 import { Suspense } from "react";
 
 export default async function Client_Setting_Page() {

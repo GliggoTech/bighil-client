@@ -1,6 +1,6 @@
 // src/components/dashboard/stats/AdminStats.jsx
 import { Suspense } from "react";
-import { fetchServerData } from "@/lib/fetchServerSidedata";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 import { StatsCard } from "@/components/UI_Components/Client components/client dashboard components/StatsCard";
 import { STATS_CONFIG } from "@/lib/dashboard constants/dashboard";
 export const dynamic = "force-dynamic";

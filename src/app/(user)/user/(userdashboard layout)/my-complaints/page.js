@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import ComplaintCard from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/ComplaintCard";
-import { fetchServerData } from "@/lib/fetchServerSidedata";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 import { ClipboardList } from "lucide-react";
 
 export default async function MyComplaintsPage() {

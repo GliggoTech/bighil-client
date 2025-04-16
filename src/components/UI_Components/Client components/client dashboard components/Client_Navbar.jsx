@@ -13,7 +13,7 @@ const Client_Navbar = () => {
   const token = useAccessToken();
   const { userRole, notificationCount } = useNotificationStore();
 
-  const handleLogout = async () => {
+  const handleLogOut = async () => {
     const url = getBackendUrl();
     const res = await fetchData(
       `${url}/api/client-auth/client-logout`,
@@ -111,7 +111,7 @@ const Client_Navbar = () => {
 
             {/* Logout Button */}
             <motion.button
-              onClick={handleLogout}
+              onClick={handleLogOut}
               disabled={loading}
               className="flex items-center space-x-2 px-4 py-2 rounded-lg
                          bg-gradient-to-r from-primary to-secondary

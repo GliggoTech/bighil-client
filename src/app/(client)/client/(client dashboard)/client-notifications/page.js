@@ -1,6 +1,6 @@
 import PaginationControlsWrapper from "@/components/UI_Components/Standard_Components/PaginationControlsWrapper";
 import Notification_Component from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/Notification_Component";
-import { fetchServerData } from "@/lib/fetchServerSidedata";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 
 export default async function Client_Notification_Page({ searchParams }) {
   const { page } = await searchParams;

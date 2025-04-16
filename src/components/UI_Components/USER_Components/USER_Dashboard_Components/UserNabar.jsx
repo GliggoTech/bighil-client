@@ -50,7 +50,7 @@ const UserNavbar = () => {
     },
   ];
 
-  const handleLogout = async () => {
+  const handleLogOut = async () => {
     const url = getBackendUrl();
     const res = await fetchData(
       `${url}/api/user-auth/user-logout`,
@@ -116,7 +116,7 @@ const UserNavbar = () => {
               >
                 <DropdownMenuItem
                   className="text-red-600 hover:bg-red-50/50 cursor-pointer"
-                  onClick={handleLogout}
+                  onClick={handleLogOut}
                 >
                   <FiLogOut className="mr-2 h-4 w-4 text-blue-600" />
                   Logout
@@ -193,7 +193,7 @@ const UserNavbar = () => {
               <Button
                 variant="ghost"
                 className="w-full justify-start text-red-600 hover:bg-red-50/50"
-                onClick={handleLogout}
+                onClick={handleLogOut}
               >
                 <FiLogOut className="mr-2 h-5 w-5" />
                 Logout

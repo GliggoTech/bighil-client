@@ -12,11 +12,11 @@ const Bighil_Navbar = ({ session }) => {
   const { loading, success, error, fetchData } = useFetch();
   const token = useAccessToken();
 
-  const handlelogout = async () => {
+  const handleLogOut = async () => {
     const url = getBackendUrl();
 
     const res = await fetchData(
-      `${url}/api/bigil-auth/bighil-logout`,
+      `${url}/api/bighil-auth/bighil-logout`,
       "POST",
       {},
       token,
@@ -35,7 +35,7 @@ const Bighil_Navbar = ({ session }) => {
       </div>
       <div className="flex items-center space-x-4 mr-5">
         <button
-          onClick={handlelogout}
+          onClick={handleLogOut}
           disabled={loading}
           className="font-semibold font-Questrial text-[hsl(0,0%,100%)] border p-2 bg-[hsl(275,60%,50%)] rounded-md hover:bg-[hsl(275,60%,60%)] transition-colors"
         >

@@ -45,7 +45,7 @@ import { getBackendUrl } from "@/lib/getBackendUrl";
 
 import priorityMapping from "@/lib/tags";
 import { ConfirmationDialog } from "./ConfirmationDialog";
-import { fetchServerData } from "@/lib/fetchServerSidedata";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 import useAccessToken from "@/custom hooks/useAccessToken";
 
 const formSchema = z.object({

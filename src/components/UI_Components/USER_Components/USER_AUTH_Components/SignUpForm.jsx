@@ -78,7 +78,6 @@ const SignupSigninForm = ({ mode = "signup" }) => {
         <div className="absolute bottom-20 right-20 w-40 h-40 bg-secondary-light/10 rounded-full blur-3xl"></div>
         <div className="absolute top-40 right-40 w-24 h-24 bg-accent-info/5 rounded-full blur-xl"></div>
 
-        {/* Card with glassmorphism effect */}
         <div className="relative bg-background-primary/80 backdrop-blur-lg rounded-3xl shadow-xl shadow-secondary/5 overflow-hidden">
           {/* Top decorative gradient bar */}
           <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>

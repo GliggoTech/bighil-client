@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { Mail, Lock, Sparkles, ArrowRight, Shield } from "lucide-react";
+import useNotificationStore from "@/store/notificationStore";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -39,17 +40,22 @@ function BighilLoginForm() {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const { setCurrentUserId, setCurrentUserRole } = useNotificationStore();
   const onSubmit = async (values) => {
     const url = getBackendUrl();
     const res = await fetchData(
-      `${url}/api/bigil-auth/bighil-login`,
+      `${url}/api/bighil-auth/bighil-login`,
       "POST",
       values
     );
+    console.log("res", res);
     if (res.success) {
+      setCurrentUserId(res.user.id);
+      setCurrentUserRole(res.user.role);
       form.reset();
       router.push("/bighil/bighil-dashboard");
+    } else {
+      console.error("Login failed:", res.message);
     }
   };
 
@@ -66,7 +72,6 @@ function BighilLoginForm() {
           </div>
         </div>
 
-        {/* Login card with glassmorphism */}
         <div className="relative backdrop-blur-xl bg-surface-light/60 dark:bg-surface-dark/40 rounded-3xl overflow-hidden shadow-2xl shadow-secondary/10 dark:shadow-secondary/5 border border-white/10 dark:border-white/5">
           {/* Glowing accent line */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent-info"></div>

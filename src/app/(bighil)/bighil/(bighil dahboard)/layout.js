@@ -1,9 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../../../globals.css";
 
-import Bighil_Sidebar from "@/components/UI_Components/Bighil Components/Bigil_Sidebar";
+import Bighil_Sidebar from "@/components/UI_Components/Bighil Components/Bighil_Sidebar";
 import Bighil_Navbar from "@/components/UI_Components/Bighil Components/Bighil_Navbar";
 import { Toaster } from "@/components/ui/toaster";
+import { SocketProvider } from "@/context/socketContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,22 +27,24 @@ export default async function BighilDashboard_Layout({ children }) {
     //   <body
     //     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     //   >
-    <div className="flex h-screen overflow-auto">
-      {/* Sidebar component for navigation */}
-      <Bighil_Sidebar />
-      <div className="flex-1 flex flex-col">
-        {/* Navbar component displaying session information */}
-        <Bighil_Navbar />
-        {/* <PusherNotificationProvider session={session} /> */}
-        <main className="flex-1 overflow-auto">
-          {/* Main content area where child components will be rendered */}
-          {children}
-          <Toaster />
-          {/* Notification toaster for alerts and messages */}
-          {/* <Toaster /> */}
-        </main>
+    <SocketProvider>
+      <div className="flex h-screen overflow-auto">
+        {/* Sidebar component for navigation */}
+        <Bighil_Sidebar />
+        <div className="flex-1 flex flex-col">
+          {/* Navbar component displaying session information */}
+          <Bighil_Navbar />
+          {/* <PusherNotificationProvider session={session} /> */}
+          <main className="flex-1 overflow-auto">
+            {/* Main content area where child components will be rendered */}
+            {children}
+            <Toaster />
+            {/* Notification toaster for alerts and messages */}
+            {/* <Toaster /> */}
+          </main>
+        </div>
       </div>
-    </div>
+    </SocketProvider>
     //   </body>
     // </html>
   );
