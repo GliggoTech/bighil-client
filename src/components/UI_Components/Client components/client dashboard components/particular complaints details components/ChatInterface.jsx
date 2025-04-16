@@ -9,7 +9,7 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 // import useSocket from "@/custom hooks/useSocket";
 // import socketClient from "@/lib/socket";
 import useNotificationStore from "@/store/notificationStore";
-import { getReceiverRoles } from "@/lib/getReceiverRoles";
+
 import { useSocket } from "@/context/socketContext";
 
 const PAGE_LIMIT = 15;
@@ -22,12 +22,22 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef(null);
   const listRef = useRef(null);
+  const [isTokenReady, setIsTokenReady] = useState(false);
   const { userRole } = useNotificationStore();
   const [unreadedMessages, setUnreadedMessages] = useState(unseenMessageCount);
 
   const { loading, error, fetchData } = useFetch();
   const accessToken = useAccessToken();
   const { socket } = useSocket();
+
+  // Track token readiness
+  useEffect(() => {
+    if (accessToken) {
+      setIsTokenReady(true);
+    } else {
+      setIsTokenReady(false);
+    }
+  }, [accessToken]);
   // Update unread count state when prop changes
   useEffect(() => {
     setUnreadedMessages(unseenMessageCount || 0);
@@ -37,26 +47,6 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     setMessages((prev) => [...prev, newMessage]);
   }, []);
 
-  // Handle unseen count updates
-  // const handleUnseenCountUpdate = useCallback(
-  //   (data) => {
-  //     console.log("Unseen count update:", data);
-  //     if (!data || !data.counts) return;
-
-  //     const roleMap = {
-  //       user: "user",
-  //       "SUB ADMIN": "subadmin",
-  //       "SUPER ADMIN": "superadmin",
-  //       ADMIN: "admin",
-  //     };
-
-  //     const currentUserRole = roleMap[userRole];
-  //     if (currentUserRole && data.counts[currentUserRole] !== undefined) {
-  //       setUnreadedMessages(data.counts[currentUserRole]);
-  //     }
-  //   },
-  //   [userRole]
-  // );
   const handleSocketConnect = useCallback(() => {
     if (!socket || !complaintId) {
       return;
@@ -77,11 +67,12 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
 
       // socket?.socket?.off("connect", joinRoom);
     };
-  }, [socket, complaintId, handleNewMessage]);
+  }, [socket, complaintId, handleNewMessage, isOpen, isTokenReady]);
 
   // Fetch messages with memoization
   const fetchMessages = useCallback(
     async (pageNumber = 1) => {
+      if (!isTokenReady) return;
       try {
         const url = getBackendUrl();
         const res = await fetchData(
@@ -119,9 +110,16 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
         console.error("Failed to load messages:", err);
       }
     },
-    [accessToken, complaintId, fetchData]
+    [accessToken, complaintId, fetchData, isTokenReady, userRole]
   );
-
+  // Only open chat when token is ready
+  const handleToggleChat = useCallback(() => {
+    if (!isTokenReady) {
+      console.warn("Cannot open chat - no access token available");
+      return;
+    }
+    setIsOpen(!isOpen);
+  }, [isOpen, isTokenReady]);
   // Scroll handlers
   const scrollToBottom = useCallback((behavior = "smooth") => {
     messagesEndRef.current?.scrollIntoView({ behavior });
@@ -140,12 +138,15 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     }
   }, [hasMore, loading]);
 
-  // Message sending with cleanup
+  // Modified sendMessage to check token
   const sendMessage = useCallback(async () => {
+    if (!isTokenReady) {
+      console.error("Cannot send message - no access token available");
+      return;
+    }
+
     const trimmedMessage = message.trim();
     if (!trimmedMessage || !socket) return;
-
-    const tempId = Date.now().toString();
 
     try {
       socket.emit("joinComplaintRoom", `complaint_${complaintId}`);
@@ -160,11 +161,11 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     } catch (error) {
       console.error("Error sending message:", error);
     }
-  }, [message, complaintId, socket]);
+  }, [message, complaintId, socket, isTokenReady]);
 
-  // Effects
+  // Modified effects to depend on isTokenReady
   useEffect(() => {
-    if (isOpen && accessToken) {
+    if (isOpen && isTokenReady) {
       socket.emit("joinChatRoom", `chat_${complaintId}`);
       fetchMessages().then(() => scrollToBottom("auto"));
     }
@@ -172,7 +173,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     return () => {
       socket?.emit("leaveChatRoom", `chat_${complaintId}`);
     };
-  }, [isOpen, fetchMessages, scrollToBottom]);
+  }, [isOpen, fetchMessages, scrollToBottom, isTokenReady]);
 
   useEffect(() => {
     scrollToBottom();
@@ -208,65 +209,71 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     };
 
     markAsRead();
-  }, [isOpen, complaintId, accessToken]);
+  }, [isOpen, complaintId, accessToken, isTokenReady]);
 
-  // Memoized chat UI components
+  // Update chat toggle button to show loading state
   const chatToggleButton = useMemo(
     () => (
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggleChat}
         className={`bg-gradient-to-br from-blue-600 to-purple-600 text-white p-4 rounded-full shadow-2xl transition-all
-        ${isOpen ? "scale-0" : "scale-100"}
-        hover:from-blue-700 hover:to-purple-700 fixed bottom-6 right-6 z-50 group`}
+          ${isOpen ? "scale-0" : "scale-100"}
+          hover:from-blue-700 hover:to-purple-700 fixed bottom-6 right-6 z-50 group`}
+        disabled={!isTokenReady}
       >
-        {unreadedMessages > 0 && (
-          <div className="absolute top-0 right-0 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold">
-            {unreadedMessages}
-          </div>
+        {!isTokenReady ? (
+          <Loader className="w-8 h-8 animate-spin" />
+        ) : (
+          <>
+            {unreadedMessages > 0 && (
+              <div className="absolute top-0 right-0 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold">
+                {unreadedMessages}
+              </div>
+            )}
+            <IoChatboxEllipses className="w-8 h-8 transition-transform group-hover:scale-110" />
+          </>
         )}
-        <IoChatboxEllipses className="w-8 h-8 transition-transform group-hover:scale-110" />
       </button>
     ),
-    [isOpen, unreadedMessages]
+    [isOpen, unreadedMessages, isTokenReady, handleToggleChat]
   );
-  const messageList = useMemo(
-    () =>
-      messages.map((msg, index) => {
-        // const receiverRoles = getReceiverRoles(msg.sender);
-        // const isRead = receiverRoles.some((role) => msg.readBy.includes(role));
+  const messageList = useMemo(() => {
+    const isPrivilegedViewer =
+      userRole === "BIGHIL" || userRole === "SUB ADMIN";
 
-        return (
+    return messages.map((msg, index) => {
+      const isOwnMessage = isPrivilegedViewer
+        ? msg.sender === "ADMIN" || msg.sender === "SUPER ADMIN"
+        : msg.sender === userRole;
+
+      return (
+        <div
+          key={index}
+          className={`flex w-full ${
+            isOwnMessage ? "justify-end" : "justify-start"
+          }`}
+        >
           <div
-            key={`${msg._id}-${index}`}
-            className={`flex w-full ${
-              msg.sender === userRole ? "justify-end" : "justify-start"
+            className={`relative max-w-[85%] rounded-2xl p-4 shadow-sm
+            ${
+              isOwnMessage
+                ? "bg-blue-600 text-white"
+                : "bg-gray-50 border border-gray-200 text-gray-800"
             }`}
           >
-            <div
-              className={`relative max-w-[85%] rounded-2xl p-4 shadow-sm
-              ${
-                msg.sender === userRole
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-50 border border-gray-200 text-gray-800"
-              }`}
-            >
-              <p className="text-sm leading-relaxed">{msg.content}</p>
-              <time className="text-xs mt-2 block opacity-75">
-                {new Date(msg.createdAt).toLocaleTimeString([], {
-                  hour: "numeric",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </time>
-              {/* <div className="status">
-                {msg.sender === userRole && (isRead ? "✓✓" : "✓")}
-              </div> */}
-            </div>
+            <p className="text-sm leading-relaxed">{msg.content}</p>
+            <time className="text-xs mt-2 block opacity-75">
+              {new Date(msg.createdAt).toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </time>
           </div>
-        );
-      }),
-    [messages, userRole]
-  );
+        </div>
+      );
+    });
+  }, [messages, userRole]);
 
   return (
     <div className="fixed bottom-0 right-0">

@@ -127,7 +127,7 @@ function BighilLoginForm() {
                       <FormMessage className="text-accent-danger dark:text-accent-danger text-sm ml-2 flex items-center gap-1.5">
                         {form.formState.errors.email?.message && (
                           <>
-                            <span className="inline-block w-4 h-4 rounded-full bg-accent-danger/10 flex-shrink-0 flex items-center justify-center">
+                            <span className="w-4 h-4 rounded-full bg-accent-danger/10 flex-shrink-0 flex items-center justify-center">
                               <span className="w-1 h-1 rounded-full bg-accent-danger"></span>
                             </span>
                             {form.formState.errors.email?.message}

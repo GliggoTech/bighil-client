@@ -13,8 +13,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSocket } from "@/context/socketContext";
 
 const ParticularComplaint = ({ complaint, unread }) => {
-  const [timeline, setTimeline] = useState(complaint.timeline);
-  const [status, setStatus] = useState(complaint.status_of_client);
+  const [timeline, setTimeline] = useState(complaint?.timeline);
+  const [status, setStatus] = useState(complaint?.status_of_client);
   const [unseenMessageCount, setUnseenMessageCount] = useState(unread);
   const { socket } = useSocket();
   const router = useRouter();

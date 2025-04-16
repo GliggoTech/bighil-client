@@ -314,7 +314,7 @@ const ComplaintFilter = ({ bighil = false }) => {
             error={error}
             bighil={bighil}
           />
-          {response && response.totalPages > 1 && (
+          {response  && (
             <PaginationControls
               currentPage={response.currentPage}
               totalPages={response.totalPages}

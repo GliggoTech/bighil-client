@@ -17,16 +17,15 @@ export default async function User_Notification_Page({ searchParams }) {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <Notification_Component notifications={notifications} />
-      {res.hasNextPage && (
-        <div className="w-full flex justify-between items-center">
-          <PaginationControlsWrapper
-            currentPage={res.currentPage}
-            totalPages={res.totalPages}
-            hasNextPage={res.hasNextPage}
-            hasPreviousPage={res.hasPreviousPage}
-          />
-        </div>
-      )}
+
+      <div className="w-full flex justify-between items-center">
+        <PaginationControlsWrapper
+          currentPage={res.currentPage}
+          totalPages={res.totalPages}
+          hasNextPage={res.hasNextPage}
+          hasPreviousPage={res.hasPreviousPage}
+        />
+      </div>
     </div>
   );
 }

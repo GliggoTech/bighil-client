@@ -47,8 +47,6 @@ export default function PaginationControls({
     return range;
   };
 
-  if (totalPages <= 1) return null;
-
   return (
     <div className="flex flex-col gap-4 w-full sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-1.5 flex-wrap justify-center">
