@@ -7,7 +7,7 @@ export default async function Bighil_Clients_Page() {
   let clients = [];
 
   try {
-    clients = await fetchServerData("/api/bighil-clients//get-all-clients", {
+    clients = await fetchServerData("/api/bighil-clients/get-all-clients", {
       method: "GET",
       cache: "no-cache",
     });

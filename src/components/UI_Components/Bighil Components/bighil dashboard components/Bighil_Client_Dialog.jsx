@@ -32,7 +32,7 @@ const Bighil_Client_Dialog = ({
       <Dialog open={open} onOpenChange={handleDialogClose}>
         <DialogTrigger asChild>
           <Button
-            className="absolute  md:-top-60 lg:-top-[255px] -top-[540px] right-4 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-primary/30 transition-all"
+            className=" bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-primary/30 transition-all"
             size="lg"
           >
             {selectedClient ? "Edit Client" : "Add New Client"}

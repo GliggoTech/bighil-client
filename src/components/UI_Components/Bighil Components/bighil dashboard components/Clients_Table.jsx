@@ -31,20 +31,36 @@ const Clients_Table = ({ clients }) => {
   return (
     <Card className=" border border-border-light shadow-md dark:border-border-dark dark:bg-surface-dark transition-all duration-300 hover:shadow-lg">
       <CardHeader className="bg-background-secondary/50 dark:bg-background-dark/50 border-b border-border-light dark:border-border-dark">
-        <div className="flex flex-col md:flex-row items-start gap-3">
-          <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
-            <Users className="h-5 w-5 text-primary dark:text-primary-light" />
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 w-full">
+          {/* Left Section */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
+              <Users className="h-5 w-5 text-primary dark:text-primary-light" />
+            </div>
+            <div>
+              <CardTitle className="text-xl text-text-primary dark:text-text-light">
+                Current Clients
+              </CardTitle>
+              <CardDescription className="text-text-secondary dark:text-text-muted">
+                Manage your client companies
+              </CardDescription>
+            </div>
           </div>
-          <div>
-            <CardTitle className="text-xl text-text-primary dark:text-text-light">
-              Current Clients
-            </CardTitle>
-            <CardDescription className="text-text-secondary dark:text-text-muted">
-              Manage your client companies
-            </CardDescription>
+
+          {/* Right Section - Button */}
+          <div className="self-start md:self-center">
+            <Bighil_Client_Dialog
+              currentClients={currentClients}
+              setOpen={setOpen}
+              open={open}
+              selectedClient={selectedClient}
+              setSelectedClient={setSelectedClient}
+              setCurrentClients={setCurrentClients}
+            />
           </div>
         </div>
       </CardHeader>
+
       <CardContent className="p-6">
         {currentClients.length === 0 ? (
           <div className="text-center py-12 bg-background-tertiary dark:bg-surface-dark rounded-lg border border-dashed border-border-medium dark:border-border-dark">
@@ -162,15 +178,6 @@ const Clients_Table = ({ clients }) => {
           </>
         )}
       </CardContent>
-
-      <Bighil_Client_Dialog
-        currentClients={currentClients}
-        setOpen={setOpen}
-        open={open}
-        selectedClient={selectedClient}
-        setSelectedClient={setSelectedClient}
-        setCurrentClients={setCurrentClients}
-      />
     </Card>
   );
 };
