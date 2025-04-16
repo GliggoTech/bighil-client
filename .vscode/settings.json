@@ -2,5 +2,13 @@
   "Codegeex.CommitMessage.LanguagePreference": "English",
   "Codegeex.GenerationPreference": "automatic",
   "Codegeex.SidebarUI.LanguagePreference": "English",
-  "cSpell.words": ["Bighil", "Chatbox", "subadmin", "superadmin", "Unreaded"]
+  "cSpell.words": [
+    "Bighil",
+    "Chatbox",
+    "cmdk",
+    "partialize",
+    "subadmin",
+    "superadmin",
+    "Unreaded"
+  ]
 }
