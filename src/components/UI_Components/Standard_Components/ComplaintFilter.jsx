@@ -11,8 +11,8 @@ import React, {
 import { Search, HashIcon, FilterIcon, Calendar1 } from "lucide-react";
 import { debounce } from "lodash";
 import ComplaintsTable from "./ComplaintsTable";
-import useFetch from "@/custome hooks/useFetch";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useFetch from "@/custom hooks/useFetch";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import PaginationControls from "./PaginationControls";
 import { useSearchParams } from "next/navigation";
@@ -27,7 +27,7 @@ import DateFilter from "../Client components/client dashboard components/admin c
 import { Button } from "@/components/ui/button";
 import { handleServerExport } from "@/utils/exportUtils";
 
-const ComplaintFilter = () => {
+const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
   const [complaintNumber, setComplaintNumber] = useState("");
   const [status, setStatus] = useState("");
@@ -58,7 +58,7 @@ const ComplaintFilter = () => {
       clientName,
       page,
     }),
-    [complaintNumber, status, dateFilter, clientName, page]
+    [complaintNumber, status, dateFilter, clientName, page, bighil]
   );
 
   // Active filters calculation
@@ -70,7 +70,7 @@ const ComplaintFilter = () => {
       filters.push("Date");
     if (clientName) filters.push("Client");
     setActiveFilters(filters);
-  }, [complaintNumber, status, dateFilter, clientName]);
+  }, [complaintNumber, status, dateFilter, clientName, bighil]);
 
   const debouncedSearch = useCallback(
     debounce(async (params) => {
@@ -79,7 +79,6 @@ const ComplaintFilter = () => {
       try {
         const queryParams = new URLSearchParams();
         let shouldResetPage = false;
-
         // Basic filters
         if (params.complaintNumber) {
           queryParams.append("complaintId", params.complaintNumber);
@@ -110,14 +109,12 @@ const ComplaintFilter = () => {
           shouldResetPage = true;
         }
 
-        // // Pagination handling
-        // const currentPage = shouldResetPage ? 1 : page;
-        // queryParams.append("page", currentPage);
-
         // API call
         const url = getBackendUrl();
         const res = await fetchData(
-          `${url}/api/client/get-filtered-complaints?${queryParams.toString()}`,
+          bighil
+            ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`
+            : `${url}/api/client/get-filtered-complaints?${queryParams.toString()}`,
           "GET",
           null,
           token
@@ -139,7 +136,7 @@ const ComplaintFilter = () => {
         console.log("Error fetching complaints:", err);
       }
     }, 300),
-    [token]
+    [token, bighil]
   );
   // Search effect with initial load handling
   useEffect(() => {
@@ -158,7 +155,7 @@ const ComplaintFilter = () => {
       clearTimeout(handler);
       debouncedSearch.cancel();
     };
-  }, [filterParams, debouncedSearch, token]);
+  }, [filterParams, debouncedSearch, token, bighil]);
 
   // Clear filters
   const handleClearFilters = useCallback(() => {
@@ -169,33 +166,6 @@ const ComplaintFilter = () => {
   }, []);
 
   const handleExport = async () => {
-    // const queryParams = new URLSearchParams();
-
-    // if (complaintNumber) {
-    //   queryParams.append("complaintId", complaintNumber);
-    // }
-    // if (status && status !== "all") {
-    //   queryParams.append("status", status);
-    // }
-    // if (clientName) {
-    //   queryParams.append("companyName", clientName);
-    // }
-    // const { type, day, month, year } = dateFilter || {};
-    // if (type === "day" && day && day !== "allDay") {
-    //   queryParams.append("day", day);
-    // }
-    // if (month && month !== "anyMonth") {
-    //   queryParams.append("month", month);
-    // }
-    // if (year && year !== "anyYear") {
-    //   queryParams.append("year", year);
-    // }
-
-    // // Construct export URL
-    // const exportUrl = `${getBackendUrl()}/api/export-complaints/for-client?${queryParams.toString()}`;
-    // // Redirecting will prompt the browser to download the CSV file
-
-    // window.location.href = exportUrl;
     try {
       await handleServerExport(token, filterParams);
     } catch (error) {
@@ -294,29 +264,31 @@ const ComplaintFilter = () => {
         </FilterCard>
 
         {/* Client Name Filter */}
-        <FilterCard
-          icon={
-            <RiHomeOfficeFill className="h-5 w-5 mr-2 text-amber-500 dark:text-amber-400" />
-          }
-          title="Client Name"
-          titleColor="text-amber-600 dark:text-amber-400"
-          className="bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/20 dark:to-amber-800/10
-               hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-400/10
-               border border-amber-100 dark:border-amber-800/50
-               transition-all duration-300 ease-in-out
-               backdrop-blur-sm
-               group"
-        >
-          <TextFilter
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            placeholder="Search company"
-            Icon={Search}
-            className="focus-within:ring-2 focus-within:ring-amber-500/50
-                 bg-white/50 dark:bg-amber-900/20
-                 group-hover:bg-white dark:group-hover:bg-amber-900/30 hover:rounded-xl"
-          />
-        </FilterCard>
+        {bighil && (
+          <FilterCard
+            icon={
+              <RiHomeOfficeFill className="h-5 w-5 mr-2 text-amber-500 dark:text-amber-400" />
+            }
+            title="Client Name"
+            titleColor="text-amber-600 dark:text-amber-400"
+            className="bg-gradient-to-br from-amber-50 to-white dark:from-amber-900/20 dark:to-amber-800/10
+                 hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-400/10
+                 border border-amber-100 dark:border-amber-800/50
+                 transition-all duration-300 ease-in-out
+                 backdrop-blur-sm
+                 group"
+          >
+            <TextFilter
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              placeholder="Search company"
+              Icon={Search}
+              className="focus-within:ring-2 focus-within:ring-amber-500/50
+                   bg-white/50 dark:bg-amber-900/20
+                   group-hover:bg-white dark:group-hover:bg-amber-900/30 hover:rounded-xl"
+            />
+          </FilterCard>
+        )}
       </div>
 
       <ActiveFilters
@@ -340,6 +312,7 @@ const ComplaintFilter = () => {
             complaints={complaints}
             isLoading={loading}
             error={error}
+            bighil={bighil}
           />
           {response && response.totalPages > 1 && (
             <PaginationControls

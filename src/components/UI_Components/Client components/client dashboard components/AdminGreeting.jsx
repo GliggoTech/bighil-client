@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import useNotificationStore from "@/store/notificationStore";
-import { useTimeFormat } from "@/custome hooks/useTimeFormat";
+import { useTimeFormat } from "@/custom hooks/useTimeFormat";
 import { TimeIcon } from "./Admin greeting components/TimeIcon";
 import { WelcomeMessage } from "./Admin greeting components/WelcomeMessage";
 import { TimeDisplay } from "./Admin greeting components/TimeDisplay";

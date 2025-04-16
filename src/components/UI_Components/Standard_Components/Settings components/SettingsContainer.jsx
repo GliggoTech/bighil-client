@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import ProfileCard from "./ProfileCard";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSettings } from "@/custome hooks/useSettings";
+import { useSettings } from "@/custom hooks/useSettings";
 import PasswordUpdateCard from "./PasswordUpdateCard";
 import { SettingsSchema } from "./SettingsSchema";
 import PageHeader from "./PageHeader";

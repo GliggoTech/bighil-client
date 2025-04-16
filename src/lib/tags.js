@@ -88,7 +88,7 @@ const priorityMapping = [
   },
   { name: "Shipping Delay", priority: PRIORITY_LEVELS.HIGH, weight: 4 },
   {
-    name: "Customer Service Complaint",
+    name: "customr Service Complaint",
     priority: PRIORITY_LEVELS.HIGH,
     weight: 4,
   },
@@ -107,7 +107,7 @@ const priorityMapping = [
   { name: "Feature Not Working", priority: PRIORITY_LEVELS.MEDIUM, weight: 3 },
   { name: "Software Bug", priority: PRIORITY_LEVELS.MEDIUM, weight: 3 },
   {
-    name: "Unresponsive Customer Support",
+    name: "Unresponsive customr Support",
     priority: PRIORITY_LEVELS.MEDIUM,
     weight: 3,
   },

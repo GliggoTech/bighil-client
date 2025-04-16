@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { useRouter } from "next/navigation";
 import useNotificationStore from "@/store/notificationStore";

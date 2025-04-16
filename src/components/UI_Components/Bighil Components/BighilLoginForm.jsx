@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

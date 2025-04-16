@@ -1,7 +1,7 @@
 // "use client";
 // import { createContext, useContext, useEffect } from "react";
 // import { socketManager } from "@/lib/socket";
-// import useAccessToken from "@/custome hooks/useAccessToken";
+// import useAccessToken from "@/custom hooks/useAccessToken";
 // import useNotificationStore from "@/store/notificationStore";
 
 // const SocketContext = createContext();
@@ -52,7 +52,7 @@
 // export const useSocket = () => useContext(SocketContext);
 
 "use client";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import { toast } from "@/hooks/use-toast";
 import useNotificationStore from "@/store/notificationStore";
 import { createContext, useEffect, useContext, useState } from "react";

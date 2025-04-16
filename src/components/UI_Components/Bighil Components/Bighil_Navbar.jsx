@@ -1,7 +1,7 @@
 "use client";
 
-import useAccessToken from "@/custome hooks/useAccessToken";
-import useFetch from "@/custome hooks/useFetch";
+import useAccessToken from "@/custom hooks/useAccessToken";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { getToken } from "@/lib/getToken";
 import { useRouter } from "next/navigation";

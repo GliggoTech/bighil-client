@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Loader } from "lucide-react";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 import { useSocket } from "@/context/socketContext";
 

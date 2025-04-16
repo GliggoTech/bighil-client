@@ -11,12 +11,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CheckCircle, Loader, Trash2 } from "lucide-react";
-import useAccessToken from "@/custome hooks/useAccessToken";
-// import useSocket from "@/custome hooks/useSocket";
+import useAccessToken from "@/custom hooks/useAccessToken";
+// import useSocket from "@/custom hooks/useSocket";
 import { useEffect, useState } from "react";
 import useNotificationStore from "@/store/notificationStore";
 // import socketClient from "@/lib/socket";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
 import { useRouter, useSearchParams } from "next/navigation";

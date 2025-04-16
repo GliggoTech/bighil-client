@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { getPriorityBadge } from "@/utils/complaintsAdditionbadges";
+import { getPriorityBadge } from "@/utils/complaintBadges";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

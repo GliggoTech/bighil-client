@@ -15,13 +15,15 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/formatDateFun";
 
 import { AlertCircle, Calendar, Loader2 } from "lucide-react";
-import {
-  getPriorityBadge,
-  getStatusBadge,
-} from "@/utils/complaintsAdditionbadges";
+import { getPriorityBadge, getStatusBadge } from "@/utils/complaintBadges";
 import { pdfDownload } from "@/utils/exportUtils";
 
-const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
+const ComplaintsTable = ({
+  complaints = [],
+  isLoading = false,
+  error,
+  bighil = false,
+}) => {
   const [downloadingId, setDownloadingId] = useState(null); // ID of the row being downloaded
   const [downloadError, setDownloadError] = useState(null);
   // Loading skeleton component
@@ -101,12 +103,16 @@ const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
               <TableHead className="font-semibold text-muted-foreground w-[160px]">
                 Complaint ID
               </TableHead>
-              {/* <TableHead className="font-semibold text-muted-foreground">
-                Company
-              </TableHead> */}
-              <TableHead className="font-semibold text-muted-foreground">
-                Complaint Message
-              </TableHead>
+              {bighil ? (
+                <TableHead className="font-semibold text-muted-foreground">
+                  Company Name
+                </TableHead>
+              ) : (
+                <TableHead className="font-semibold text-muted-foreground">
+                  Complaint Against
+                </TableHead>
+              )}
+
               <TableHead className="font-semibold text-muted-foreground w-[140px]">
                 Status
               </TableHead>
@@ -116,7 +122,7 @@ const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
               <TableHead className="font-semibold text-muted-foreground w-[120px]">
                 Priority
               </TableHead>
-              <TableHead className="font-semibold text-muted-foreground  text-center">
+              <TableHead className="font-semibold text-muted-foreground  w-[120px] text-center">
                 Action
               </TableHead>
             </TableRow>
@@ -143,15 +149,25 @@ const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
                         {complaint.complaintId}
                       </span>
                     </TableCell>
-
-                    <TableCell>
-                      <div
-                        className="max-w-xs truncate"
-                        title={complaint.complaintAgainst}
-                      >
-                        {complaint.complaintAgainst}
-                      </div>
-                    </TableCell>
+                    {bighil ? (
+                      <TableCell>
+                        <div
+                          className="max-w-xs truncate"
+                          title={complaint.companyName}
+                        >
+                          {complaint.companyName}
+                        </div>
+                      </TableCell>
+                    ) : (
+                      <TableCell>
+                        <div
+                          className="max-w-xs truncate"
+                          title={complaint.complaintAgainst}
+                        >
+                          {complaint.complaintAgainst}
+                        </div>
+                      </TableCell>
+                    )}
 
                     <TableCell>
                       <div
@@ -177,12 +193,12 @@ const ComplaintsTable = ({ complaints = [], isLoading = false, error }) => {
                       </div>
                     </TableCell>
 
-                    <TableCell className="p-2 text-center flex items-center justify-center  ">
+                    <TableCell className="p-2 text-center flex items-center justify-center w-60  ">
                       <Link
                         href={`/client/client-complaints/${complaint._id}`}
                         className="inline-block w-full h-full"
                       >
-                        <Button className="w-[80%] mx-auto bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">
+                        <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">
                           View Case
                         </Button>
                       </Link>

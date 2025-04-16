@@ -28,8 +28,8 @@ import {
   KeyRound,
   CheckCircle2,
 } from "lucide-react";
-import useFetch from "@/custome hooks/useFetch";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useFetch from "@/custom hooks/useFetch";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import Link from "next/link";
 import { endpoints } from "@/utils/endPointsHelper";

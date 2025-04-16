@@ -19,11 +19,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { useRouter } from "next/navigation";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 import { IconBase } from "react-icons";
 import { CiSettings } from "react-icons/ci";

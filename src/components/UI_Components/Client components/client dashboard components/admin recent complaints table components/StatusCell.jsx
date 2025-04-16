@@ -1,6 +1,6 @@
 // components/complaints/cells/StatusCell.js
 import { TableCell } from "@/components/ui/table";
-import { getStatusBadge } from "@/utils/complaintsAdditionbadges";
+import { getStatusBadge } from "@/utils/complaintBadges";
 
 export function StatusCell({ status }) {
   const statusBadge = getStatusBadge(status);

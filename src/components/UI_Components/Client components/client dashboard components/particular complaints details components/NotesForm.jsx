@@ -3,9 +3,9 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 
 const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm({

@@ -8,9 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import { useSocket } from "@/context/socketContext";
 import { Loader2, AlertTriangle } from "lucide-react";
 

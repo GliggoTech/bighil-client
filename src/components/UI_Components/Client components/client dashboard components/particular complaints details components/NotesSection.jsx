@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import NotesForm from "./NotesForm";
 import { FiFileText } from "react-icons/fi";
 import dateFormat from "dateformat";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 import { useSocket } from "@/context/socketContext";
 

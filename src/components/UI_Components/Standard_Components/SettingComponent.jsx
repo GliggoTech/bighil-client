@@ -20,9 +20,9 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Lock, UserIcon, MailIcon, ShieldIcon, Loader2 } from "lucide-react";
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 import { toast } from "@/hooks/use-toast";
 
 const formSchema = z

@@ -17,8 +17,6 @@ export default async function Bighil_Clients_Page() {
   }
   return (
     <div className="text-black p-6 relative">
-      {/* <Bighil_Client_Dialog /> */}
-      {/* Clients Table */}
       <Clients_Table clients={clients} />
     </div>
   );

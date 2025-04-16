@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import CompanyRegistrationForm from "@/components/UI_Components/Bighil Components/bighil dashboard components/CompanyRegistrationForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +8,9 @@ import {
   DialogTrigger,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
+import CompanyRegistrationForm from "./CompanyRegistrationForm";
 
 const Bighil_Client_Dialog = ({
   currentClients,
@@ -19,36 +20,40 @@ const Bighil_Client_Dialog = ({
   setCurrentClients,
   setSelectedClient,
 }) => {
-  // Function to handle dialog close and reset selectedClient
   const handleDialogClose = (isOpen) => {
     setOpen(isOpen);
     if (!isOpen) {
-      setSelectedClient(null); // Reset selected client when closing the dialog
+      setSelectedClient(null);
     }
   };
 
   return (
-    <div>
-      {/* Header with Button */}
-      <div className="flex justify-end items-end mb-4 h-full">
-        <Dialog
-          open={open}
-          onOpenChange={handleDialogClose}
-          className="max-w-3xl"
-        >
-          <DialogTrigger asChild>
-            <Button className="absolute top-4 right-10">Add Client</Button>
-          </DialogTrigger>
-          <DialogContent
-            className="bg-white w-full h-screen max-w-4xl"
-            onInteractOutside={(e) => e.preventDefault()}
-            onEscapeKeyDown={(e) => e.preventDefault()}
+    <div className="relative">
+      <Dialog open={open} onOpenChange={handleDialogClose}>
+        <DialogTrigger asChild>
+          <Button
+            className="absolute  md:-top-60 lg:-top-[255px] -top-[540px] right-4 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-primary/30 transition-all"
+            size="lg"
           >
-            <DialogHeader>
-              <DialogTitle>
-                {selectedClient ? "Edit Client" : "Register New Client"}
-              </DialogTitle>
-            </DialogHeader>
+            {selectedClient ? "Edit Client" : "Add New Client"}
+          </Button>
+        </DialogTrigger>
+        <DialogHeader className="sr-only">
+          <DialogTitle className="text-center text-lg font-bold">
+            {selectedClient ? "Edit Client" : "Add New Client"}
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            {selectedClient
+              ? "Edit client details"
+              : "Add new client to your list"}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogContent
+          className="max-w-4xl p-0 rounded-lg overflow-hidden border-0 shadow-xl"
+          onInteractOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
+          <div className="max-h-[90vh] overflow-auto">
             <CompanyRegistrationForm
               setOpen={setOpen}
               selectedClient={selectedClient}
@@ -56,9 +61,9 @@ const Bighil_Client_Dialog = ({
               setCurrentClients={setCurrentClients}
               setSelectedClient={setSelectedClient}
             />
-          </DialogContent>
-        </Dialog>
-      </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

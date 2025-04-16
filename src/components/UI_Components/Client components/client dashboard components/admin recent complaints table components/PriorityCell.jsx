@@ -1,5 +1,5 @@
 import { TableCell } from "@/components/ui/table";
-import { getPriorityBadge } from "@/utils/complaintsAdditionbadges";
+import { getPriorityBadge } from "@/utils/complaintBadges";
 
 export function PriorityCell({ priority }) {
   const priorityBadge = getPriorityBadge(priority);

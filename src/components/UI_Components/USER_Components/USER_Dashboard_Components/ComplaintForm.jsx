@@ -40,13 +40,13 @@ import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 import { COMPANIES } from "@/lib/companies";
 
-import useFetch from "@/custome hooks/useFetch";
+import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 
 import priorityMapping from "@/lib/tags";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { fetchServerData } from "@/lib/fetchServerSidedata";
-import useAccessToken from "@/custome hooks/useAccessToken";
+import useAccessToken from "@/custom hooks/useAccessToken";
 
 const formSchema = z.object({
   companyName: z.string().min(1, "Company selection required"),
