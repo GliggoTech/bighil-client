@@ -1,4 +1,4 @@
-// utils/complaintsAdditionbadges.js
+// utils/complaintBadges.js
 import {
   AlertCircle,
   AlertCircleIcon,

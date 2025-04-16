@@ -1,13 +1,20 @@
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { getToken } from "@/lib/getToken";
 
-export const handleServerExport = async (token, filters, format = "csv") => {
+export const handleServerExport = async (
+  token,
+  filters,
+  bighil,
+  format = "csv"
+) => {
   const queryParams = new URLSearchParams({
     ...filters,
   });
 
   const response = await fetch(
-    `${getBackendUrl()}/api/export-complaints/for-client?${queryParams}`,
+    bighil
+      ? `${getBackendUrl()}/api/export-complaints/for-bighil?${queryParams}`
+      : `${getBackendUrl()}/api/export-complaints/for-client?${queryParams}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

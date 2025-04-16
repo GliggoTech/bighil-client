@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, Circle } from "lucide-react";
+import { Circle } from "lucide-react";
 
 const statuses = [
   { label: "All", value: "all", color: "text-text-primary", icon: Circle },
@@ -45,15 +45,11 @@ const StatusFilter = ({ value, onChange }) => (
         <SelectItem
           key={statusValue}
           value={statusValue}
-          className={`group flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium ${color} hover:bg-background-tertiary hover:text-text-primary transition-all border-b border-border-light last:border-0`}
+          className={`group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium ${color} hover:bg-background-tertiary hover:text-text-primary transition-all border-b border-border-light last:border-0`}
         >
-          <div className="flex items-center space-x-2">
-            <Icon className={`w-3.5 h-3.5 ${color}`} />
+          <div className="flex items-center justify-center space-x-2">
             <span>{label}</span>
           </div>
-          {value === statusValue && (
-            <Check className="w-4 h-4 text-primary opacity-100 transition-opacity" />
-          )}
         </SelectItem>
       ))}
     </SelectContent>

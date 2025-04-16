@@ -167,7 +167,7 @@ const ComplaintFilter = ({ bighil = false }) => {
 
   const handleExport = async () => {
     try {
-      await handleServerExport(token, filterParams);
+      await handleServerExport(token, filterParams, bighil);
     } catch (error) {
       console.error("Export error:", error);
       // Handle error state
