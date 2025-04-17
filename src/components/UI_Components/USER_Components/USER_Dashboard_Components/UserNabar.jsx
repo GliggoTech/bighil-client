@@ -51,18 +51,21 @@ const UserNavbar = () => {
   ];
 
   const handleLogOut = async () => {
-    const url = getBackendUrl();
-    const res = await fetchData(
-      `${url}/api/user-auth/user-logout`,
-      "POST",
-      {}, // No body needed for POST requests
-      token,
-      false
-    );
+    if (token) {
+      const url = getBackendUrl();
+      const res = await fetchData(
+        `${url}/api/user-auth/user-logout`,
+        "POST",
+        {}, // No body needed for POST requests
+        token,
+        false
+      );
 
-    if (res.success) {
-      router.push("/");
+      if (res.success) {
+        router.push("/");
+      }
     }
+    return null;
   };
 
   return (
