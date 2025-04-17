@@ -1,6 +1,6 @@
+import { getBackendUrl } from "@/lib/getBackendUrl";
+import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
-import { getBackendUrl } from "./getBackendUrl";
-import { getToken } from "./getToken";
 
 export const dynamic = "force-dynamic";
 
