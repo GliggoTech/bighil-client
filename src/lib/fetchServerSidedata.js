@@ -1,3 +1,4 @@
+"use server";
 import { redirect } from "next/navigation";
 import { getBackendUrl } from "./getBackendUrl";
 import { getToken } from "./getToken";
