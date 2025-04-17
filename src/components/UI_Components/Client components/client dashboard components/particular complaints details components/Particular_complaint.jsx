@@ -124,31 +124,25 @@ const ParticularComplaint = ({ complaint, unread }) => {
                   <Timeline events={timeline} />
                 </div>
 
-                {/* Status Selector */}
-                {userRole !== "user" && userRole !== "SUB ADMIN" && (
-                  <div className="bg-surface-light w-fit dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-success hover:rounded-xl">
-                    <StatusSelector
-                      status={status}
-                      setStatus={setStatus}
-                      complaintId={complaint._id}
-                      onStatusChange={handleStatusChange}
-                    />
-                  </div>
-                )}
+                <div className="bg-surface-light w-fit dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-success hover:rounded-xl">
+                  <StatusSelector
+                    status={status}
+                    setStatus={setStatus}
+                    complaintId={complaint._id}
+                    onStatusChange={handleStatusChange}
+                    userRole={userRole}
+                  />
+                </div>
 
-                {/* Action Taken Section */}
-                {((userRole !== "user" && userRole !== "SUB ADMIN") ||
-                  status === "Resolved") && (
-                  <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-danger">
-                    <ActionTaken
-                      complaintId={complaint._id}
-                      onStatusChange={handleStatusChange}
-                      status={status}
-                      setStatus={setStatus}
-                      actionMessage={complaint.actionMessage}
-                    />
-                  </div>
-                )}
+                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-danger">
+                  <ActionTaken
+                    complaintId={complaint._id}
+                    onStatusChange={handleStatusChange}
+                    status={status}
+                    setStatus={setStatus}
+                    actionMessage={complaint.actionMessage}
+                  />
+                </div>
               </div>
             </div>
           </div>

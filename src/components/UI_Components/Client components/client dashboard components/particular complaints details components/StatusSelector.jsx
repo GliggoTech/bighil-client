@@ -14,10 +14,19 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 import { useSocket } from "@/context/socketContext";
 import { Loader2, AlertTriangle } from "lucide-react";
 
-const StatusSelector = ({ status, setStatus, complaintId, onStatusChange }) => {
+const StatusSelector = ({
+  status,
+  setStatus,
+  complaintId,
+  onStatusChange,
+  userRole,
+}) => {
   const { loading, success, error, fetchData } = useFetch();
   const token = useAccessToken();
   const socket = useSocket();
+
+  // Only ADMIN or SUPER ADMIN can edit
+  const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";
 
   const handleChange = async (value) => {
     const url = getBackendUrl();
@@ -28,10 +37,21 @@ const StatusSelector = ({ status, setStatus, complaintId, onStatusChange }) => {
       token,
       false
     );
+    setStatus(value); // Update local state
+    onStatusChange?.(value); // Optional callback
   };
 
-  // If status is Resolved, show a disabled badge
+  // If Resolved, always show read-only
   if (status === "Resolved") {
+    return (
+      <div className="w-[180px] px-4 py-2 border rounded-md bg-gray-100 text-gray-600 text-center text-sm font-medium shadow-sm">
+        {status}
+      </div>
+    );
+  }
+
+  // If not editable, show read-only
+  if (!isEditable) {
     return (
       <div className="w-[180px] px-4 py-2 border rounded-md bg-gray-100 text-gray-600 text-center text-sm font-medium shadow-sm">
         {status}

@@ -53,7 +53,9 @@ const ActionTaken = ({
   );
   const { userRole } = useNotificationStore();
   const isReadOnly =
-    status === "Resolved" || userRole === "user" || userRole === "SUB ADMIN";
+    status === "Resolved" ||
+    !(userRole === "ADMIN" || userRole === "SUPER ADMIN");
+
   const token = useAccessToken();
   useEffect(() => {
     if (!socket || !complaintId) {
