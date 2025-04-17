@@ -1,6 +1,6 @@
 import PaginationControlsWrapper from "@/components/UI_Components/Standard_Components/PaginationControlsWrapper";
 import Notification_Component from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/Notification_Component";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 export default async function User_Notification_Page({ searchParams }) {
   const { page } = await searchParams;
@@ -8,7 +8,7 @@ export default async function User_Notification_Page({ searchParams }) {
 
   let notifications;
 
-  const res = await fetchServerData(
+  const res = await fetchServerSideData(
     `/api/user-notifications/my-notifications?page=${page}&limit=${limit}`,
     { method: "GET", cache: "no-cache" } // Always fetch fresh data
   );

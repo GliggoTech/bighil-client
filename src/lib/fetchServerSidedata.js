@@ -4,7 +4,7 @@ import { getToken } from "./getToken";
 
 export const dynamic = "force-dynamic";
 
-export async function fetchServerData(endpoint, options = {}) {
+export async function fetchServerSideData(endpoint, options = {}) {
   // Get authentication token
   const token = await getToken();
 

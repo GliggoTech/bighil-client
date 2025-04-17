@@ -3,7 +3,7 @@ import Particular_complaint from "@/components/UI_Components/Client components/c
 import EvidenceGallery from "@/components/UI_Components/Standard_Components/EvidenceGallery";
 import StatusBadge from "@/components/UI_Components/Standard_Components/StatusBadge";
 import Timeline from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/Timeline";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 import { getToken } from "@/lib/getToken";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
@@ -48,7 +48,7 @@ export default async function ParticularComplaintPage({
     }
   }
   let complaint = null;
-  const res = await fetchServerData(
+  const res = await fetchServerSideData(
     `/api/user-complaints/my-complaints/${id}`,
     {
       method: "GET",

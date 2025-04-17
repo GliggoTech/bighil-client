@@ -1,12 +1,12 @@
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import SettingsContainer from "@/components/UI_Components/Standard_Components/Settings components/SettingsContainer";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 import { Suspense } from "react";
 
 export default async function Client_Setting_Page() {
   const endPoint = "/api/setting/get-setting";
-  const data = await fetchServerData(`${endPoint}`, {
+  const data = await fetchServerSideData(`${endPoint}`, {
     method: "GET",
     cache: "no-cache",
   });

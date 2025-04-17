@@ -1,5 +1,5 @@
 import Particular_complaint from "@/components/UI_Components/Client components/client dashboard components/particular complaints details components/Particular_complaint";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 import { getToken } from "@/lib/getToken";
 
@@ -19,7 +19,7 @@ export default async function Bighil_Particular_Complaints_Page({
   }
   let complaint = null;
 
-  const res = await fetchServerData(`/api/bighil/get-complaint/${id}`, {
+  const res = await fetchServerSideData(`/api/bighil/get-complaint/${id}`, {
     method: "GET",
     cache: "no-cache",
   });

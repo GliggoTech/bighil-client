@@ -46,7 +46,7 @@ import priorityMapping from "@/lib/tags";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
 import useAccessToken from "@/custom hooks/useAccessToken";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 const formSchema = z.object({
   companyName: z.string().min(1, "Company selection required"),
@@ -83,7 +83,7 @@ export function ComplaintForm() {
   const fetchCompanies = useCallback(
     async (query = "") => {
       try {
-        const response = await fetchServerData(
+        const response = await fetchServerSideData(
           `/api/companies?search=${encodeURIComponent(query)}`,
           {
             method: "GET",

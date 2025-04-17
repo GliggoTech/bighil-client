@@ -2,7 +2,7 @@
 
 import { StatsCard } from "@/components/UI_Components/Client components/client dashboard components/StatsCard";
 import { STATS_CONFIG } from "@/lib/dashboard constants/dashboard";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 export const dynamic = "force-dynamic";
 const StatsSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -16,7 +16,7 @@ const StatsSkeleton = () => (
 );
 
 export default async function AdminStats() {
-  const stats = await fetchServerData(
+  const stats = await fetchServerSideData(
     "/api/client-dashboard/stats?timeframe=30",
     {
       method: "GET",

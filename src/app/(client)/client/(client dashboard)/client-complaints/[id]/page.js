@@ -1,5 +1,5 @@
 import Particular_complaint from "@/components/UI_Components/Client components/client dashboard components/particular complaints details components/Particular_complaint";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 import { getToken } from "@/lib/getToken";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
@@ -19,7 +19,7 @@ export default async function Particular_Complaints_Page({
   }
   let complaint = null;
 
-  const res = await fetchServerData(`/api/client/get-complaint/${id}`, {
+  const res = await fetchServerSideData(`/api/client/get-complaint/${id}`, {
     method: "GET",
     cache: "no-cache",
   });
