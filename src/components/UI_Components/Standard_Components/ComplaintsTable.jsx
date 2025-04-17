@@ -278,7 +278,7 @@ const ComplaintsTable = ({
                             View Case
                           </Button>
                         </Link>
-                        {complaint.status_of_client === "Resolved" && (
+                        {/* {complaint.status_of_client === "Resolved" && (
                           <div className="">
                             <Button
                               onClick={() => handlePdfPreview(complaint._id)}
@@ -305,7 +305,7 @@ const ComplaintsTable = ({
                               </p>
                             )}
                           </div>
-                        )}
+                        )} */}
                       </TableCell>
                     </TableRow>
                   );
