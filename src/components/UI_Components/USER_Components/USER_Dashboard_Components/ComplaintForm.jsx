@@ -46,7 +46,7 @@ import priorityMapping from "@/lib/tags";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
 import useAccessToken from "@/custom hooks/useAccessToken";
-import { fetchServerSideData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 const formSchema = z.object({
   companyName: z.string().min(1, "Company selection required"),

@@ -1,6 +1,6 @@
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import SettingsContainer from "@/components/UI_Components/Standard_Components/Settings components/SettingsContainer";
-import { fetchServerSideData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { Suspense } from "react";
 

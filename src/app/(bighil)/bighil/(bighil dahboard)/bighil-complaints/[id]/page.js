@@ -1,7 +1,7 @@
 import Particular_complaint from "@/components/UI_Components/Client components/client dashboard components/particular complaints details components/Particular_complaint";
-import { fetchServerSideData } from "@/lib/fetchServerSideData";
 
 import { getToken } from "@/lib/getToken";
+import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { redirect } from "next/navigation";
 

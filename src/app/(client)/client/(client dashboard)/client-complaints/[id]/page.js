@@ -1,5 +1,5 @@
 import Particular_complaint from "@/components/UI_Components/Client components/client dashboard components/particular complaints details components/Particular_complaint";
-import { fetchServerSideData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { getToken } from "@/lib/getToken";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";

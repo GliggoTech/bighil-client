@@ -1,6 +1,6 @@
 // page.js
 import { MaximumComplaintsAgainst } from "@/components/UI_Components/Client components/client dashboard components/MaximumComplaintsAgainst";
-import { fetchServerSideData } from "@/lib/fetchServerSideData";
+import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 export const dynamic = "force-dynamic";
 export default async function More_Nuumber_Of_Complaints_Against() {
