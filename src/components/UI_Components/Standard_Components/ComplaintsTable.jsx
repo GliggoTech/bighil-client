@@ -31,6 +31,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
 ).toString();
+// Add to very top of ComplaintFilter.jsx
 
 const ComplaintsTable = ({
   complaints = [],
@@ -278,7 +279,7 @@ const ComplaintsTable = ({
                             View Case
                           </Button>
                         </Link>
-                        {/* {complaint.status_of_client === "Resolved" && (
+                        {complaint.status_of_client === "Resolved" && (
                           <div className="">
                             <Button
                               onClick={() => handlePdfPreview(complaint._id)}
@@ -305,7 +306,7 @@ const ComplaintsTable = ({
                               </p>
                             )}
                           </div>
-                        )} */}
+                        )}
                       </TableCell>
                     </TableRow>
                   );

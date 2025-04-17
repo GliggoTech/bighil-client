@@ -26,7 +26,16 @@ import { RiHomeOfficeFill } from "react-icons/ri";
 import DateFilter from "../Client components/client dashboard components/admin complaint filter components/date filter components/DateFilter";
 import { Button } from "@/components/ui/button";
 import { handleServerExport } from "@/utils/exportUtils";
-
+if (!Promise.withResolvers) {
+  Promise.withResolvers = function () {
+    let resolve, reject;
+    const promise = new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { promise, resolve, reject };
+  };
+}
 const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
   const [complaintNumber, setComplaintNumber] = useState("");
@@ -314,7 +323,7 @@ const ComplaintFilter = ({ bighil = false }) => {
             error={error}
             bighil={bighil}
           />
-          {response  && (
+          {response && (
             <PaginationControls
               currentPage={response.currentPage}
               totalPages={response.totalPages}
