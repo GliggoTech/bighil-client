@@ -1,11 +1,3 @@
-window.Promise.withResolvers = function () {
-  let resolve, reject;
-  const promise = new Promise((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-  return { resolve, reject, promise };
-};
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 
