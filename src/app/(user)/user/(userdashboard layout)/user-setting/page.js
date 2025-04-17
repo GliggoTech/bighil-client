@@ -1,5 +1,6 @@
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import { fetchServerData } from "@/lib/fetchServerSideData";
+
 import { Suspense } from "react";
 
 export default async function Bighil_Setting_Page() {

@@ -1,8 +1,8 @@
 // src/components/dashboard/stats/AdminStats.jsx
-import { Suspense } from "react";
-import { fetchServerData } from "@/lib/fetchServerSideData";
+
 import { StatsCard } from "@/components/UI_Components/Client components/client dashboard components/StatsCard";
 import { STATS_CONFIG } from "@/lib/dashboard constants/dashboard";
+import { fetchServerData } from "@/lib/fetchServerSideData";
 export const dynamic = "force-dynamic";
 const StatsSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
