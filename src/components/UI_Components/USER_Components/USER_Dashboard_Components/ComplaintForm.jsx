@@ -77,40 +77,51 @@ export function ComplaintForm() {
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const token = useAccessToken();
+  console.log("token from complaint form", token);
 
   const { loading, error, fetchData } = useFetch();
 
   const fetchCompanies = useCallback(
     async (query = "") => {
       try {
-        const response = await fetchServerSideData(
-          `/api/companies?search=${encodeURIComponent(query)}`,
-          {
-            method: "GET",
-            cache: "no-cache",
-          }
+        console.log("token from complaint form", token);
+        const url = getBackendUrl();
+        const res = await fetchData(
+          `${url}/api/companies?search=${encodeURIComponent(query)}`,
+          "GET",
+          {},
+          token,
+          false
         );
-
-        setCompanies(response);
+        console.log("companies", res);
+        if (res.success) {
+          setCompanies(res.data);
+        }
       } catch (err) {
         console.error("Failed to fetch companies:", err);
         // Consider adding error state feedback
       }
     },
-    [searchQuery]
+    [searchQuery, token]
   );
 
   useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      fetchCompanies(searchQuery);
-    }, 300);
+    if (token) {
+      // Only fetch when token exists
+      const debounceTimer = setTimeout(() => {
+        fetchCompanies(searchQuery);
+      }, 300);
 
-    return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
+      return () => clearTimeout(debounceTimer);
+    }
+  }, [searchQuery, token, fetchCompanies]);
 
   useEffect(() => {
-    fetchCompanies(); // Load initial companies on mount
-  }, []);
+    if (token) {
+      // Only fetch when token exists
+      fetchCompanies();
+    }
+  }, [token, fetchCompanies]);
 
   const removeFile = (index) => {
     const newFiles = localFiles.filter((_, i) => i !== index);

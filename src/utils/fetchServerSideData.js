@@ -8,6 +8,8 @@ export async function fetchServerSideData(endpoint, options = {}) {
   // Get authentication token
   const token = await getToken();
 
+  console.log("server side token", token);
+
   // Set default headers
   const headers = {
     "Content-Type": "application/json",
@@ -22,7 +24,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
     cache: options.cache || "no-cache",
     ...(options.body && { body: JSON.stringify(options.body) }),
   };
-
+  console.log("config", config);
   try {
     const url = getBackendUrl();
 
