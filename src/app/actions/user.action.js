@@ -12,29 +12,36 @@ export async function userLogin(loginData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(loginData),
-      credentials: "include", // Add credentials here
+      credentials: "include",
     });
+
     const { success, data, message, token } = await res.json();
+    console.log("Login response:", success, data, message, token);
+
     if (success && token) {
-      await cookies().set({
+      // First await cookies() to get the cookie store
+      const cookieStore = await cookies();
+
+      // Then use the cookie store
+      cookieStore.set({
         name: "access_token",
         value: token,
         httpOnly: true,
-        secure: process.env.NEXT_PUBLIC_NODE_DEV === "production", // true in production, false in development
+        secure: process.env.NEXT_PUBLIC_NODE_DEV === "production",
         sameSite:
           process.env.NEXT_PUBLIC_NODE_DEV === "production" ? "none" : "lax",
-        path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         path: "/",
         maxAge: 7 * 24 * 60 * 60, // 7 days
       });
     }
+
     return { success, data, message };
   } catch (error) {
     console.error("Error:", error);
     throw error;
   }
 }
+
 export async function userSignup(signupData) {
   try {
     const url = getBackendUrl();
@@ -50,7 +57,11 @@ export async function userSignup(signupData) {
     const { success, data, message, token } = await res.json();
 
     if (success && token) {
-      await cookies().set({
+      // First await cookies() to get the cookie store
+      const cookieStore = await cookies();
+
+      // Then use the cookie store
+      cookieStore.set({
         name: "access_token",
         value: token,
         httpOnly: true,
@@ -71,7 +82,11 @@ export async function userSignup(signupData) {
 
 export async function userSignout() {
   try {
-    await cookies().delete("access_token");
+    // First await cookies() to get the cookie store
+    const cookieStore = await cookies();
+
+    // Then use the cookie store
+    cookieStore.delete("access_token");
 
     return { success: true, message: "Signed out successfully." };
   } catch (error) {

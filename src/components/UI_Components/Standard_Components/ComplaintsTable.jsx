@@ -143,7 +143,7 @@ const ComplaintsTable = ({
           },
         }
       );
-      console.log(response);
+
       if (!response.ok) throw new Error("Failed to fetch PDF");
 
       const blob = await response.blob();

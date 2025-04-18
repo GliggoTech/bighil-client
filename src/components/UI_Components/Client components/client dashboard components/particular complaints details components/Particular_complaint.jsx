@@ -21,9 +21,8 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const searchParams = useSearchParams();
   const hasDecrementedRef = useRef(false);
   const { userRole, decreaseNotificationCount } = useNotificationStore();
-  console.log("userRole", userRole);
+
   const handleStatusChange = (newEvent) => {
-    console.log("handleStatusChange", newEvent);
     setTimeline((prev) => [newEvent, ...prev]);
   };
 

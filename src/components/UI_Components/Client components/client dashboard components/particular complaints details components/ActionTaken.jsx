@@ -63,7 +63,6 @@ const ActionTaken = ({
     }
     socket.emit("joinComplaintRoom", `complaint_${complaintId}`);
     socket.on("close_complaint", (returnData) => {
-      console.log("Status update received:", returnData);
       onStatusChange(returnData.timelineEvent);
       setStatus("Resolved");
       setSubmittedData({
@@ -101,7 +100,6 @@ const ActionTaken = ({
       // setSubmittedData(data);
       // // Optionally, you can call reset() here if needed:
       // // reset();
-      console.log(res);
     }
   };
 

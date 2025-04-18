@@ -4,7 +4,6 @@ import { getStatusBadge } from "@/utils/complaintBadges";
 
 export function StatusCell({ status }) {
   const statusBadge = getStatusBadge(status);
-  console.log(statusBadge);
 
   return (
     <TableCell>
