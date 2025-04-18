@@ -10,38 +10,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CheckCircle, Loader, Trash2 } from "lucide-react";
-import useAccessToken from "@/custom hooks/useAccessToken";
-// import useSocket from "@/custom hooks/useSocket";
+import { CheckCircle, Loader, Trash2, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useSocket } from "@/context/socketContext";
 import useNotificationStore from "@/store/notificationStore";
-// import socketClient from "@/lib/socket";
-import useFetch from "@/custom hooks/useFetch";
-import { getBackendUrl } from "@/lib/getBackendUrl";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSocket } from "@/context/socketContext";
+import { getBackendUrl } from "@/lib/getBackendUrl";
+import useFetch from "@/custom hooks/useFetch";
+import useAccessToken from "@/custom hooks/useAccessToken";
 
-const Notification_Component = ({ notifications }) => {
-  const [currentNotifications, setCurrentNotifications] = useState(
-    () => notifications
-  );
-
+const NotificationComponent = ({ notifications }) => {
+  const [currentNotifications, setCurrentNotifications] =
+    useState(notifications);
+  const [processingIds, setProcessingIds] = useState(new Set());
   const token = useAccessToken();
   const { socket } = useSocket();
-  const {
-    userId,
-    increaseNotificationCount,
-    decreaseNotificationCount,
-    userRole,
-  } = useNotificationStore();
-  const { loading, success, error, fetchData } = useFetch();
+  const { userId, decreaseNotificationCount, userRole } =
+    useNotificationStore();
+  const { loading, fetchData } = useFetch();
   const searchParams = useSearchParams();
-  const page = searchParams.get("page");
   const router = useRouter();
-  // Determine base route based on user role
-  const isAdminRole = ["SUB ADMIN", "ADMIN", "SUPER ADMIN"].includes(userRole);
-  const baseRoute = isAdminRole
+  const page = Number(searchParams.get("page")) || 1;
+  const isAdmin = ["SUB ADMIN", "ADMIN", "SUPER ADMIN"].includes(userRole);
+  const baseRoute = isAdmin
     ? "/client/client-notifications"
     : "/user/user-notifications";
 
@@ -55,109 +48,129 @@ const Notification_Component = ({ notifications }) => {
 
     const handleNewNotification = (notification) => {
       setCurrentNotifications((prev) => [notification, ...prev]);
+      showNewNotificationToast(notification);
+      if (isNotificationForCurrentUser(notification)) {
+        toast.info("New Notification", {
+          description: notification.message,
+          icon: <Bell className="w-5 h-5 text-blue-500" />,
+        });
+      }
     };
 
     socket.on(eventName, handleNewNotification);
-
     return () => {
-      socket && socket.off(eventName, handleNewNotification);
+      socket.off(eventName, handleNewNotification);
     };
-  }, [socket, userId, userRole, increaseNotificationCount]);
+  }, [socket, userId, userRole]);
 
-  const markAsRead = async (notificationId) => {
+  useEffect(() => {
+    setCurrentNotifications(notifications);
+  }, [notifications]);
+
+  const isNotificationForCurrentUser = (notification) => {
+    return notification.recipients.some((r) => r.user === userId);
+  };
+
+  const showNewNotificationToast = (notification) => {
+    if (!isNotificationForCurrentUser(notification)) return;
+
+    toast.info("New Notification", {
+      description: notification.message,
+      action: {
+        label: "View",
+        onClick: () => router.push(getComplaintLink(notification)),
+      },
+    });
+  };
+
+  const getComplaintLink = (notification) => {
+    return userRole === "user"
+      ? `/user/my-complaints/${notification.complaintId}?notificationId=${notification._id}`
+      : `/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`;
+  };
+
+  const handleAction = async (id, action) => {
+    if (!token) {
+      toast.error("Authentication required");
+      return;
+    }
+
+    setProcessingIds((prev) => new Set(prev).add(id));
+
+    try {
+      if (action === "read") {
+        await markAsRead(id);
+      } else {
+        await deleteNotification(id);
+      }
+    } finally {
+      setProcessingIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }
+  };
+
+  const markAsRead = async (id) => {
     const endpoint =
       userRole === "user"
         ? "/api/user-notifications/mark-as-read"
         : "/api/client-notifications/client-mark-as-read";
-    const res = await markNotificationAsRead(notificationId, token, endpoint);
+
+    const res = await markNotificationAsRead(id, token, endpoint);
 
     if (res.success) {
-      let shouldDecreaseCount = false;
-
-      const updatedNotifications = currentNotifications.map((notification) => {
-        if (notification._id === notificationId) {
-          const updatedRecipients = notification.recipients.map((recipient) => {
-            if (
-              recipient.user.toString() === userId.toString() &&
-              !recipient.read
-            ) {
-              shouldDecreaseCount = true; // Mark for decreasing count
-              return { ...recipient, read: true, readAt: new Date() };
-            }
-            return recipient;
-          });
-
-          return { ...notification, recipients: updatedRecipients };
-        }
-        return notification;
-      });
-
-      setCurrentNotifications(updatedNotifications);
-
-      if (shouldDecreaseCount) {
-        decreaseNotificationCount();
-      }
+      updateNotificationState(id, true);
+      decreaseNotificationCount();
+      toast.success("Notification marked as read");
     }
   };
 
   const deleteNotification = async (id) => {
-    const url = getBackendUrl();
+    const endpoint =
+      userRole === "user"
+        ? "/api/user-notifications/delete-notification"
+        : "/api/client-notifications/client-delete-notification";
 
-    // Optimistically remove notification from state
-    const previousNotifications = [...currentNotifications];
-    const updatedNotifications = currentNotifications.filter(
-      (n) => n._id !== id
-    );
-    setCurrentNotifications(updatedNotifications);
+    const url = `${getBackendUrl()}${endpoint}`;
+    const res = await fetchData(url, "DELETE", { id }, token);
 
-    // Find the notification being deleted for the current user
-    const notificationToDelete = currentNotifications.find((n) => n._id === id);
-    if (notificationToDelete) {
-      const currentRecipient = notificationToDelete?.recipients.find(
-        (recipient) => recipient.user.toString() === userId.toString()
-      );
-      if (currentRecipient && currentRecipient.read === false) {
-        console.log("Decreasing count");
-        decreaseNotificationCount();
-      }
-    }
-
-    try {
-      const endpoint =
-        userRole === "user"
-          ? "/api/user-notifications/delete-notification"
-          : "/api/client-notifications/client-delete-notification";
-      const res = await fetchData(
-        `${url}${endpoint}`,
-        "DELETE",
-        { id },
-        token,
-        false
-      );
-
-      if (res.success) {
-        const currentPage = Number(page);
-        if (updatedNotifications.length === 0 && currentPage > 1) {
-          router.refresh();
-          if (currentPage === 2) {
-            router.push(baseRoute);
-          } else {
-            router.push(`${baseRoute}?page=${currentPage - 1}`);
-          }
-        }
-      } else {
-        // Rollback state if deletion fails
-        setCurrentNotifications(previousNotifications);
-      }
-    } catch (error) {
-      // Rollback state if there's an error during the fetch
-      setCurrentNotifications(previousNotifications);
+    if (res.success) {
+      handleSuccessfulDelete(id);
+      toast.success("Notification deleted");
     }
   };
 
-  useEffect(() => {
-    setCurrentNotifications(notifications);
-  }, [notifications, userRole]);
+  const updateNotificationState = (id, isRead) => {
+    setCurrentNotifications((prev) =>
+      prev.map((notification) =>
+        notification._id === id
+          ? updateRecipients(notification, isRead)
+          : notification
+      )
+    );
+  };
+
+  const updateRecipients = (notification, isRead) => ({
+    ...notification,
+    recipients: notification.recipients.map((recipient) =>
+      recipient.user === userId ? { ...recipient, read: isRead } : recipient
+    ),
+  });
+
+  const handleSuccessfulDelete = (id) => {
+    setCurrentNotifications((prev) => prev.filter((n) => n._id !== id));
+
+    if (currentNotifications.length === 1 && page > 1) {
+      const newPage = page === 2 ? baseRoute : `${baseRoute}?page=${page - 1}`;
+      router.push(newPage);
+    }
+  };
+
+  const getCurrentRecipient = (notification) => {
+    return notification.recipients.find((r) => r.user === userId);
+  };
 
   return (
     <div className="max-w-4xl mx-auto bg-background-tertiary rounded-lg shadow-md overflow-hidden">
@@ -166,9 +179,9 @@ const Notification_Component = ({ notifications }) => {
       </h2>
 
       {currentNotifications.length === 0 ? (
-        <p className="text-gray-500">No notifications yet.</p>
+        <p className="p-6 text-gray-500">No notifications available</p>
       ) : (
-        <Table className="w-full">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Message</TableHead>
@@ -177,58 +190,58 @@ const Notification_Component = ({ notifications }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentNotifications.map((notification, index) => {
-              // Find the recipient object for the current user
-              const currentRecipient = notification?.recipients.find(
-                (recipient) => recipient?.user.toString() === userId?.toString()
-              );
-              // Determine if the notification is read for the current user
-              const isRead = currentRecipient ? currentRecipient.read : true;
+            {currentNotifications.map((notification) => {
+              const recipient = getCurrentRecipient(notification);
+              const isRead = recipient?.read ?? true;
+              const isProcessing = processingIds.has(notification._id);
 
               return (
                 <TableRow
-                  key={`${notification._id}-${index}`}
+                  key={notification._id}
                   className={`${
-                    isRead ? "bg-gray-50" : "bg-blue-300"
-                  } hover:bg-gray-200 transition`}
+                    isRead ? "bg-gray-50" : "bg-blue-50"
+                  } transition-colors`}
                 >
-                  <TableCell className="font-medium">
-                    {notification.message}
-                  </TableCell>
+                  <TableCell>{notification.message}</TableCell>
                   <TableCell>
                     <Link
-                      href={
-                        userRole === "user"
-                          ? `/user/my-complaints/${notification.complaintId}?notificationId=${notification._id}`
-                          : `/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`
-                      }
+                      href={getComplaintLink(notification)}
                       className="text-blue-600 hover:underline"
                     >
                       View Complaint
                     </Link>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="space-x-2">
                     {!isRead && (
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
-                        className="mr-2"
-                        onClick={() => markAsRead(notification._id)}
+                        onClick={() => handleAction(notification._id, "read")}
+                        disabled={isProcessing}
                       >
-                        <CheckCircle className="w-4 h-4 mr-1" /> Mark as Read
+                        {isProcessing ? (
+                          <Loader className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Mark Read
+                          </>
+                        )}
                       </Button>
                     )}
                     <Button
-                      className="bg-red-500 hover:bg-red-400"
+                      variant="destructive"
                       size="sm"
-                      onClick={() => deleteNotification(notification._id)}
+                      onClick={() => handleAction(notification._id, "delete")}
+                      disabled={isProcessing}
                     >
-                      {loading ? (
-                        <Loader />
+                      {isProcessing ? (
+                        <Loader className="w-4 h-4 animate-spin" />
                       ) : (
-                        <div className="flex">
-                          <Trash2 className="w-4 h-4 mr-1" /> Delete
-                        </div>
+                        <>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </>
                       )}
                     </Button>
                   </TableCell>
@@ -242,4 +255,4 @@ const Notification_Component = ({ notifications }) => {
   );
 };
 
-export default Notification_Component;
+export default NotificationComponent;

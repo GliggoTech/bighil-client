@@ -42,7 +42,7 @@ export default async function ClientDashboard_Layout({ children }) {
             {/* <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-slate-900 to-transparent pointer-events-none"></div> */}
 
             {/* Toast notifications */}
-            <Toaster />
+            <Toaster position="top-right" richColors />
           </main>
         </div>
       </div>

@@ -38,7 +38,7 @@ export default async function BighilDashboard_Layout({ children }) {
           <main className="flex-1 overflow-auto">
             {/* Main content area where child components will be rendered */}
             {children}
-            <Toaster />
+            <Toaster position="top-right" richColors />
             {/* Notification toaster for alerts and messages */}
             {/* <Toaster /> */}
           </main>

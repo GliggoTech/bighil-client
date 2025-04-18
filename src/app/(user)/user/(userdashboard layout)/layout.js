@@ -30,7 +30,7 @@ export default async function UserDashboard_Layout({ children }) {
   // }
   return (
     <SocketProvider>
-      <Toaster />
+      <Toaster position="top-right" richColors />
       <UserNavbar />
       {children}
       <ContactComponent />
