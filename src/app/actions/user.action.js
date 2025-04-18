@@ -75,7 +75,6 @@ export async function userSignup(signupData) {
 
     return { success, data, message };
   } catch (error) {
-    console.error("Signup Error:", error);
     throw error;
   }
 }

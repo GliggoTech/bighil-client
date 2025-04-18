@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 // Enhanced sidebar items with additional metadata
-export const clientsidebarvalues = [
+export const clientSidebarValues = [
   {
     id: 1,
     title: "Dashboard",

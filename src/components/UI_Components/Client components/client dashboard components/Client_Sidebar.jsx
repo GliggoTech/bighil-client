@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import useNotificationStore from "@/store/notificationStore";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { clientsidebarvalues } from "@/lib/dashboard constants/SidebarConstants";
+import { clientSidebarValues } from "@/lib/dashboard constants/SidebarConstants";
 
 const Client_Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
@@ -18,7 +18,7 @@ const Client_Sidebar = () => {
   useEffect(() => {
     setMounted(true);
     const path = window.location.pathname;
-    const currentItem = clientsidebarvalues.find((item) => path === item.path);
+    const currentItem = clientSidebarValues.find((item) => path === item.path);
     if (currentItem) {
       setActiveItem(currentItem.id);
     }
@@ -98,7 +98,7 @@ const Client_Sidebar = () => {
         </div>
 
         <nav className="flex-1  px-2">
-          {clientsidebarvalues.map((item) => {
+          {clientSidebarValues.map((item) => {
             const isActive = activeItem === item.id;
             const isItemHovered = hoveredItem === item.id;
 

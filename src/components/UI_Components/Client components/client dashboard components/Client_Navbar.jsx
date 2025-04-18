@@ -1,53 +1,86 @@
 "use client";
+
+import { useState } from "react";
 import useAccessToken from "@/custom hooks/useAccessToken";
-import useFetch from "@/custom hooks/useFetch";
-import { getBackendUrl } from "@/lib/getBackendUrl";
-import useNotificationStore from "@/store/notificationStore";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Bell, LogOut, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { LogOut, AlertCircle, X } from "lucide-react";
+import { clientLogout } from "@/app/actions/client.actions";
+import useNotificationStore from "@/store/notificationStore";
 
 const Client_Navbar = () => {
   const router = useRouter();
-  const { loading, fetchData } = useFetch();
-  const token = useAccessToken();
-  const { userRole, notificationCount } = useNotificationStore();
+
+  const { userRole } = useNotificationStore();
+
+  // State management
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleLogOut = async () => {
-    const url = getBackendUrl();
-    const res = await fetchData(
-      `${url}/api/client-auth/client-logout`,
-      "POST",
-      {},
-      token,
-      false
-    );
-    if (res.success) {
-      router.push("/");
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const res = await clientLogout();
+
+      if (res.success) {
+        router.push("/");
+      } else {
+        setError(res.message || "Logout failed. Please try again.");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      console.error("Logout error:", err);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const dismissError = () => {
+    setError(null);
   };
 
   return (
     <motion.div
       className="w-full bg-gradient-to-r from-primary/10 via-primary-light/20 to-primary-dark/30
-                 border-b border-border-dark/10"
+                 border-b border-border-dark/10 relative"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Error notification */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            className="absolute top-full left-0 right-0 z-50 mx-auto mt-2 max-w-md"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg shadow-lg mx-4 flex items-center p-3">
+              <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mr-2" />
+              <p className="flex-1 text-sm">{error}</p>
+              <button
+                onClick={dismissError}
+                className="p-1.5 rounded-full hover:bg-red-100 text-red-500 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <nav className="max-w-7xl mx-auto h-20 px-6 sm:px-10">
         <div className="h-full flex items-center justify-between">
           {/* Logo Section */}
           <motion.div
-            className="flex items-center space-x-2 "
+            className="flex items-center space-x-2"
             whileHover={{ scale: 1.02 }}
           >
             <div className="relative">
-              <div
-              // className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent-info
-              //             rounded-lg blur opacity-70 group-hover:opacity-100 transition duration-1000
-              //             group-hover:duration-200"
-              />
               <h1
                 className="relative bg-background-dark rounded-lg px-4 py-2
                            md:text-3xl font-bold font-Questrial 
@@ -62,85 +95,48 @@ const Client_Navbar = () => {
           {/* Actions Section */}
           <div className="flex items-center space-x-6">
             {/* Role Badge */}
-            <motion.div
-              className="px-4 py-1.5 rounded-full 
+            {userRole && (
+              <motion.div
+                className="px-4 py-1.5 rounded-full 
                          bg-gradient-to-r from-primary to-primary/80
                          border border-border-dark/20
                          backdrop-blur-sm md:block hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="text-text-light font-medium text-sm">
-                {userRole}
-              </span>
-            </motion.div>
-
-            {/* Notification Button */}
-            {/* <motion.button
-              className="relative p-2 rounded-full
-                         bg-surface-dark 
-                         border border-border-dark/20
-                         hover:border-primary/50
-                         transition-all duration-300
-                         group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Bell
-                className="h-5 w-5 text-text-light 
-                              group-hover:text-primary-light
-                              transition-colors duration-300"
-              />
-
-              {notificationCount > 0 && (
-                <motion.div
-                  className="absolute -top-1 -right-1
-                             h-5 w-5 flex items-center justify-center
-                             rounded-full bg-gradient-to-r from-accent-danger to-accent-heavyDanger
-                             text-xs font-bold text-text-light
-                             border-2 border-surface-dark
-                             shadow-lg"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 200 }}
-                >
-                  {notificationCount > 99 ? "99+" : notificationCount}
-                </motion.div>
-              )}
-            </motion.button> */}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="text-text-light font-medium text-sm">
+                  {userRole}
+                </span>
+              </motion.div>
+            )}
 
             {/* Logout Button */}
             <motion.button
               onClick={handleLogOut}
-              disabled={loading}
+              disabled={isLoading}
               className="flex items-center space-x-2 px-4 py-2 rounded-lg
                          bg-gradient-to-r from-primary to-secondary
                          hover:from-primary-dark hover:to-secondary-dark
                          text-text-light font-medium
                          shadow-lg hover:shadow-xl
                          transition-all duration-300
-                         disabled:opacity-50 disabled:cursor-not-allowed
+                         disabled:opacity-70 disabled:cursor-not-allowed
                          group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span>Logout</span>
+              <span>{isLoading ? "Logging Out..." : "Logout"}</span>
               <LogOut
-                className="h-4 w-4 transform group-hover:-rotate-12 
-                                transition-transform duration-300"
+                className={`h-4 w-4 transition-all duration-300 ${
+                  isLoading
+                    ? "animate-pulse"
+                    : "transform group-hover:-rotate-12"
+                }`}
               />
             </motion.button>
           </div>
         </div>
       </nav>
-
-      {/* Optional: Animated Accent Line */}
-      {/* <motion.div
-        className="h-0.5 bg-gradient-to-r from-primary via-secondary to-accent-info"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      /> */}
     </motion.div>
   );
 };
