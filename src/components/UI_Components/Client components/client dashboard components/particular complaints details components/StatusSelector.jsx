@@ -38,7 +38,7 @@ const StatusSelector = ({
       false
     );
     // setStatus(value); // Update local state
-    onStatusChange(value); // Optional callback
+    // onStatusChange(value); // Optional callback
   };
 
   // If Resolved, always show read-only
