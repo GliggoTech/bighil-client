@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { CheckCircle, Loader, Trash2, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
+
 import { useSocket } from "@/context/socketContext";
 import useNotificationStore from "@/store/notificationStore";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
+import { toast } from "@/hooks/use-toast";
 
 const NotificationComponent = ({ notifications }) => {
   const [currentNotifications, setCurrentNotifications] =
@@ -50,9 +51,19 @@ const NotificationComponent = ({ notifications }) => {
       setCurrentNotifications((prev) => [notification, ...prev]);
       showNewNotificationToast(notification);
       if (isNotificationForCurrentUser(notification)) {
-        toast.info("New Notification", {
-          description: notification.message,
-          icon: <Bell className="w-5 h-5 text-blue-500" />,
+        toast({
+          title: "New Notification",
+          description: (
+            <div className="flex items-center justify-between gap-4">
+              <span>{notification.message}</span>
+              <button
+                className="text-sm text-blue-600 hover:underline"
+                onClick={() => router.push(getComplaintLink(notification))}
+              >
+                View
+              </button>
+            </div>
+          ),
         });
       }
     };
@@ -73,13 +84,19 @@ const NotificationComponent = ({ notifications }) => {
 
   const showNewNotificationToast = (notification) => {
     if (!isNotificationForCurrentUser(notification)) return;
-
-    toast.info("New Notification", {
-      description: notification.message,
-      action: {
-        label: "View",
-        onClick: () => router.push(getComplaintLink(notification)),
-      },
+    toast({
+      title: "New Notification",
+      description: (
+        <div className="flex items-center justify-between gap-4">
+          <span>{notification.message}</span>
+          <button
+            className="text-sm text-blue-600 hover:underline"
+            onClick={() => router.push(getComplaintLink(notification))}
+          >
+            View
+          </button>
+        </div>
+      ),
     });
   };
 
@@ -91,7 +108,11 @@ const NotificationComponent = ({ notifications }) => {
 
   const handleAction = async (id, action) => {
     if (!token) {
-      toast.error("Authentication required");
+      toast({
+        title: "Error",
+        description: "You must be logged in to perform this action.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -123,22 +144,53 @@ const NotificationComponent = ({ notifications }) => {
     if (res.success) {
       updateNotificationState(id, true);
       decreaseNotificationCount();
-      toast.success("Notification marked as read");
+      toast({
+        title: "Success!",
+        description: "Notification marked as read",
+        variant: "success",
+      });
     }
   };
 
   const deleteNotification = async (id) => {
-    const endpoint =
-      userRole === "user"
-        ? "/api/user-notifications/delete-notification"
-        : "/api/client-notifications/client-delete-notification";
+    // Find the notification in current state
+    const notificationToDelete = currentNotifications.find((n) => n._id === id);
 
-    const url = `${getBackendUrl()}${endpoint}`;
-    const res = await fetchData(url, "DELETE", { id }, token);
+    // Check if notification exists and is unread
+    const wasUnread = notificationToDelete?.recipients?.some(
+      (recipient) => recipient.user === userId && !recipient.read
+    );
 
-    if (res.success) {
-      handleSuccessfulDelete(id);
-      toast.success("Notification deleted");
+    try {
+      const endpoint =
+        userRole === "user"
+          ? "/api/user-notifications/delete-notification"
+          : "/api/client-notifications/client-delete-notification";
+
+      const url = `${getBackendUrl()}${endpoint}`;
+      const res = await fetchData(url, "DELETE", { id }, token);
+
+      if (res.success) {
+        handleSuccessfulDelete(id);
+
+        // Decrease count only if notification was unread
+        if (wasUnread) {
+          decreaseNotificationCount();
+        }
+
+        toast({
+          title: "Success!",
+          description: "Notification deleted",
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to perform this action.",
+        variant: "destructive",
+      });
+      throw error;
     }
   };
 

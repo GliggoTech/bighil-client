@@ -1,100 +1,115 @@
+// socketContext.jsx
 "use client";
-import useAccessToken from "@/custom hooks/useAccessToken";
-import { toast } from "@/hooks/use-toast";
-import useNotificationStore from "@/store/notificationStore";
-import { createContext, useEffect, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
-const socketContext = createContext();
+import useAccessToken from "@/custom hooks/useAccessToken";
+import useNotificationStore from "@/store/notificationStore";
+import { toast } from "@/hooks/use-toast";
+
+const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [connectionError, setConnectionError] = useState(null);
   const token = useAccessToken();
+  const { userRole, userId, increaseNotificationCount } =
+    useNotificationStore();
 
-  const {
-    userRole,
-    userId,
-    increaseNotificationCount,
-    decreaseNotificationCount,
-  } = useNotificationStore();
+  const connectSocket = () => {
+    const newSocket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
+      transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 3000,
+      auth: { token },
+    });
 
-  useEffect(() => {
-    let newSocket = null;
-    const connectSocket = () => {
-      newSocket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
-        transports: ["websocket"],
-        reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 3000,
-        auth: {
-          token: token,
-        },
-      });
+    newSocket.on("connect", () => {
+      setIsConnected(true);
+      setConnectionError(null);
+      const userRoom =
+        userRole === "user" ? `user_${userId}` : `admin_${userId}`;
+      newSocket.emit("joinRoom", userRoom);
+    });
 
-      // Connection lifecycle handlers
-      newSocket.on("connect", () => {
-        console.log("Socket connected:", newSocket.id);
-        const userRoom =
-          userRole === "user" ? `user_${userId}` : `admin_${userId}`;
-        newSocket.emit("joinRoom", userRoom);
-      });
-
-      newSocket.on("disconnect", (reason) => {
-        console.log("Socket disconnected:", reason);
-        if (reason === "io server disconnect") {
-          setTimeout(connectSocket, 1000);
-        }
-      });
-
-      newSocket.on("connect_error", (err) => {
-        console.error("Connection error:", err.message);
-      });
-
-      // Unified notification handler
-      const handleNotification = (notifications) => {
-        increaseNotificationCount();
-        toast({
-          variant: "success",
-          title: "New Notifications",
-          description: notifications.message,
-          duration: 2000,
-        });
-      };
-
-      // Event listeners
-      if (userRole === "user") {
-        newSocket.on("fetch_user_notifications", handleNotification);
-      } else {
-        newSocket.on("fetch_admin_notifications", handleNotification);
+    newSocket.on("disconnect", (reason) => {
+      setIsConnected(false);
+      if (reason === "io server disconnect") {
+        setTimeout(connectSocket, 1000);
       }
+    });
 
-      setSocket(newSocket);
+    newSocket.on("connect_error", (err) => {
+      setConnectionError(err.message);
+      setIsConnected(false);
+    });
+
+    newSocket.on("error", (err) => {
+      console.error("Socket error:", err);
+      setConnectionError(err.message);
+    });
+
+    const handleNotification = (data) => {
+      increaseNotificationCount();
+      toast({
+        variant: "success",
+        title: "New Notification",
+        description: data.message,
+        duration: 2000,
+      });
     };
 
-    if (token && userId && userRole) {
-      connectSocket();
-    }
+    const eventName =
+      userRole === "user"
+        ? "fetch_user_notifications"
+        : "fetch_admin_notifications";
+    newSocket.on(eventName, handleNotification);
+
+    setSocket(newSocket);
+    return newSocket;
+  };
+
+  useEffect(() => {
+    if (!token || !userId || !userRole) return;
+
+    const newSocket = connectSocket();
 
     return () => {
       if (newSocket) {
-        // Cleanup listeners
-        newSocket.off("fetch_user_notifications");
-        newSocket.off("fetch_admin_notifications");
-        newSocket.off("connect");
-        newSocket.off("disconnect");
-        newSocket.off("connect_error");
-        newSocket.close();
+        newSocket.offAny();
+        newSocket.disconnect();
         setSocket(null);
+        setIsConnected(false);
       }
     };
-  }, [userId, token, userRole, increaseNotificationCount]); // Removed increaseNotificationCount from deps
+  }, [token, userId, userRole]);
+
+  const reconnect = () => {
+    if (socket) {
+      socket.disconnect();
+      connectSocket();
+    }
+  };
 
   return (
-    <socketContext.Provider value={{ socket }}>
+    <SocketContext.Provider
+      value={{
+        socket,
+        isConnected,
+        connectionError,
+        reconnect,
+      }}
+    >
       {children}
-    </socketContext.Provider>
+    </SocketContext.Provider>
   );
 };
 
 export const useSocket = () => {
-  return useContext(socketContext);
+  const context = useContext(SocketContext);
+  if (!context) {
+    throw new Error("useSocket must be used within a SocketProvider");
+  }
+  return context;
 };

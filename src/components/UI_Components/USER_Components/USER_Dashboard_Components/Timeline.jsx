@@ -1,4 +1,13 @@
-import { Clock, CheckCircle2, ThumbsDown, AlertCircle } from "lucide-react";
+// TimelineEvent.tsx
+"use client";
+
+import {
+  Clock,
+  CheckCircle2,
+  ThumbsDown,
+  AlertCircle,
+  HelpCircle,
+} from "lucide-react";
 
 const statusConfig = {
   Pending: {
@@ -33,68 +42,59 @@ const statusConfig = {
       border: "border-accent-success/20 dark:border-accent-success/30",
     },
   },
+  default: {
+    icon: HelpCircle,
+    style: {
+      icon: "text-gray-500 dark:text-gray-400",
+      bg: "bg-gray-100 dark:bg-gray-800",
+      border: "border-gray-200 dark:border-gray-700",
+    },
+  },
 };
 
-const TimelineEvent = ({ event, isLast }) => {
-  const config = statusConfig[event.status_of_client];
-  const Icon = config?.icon;
+export const TimelineEvent = ({ event, isLast }) => {
+  if (!event) return null;
+  const status = event.status_of_client || "default";
+  const config = statusConfig[status] || statusConfig.default;
+  const Icon = config.icon;
 
   return (
     <li className="relative pb-8">
       {!isLast && (
         <span
           className="absolute left-5 top-8 -ml-px h-full w-0.5 
-                     bg-border-light dark:bg-border-dark"
+                   bg-border-light dark:bg-border-dark"
           aria-hidden="true"
         />
       )}
 
-      <div
-        className="relative flex items-start space-x-4 p-4 
-                      bg-background-secondary dark:bg-surface-dark
-                      rounded-xl border border-border-light dark:border-border-dark
-                      transition-all duration-300 hover:shadow-md"
-      >
-        {/* Status Icon */}
+      <div className="relative flex items-start space-x-4 p-4 bg-background-secondary dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark transition-all duration-300 hover:shadow-md">
         <div className="relative flex-shrink-0">
           <div
-            className={`flex h-10 w-10 items-center justify-center 
-                          rounded-full border ${config.style.border}
-                          ${config.style.bg}
-                          transition-all duration-300`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full border ${config.style.border} ${config.style.bg} transition-all duration-300`}
           >
-            {Icon && (
-              <Icon
-                className={`h-5 w-5 ${config.style.icon}`}
-                aria-hidden="true"
-              />
-            )}
+            <Icon
+              className={`h-5 w-5 ${config.style.icon}`}
+              aria-hidden="true"
+            />
           </div>
         </div>
 
-        {/* Content */}
         <div className="min-w-0 flex-1 pt-1">
           <div className="flex justify-between items-start gap-4">
             <div className="space-y-1">
               <p className="text-sm font-medium text-text-primary dark:text-text-light">
-                {event.status_of_client}
+                {status === "default" ? "Unknown Status" : status}
               </p>
               {event.message && (
-                <p
-                  className="text-sm text-text-secondary dark:text-text-muted
-                             leading-relaxed"
-                >
+                <p className="text-sm text-text-secondary dark:text-text-muted leading-relaxed">
                   {event.message}
                 </p>
               )}
             </div>
 
-            {/* Timestamp */}
             <time
-              className="flex-shrink-0 text-sm text-text-muted dark:text-text-muted
-                         px-2 py-1 rounded-full
-                         bg-background-tertiary dark:bg-surface-dark
-                         border border-border-light dark:border-border-dark"
+              className="flex-shrink-0 text-sm text-text-muted dark:text-text-muted px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark border border-border-light dark:border-border-dark"
               dateTime={event.timestamp}
             >
               {new Date(event.timestamp).toLocaleDateString("en-US", {
