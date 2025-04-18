@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import useNotificationStore from "@/store/notificationStore";
+import { userLogin, userSignup } from "@/app/actions/user.action";
 
 const SignupSigninForm = ({ mode = "signup" }) => {
   // Dynamic validation schema
@@ -52,15 +53,11 @@ const SignupSigninForm = ({ mode = "signup" }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (values) => {
-    const url = getBackendUrl();
-    console.log("url", url);
-    const endpoint = mode === "signup" ? "user-register" : "user-login";
+    // Select the correct server action
+    const authAction = mode === "signup" ? userSignup : userLogin;
 
-    const res = await fetchData(
-      `${url}/api/user-auth/${endpoint}`,
-      "POST",
-      values
-    );
+    // Call it
+    const res = await authAction(values);
 
     if (res && res.success) {
       form.reset();
