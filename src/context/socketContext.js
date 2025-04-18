@@ -17,13 +17,18 @@ export const SocketProvider = ({ children }) => {
     useNotificationStore();
 
   const connectSocket = () => {
-    const newSocket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
-      transports: ["websocket"],
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      reconnectionDelay: 3000,
-      auth: { token },
-    });
+    const newSocket = io(
+      process.env.NEXT_PUBLIC_NODE_DEV == "production"
+        ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
+        : process.env.NEXT_PUBLIC_BACKEND_URL,
+      {
+        transports: ["websocket"],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 3000,
+        auth: { token },
+      }
+    );
 
     newSocket.on("connect", () => {
       setIsConnected(true);
