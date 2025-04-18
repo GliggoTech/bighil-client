@@ -16,7 +16,7 @@ export async function userLogin(loginData) {
     });
     const { success, data, message, token } = await res.json();
     if (success && token) {
-      cookies().set({
+      await cookies().set({
         name: "access_token",
         value: token,
         httpOnly: true,
@@ -50,7 +50,7 @@ export async function userSignup(signupData) {
     const { success, data, message, token } = await res.json();
 
     if (success && token) {
-      cookies().set({
+      await cookies().set({
         name: "access_token",
         value: token,
         httpOnly: true,
@@ -71,7 +71,7 @@ export async function userSignup(signupData) {
 
 export async function userSignout() {
   try {
-    cookies().delete("access_token");
+    await cookies().delete("access_token");
 
     return { success: true, message: "Signed out successfully." };
   } catch (error) {
