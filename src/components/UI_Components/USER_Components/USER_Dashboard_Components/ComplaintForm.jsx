@@ -77,7 +77,6 @@ export function ComplaintForm() {
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const token = useAccessToken();
-  console.log("token from complaint form", token);
 
   const { loading, error, fetchData } = useFetch();
 

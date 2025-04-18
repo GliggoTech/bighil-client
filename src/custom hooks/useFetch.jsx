@@ -29,7 +29,7 @@ const useFetch = () => {
           : method == "GET"
           ? null
           : JSON.stringify(body),
-        credentials: "include", // Add credentials here instead of header
+        credentials: "include", // Add credentials here
       };
 
       try {
