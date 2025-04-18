@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { IoChatboxEllipses, IoClose, IoSend } from "react-icons/io5";
-import { Loader } from "lucide-react";
+import { CheckCircle, CheckCircle2, Loader } from "lucide-react";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
@@ -11,6 +11,7 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 
 import { useSocket } from "@/context/socketContext";
+import { cn } from "@/lib/utils";
 
 const PAGE_LIMIT = 15;
 
@@ -237,43 +238,121 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     ),
     [isOpen, unreadedMessages, isTokenReady, handleToggleChat]
   );
-  const messageList = useMemo(() => {
-    const isPrivilegedViewer =
-      userRole === "BIGHIL" || userRole === "SUB ADMIN";
+  const MessageList = () => {
+    const messageList = useMemo(() => {
+      const isPrivilegedViewer =
+        userRole === "BIGHIL" || userRole === "SUB ADMIN";
 
-    return messages.map((msg, index) => {
-      const isOwnMessage = isPrivilegedViewer
-        ? msg.sender === "ADMIN" || msg.sender === "SUPER ADMIN"
-        : msg.sender === userRole;
+      return messages.map((msg, index) => {
+        const isAdminMessage = ["ADMIN", "SUPER ADMIN"].includes(msg.sender);
+        const isOwnMessage = isPrivilegedViewer
+          ? isAdminMessage
+          : msg.sender === userRole;
 
-      return (
-        <div
-          key={index}
-          className={`flex w-full ${
-            isOwnMessage ? "justify-end" : "justify-start"
-          }`}
-        >
+        const isConsecutive =
+          index > 0 &&
+          messages[index - 1].sender === msg.sender &&
+          new Date(msg.createdAt) - new Date(messages[index - 1].createdAt) <
+            300000;
+
+        const messageKey = `${msg._id}-${msg.createdAt}-${index}`;
+
+        return (
           <div
-            className={`relative max-w-[85%] rounded-2xl p-4 shadow-sm
-            ${
-              isOwnMessage
-                ? "bg-blue-600 text-white"
-                : "bg-gray-50 border border-gray-200 text-gray-800"
-            }`}
+            key={messageKey}
+            className={cn("group flex w-full transition-transform", {
+              "justify-end": isOwnMessage,
+              "justify-start": !isOwnMessage,
+            })}
           >
-            <p className="text-sm leading-relaxed">{msg.content}</p>
-            <time className="text-xs mt-2 block opacity-75">
-              {new Date(msg.createdAt).toLocaleTimeString([], {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
+            <div
+              className={cn("flex gap-2 max-w-[85%] lg:max-w-[75%]", {
+                "flex-row-reverse": isOwnMessage,
+                "flex-row": !isOwnMessage,
               })}
-            </time>
+            >
+              {/* Message Bubble */}
+              <div
+                className={cn(
+                  "relative flex flex-col space-y-1 rounded-2xl p-4 shadow-sm transform transition-all",
+                  "duration-200 hover:scale-[1.015] hover:shadow-lg",
+                  {
+                    "bg-gradient-to-br from-blue-600 to-indigo-500 text-white":
+                      isOwnMessage,
+                    "bg-white border border-gray-100 shadow-md": !isOwnMessage,
+                    "ml-0": !isOwnMessage && !isConsecutive,
+                    "mr-0": isOwnMessage && !isConsecutive,
+                    "mt-2": isConsecutive,
+                  }
+                )}
+              >
+                {/* Sender Label - Always show for admin messages in privileged view */}
+                {!isConsecutive && isAdminMessage && isPrivilegedViewer && (
+                  <span className="text-xs font-medium text-blue-100 mb-1">
+                    {msg.sender}
+                  </span>
+                )}
+
+                {/* Show sender label for non-admin messages in normal view */}
+                {!isConsecutive && !isPrivilegedViewer && !isOwnMessage && (
+                  <span className="text-xs font-medium text-gray-500 mb-1">
+                    {msg.sender}
+                  </span>
+                )}
+
+                {/* Message Content */}
+                <p className="text-sm leading-relaxed break-words">
+                  {msg.content}
+                </p>
+
+                {/* Message Metadata */}
+                <div
+                  className={cn("flex items-center gap-2 mt-2", {
+                    "justify-end": isOwnMessage,
+                    "justify-start": !isOwnMessage,
+                  })}
+                >
+                  <time className="text-xs opacity-85">
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </time>
+
+                  {isOwnMessage && (
+                    <div className="flex items-center gap-1">
+                      {msg.status === "sent" && (
+                        <Circle className="h-3 w-3 text-white/70" />
+                      )}
+                      {msg.status === "delivered" && (
+                        <CheckCircle className="h-3 w-3 text-white/70" />
+                      )}
+                      {msg.status === "read" && (
+                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-300" />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Decorative Corner for non-admin messages */}
+                {!isOwnMessage && !isPrivilegedViewer && (
+                  <div className="absolute -left-1.5 bottom-3 w-2.5 h-2.5 bg-white transform rotate-45 shadow-[0_0_0_1px_rgba(0,0,0,0.05)]" />
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      );
-    });
-  }, [messages, userRole]);
+        );
+      });
+    }, [messages, userRole]);
+
+    return (
+      <div className="flex flex-col gap-4 p-4 pb-6">
+        {messageList}
+        <div ref={messagesEndRef} />
+      </div>
+    );
+  };
 
   return (
     <div className="fixed bottom-0 right-0">
@@ -305,7 +384,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
             </div>
           )}
 
-          {messageList}
+          {<MessageList />}
           <div ref={messagesEndRef} />
         </div>
         {userRole != "SUB ADMIN" && userRole != "BIGHIL" && (
