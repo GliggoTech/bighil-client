@@ -51,21 +51,12 @@ const UserNavbar = () => {
   ];
 
   const handleLogOut = async () => {
-    if (token) {
-      const url = getBackendUrl();
-      const res = await fetchData(
-        `${url}/api/user-auth/user-logout`,
-        "POST",
-        {}, // No body needed for POST requests
-        token,
-        false
-      );
-
-      if (res.success) {
-        router.push("/");
-      }
+    const res = await userSignout();
+    if (res.success) {
+      router.push("/login");
+    } else {
+      console.error(res.message);
     }
-    return null;
   };
 
   return (
