@@ -27,6 +27,7 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 import { IconBase } from "react-icons";
 import { CiSettings } from "react-icons/ci";
+import { userSignout } from "@/app/actions/user.action";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -53,7 +54,7 @@ const UserNavbar = () => {
   const handleLogOut = async () => {
     const res = await userSignout();
     if (res.success) {
-      router.push("/login");
+      router.push("/");
     } else {
       console.error(res.message);
     }
