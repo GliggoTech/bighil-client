@@ -5,7 +5,6 @@ import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
 import { SocketProvider } from "@/context/socketContext";
 import { Toaster } from "@/components/ui/toaster";
-import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +36,6 @@ export default async function UserDashboard_Layout({ children }) {
       <Toaster position="top-right" richColors />
       <UserNavbar />
       {children}
-      <ContactComponent />
     </SocketProvider>
   );
 }

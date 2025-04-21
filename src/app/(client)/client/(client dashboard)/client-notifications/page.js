@@ -1,3 +1,4 @@
+import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 import PaginationControlsWrapper from "@/components/UI_Components/Standard_Components/PaginationControlsWrapper";
 import Notification_Component from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/Notification_Component";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
@@ -27,6 +28,7 @@ export default async function Client_Notification_Page({ searchParams }) {
           hasPreviousPage={res.hasPreviousPage}
         />
       </div>
+      <ContactComponent />
     </div>
   );
 }

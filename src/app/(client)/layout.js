@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
@@ -25,7 +24,7 @@ export default function Client_Layout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <ContactComponent />
+
         <Toaster position="top-right" richColors />
       </body>
     </html>

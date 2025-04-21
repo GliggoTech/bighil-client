@@ -2,6 +2,7 @@
 
 import React from "react";
 import "../../../../globals.css";
+import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 
 export default function AdminDashboardLayout({
   children,
@@ -121,6 +122,7 @@ export default function AdminDashboardLayout({
           </div>
         </div>
       </div>
+      <ContactComponent />
 
       {/* Decorative bottom gradient */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background-primary to-transparent dark:from-background-dark pointer-events-none" />
