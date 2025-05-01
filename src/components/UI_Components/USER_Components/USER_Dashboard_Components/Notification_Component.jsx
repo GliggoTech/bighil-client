@@ -72,7 +72,7 @@ const NotificationComponent = ({ notifications }) => {
     return () => {
       socket.off(eventName, handleNewNotification);
     };
-  }, [socket, userId, userRole]);
+  }, [socket, userId]);
 
   useEffect(() => {
     setCurrentNotifications(notifications);
