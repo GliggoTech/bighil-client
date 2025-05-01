@@ -49,23 +49,23 @@ const NotificationComponent = ({ notifications }) => {
 
     const handleNewNotification = (notification) => {
       setCurrentNotifications((prev) => [notification, ...prev]);
-      showNewNotificationToast(notification);
-      if (isNotificationForCurrentUser(notification)) {
-        toast({
-          title: "New Notification",
-          description: (
-            <div className="flex items-center justify-between gap-4">
-              <span>{notification.message}</span>
-              <button
-                className="text-sm text-blue-600 hover:underline"
-                onClick={() => router.push(getComplaintLink(notification))}
-              >
-                View
-              </button>
-            </div>
-          ),
-        });
-      }
+      // showNewNotificationToast(notification);
+      // if (isNotificationForCurrentUser(notification)) {
+      //   toast({
+      //     title: "New Notification",
+      //     description: (
+      //       <div className="flex items-center justify-between gap-4">
+      //         <span>{notification.message}</span>
+      //         <button
+      //           className="text-sm text-blue-600 hover:underline"
+      //           onClick={() => router.push(getComplaintLink(notification))}
+      //         >
+      //           View
+      //         </button>
+      //       </div>
+      //     ),
+      //   });
+      // }
     };
 
     socket.on(eventName, handleNewNotification);

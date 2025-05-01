@@ -24,7 +24,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   const messagesEndRef = useRef(null);
   const listRef = useRef(null);
   const [isTokenReady, setIsTokenReady] = useState(false);
-  const { userRole } = useNotificationStore();
+  const { userRole, userId } = useNotificationStore();
   const [unreadedMessages, setUnreadedMessages] = useState(unseenMessageCount);
 
   const { loading, error, fetchData } = useFetch();
@@ -69,7 +69,19 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
       // socket?.socket?.off("connect", joinRoom);
     };
   }, [socket, complaintId, handleNewMessage, isOpen, isTokenReady]);
+  // Add this useEffect in ChatInterface component
+  useEffect(() => {
+    if (isOpen) return;
+    if (!socket || !isTokenReady) return;
 
+    const room = userRole === "user" ? `user_${userId}` : `admin_${userId}`;
+
+    socket.emit("joinRoom", room);
+
+    return () => {
+      socket.emit("leaveRoom", room);
+    };
+  }, [socket, isTokenReady, userId, userRole, isOpen]);
   // Fetch messages with memoization
   const fetchMessages = useCallback(
     async (pageNumber = 1) => {
@@ -87,21 +99,23 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
         if (res?.success) {
           const newMessages = res.data?.messages || [];
 
-          // If there are no messages, add a default system message
-          if (
-            pageNumber === 1 &&
-            newMessages.length === 0 &&
-            userRole == "user"
-          ) {
-            const defaultMessage = {
-              _id: "default-msg",
-              sender: "ADMIN",
-              content: "How can I help you?",
-              createdAt: new Date().toISOString(),
-            };
-
-            setMessages([defaultMessage]); // Set only the default message
+          if (pageNumber === 1) {
+            // Handle first page load
+            if (newMessages.length === 0 && userRole === "user") {
+              // Add default message only if no messages exist
+              const defaultMessage = {
+                _id: "default-msg",
+                sender: "ADMIN",
+                content: "How can I help you?",
+                createdAt: new Date().toISOString(),
+              };
+              setMessages([defaultMessage]);
+            } else {
+              // Replace existing messages with fresh data
+              setMessages(newMessages);
+            }
           } else {
+            // Prepend older messages for pagination
             setMessages((prev) => [...newMessages, ...prev]);
           }
 
@@ -115,11 +129,12 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   );
   // Only open chat when token is ready
   const handleToggleChat = useCallback(() => {
-    if (!isTokenReady) {
-      console.warn("Cannot open chat - no access token available");
-      return;
-    }
+    if (!isTokenReady) return;
     setIsOpen(!isOpen);
+    // Reset pagination when opening chat
+    if (!isOpen) {
+      setPage(1);
+    }
   }, [isOpen, isTokenReady]);
   // Scroll handlers
   const scrollToBottom = useCallback((behavior = "smooth") => {
