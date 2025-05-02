@@ -31,13 +31,11 @@ class SocketManager {
   }
 
   handleConnect() {
-    console.log("Socket connected");
     this.pendingJoins.forEach((room) => this.joinRoom(room));
     this.pendingJoins.clear();
   }
 
   handleDisconnect(reason) {
-    console.log("Socket disconnected:", reason);
     if (reason === "io server disconnect") {
       this.instance.connect();
     }

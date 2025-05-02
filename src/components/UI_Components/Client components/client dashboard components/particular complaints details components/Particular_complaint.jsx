@@ -13,6 +13,8 @@ import useNotificationStore from "@/store/notificationStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSocket } from "@/context/socketContext";
 import { AlertCircle } from "lucide-react";
+import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
+import useAccessToken from "@/custom hooks/useAccessToken";
 
 const ParticularComplaint = ({ complaint, unread }) => {
   const [timeline, setTimeline] = useState(complaint?.timeline || []);
@@ -24,9 +26,11 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const { socket, isConnected, connectionError, reconnect } = useSocket();
   const router = useRouter();
   const searchParams = useSearchParams();
+  console.log(searchParams.get("notificationId"));
   const hasDecrementedRef = useRef(false);
-  const { userRole, decreaseNotificationCount } = useNotificationStore();
+  const { userRole, markAsRead } = useNotificationStore();
   const hasJoinedRoomRef = useRef(false);
+  const token = useAccessToken();
 
   const handleStatusChange = (newEvent) => {
     if (!newEvent) return;
@@ -142,19 +146,24 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
   // Handle notification decrement from URL params
   useEffect(() => {
-    if (
-      searchParams.get("notificationDecremented") === "true" &&
-      !hasDecrementedRef.current
-    ) {
-      hasDecrementedRef.current = true;
-      decreaseNotificationCount();
+    const notificationId = searchParams.get("notificationId");
+    if (notificationId && token) {
+      // Optional: Update backend
+      const endpoint =
+        userRole === "user"
+          ? "/api/user-notifications/mark-as-read"
+          : "/api/client-notifications/client-mark-as-read";
 
-      // Clean up the URL parameter
+      markNotificationAsRead(notificationId, token, endpoint).then(() =>
+        markAsRead(notificationId)
+      );
+
+      // Clean up URL parameters
       const newParams = new URLSearchParams(searchParams.toString());
-      newParams.delete("notificationDecremented");
+      newParams.delete("notificationId");
       router.replace(`?${newParams.toString()}`, { scroll: false });
     }
-  }, [searchParams, decreaseNotificationCount, router]);
+  }, [searchParams, router, userRole, token]);
 
   return (
     <div className="min-h-screen bg-surface-light dark:bg-surface-dark transition-colors duration-300">

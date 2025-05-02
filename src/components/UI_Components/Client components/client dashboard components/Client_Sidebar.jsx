@@ -12,7 +12,7 @@ const Client_Sidebar = () => {
   const [hovered, setHovered] = useState(false);
   const [activeItem, setActiveItem] = useState(1);
   const [hoveredItem, setHoveredItem] = useState(null);
-  const { notificationCount } = useNotificationStore();
+  const unreadCount = useNotificationStore((state) => state.notificationCount);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -192,25 +192,24 @@ const Client_Sidebar = () => {
                       )}
                     </AnimatePresence>
 
-                    {item.title === "Notifications" &&
-                      notificationCount > 0 && (
-                        <div
-                          className={`absolute ${
-                            isExpanded ? "right-1" : "top-1 right-1"
+                    {item.title === "Notifications" && unreadCount > 0 && (
+                      <div
+                        className={`absolute ${
+                          isExpanded ? "right-1" : "top-1 right-1"
+                        }`}
+                      >
+                        <motion.div
+                          className={`flex h-5 w-5 items-center justify-center rounded-full bg-accent-danger text-[10px] font-bold text-text-light shadow-lg ${
+                            mounted ? "animate-pulse" : ""
                           }`}
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ type: "spring" }}
                         >
-                          <motion.div
-                            className={`flex h-5 w-5 items-center justify-center rounded-full bg-accent-danger text-[10px] font-bold text-text-light shadow-lg ${
-                              mounted ? "animate-pulse" : ""
-                            }`}
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ type: "spring" }}
-                          >
-                            {notificationCount > 99 ? "99+" : notificationCount}
-                          </motion.div>
-                        </div>
-                      )}
+                          {unreadCount > 99 ? "99+" : unreadCount}
+                        </motion.div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </Link>

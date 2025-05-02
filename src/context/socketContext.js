@@ -13,8 +13,7 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
   const token = useAccessToken();
-  const { userRole, userId, increaseNotificationCount } =
-    useNotificationStore();
+  const { userRole, userId, addNotification } = useNotificationStore();
 
   const connectSocket = () => {
     const newSocket = io(
@@ -56,7 +55,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     const handleNotification = (data) => {
-      increaseNotificationCount();
+      addNotification(data);
       toast({
         variant: "success",
         title: "New Notification",

@@ -36,7 +36,6 @@ const useFetch = () => {
         setLoading(true);
         const response = await fetch(url, config);
         const data = await response.json();
-        console.log("Fetch response:", data);
 
         if (!data.success) {
           const error = new Error(data.message || "Request failed");
@@ -49,7 +48,6 @@ const useFetch = () => {
 
         return data;
       } catch (error) {
-        console.log("Fetch error:", error.message);
         setLoading(false);
         setError(error.message);
         // toast({

@@ -19,7 +19,6 @@ export const useSettings = () => {
         token,
         false
       );
-      console.log(res);
 
       if (res?.success) {
         toast({

@@ -22,14 +22,22 @@ import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { toast } from "@/hooks/use-toast";
 
-const NotificationComponent = ({ notifications }) => {
-  const [currentNotifications, setCurrentNotifications] =
-    useState(notifications);
+const NotificationComponent = ({ notifications: initialNotifications }) => {
+  // const [currentNotifications, setCurrentNotifications] =
+  //   useState(notifications);
   const [processingIds, setProcessingIds] = useState(new Set());
   const token = useAccessToken();
   const { socket } = useSocket();
-  const { userId, decreaseNotificationCount, userRole } =
-    useNotificationStore();
+  const {
+    userId,
+    setNotifications,
+    userRole,
+    addNotification,
+    markAsRead: markNotifications,
+    unreadCount,
+    notifications,
+    deleteNotification,
+  } = useNotificationStore();
   const { loading, fetchData } = useFetch();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -48,7 +56,8 @@ const NotificationComponent = ({ notifications }) => {
         : "fetch_admin_notifications";
 
     const handleNewNotification = (notification) => {
-      setCurrentNotifications((prev) => [notification, ...prev]);
+      // setCurrentNotifications((prev) => [notification, ...prev]);
+      addNotification(notification);
       // showNewNotificationToast(notification);
       // if (isNotificationForCurrentUser(notification)) {
       //   toast({
@@ -75,30 +84,32 @@ const NotificationComponent = ({ notifications }) => {
   }, [socket, userId]);
 
   useEffect(() => {
-    setCurrentNotifications(notifications);
-  }, [notifications]);
+    if (initialNotifications && Array.isArray(initialNotifications)) {
+      setNotifications(initialNotifications);
+    }
+  }, [initialNotifications, setNotifications]);
 
   const isNotificationForCurrentUser = (notification) => {
     return notification.recipients.some((r) => r.user === userId);
   };
 
-  const showNewNotificationToast = (notification) => {
-    if (!isNotificationForCurrentUser(notification)) return;
-    toast({
-      title: "New Notification",
-      description: (
-        <div className="flex items-center justify-between gap-4">
-          <span>{notification.message}</span>
-          <button
-            className="text-sm text-blue-600 hover:underline"
-            onClick={() => router.push(getComplaintLink(notification))}
-          >
-            View
-          </button>
-        </div>
-      ),
-    });
-  };
+  // const showNewNotificationToast = (notification) => {
+  //   if (!isNotificationForCurrentUser(notification)) return;
+  //   toast({
+  //     title: "New Notification",
+  //     description: (
+  //       <div className="flex items-center justify-between gap-4">
+  //         <span>{notification.message}</span>
+  //         <button
+  //           className="text-sm text-blue-600 hover:underline"
+  //           onClick={() => router.push(getComplaintLink(notification))}
+  //         >
+  //           View
+  //         </button>
+  //       </div>
+  //     ),
+  //   });
+  // };
 
   const getComplaintLink = (notification) => {
     return userRole === "user"
@@ -122,7 +133,7 @@ const NotificationComponent = ({ notifications }) => {
       if (action === "read") {
         await markAsRead(id);
       } else {
-        await deleteNotification(id);
+        await deleteNotificationInComponent(id);
       }
     } finally {
       setProcessingIds((prev) => {
@@ -143,7 +154,7 @@ const NotificationComponent = ({ notifications }) => {
 
     if (res.success) {
       updateNotificationState(id, true);
-      decreaseNotificationCount();
+
       toast({
         title: "Success!",
         description: "Notification marked as read",
@@ -152,9 +163,9 @@ const NotificationComponent = ({ notifications }) => {
     }
   };
 
-  const deleteNotification = async (id) => {
+  const deleteNotificationInComponent = async (id) => {
     // Find the notification in current state
-    const notificationToDelete = currentNotifications.find((n) => n._id === id);
+    const notificationToDelete = notifications.find((n) => n._id === id);
 
     // Check if notification exists and is unread
     const wasUnread = notificationToDelete?.recipients?.some(
@@ -172,10 +183,10 @@ const NotificationComponent = ({ notifications }) => {
 
       if (res.success) {
         handleSuccessfulDelete(id);
+        deleteNotification(id);
 
         // Decrease count only if notification was unread
         if (wasUnread) {
-          decreaseNotificationCount();
         }
 
         toast({
@@ -195,13 +206,14 @@ const NotificationComponent = ({ notifications }) => {
   };
 
   const updateNotificationState = (id, isRead) => {
-    setCurrentNotifications((prev) =>
-      prev.map((notification) =>
-        notification._id === id
-          ? updateRecipients(notification, isRead)
-          : notification
-      )
-    );
+    // setCurrentNotifications((prev) =>
+    //   prev.map((notification) =>
+    //     notification._id === id
+    //       ? updateRecipients(notification, isRead)
+    //       : notification
+    //   )
+    // );
+    markNotifications(id);
   };
 
   const updateRecipients = (notification, isRead) => ({
@@ -212,12 +224,12 @@ const NotificationComponent = ({ notifications }) => {
   });
 
   const handleSuccessfulDelete = (id) => {
-    setCurrentNotifications((prev) => prev.filter((n) => n._id !== id));
-
-    if (currentNotifications.length === 1 && page > 1) {
-      const newPage = page === 2 ? baseRoute : `${baseRoute}?page=${page - 1}`;
-      router.push(newPage);
-    }
+    // setCurrentNotifications((prev) => prev.filter((n) => n._id !== id));
+    // if (currentNotifications.length === 1 && page > 1) {
+    //   const newPage = page === 2 ? baseRoute : `${baseRoute}?page=${page - 1}`;
+    //   router.push(newPage);
+    // }
+    deleteNotification(id);
   };
 
   const getCurrentRecipient = (notification) => {
@@ -230,7 +242,7 @@ const NotificationComponent = ({ notifications }) => {
         Notifications
       </h2>
 
-      {currentNotifications.length === 0 ? (
+      {notifications.length === 0 ? (
         <p className="p-6 text-gray-500">No notifications available</p>
       ) : (
         <Table>
@@ -242,7 +254,7 @@ const NotificationComponent = ({ notifications }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentNotifications.map((notification) => {
+            {notifications.map((notification) => {
               const recipient = getCurrentRecipient(notification);
               const isRead = recipient?.read ?? true;
               const isProcessing = processingIds.has(notification._id);

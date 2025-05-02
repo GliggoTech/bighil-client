@@ -370,7 +370,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   };
 
   return (
-    <div className="fixed bottom-0 right-0">
+    <div className="fixed bottom-0 right-0 z-50">
       {chatToggleButton}
 
       <div
@@ -378,7 +378,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
           ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}
           fixed bottom-20 right-6 w-[400px] h-[70vh] flex flex-col`}
       >
-        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 z-50">
           <h3 className="text-lg font-semibold text-white">Chat Support</h3>
           <button
             onClick={() => setIsOpen(false)}

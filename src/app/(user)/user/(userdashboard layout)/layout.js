@@ -24,7 +24,6 @@ export const metadata = {
 
 export default async function UserDashboard_Layout({ children }) {
   const token = await getToken();
-  console.log(token);
 
   // Uncomment to protect route:
   // if (!token) {

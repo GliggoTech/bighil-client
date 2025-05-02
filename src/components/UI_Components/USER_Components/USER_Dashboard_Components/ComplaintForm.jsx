@@ -83,7 +83,6 @@ export function ComplaintForm() {
   const fetchCompanies = useCallback(
     async (query = "") => {
       try {
-        console.log("token from complaint form", token);
         const url = getBackendUrl();
         const res = await fetchData(
           `${url}/api/companies?search=${encodeURIComponent(query)}`,
@@ -92,7 +91,7 @@ export function ComplaintForm() {
           token,
           false
         );
-        console.log("companies", res);
+
         if (res.success) {
           setCompanies(res.data);
         }

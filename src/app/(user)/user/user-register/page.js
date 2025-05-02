@@ -1,9 +1,19 @@
-import SignupForm from "@/components/UI_Components/USER_Components/USER_AUTH_Components/SignUpForm";
+"use client";
+import dynamic from "next/dynamic";
 
-export default function User_Register_page() {
+// Dynamically import SignupSigninForm with SSR disabled
+const SignupSigninForm = dynamic(
+  () =>
+    import(
+      "@/components/UI_Components/USER_Components/USER_AUTH_Components/SignUpForm"
+    ),
+  { ssr: false } // Disable server-side rendering for this component
+);
+
+export default function User_Login_Page() {
   return (
     <div>
-      <SignupForm mode="signup" />
+      <SignupSigninForm mode="signup" />
     </div>
   );
 }
