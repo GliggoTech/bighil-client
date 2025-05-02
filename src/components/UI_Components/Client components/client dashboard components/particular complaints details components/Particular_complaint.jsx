@@ -209,14 +209,15 @@ const ParticularComplaint = ({ complaint, unread }) => {
                 </div>
 
                 {/* Notes Section */}
-                {userRole !== "user" && (
-                  <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-warning">
-                    <NotesSection
-                      notes={complaint?.notes || []}
-                      complaintId={complaint?._id}
-                    />
-                  </div>
-                )}
+                {userRole !== "user" ||
+                  (userRole !== "BIGHIL" && (
+                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-warning">
+                      <NotesSection
+                        notes={complaint?.notes || []}
+                        complaintId={complaint?._id}
+                      />
+                    </div>
+                  ))}
               </div>
 
               {/* Sidebar Content */}

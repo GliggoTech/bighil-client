@@ -172,8 +172,8 @@ export function ComplaintForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white text-black rounded-3xl shadow-2xl mt-6 overflow-auto">
-      <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text mb-12">
+    <div className="max-w-3xl mx-auto p-5 bg-white text-black rounded-3xl shadow-2xl mt-6 overflow-auto">
+      <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text mb-4">
         Submit a Complaint
       </h1>
 

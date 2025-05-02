@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { PortalFooter } from "@/components/UI_Components/PUBLIC_Components/PortalFooter";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,7 @@ export default function User_Layout({ children }) {
       >
         {children}
         <Toaster position="top-right" richColors />
+        {/* <PortalFooter /> */}
       </body>
     </html>
   );
