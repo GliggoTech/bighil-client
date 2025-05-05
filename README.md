@@ -1,6 +1,6 @@
 # 🛠️ Bighil - Anonymous Complaint Management System
 
-Bighil is a secure, full-stack web application for anonymously submitting, managing, and resolving complaints. It includes real-time notifications, role-based access control, and a clean UI powered by modern technologies like Next.js, React, TailwindCSS, and a Node backend.
+Bighil is a secure, full-stack web application for anonymously submitting, managing, and resolving complaints. It includes real-time notifications, role-based access control, and a clean UI powered by modern technologies like Next.js, React, TailwindCSS, and a Node,Express backend.
 ---
 ## 🚀 Setup Instructions
 
