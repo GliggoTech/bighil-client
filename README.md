@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛠️ Bighil - Anonymous Complaint Management System
 
-## Getting Started
+Bighil is a secure, full-stack web application for anonymously submitting, managing, and resolving complaints. It includes real-time notifications, role-based access control, and a clean UI powered by modern technologies like Next.js, React, TailwindCSS, and a Node,Express backend.
+---
+## 🚀 Setup Instructions
 
-First, run the development server:
+### 1. Clone the Repository
+git clone https://github.com/vijayakumar1069/bighil_client.git
 
-```bash
+### 2. Install Dependencies
+npm install
+
+### 3. Run the App
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ⚙️ Local vs Production Config
+Create a .env.local file in root:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+    NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+    NEXT_PUBLIC_PRODUCTION_BACKEND_URL=https://new-bighil-server.onrender.com
+    CLIENT_DEV_URL=http://localhost:3000
+    CLIENT_PROD_URL=https://bighilclient.vercel.app
+    NEXT_PUBLIC_NODE_DEV=development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+In production, set these environment variables on:
+Vercel for the frontend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### 👥 Role Definitions
+### 🧑 User
+  1.Can submit complaints anonymously.
+  2.Receives notifications when complaints are updated or resolved.
+  3.Can view only their own complaints and responses.
+### 🏢 Client (Company)
+There are three roles under the client (company) category:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🔹 SUPER ADMIN
+✅ Can view all complaints submitted against their company.
+✅ Can update complaint status (e.g., In Progress / Resolved).
+✅ Can chat with users.
+✅ Can chat with internal admins (notes).
+✅ Receives real-time alerts for new complaints.
+🔹 ADMIN
+✅ Can view all complaints submitted against their company.
+✅ Can update complaint status.
+✅ Can chat with users.
+✅ Can chat with internal admins (notes).
+✅ Receives real-time alerts for new complaints.
+🔹 SUB ADMIN
+✅ Can view complaints submitted against their company.
+❌ Cannot update complaint status.
+❌ Cannot chat with users.
+✅ Can chat internally with admins (notes).
+✅ Receives real-time alerts for new complaints.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 👮bighil Admin
+  1.Has full access to all data and complaints.
+
+### 📬 Notifications (Real-time)
+  1.Uses Socket.io for real-time events.
+  2.Users and Clients get live updates when complaints are added/updated.
+  3.Admins get private updates when internal notes are added.
+
+### 🛠️ Tech Stack
+⚙️ Backend
+Node.js – JavaScript runtime
+Express.js – Backend framework
+MongoDB – NoSQL database
+Socket.io – Real-time communication
+JSON Web Token (JWT) – Authentication
+EJS – Server-side email templating
+Cloudinary – File/image uploads and storage
+🌐 Frontend
+Next.js – React framework with App Router
+Tailwind CSS – Utility-first CSS framework
+ShadCN UI – Component library
+Framer Motion – Animations
+🔄 Deployment
+Frontend: Deployed on Vercel
+Backend: Deployed on Render
+🧪 CI/CD
+GitHub Actions – Continuous integration and deployment workflows
+
+
