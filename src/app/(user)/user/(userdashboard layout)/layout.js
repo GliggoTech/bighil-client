@@ -1,21 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "../../../globals.css";
 import UserNavbar from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/UserNabar";
-import { getToken } from "@/lib/getToken";
-import { redirect } from "next/navigation";
+
 import { SocketProvider } from "@/context/socketContext";
 import { Toaster } from "@/components/ui/toaster";
 import { PortalFooter } from "@/components/UI_Components/PUBLIC_Components/PortalFooter";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { getToken } from "@/lib/getToken";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Bighil | User Dashboard",
@@ -25,12 +15,9 @@ export const metadata = {
 
 export default async function UserDashboard_Layout({ children }) {
   const token = await getToken();
-
-  // Uncomment to protect route:
-  // if (!token) {
-  //   redirect("/");
-  // }
-
+  if (!token) {
+    redirect("/");
+  }
   return (
     <SocketProvider>
       <Toaster position="top-right" richColors />

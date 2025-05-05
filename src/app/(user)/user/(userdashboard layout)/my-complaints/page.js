@@ -4,6 +4,7 @@ import ComplaintCard from "@/components/UI_Components/USER_Components/USER_Dashb
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { ClipboardList } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function MyComplaintsPage() {
   let complaints = [];
@@ -16,7 +17,12 @@ export default async function MyComplaintsPage() {
       }
     );
   } catch (error) {
-    console.error("Failed to load complaints:", error);
+    if (
+      error.message === "Not authenticated" ||
+      error.message == "NEXT_REDIRECT"
+    ) {
+      redirect("/");
+    }
   }
 
   return (

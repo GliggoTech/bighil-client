@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../../app/globals.css";
+import { getToken } from "@/lib/getToken";
+import { redirect } from "next/navigation";
 // import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 
 const geistSans = Geist({
@@ -17,7 +19,11 @@ export const metadata = {
   description: "Bighil — A modern platform for efficient complaint management.",
 };
 
-export default function Bighil_Layout({ children }) {
+export default async function Bighil_Layout({ children }) {
+  const token = await getToken();
+  if (!token) {
+    redirect("/");
+  }
   return (
     <html lang="en">
       <body
