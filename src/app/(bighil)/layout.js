@@ -20,10 +20,6 @@ export const metadata = {
 };
 
 export default async function Bighil_Layout({ children }) {
-  const token = await getToken();
-  if (!token) {
-    redirect("/");
-  }
   return (
     <html lang="en">
       <body

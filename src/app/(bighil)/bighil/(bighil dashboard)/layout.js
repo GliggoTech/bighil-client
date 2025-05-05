@@ -5,6 +5,8 @@ import Bighil_Sidebar from "@/components/UI_Components/Bighil Components/Bighil_
 import Bighil_Navbar from "@/components/UI_Components/Bighil Components/Bighil_Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { SocketProvider } from "@/context/socketContext";
+import { getToken } from "@/lib/getToken";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,10 @@ export const metadata = {
 };
 
 export default async function BighilDashboard_Layout({ children }) {
+  const token = await getToken();
+  if (!token) {
+    redirect("/");
+  }
   return (
     <SocketProvider>
       <div className="flex h-screen overflow-auto">
