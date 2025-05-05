@@ -65,6 +65,9 @@ const config = {
           dark: "#374151", // Dark borders
         },
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
       transitionProperty: {
         height: "height",
         spacing: "margin, padding",

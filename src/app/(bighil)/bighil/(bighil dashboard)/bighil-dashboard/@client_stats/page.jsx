@@ -1,15 +1,19 @@
-import DashboardCard from "@/components/UI_Components/Bighil Components/bighil dashboard components/DashboardCard";
 import ErrorComponent from "@/components/UI_Components/Bighil Components/bighil dashboard components/ErrorComponent";
+import TopClientsChart from "@/components/UI_Components/Bighil Components/bighil dashboard components/TopClientsChart";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 import { TriangleAlert } from "lucide-react";
 
-export default async function CardsStatusPage() {
+export default async function ClientsStatsPage() {
   let res;
   try {
-    res = await fetchServerSideData("/api/bighil-dashboard/bighil-cards", {
-      method: "GET",
-      cache: "no-cache",
-    });
+    res = await fetchServerSideData(
+      "/api/bighil-dashboard/bighil-client-stats",
+      {
+        method: "GET",
+        cache: "no-cache",
+      }
+    );
+
     if (!res || res.success === false) {
       return <ErrorComponent />;
     }
@@ -20,8 +24,10 @@ export default async function CardsStatusPage() {
   // console.log(res);
   return (
     <div>
-      <DashboardCard metrics={res} />
-      {/* <h1>Hello</h1> */}
+      <TopClientsChart
+        totalClients={res.totalClients}
+        topClients={res.topClients}
+      />
     </div>
   );
 }
