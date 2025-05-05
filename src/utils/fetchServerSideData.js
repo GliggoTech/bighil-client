@@ -52,8 +52,10 @@ export async function fetchServerSideData(endpoint, options = {}) {
     if (
       error.message === "Insufficient permissions" ||
       error.message === "Invalid token" ||
-      error.message === "Unauthorized"
+      error.message === "Unauthorized" ||
+      error.message == "Forbidden - Insufficient permissions"
     ) {
+      console.log("Redirecting to login page...", error.message);
       redirect("/");
     }
 
