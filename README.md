@@ -16,21 +16,12 @@ npm run dev
 ### ⚙️ Local vs Production Config
 Create a .env.local file in root:
 
-    NEXT_PUBLIC_API_URL=http://localhost:3000
-    PORT=5000
-    MONGO_URI="your mongo url"
-    JWT_SECRET_KEY=XXXXX
-    NODE_DEV=development
+    NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+    NEXT_PUBLIC_PRODUCTION_BACKEND_URL=https://new-bighil-server.onrender.com
     CLIENT_DEV_URL=http://localhost:3000
     CLIENT_PROD_URL=https://bighilclient.vercel.app
-    CLOUDINARY_CLOUD_NAME=XXXXXXXXXXXXXX
-    CLOUDINARY_API_KEY=XXXXXXXXXXXXXX
-    CLOUDINARY_API_SECRET=XXXXXXXXXXXXXX
-    CLIENT_ID=XXXXXXXXXXXXXX
-    CLIENT_SECRET_KEY=XXXXXXXXXXXXXX
-    TENANT_ID=XXXXXXXXXXXXXX
-    OBJECT_ID=XXXXXXXXXXXXXX
-    PUPPETEER_EXECUTABLE_PATH=
+    NEXT_PUBLIC_NODE_DEV=development
+
 
 
 
