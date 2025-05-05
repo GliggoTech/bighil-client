@@ -16,8 +16,7 @@ npm run dev
 ### ⚙️ Local vs Production Config
 Create a .env.local file in root:
 
-NEXT_PUBLIC_API_URL=http://localhost:3000
- For Frontend code 
+    NEXT_PUBLIC_API_URL=http://localhost:3000
     PORT=5000
     MONGO_URI="your mongo url"
     JWT_SECRET_KEY=XXXXX
@@ -68,9 +67,6 @@ There are three roles under the client (company) category:
 
 ### 👮bighil Admin
   1.Has full access to all data and complaints.
-  2.Can moderate, assign, or delete complaints.
-  3.Can view internal notes and audit actions across roles.
-  4.Receives private notes added by clients.
 
 ### 📬 Notifications (Real-time)
   1.Uses Socket.io for real-time events.
