@@ -31,7 +31,7 @@ export function ChartsSkeletonLoader() {
       </div>
 
       {/* Additional Complaints Skeleton */}
-      {/* <div
+      <div
         className="flex flex-col h-full bg-gradient-to-br from-background-primary/90 to-background-secondary/90 
                       rounded-2xl shadow-lg border border-border-light/20 
                       dark:border-border-dark/20 p-6 backdrop-blur-lg"
@@ -41,13 +41,11 @@ export function ChartsSkeletonLoader() {
                         dark:from-accent-success/10 dark:to-accent-info/10 h-full"
         >
           <div className="space-y-6">
-      
             <div className="space-y-2">
               <Skeleton className="h-7 w-[200px] bg-border-light/10 dark:bg-border-dark/10" />
               <Skeleton className="h-4 w-[300px] bg-border-light/10 dark:bg-border-dark/10" />
             </div>
 
-       
             <div className="grid grid-cols-2 gap-4">
               {[1, 2, 3, 4].map((item) => (
                 <div key={item} className="space-y-2">
@@ -56,13 +54,12 @@ export function ChartsSkeletonLoader() {
               ))}
             </div>
 
-          
             <div className="mt-6">
               <Skeleton className="h-[200px] w-full rounded-xl bg-border-light/10 dark:bg-border-dark/10" />
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

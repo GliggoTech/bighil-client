@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SkeletonCard() {
   return (
-    <Card className="w-full max-w-sm shadow">
+    <Card className="w-full max-w-sm shadow border-0">
       <CardHeader className="space-y-2">
         {/* Simulated title skeleton */}
         <Skeleton className="h-6 w-1/2" />

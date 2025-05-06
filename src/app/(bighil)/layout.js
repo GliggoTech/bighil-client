@@ -1,17 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "../../app/globals.css";
-import { getToken } from "@/lib/getToken";
-import { redirect } from "next/navigation";
-// import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
+import { Poppins } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 export const metadata = {
@@ -22,9 +16,7 @@ export const metadata = {
 export default async function Bighil_Layout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={poppins.variable}>
         {children}
         {/* <ContactComponent /> */}
       </body>

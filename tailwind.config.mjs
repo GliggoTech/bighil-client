@@ -12,58 +12,64 @@ const config = {
   theme: {
     extend: {
       colors: {
-        // Primary Colors
-        primary: {
-          DEFAULT: "#2563EB", // Modern blue for CTAs and primary actions
-          light: "#60A5FA", // Lighter shade for hover states
-          dark: "#1E40AF", // Darker shade for active states
-        },
+        blue: "#0d6efd",
+        indigo: "#6610f2",
+        purple: "#6f42c1",
+        pink: "#d63384",
+        red: "#dc3545",
+        orange: "#fd7e14",
+        yellow: "#ffc107",
+        green: "#198754",
+        teal: "#20c997",
+        cyan: "#0dcaf0",
+        gray: "#6c757d",
+        text_color: "#242e4c",
+        "active-link": "#0d6efd",
+        "gray-dark": "#343a40",
+        "gray-100": "#f8f9fa",
+        "gray-200": "#e9ecef",
+        "gray-300": "#dee2e6",
+        "gray-400": "#ced4da",
+        "gray-500": "#adb5bd",
+        "gray-600": "#6c757d",
+        "gray-700": "#495057",
+        "gray-800": "#343a40",
+        "gray-900": "#212529",
+        black: "#000000",
+        white: "#ffffff",
 
-        // Secondary Colors
-        secondary: {
-          DEFAULT: "#7C3AED", // Purple for highlighting important features
-          light: "#A78BFA", // Lighter purple for secondary elements
-          dark: "#5B21B6", // Darker purple for emphasis
-        },
+        // Theme aliases
+        primary: "#0d6efd",
+        secondary: "#6c757d",
+        success: "#198754",
+        info: "#0dcaf0",
+        warning: "#ffc107",
+        danger: "#dc3545",
+        light: "#f8f9fa",
+        dark: "#212529",
 
-        // Accent Colors
-        accent: {
-          success: "#10B981", // Green for positive actions/status
-          warning: "#F59E0B", // Amber for warnings/pending
-          danger: "#ef4444", // Red for errors/critical
-          info: "#3B82F6", // Blue for information
-          heavyDanger: "#ff0000",
-        },
+        // Subtle BGs
+        "primary-bg-subtle": "#cfe2ff",
+        "secondary-bg-subtle": "#e2e3e5",
+        "success-bg-subtle": "#d1e7dd",
+        "info-bg-subtle": "#cff4fc",
+        "warning-bg-subtle": "#fff3cd",
+        "danger-bg-subtle": "#f8d7da",
+        "light-bg-subtle": "#fcfcfd",
+        "dark-bg-subtle": "#ced4da",
 
-        // Background Colors
-        background: {
-          primary: "#FFFFFF", // Main background
-          secondary: "#F9FAFB", // Secondary background
-          tertiary: "#F3F4F6", // Tertiary background
-          dark: "#111827", // Dark mode background
-        },
-
-        // Surface Colors
-        surface: {
-          light: "#FFFFFF", // Cards and elevated surfaces
-          medium: "#F9FAFB", // Secondary surfaces
-          dark: "#1F2937", // Dark mode surfaces
-        },
-
-        // Text Colors
-        text: {
-          primary: "#111827", // Primary text
-          secondary: "#4B5563", // Secondary text
-          muted: "#9CA3AF", // Muted text
-          light: "#FFFFFF", // Light text
-        },
-
-        // Border Colors
-        border: {
-          light: "#E5E7EB", // Light borders
-          medium: "#D1D5DB", // Medium borders
-          dark: "#374151", // Dark borders
-        },
+        // Subtle borders
+        "primary-border-subtle": "#9ec5fe",
+        "secondary-border-subtle": "#c4c8cb",
+        "success-border-subtle": "#a3cfbb",
+        "info-border-subtle": "#9eeaf9",
+        "warning-border-subtle": "#ffe69c",
+        "danger-border-subtle": "#f1aeb5",
+        "light-border-subtle": "#e9ecef",
+        "dark-border-subtle": "#adb5bd",
+      },
+      fontFamily: {
+        sans: ["var(--font-poppins)", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

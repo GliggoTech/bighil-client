@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SkeletonAdminGreeting() {
   return (
-    <Card className="p-4 shadow-sm">
+    <Card className="p-4 shadow-sm border-0">
       <div className="flex items-center justify-between">
         {/* Left side: Greeting and description */}
         <div className="space-y-2">
