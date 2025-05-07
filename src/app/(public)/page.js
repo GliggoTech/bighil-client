@@ -12,7 +12,7 @@ export default function Home() {
         {" "}
         <Link href={"/bighil/bighil-login"}>Bighil Login</Link>{" "}
       </Button>
-      <Button className="bg-red-600 text-white hover:bg-pink-500">
+      <Button className="bg-red text-white hover:bg-pink-500">
         {" "}
         <Link href={"/client/client-login"}>Client Login</Link>{" "}
       </Button>

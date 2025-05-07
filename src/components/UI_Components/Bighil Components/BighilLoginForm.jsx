@@ -91,18 +91,18 @@ function BighilLoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-6 relative bg-gradient-to-br from-indigo to-purple dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900">
       {/* Background design elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 dark:bg-purple-900/20 rounded-full filter blur-3xl opacity-30"></div>
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-indigo-300 dark:bg-indigo-900/20 rounded-full filter blur-3xl opacity-30"></div>
-        <div className="absolute bottom-40 right-20 w-60 h-60 bg-blue-200 dark:bg-blue-900/20 rounded-full filter blur-3xl opacity-20"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple dark:bg-purple-900/20 rounded-full filter blur-3xl opacity-30"></div>
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-indigo dark:bg-indigo-900/20 rounded-full filter blur-3xl opacity-30"></div>
+        <div className="absolute bottom-40 right-20 w-60 h-60 bg-blue dark:bg-blue-900/20 rounded-full filter blur-3xl opacity-20"></div>
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Card container with animated border */}
         <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo to-purple rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
 
           <div className="relative p-1 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden">
             {/* Card interior */}
@@ -112,10 +112,10 @@ function BighilLoginForm() {
                 <div className="inline-flex relative mb-6">
                   {/* Logo background with animated gradient */}
                   <div className="relative w-24 h-24 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl shadow-lg rotate-3"></div>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl shadow-lg -rotate-3 animate-pulse"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo to-purple rounded-2xl shadow-lg rotate-3"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo to-purple rounded-2xl shadow-lg -rotate-3 animate-pulse"></div>
                     <div className="relative z-10 bg-white dark:bg-slate-900 rounded-xl w-20 h-20 flex items-center justify-center">
-                      <div className="text-3xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      <div className="text-3xl font-bold bg-gradient-to-br from-indigo to-purple bg-clip-text text-transparent">
                         BH
                       </div>
                     </div>
@@ -125,7 +125,7 @@ function BighilLoginForm() {
                 <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">
                   Welcome Back
                 </h1>
-                <p className="text-slate-500 dark:text-slate-400">
+                <p className="text-text_color dark:text-slate-400">
                   Sign in to continue to your dashboard
                 </p>
               </div>
@@ -203,24 +203,15 @@ function BighilLoginForm() {
                               className={cn(
                                 "absolute inset-0 rounded-xl transition-all duration-300",
                                 activeField === "email"
-                                  ? "bg-indigo-50 dark:bg-indigo-950/30"
+                                  ? "bg-indigo dark:bg-indigo-950/30"
                                   : "bg-transparent"
                               )}
                             ></div>
-                            <div
-                              className={cn(
-                                "absolute left-0 top-0 bottom-0 w-28 flex items-center justify-center ",
-                                activeField === "email"
-                                  ? "text-indigo-600 dark:text-indigo-400"
-                                  : "text-slate-400 dark:text-slate-500"
-                              )}
-                            >
-                              <Mail className="h-5 w-5" />
-                            </div>
+
                             <Input
                               placeholder="name@company.com"
                               className={cn(
-                                "pl-12 h-14 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100",
+                                "pl-5 h-14 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100",
                                 "placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl text-base",
                                 "focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500",
                                 "transition-all duration-200 relative "
@@ -270,21 +261,12 @@ function BighilLoginForm() {
                                   : "bg-transparent"
                               )}
                             ></div>
-                            <div
-                              className={cn(
-                                "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center transition-colors",
-                                activeField === "password"
-                                  ? "text-indigo-600 dark:text-indigo-400"
-                                  : "text-slate-400 dark:text-slate-500"
-                              )}
-                            >
-                              <Lock className="h-5 w-5" />
-                            </div>
+
                             <Input
                               type={showPassword ? "text" : "password"}
                               placeholder="••••••••"
                               className={cn(
-                                "pl-12 pr-12 h-14 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100",
+                                "pl-5 h-14 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100",
                                 "placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl text-base",
                                 "focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500",
                                 "transition-all duration-200 relative z-10"
@@ -333,7 +315,7 @@ function BighilLoginForm() {
                         "text-white transition-all duration-300",
                         isSuccess
                           ? "bg-emerald-500 hover:bg-emerald-600"
-                          : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700",
+                          : "bg-gradient-to-r from-indigo to-purple hover:from-indigo hover:to-purple",
                         "shadow-lg shadow-indigo-500/20 dark:shadow-indigo-900/30 relative overflow-hidden"
                       )}
                     >
@@ -422,8 +404,8 @@ function BighilLoginForm() {
 
         {/* Security badge */}
         <div className="mt-6 flex justify-center">
-          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm bg-white/70 dark:bg-slate-800/70 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
-            <Shield className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+          <div className="flex items-center gap-1.5 text-text_color dark:text-slate-400 text-sm bg-white dark:bg-slate-800/70 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
+            <Shield className="w-4 h-4 text-indigo dark:text-indigo-400" />
             <span>Secured with end-to-end encryption</span>
           </div>
         </div>
