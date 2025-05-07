@@ -29,7 +29,8 @@ const config = {
         danger_bg: "#fb5454",
         back_bg: "#f4f6fd",
         toast_success_bg: "#56d094",
-
+        bighil_dashboard_bg: "#f0f0f8",
+        pagination_border: "#dee2e6",
         dialog_inside_border_color: "#eff0f6",
         "active-link": "#0d6efd",
         "gray-dark": "#343a40",

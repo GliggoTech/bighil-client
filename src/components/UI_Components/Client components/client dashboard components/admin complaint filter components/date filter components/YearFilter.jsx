@@ -4,7 +4,7 @@ import DateSelect from "./DateSelect";
 const YearFilter = ({ dateFilter, setDateFilter }) => (
   <DateSelect
     value={dateFilter.year}
-    onChange={(value) => setDateFilter({ ...dateFilter, year: value })}
+    onChange={(year) => setDateFilter((prev) => ({ ...prev, year }))}
     placeholder="Year"
     options={getYearOptions()}
     anyOption={{ value: "anyYear", label: "Any" }}

@@ -8,15 +8,34 @@ import {
 
 const DateSelect = ({ value, onChange, placeholder, options, anyOption }) => (
   <Select value={value} onValueChange={onChange}>
-    <SelectTrigger className="h-10">
+    <SelectTrigger className="h-10 border-success/50">
       <SelectValue placeholder={placeholder} />
     </SelectTrigger>
-    <SelectContent>
+    <SelectContent className="z-50 bg-white  border-none text-text_color">
       {anyOption && (
-        <SelectItem value={anyOption.value}>{anyOption.label}</SelectItem>
+        <SelectItem
+          className={`
+          cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
+          flex items-center justify-start gap-2
+      
+          hover:bg-primary-bg-subtle hover:text-text_color transition-all
+        `}
+          value={anyOption.value}
+        >
+          {anyOption.label}
+        </SelectItem>
       )}
       {options.map((option) => (
-        <SelectItem key={option.value} value={option.value}>
+        <SelectItem
+          className={`
+          cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
+          flex items-center justify-start gap-2
+       
+          hover:bg-primary-bg-subtle hover:text-text_color transition-all
+        `}
+          key={option.value}
+          value={option.value}
+        >
           {option.label}
         </SelectItem>
       ))}

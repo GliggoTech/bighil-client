@@ -166,34 +166,34 @@ const ComplaintsTable = ({
 
   return (
     <>
-      <div className="rounded-lg border border-border overflow-hidden shadow-sm transition-all hover:shadow-md">
-        <div className="p-4">
-          <Table>
-            <TableHeader className="bg-muted/50">
+      <div className="rounded-lg  overflow-hidden shadow-sm transition-all hover:shadow-md">
+        <div className="p-4 bg-default_bg">
+          <Table className="w-full border-b border-b--dialog_inside_border_color border border-dialog_inside_border_color">
+            <TableHeader className=" !border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
               <TableRow>
-                <TableHead className="font-semibold text-muted-foreground w-[160px]">
+                <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
                   Complaint ID
                 </TableHead>
                 {bighil ? (
-                  <TableHead className="font-semibold text-muted-foreground">
+                  <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
                     Company Name
                   </TableHead>
                 ) : (
-                  <TableHead className="font-semibold text-muted-foreground">
+                  <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
                     Complaint Against
                   </TableHead>
                 )}
 
-                <TableHead className="font-semibold text-muted-foreground w-[140px]">
+                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
                   Status
                 </TableHead>
-                <TableHead className="font-semibold text-muted-foreground w-[140px]">
+                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
                   Created At
                 </TableHead>
-                <TableHead className="font-semibold text-muted-foreground w-[120px]">
+                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
                   Priority
                 </TableHead>
-                <TableHead className="font-semibold text-muted-foreground w-[160px] text-center">
+                <TableHead className="text-text_color dark:text-text-light font-medium uppercase   text-center">
                   Action
                 </TableHead>
               </TableRow>
@@ -206,16 +206,17 @@ const ComplaintsTable = ({
               ) : complaints?.length === 0 ? (
                 <EmptyState />
               ) : (
-                complaints.map((complaint) => {
+                complaints.map((complaint, index) => {
                   const statusBadge = getStatusBadge(
                     complaint.status_of_client
                   );
+                  console.log(statusBadge);
                   const priorityBadge = getPriorityBadge(complaint.priority);
 
                   return (
                     <TableRow
                       key={complaint._id}
-                      className="table-zoom-in border-b border-border hover:bg-muted/30 transition-colors hover:bg-background-tertiary duration-300"
+                      className=" p-20 hover:bg-gray-200/50 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
                     >
                       <TableCell className="font-medium">
                         <span className="text-primary">
@@ -244,7 +245,7 @@ const ComplaintsTable = ({
 
                       <TableCell>
                         <div
-                          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${statusBadge.bgColor} ${statusBadge.textColor} ${statusBadge.borderColor}`}
+                          className={`inline-flex items-center ${statusBadge.padding} rounded-full text-xs font-medium border ${statusBadge.bgColor} ${statusBadge.textColor} ${statusBadge.borderColor}`}
                         >
                           {statusBadge.icon}
                           {complaint.status_of_client}
@@ -253,14 +254,14 @@ const ComplaintsTable = ({
 
                       <TableCell>
                         <div className="inline-flex items-center text-muted-foreground">
-                          <Calendar className="h-3.5 w-3.5 mr-1.5 text-accent-info" />
+                          <Calendar className="h-3.5 w-3.5 mr-1.5 text-primary" />
                           {formatDate(complaint.createdAt)}
                         </div>
                       </TableCell>
 
                       <TableCell>
                         <div
-                          className={`text-center px-2.5 py-1 rounded-full text-xs font-medium border ${priorityBadge.bgColor} ${priorityBadge.textColor} ${priorityBadge.borderColor}`}
+                          className={`text-center  px-2.5 py-1 -ml-4 w-24 rounded-full text-xs font-medium border ${priorityBadge.bgColor} ${priorityBadge.textColor} ${priorityBadge.borderColor}`}
                         >
                           {complaint.priority}
                         </div>
@@ -275,7 +276,7 @@ const ComplaintsTable = ({
                           }
                           className="inline-block"
                         >
-                          <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue-700 text-white font-medium py-1.5 rounded transition-all duration-300 transform hover:scale-105">
+                          <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue text-white font-light  rounded transition-all duration-300 transform hover:scale-105">
                             View Case
                           </Button>
                         </Link>
@@ -283,7 +284,7 @@ const ComplaintsTable = ({
                           <div className="">
                             <Button
                               onClick={() => handlePdfPreview(complaint._id)}
-                              className="w-fit bg-accent-success/10 text-accent-success text-center py-1 rounded-md hover:bg-accent-success hover:text-text-light"
+                              className="w-fit bg-success/10 text-success text-center py-1 rounded-md hover:bg-success hover:text-white"
                               disabled={
                                 previewLoading &&
                                 selectedComplaintId === complaint._id

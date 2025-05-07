@@ -55,14 +55,14 @@ export default function PaginationControls({
           variant="outline"
           size="sm"
           className={cn(
-            "h-8 gap-1 px-2.5",
+            "h-8 gap-1 px-2.5 border-pagination_border bg-white/10",
             !hasPreviousPage && "opacity-50 pointer-events-none"
           )}
           onClick={() => onPageChange(1)}
           disabled={!hasPreviousPage}
         >
           <ChevronsLeftRight className="w-4 h-4 -mr-1" />
-          <span className="max-sm:hidden">First</span>
+          <span className="max-sm:hidden text-text_color">First</span>
         </Button>
 
         {/* Previous Page Button */}
@@ -70,13 +70,13 @@ export default function PaginationControls({
           variant="outline"
           size="sm"
           className={cn(
-            "h-8 w-8 p-0",
+            "h-8 w-8 p-0 border-pagination_border ",
             !hasPreviousPage && "opacity-50 pointer-events-none"
           )}
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!hasPreviousPage}
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4 text-text_color" />
         </Button>
 
         {/* Page Numbers */}
@@ -87,7 +87,7 @@ export default function PaginationControls({
                 key={`ellipsis-${index}`}
                 variant="ghost"
                 size="sm"
-                className="w-8 h-8 p-0"
+                className="w-8 h-8 p-0 "
                 disabled
               >
                 <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
@@ -95,14 +95,15 @@ export default function PaginationControls({
             ) : (
               <Button
                 key={page}
-                variant={page === currentPage ? "default" : "outline"}
+                // variant={page === currentPage ? "default" : "outline"}
                 size="sm"
                 className={cn(
-                  "h-8 min-w-8 px-2 hidden sm:inline-flex",
-                  page === currentPage && "font-bold"
+                  "h-8 min-w-8 px-2 hidden sm:inline-flex hover:text-white bg-white/10 border-pagination_border",
+                  page === currentPage &&
+                    "font-light bg-primary text-white opacity-100"
                 )}
                 onClick={() => typeof page === "number" && onPageChange(page)}
-                disabled={page === currentPage}
+                // disabled={page === currentPage}
               >
                 {page}
               </Button>
@@ -115,7 +116,7 @@ export default function PaginationControls({
           variant="outline"
           size="sm"
           className={cn(
-            "h-8 w-8 p-0",
+            "h-8 w-8 p-0 border-pagination_border hover:text-white hover:bg-primary",
             !hasNextPage && "opacity-50 pointer-events-none"
           )}
           onClick={() => onPageChange(currentPage + 1)}
@@ -129,7 +130,7 @@ export default function PaginationControls({
           variant="outline"
           size="sm"
           className={cn(
-            "h-8 gap-1 px-2.5",
+            "h-8 gap-1 px-2.5 border-none",
             !hasNextPage && "opacity-50 pointer-events-none"
           )}
           onClick={() => onPageChange(totalPages)}
@@ -141,7 +142,7 @@ export default function PaginationControls({
       </div>
 
       {/* Page Count */}
-      <div className="text-sm font-medium text-muted-foreground text-center sm:text-right">
+      <div className="text-sm font-medium text-text_color text-center sm:text-right">
         Page {currentPage} of {totalPages}
       </div>
     </div>

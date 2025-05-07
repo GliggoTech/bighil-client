@@ -85,7 +85,6 @@ const Clients_Table = ({ clients }) => {
                     <TableRow
                       key={client._id}
                       className=" p-20 hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
-                      style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <TableCell className="text-text-primary dark:text-text-light">
                         {client.companyName}
@@ -122,7 +121,6 @@ const Clients_Table = ({ clients }) => {
                 <div
                   key={client._id}
                   className="p-1 rounded-lg bg-default_bg dark:bg-surface-dark/80 animate-fade-in"
-                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex justify-between items-center mb-2 p-1">
                     <div className="flex items-center gap-2">
