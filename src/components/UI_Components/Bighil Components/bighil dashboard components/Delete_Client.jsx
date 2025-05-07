@@ -14,7 +14,9 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "@/hooks/use-toast";
 
 const Delete_Client = ({ client, clients, setCurrentClients }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -38,42 +40,53 @@ const Delete_Client = ({ client, clients, setCurrentClients }) => {
       );
       setCurrentClients(newClients);
       setDialogOpen(false); // close the dialog
+      toast({
+        variant: "success",
+        description: "Client deleted successfully",
+        duration: 5000,
+      });
     }
   };
 
   return (
-    <>
+    <div className="p-0 relative">
       <Button
-        className="px-4 py-1 bg-red-500 text-white hover:bg-red-600"
+        className=" bg-danger_bg/10 group text-white hover:bg-red/70 font-light"
         onClick={() => setDialogOpen(true)}
       >
-        Delete
+        <Trash2 className="h-5 w-5 text-red group-hover:text-white" />
       </Button>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-white">
+        <DialogContent className="sm:max-w-md bg-white text-text_color font-light p-4">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
-              <AlertTriangle className="h-5 w-5" />
-              Confirm Deletion
+              <AlertTriangle className="h-5 w-5 text-red" />
+              <span className="text-red font-medium">Confirm Deletion</span>
             </DialogTitle>
+            <div className="relative ">
+              <Separator className="w-[calc(100%+2rem)] -mx-4 my-2 bg-dialog_inside_border_color h-[1px]" />{" "}
+            </div>
             <DialogDescription>
               This action is <span className="font-semibold">irreversible</span>
               . Deleting this client will permanently remove them from the
               system. Are you sure you want to continue?
             </DialogDescription>
+            <div className="relative ">
+              <Separator className="w-[calc(100%+2rem)] my-2 -mx-4 bg-dialog_inside_border_color h-[1px]" />{" "}
+            </div>
           </DialogHeader>
-
-          <DialogFooter className="mt-4">
+          <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setDialogOpen(false)}
+              className="bg-indigo text-white font-light hover:bg-indigo/80  shadow-xl"
               disabled={loading}
             >
               Cancel
             </Button>
             <Button
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red hover:bg-red/80 text-white font-light shadow-xl"
               onClick={handleDelete}
               disabled={loading}
             >
@@ -82,7 +95,7 @@ const Delete_Client = ({ client, clients, setCurrentClients }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };
 

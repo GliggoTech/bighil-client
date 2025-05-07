@@ -24,6 +24,13 @@ const config = {
         cyan: "#0dcaf0",
         gray: "#6c757d",
         text_color: "#242e4c",
+        default_bg: "#f7f8f9",
+        info_bg: "#2f89f5",
+        danger_bg: "#fb5454",
+        back_bg: "#f4f6fd",
+        toast_success_bg: "#56d094",
+
+        dialog_inside_border_color: "#eff0f6",
         "active-link": "#0d6efd",
         "gray-dark": "#343a40",
         "gray-100": "#f8f9fa",

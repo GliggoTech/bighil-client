@@ -5,13 +5,13 @@ export const getTrendColor = (isNegative, percentage) => {
 
   if (isNegative) {
     return percentage >= 0
-      ? `${baseClasses} bg-red-100 text-red-600 dark:bg-red-900/60 dark:text-red-400`
+      ? `${baseClasses} bg-red-100 text-red-600 dark:bg-red-900/60 dark:text-red`
       : `${baseClasses} bg-green-100 text-green-600 dark:bg-green-900/60 dark:text-green-400`;
   }
 
   return percentage >= 0
     ? `${baseClasses} bg-green-100 text-green-600 dark:bg-green-900/60 dark:text-green-400`
-    : `${baseClasses} bg-red-100 text-red-600 dark:bg-red-900/60 dark:text-red-400`;
+    : `${baseClasses} bg-red-100 text-red-600 dark:bg-red-900/60 dark:text-red`;
 };
 
 export const generateSparklinePath = (trend, width, height) => {

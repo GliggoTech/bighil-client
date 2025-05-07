@@ -71,7 +71,7 @@ export const getPriorityBadge = (priority) => {
     case "CRITICAL":
       return {
         bgColor: "bg-red-50 dark:bg-red-950/50",
-        textColor: "text-red-700 dark:text-red-400",
+        textColor: "text-red-700 dark:text-red",
         borderColor: "border-red-200 dark:border-red-900",
       };
     default:

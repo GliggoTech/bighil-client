@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { PencilIcon } from "lucide-react";
 import React from "react";
 
 const Edit_Client = ({ client, setOpen, setSelectedClient }) => {
@@ -7,12 +9,12 @@ const Edit_Client = ({ client, setOpen, setSelectedClient }) => {
     setOpen(true);
   }
   return (
-    <button
+    <Button
       onClick={() => handleEdit(client)}
-      className="bg-blue-500 hover:bg-blue-400 text-white font-bold px-4 py-1 rounded"
+      className="bg-info_bg/10 hover:bg-blue group text-white font-light w-fit  rounded"
     >
-      Edit
-    </button>
+      <PencilIcon className="w-4 h-4 text-primary group-hover:text-white " />
+    </Button>
   );
 };
 

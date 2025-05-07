@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -16,76 +10,72 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Building, Users } from "lucide-react";
 import Delete_Client from "./Delete_Client";
 import Bighil_Client_Dialog from "./Bighil_Client_Dialog";
 import Edit_Client from "./Edit_Client";
+import { formatDate } from "@/lib/formatDateFun";
 
 const Clients_Table = ({ clients }) => {
   const [currentClients, setCurrentClients] = useState(clients);
-
   const [selectedClient, setSelectedClient] = useState(null);
   const [open, setOpen] = useState(false);
 
   return (
-    <Card className=" border border-border-light shadow-md dark:border-border-dark dark:bg-surface-dark transition-all duration-300 hover:shadow-lg">
-      <CardHeader className="bg-background-secondary/50 dark:bg-background-dark/50 border-b border-border-light dark:border-border-dark">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 w-full">
-          {/* Left Section */}
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
-              <Users className="h-5 w-5 text-primary dark:text-primary-light" />
+    <Card className="border-none shadow-none">
+      <CardHeader>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 w-full">
+          <div className="flex items-start md:items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary">
+              <Users className="h-5 w-5 text-white dark:text-primary-light" />
             </div>
             <div>
-              <CardTitle className="text-xl text-text-primary dark:text-text-light">
+              <CardTitle className="text-xl text-text_color dark:text-text-light font-medium">
                 Current Clients
               </CardTitle>
-              <CardDescription className="text-text-secondary dark:text-text-muted">
-                Manage your client companies
-              </CardDescription>
             </div>
           </div>
 
-          {/* Right Section - Button */}
-          <div className="self-start md:self-center">
-            <Bighil_Client_Dialog
-              currentClients={currentClients}
-              setOpen={setOpen}
-              open={open}
-              selectedClient={selectedClient}
-              setSelectedClient={setSelectedClient}
-              setCurrentClients={setCurrentClients}
-            />
-          </div>
+          <Bighil_Client_Dialog
+            currentClients={currentClients}
+            setOpen={setOpen}
+            open={open}
+            selectedClient={selectedClient}
+            setSelectedClient={setSelectedClient}
+            setCurrentClients={setCurrentClients}
+          />
         </div>
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent>
         {currentClients.length === 0 ? (
           <div className="text-center py-12 bg-background-tertiary dark:bg-surface-dark rounded-lg border border-dashed border-border-medium dark:border-border-dark">
-            <Building className="h-12 w-12 mx-auto text-text-muted dark:text-text-muted/70 mb-3 opacity-50" />
-            <p className="text-text-secondary dark:text-text-muted text-lg">
+            <Building className="h-12 w-12 mx-auto text-text-text_color dark:text-text-text_color/70 mb-3 opacity-50" />
+            <p className="text-text-secondary dark:text-text-text_color text-lg">
               No clients available
             </p>
-            <p className="text-text-muted dark:text-text-muted/70 mt-1">
+            <p className="text-text-text_color dark:text-text-text_color/70 mt-1">
               Please add a new client to get started
             </p>
           </div>
         ) : (
           <>
-            {/* Desktop Table View */}
-            <div className="hidden md:block overflow-hidden rounded-lg border border-border-light dark:border-border-dark">
-              <Table>
-                <TableHeader className="bg-background-secondary dark:bg-surface-dark">
-                  <TableRow className="hover:bg-background-secondary/80 dark:hover:bg-surface-dark/90 border-border-light dark:border-border-dark">
-                    <TableHead className="text-text-primary dark:text-text-light font-medium">
+            {/* Desktop View */}
+            <div className="hidden md:block bg-default_bg rounded-lg p-5 ">
+              <Table className="  w-full border-b border-b--dialog_inside_border_color border border-dialog_inside_border_color">
+                <TableHeader className=" !border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
+                  <TableRow>
+                    <TableHead className="text-text_color dark:text-text-light font-medium uppercase">
                       Company Name
                     </TableHead>
-                    <TableHead className="text-text-primary dark:text-text-light font-medium">
+
+                    <TableHead className="text-text_color dark:text-text-light font-medium uppercase">
                       Contact
                     </TableHead>
-                    <TableHead className="text-right text-text-primary dark:text-text-light font-medium">
+                    <TableHead className="text-text_color dark:text-text-light font-medium uppercase">
+                      Registered On
+                    </TableHead>
+                    <TableHead className="text-center text-text_color dark:text-text-light font-medium uppercase">
                       Actions
                     </TableHead>
                   </TableRow>
@@ -93,21 +83,21 @@ const Clients_Table = ({ clients }) => {
                 <TableBody>
                   {currentClients.map((client, index) => (
                     <TableRow
-                      key={`${client._id}+${index}`}
-                      className="hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-border-light dark:border-border-dark animate-fade-in transition-colors"
+                      key={client._id}
+                      className=" p-20 hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <TableCell className="font-medium text-text-primary dark:text-text-light">
-                        <div className="flex items-center gap-2">
-                          <Building className="h-4 w-4 text-primary dark:text-primary-light" />
-                          {client.companyName}
-                        </div>
+                      <TableCell className="text-text-primary dark:text-text-light">
+                        {client.companyName}
                       </TableCell>
-                      <TableCell className="text-text-secondary dark:text-text-muted">
+                      <TableCell className="text-text-secondary dark:text-text-text_color">
                         {client.contactNumber}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex gap-2 justify-end">
+                      <TableCell className="text-text-secondary dark:text-text-text_color">
+                        {formatDate(client.createdAt)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex gap-2 justify-center">
                           <Edit_Client
                             client={client}
                             setSelectedClient={setSelectedClient}
@@ -126,41 +116,35 @@ const Clients_Table = ({ clients }) => {
               </Table>
             </div>
 
-            {/* Mobile Card View */}
-            <div className="md:hidden space-y-4">
+            {/* Mobile View */}
+            <div className="md:hidden space-y-2">
               {currentClients.map((client, index) => (
                 <div
-                  key={`mobile-${client._id}+${index}`}
-                  className="p-4 border border-border-light dark:border-border-dark rounded-lg bg-background-secondary/30 dark:bg-surface-dark/80 hover:shadow-md transition-all duration-200 animate-fade-in"
+                  key={client._id}
+                  className="p-1 rounded-lg bg-default_bg dark:bg-surface-dark/80 animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="flex justify-between items-start mb-3">
+                  <div className="flex justify-between items-center mb-2 p-1">
                     <div className="flex items-center gap-2">
                       <div className="p-1.5 rounded-md bg-primary/10 dark:bg-primary/20">
                         <Building className="h-3.5 w-3.5 text-primary dark:text-primary-light" />
                       </div>
-                      <h3 className="font-medium text-text-primary dark:text-text-light">
+                      <h3 className="text-text_color dark:text-text-light font-medium">
                         {client.companyName}
                       </h3>
                     </div>
-                    <Badge
-                      variant="outline"
-                      className="bg-background-primary/80 dark:bg-background-dark/50 border-border-light dark:border-border-dark"
-                    >
-                      Client
-                    </Badge>
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-sm text-text-muted dark:text-text-muted/80 mb-1">
+                    <p className="text-sm text-text-text_color dark:text-text-text_color/80 mb-1">
                       Contact Number
                     </p>
-                    <p className="text-text-secondary dark:text-text-muted">
+                    <p className="text-text-secondary dark:text-text-text_color">
                       {client.contactNumber}
                     </p>
                   </div>
 
-                  <div className="flex gap-2 justify-end border-t border-border-light dark:border-border-dark pt-3">
+                  <div className="flex gap-2 justify-end border-t border-dialog_inside_border_color dark:border-border-dark pt-3">
                     <Edit_Client
                       client={client}
                       setSelectedClient={setSelectedClient}

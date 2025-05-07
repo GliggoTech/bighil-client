@@ -37,7 +37,7 @@ export const colorSchemes = {
     light:
       "bg-gradient-to-br from-red-400/30 to-red-600/30 text-red-700 dark:text-red-300",
     medium: "bg-red-500/10 text-red-700 dark:text-red-300",
-    accent: "text-red-600 dark:text-red-400",
+    accent: "text-red-600 dark:text-red",
     border: "border-red-100 dark:border-red-800/30",
     fill: "fill-red-500 dark:fill-red-400",
     gradient: "bg-gradient-to-br from-red-500 via-red-600 to-red-700",
