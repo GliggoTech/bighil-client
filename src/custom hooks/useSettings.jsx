@@ -30,7 +30,6 @@ export const useSettings = () => {
       }
       throw new Error(res?.error || "Failed to update password");
     } catch (error) {
-      console.log(error.message);
       toast({
         variant: "destructive",
         title: "Error",

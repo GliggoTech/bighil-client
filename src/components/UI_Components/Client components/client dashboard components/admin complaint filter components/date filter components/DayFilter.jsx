@@ -25,7 +25,7 @@ const DayFilter = ({ dateFilter, setDateFilter }) => {
 
       <DateSelect
         value={dateFilter.month}
-        onChange={handleDayChange}
+        onChange={(value) => setDateFilter({ ...dateFilter, month: value })}
         placeholder="Month"
         options={getMonthOptions()}
         anyOption={{ value: "anyMonth", label: "Any" }}
@@ -33,7 +33,7 @@ const DayFilter = ({ dateFilter, setDateFilter }) => {
 
       <DateSelect
         value={dateFilter.year}
-        onChange={handleDayChange}
+        onChange={(value) => setDateFilter({ ...dateFilter, year: value })}
         placeholder="Year"
         options={getYearOptions()}
         anyOption={{ value: "anyYear", label: "Any" }}

@@ -13,7 +13,7 @@ export default async function Recent_Notifications_page() {
       }
     );
   } catch (error) {
-    console.log(error);
+   
     return (
       <div>
         <h1>Error in fetching recent notifications</h1>

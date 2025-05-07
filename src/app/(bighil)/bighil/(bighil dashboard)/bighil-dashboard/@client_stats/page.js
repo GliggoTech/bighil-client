@@ -20,7 +20,6 @@ export default async function ClientsStatsPage() {
     return <ErrorComponent />;
   }
 
-  // console.log(res);
   return (
     <div>
       <TopClientsChart

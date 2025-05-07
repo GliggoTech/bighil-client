@@ -246,7 +246,10 @@ export default function CompanyRegistrationForm({
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setSelectedClient(null);
+                      setOpen(false);
+                    }}
                     className="border-dialog_inside_border_color text-white bg-red hover:bg-red/80 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-texttext-text_color"
                   >
                     Cancel

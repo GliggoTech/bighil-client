@@ -26,7 +26,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const { socket, isConnected, connectionError, reconnect } = useSocket();
   const router = useRouter();
   const searchParams = useSearchParams();
-  console.log(searchParams.get("notificationId"));
+  
   const hasDecrementedRef = useRef(false);
   const { userRole, markAsRead } = useNotificationStore();
   const hasJoinedRoomRef = useRef(false);
@@ -69,7 +69,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
     // Only join the room once
     if (!hasJoinedRoomRef.current) {
-      console.log(`Joining complaint room: complaint_${complaint._id}`);
+      
       socket.emit("joinComplaintRoom", `complaint_${complaint._id}`);
       hasJoinedRoomRef.current = true;
     }

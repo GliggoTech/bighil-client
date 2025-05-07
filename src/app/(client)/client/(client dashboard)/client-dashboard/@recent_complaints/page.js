@@ -13,7 +13,6 @@ export default async function RecentComplaintsPage() {
       cache: "no-cache",
     });
   } catch (error) {
-    console.log(error);
     return <ComplaintsError />;
   }
 

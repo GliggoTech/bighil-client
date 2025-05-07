@@ -49,28 +49,32 @@ const ComplaintFilter = ({ bighil = false }) => {
   const token = useAccessToken();
   const { loading, fetchData, error } = useFetch();
 
-  // Memoized filter parameters with page
-  const filterParams = useMemo(() => {
-    const isValidDateFilter = () => {
-      const { type, day, month, year } = dateFilter;
-
-      if (type === "day") return !!(day && month && year);
-      if (type === "month") return !!(month && year);
-      if (type === "year") return !!year;
-      return false;
-    };
-
-    return {
+  const filterParams = useMemo(
+    () => ({
       complaintNumber,
       status,
-      clientName,
       dateFilter: {
         ...dateFilter,
-        valid: isValidDateFilter(),
+        valid: (() => {
+          switch (dateFilter.type) {
+            case "day":
+              return (
+                !!dateFilter.day && !!dateFilter.month && !!dateFilter.year
+              );
+            case "month":
+              return !!dateFilter.month && !!dateFilter.year;
+            case "year":
+              return !!dateFilter.year;
+            default:
+              return false;
+          }
+        })(),
       },
+      clientName,
       page,
-    };
-  }, [complaintNumber, status, dateFilter, clientName, page]);
+    }),
+    [complaintNumber, status, dateFilter, clientName, page, bighil]
+  );
 
   // Active filters calculation
   useEffect(() => {
@@ -88,9 +92,6 @@ const ComplaintFilter = ({ bighil = false }) => {
       if (!token) return;
 
       try {
-        if (params.dateFilter.type !== "none" && !params.dateFilter.valid) {
-          return; // Don't search if required date fields aren't filled
-        }
         const queryParams = new URLSearchParams();
         let shouldResetPage = false;
         // Basic filters
@@ -108,20 +109,24 @@ const ComplaintFilter = ({ bighil = false }) => {
         }
         queryParams.append("page", params.page.toString());
 
+        // if (params.dateFilter.type !== "none" && !params.dateFilter.valid) {
+        //   return; // Don't search if required date fields aren't filled
+        // }
+
         // Date filter handling
-        const { type, day, month, year } = params.dateFilter || {};
-        if (type === "day" && day && day !== "allDay") {
-          queryParams.append("day", day);
-          shouldResetPage = true;
+        const { type, day, month, year, valid } = params.dateFilter || {};
+        if (valid) {
+          if (type === "day" && day && day !== "allDay") {
+            queryParams.append("day", day);
+          }
+          if (month && month !== "anyMonth") {
+            queryParams.append("month", month);
+          }
+          if (year && year !== "anyYear") {
+            queryParams.append("year", year);
+          }
         }
-        if (month && month !== "anyMonth") {
-          queryParams.append("month", month);
-          shouldResetPage = true;
-        }
-        if (year && year !== "anyYear") {
-          queryParams.append("year", year);
-          shouldResetPage = true;
-        }
+        console.log(queryParams.toString());
 
         // API call
         const url = getBackendUrl();
@@ -150,7 +155,7 @@ const ComplaintFilter = ({ bighil = false }) => {
         console.log("Error fetching complaints:", err);
       }
     }, 300),
-    [token, bighil]
+    [token, bighil, page]
   );
   // Search effect with initial load handling
   useEffect(() => {

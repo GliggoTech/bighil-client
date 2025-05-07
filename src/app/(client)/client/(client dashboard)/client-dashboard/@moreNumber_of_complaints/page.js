@@ -14,7 +14,6 @@ export default async function More_Nuumber_Of_Complaints_Against() {
       }
     );
   } catch (error) {
-    console.log(error);
     return <div>Error from more-complaints-against</div>;
   }
 

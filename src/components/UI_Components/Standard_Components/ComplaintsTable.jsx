@@ -210,7 +210,7 @@ const ComplaintsTable = ({
                   const statusBadge = getStatusBadge(
                     complaint.status_of_client
                   );
-                  console.log(statusBadge);
+             
                   const priorityBadge = getPriorityBadge(complaint.priority);
 
                   return (

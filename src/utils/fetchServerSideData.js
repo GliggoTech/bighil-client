@@ -38,7 +38,6 @@ export async function fetchServerSideData(endpoint, options = {}) {
     const res = await response.json();
     return res.data;
   } catch (error) {
-    console.log("Failed to fetch data:", error);
     redirect("/");
   }
 }

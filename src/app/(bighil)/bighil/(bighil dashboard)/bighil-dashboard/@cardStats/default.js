@@ -17,7 +17,6 @@ export default async function CardsStatusPage() {
     return <ErrorComponent />;
   }
 
-  // console.log(res);
   return (
     <div>
       <DashboardCard metrics={res} />

@@ -32,7 +32,6 @@ export async function BighilLogin(loginData) {
     }
     return { success, message, user };
   } catch (error) {
-    console.log(error);
     return { success: false, message: "Something went wrong" };
   }
 }
