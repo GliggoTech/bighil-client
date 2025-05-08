@@ -10,9 +10,11 @@ export async function fetchServerSideData(endpoint, options = {}) {
     options.retryDelay || 1000
   );
 
-  // if (!token) {
-  //   redirect("/");
-  // }
+  // ✅ If no valid token after retry, redirect or throw
+  if (!token || typeof token !== "string" || token.split(".").length !== 3) {
+    console.error("Invalid token format:", token);
+    redirect("/"); // Or throw new Error("Invalid token format")
+  }
 
   const headers = {
     "Content-Type": "application/json",
@@ -31,27 +33,35 @@ export async function fetchServerSideData(endpoint, options = {}) {
     const url = getBackendUrl();
     const response = await fetch(`${url}${endpoint}`, config);
 
-    // if (!response.ok) {
-    //   redirect("/");
-    // }
+    if (!response.ok) {
+      console.error("Fetch failed:", response.statusText);
+      // redirect("/");
+    }
 
     const res = await response.json();
+
     if (!res.data) {
-      throw new Error(res.message);
+      throw new Error(res.message || "No data returned from API");
     }
 
     return res.data;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    console.error("API fetch error:", error);
+    throw error;
   }
 }
+
 async function getTokenWithRetry(maxRetries = 3, delay = 1000) {
   let retries = 0;
 
   while (retries < maxRetries) {
     const token = await getToken();
-    if (token) return token;
+
+    // ✅ Validate token format (basic check for JWT)
+    if (token && typeof token === "string" && token.split(".").length === 3) {
+      return token;
+    }
+    if (token && isValidJwt(token)) return token;
 
     retries++;
     if (retries < maxRetries) {
