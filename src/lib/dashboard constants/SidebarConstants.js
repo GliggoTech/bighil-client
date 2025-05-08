@@ -16,27 +16,27 @@ export const clientSidebarValues = [
     icon: LayoutDashboard,
     description: "Overview of all activities",
   },
-  {
-    id: 2,
-    title: "Complaints",
-    path: "/client/client-complaints",
-    icon: AlertCircle,
-    description: "Manage your submitted complaints",
-  },
-  {
-    id: 3,
-    title: "Notifications",
-    path: "/client/client-notifications",
-    icon: Bell,
-    description: "Check your alerts and updates",
-  },
-  {
-    id: 4,
-    title: "Settings",
-    path: "/client/client-setting",
-    icon: Settings,
-    description: "Configure your preferences",
-  },
+  // {
+  //   id: 2,
+  //   title: "Complaints",
+  //   path: "/client/client-complaints",
+  //   icon: AlertCircle,
+  //   description: "Manage your submitted complaints",
+  // },
+  // {
+  //   id: 3,
+  //   title: "Notifications",
+  //   path: "/client/client-notifications",
+  //   icon: Bell,
+  //   description: "Check your alerts and updates",
+  // },
+  // {
+  //   id: 4,
+  //   title: "Settings",
+  //   path: "/client/client-setting",
+  //   icon: Settings,
+  //   description: "Configure your preferences",
+  // },
 ];
 export const bighilSidebarValues = [
   {
