@@ -2,7 +2,6 @@
 
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { cookies } from "next/headers";
-
 export async function clientLogin(loginData) {
   try {
     const url = getBackendUrl();
@@ -14,29 +13,26 @@ export async function clientLogin(loginData) {
       body: JSON.stringify(loginData),
       credentials: "include",
     });
+
     const { success, user, message, token } = await res.json();
 
     if (success && token) {
-      // First await cookies() to get the cookie store
       const cookieStore = await cookies();
 
-      // Then use the cookie store
-      cookieStore.set({
-        name: "access_token",
-        value: token,
+      cookieStore.set("access_token", token, {
         httpOnly: true,
         secure: process.env.NEXT_PUBLIC_NODE_DEV === "production",
         sameSite:
           process.env.NEXT_PUBLIC_NODE_DEV === "production" ? "none" : "lax",
         path: "/",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
+        maxAge: 7 * 24 * 60 * 60,
       });
     }
 
-    return { success, user, message, token };
+    return { success, user, message }; // plain object only
   } catch (error) {
     console.error(error);
-    throw error;
+    return { success: false, message: "Login error." };
   }
 }
 

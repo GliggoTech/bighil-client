@@ -61,7 +61,6 @@ async function getTokenWithRetry(maxRetries = 3, delay = 1000) {
     if (token && typeof token === "string" && token.split(".").length === 3) {
       return token;
     }
-    if (token && isValidJwt(token)) return token;
 
     retries++;
     if (retries < maxRetries) {
