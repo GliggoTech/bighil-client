@@ -31,14 +31,19 @@ export async function fetchServerSideData(endpoint, options = {}) {
     const url = getBackendUrl();
     const response = await fetch(`${url}${endpoint}`, config);
 
-    if (!response.ok) {
-      redirect("/");
-    }
+    // if (!response.ok) {
+    //   redirect("/");
+    // }
 
     const res = await response.json();
+    if (!res.data) {
+      throw new Error(res.message);
+    }
+
     return res.data;
   } catch (error) {
-    redirect("/");
+    console.error(error);
+    throw error.message;
   }
 }
 async function getTokenWithRetry(maxRetries = 3, delay = 1000) {

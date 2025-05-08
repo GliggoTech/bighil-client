@@ -14,7 +14,7 @@ const BighilLayoutWrapper = ({ children }) => {
       <div className="flex flex-col flex-1">
         <Bighil_Navbar isOpen={isOpen} />
         <main
-          className={`overflow-auto bg-green/10 transition-all duration-200 ${
+          className={`overflow-auto  transition-all duration-200 ${
             isOpen ? "ml-[240px]" : "ml-[72px]"
           }`}
         >

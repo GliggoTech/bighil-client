@@ -159,38 +159,38 @@ export default function ComplaintsChart() {
           <>
             <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {/* Summary Cards */}
-              <div className="rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Total Complaints
                 </p>
-                <p className="text-2xl font-bold text-text-primary dark:text-text-light">
+                <p className="text-2xl font-bold text-text_color dark:text-text-light">
                   {summary.total}
                 </p>
               </div>
 
-              <div className="rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Daily Average
                 </p>
-                <p className="text-2xl font-bold text-text-primary dark:text-text-light">
+                <p className="text-2xl font-bold text-text_color dark:text-text-light">
                   {summary.dailyAvg}
                 </p>
               </div>
 
-              <div className="rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Period
                 </p>
-                <p className="text-2xl font-bold text-text-primary dark:text-text-light">
+                <p className="text-2xl font-bold text-text_color dark:text-text-light">
                   {timeRange} days
                 </p>
               </div>
 
-              <div className="rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Last Updated
                 </p>
-                <p className="text-lg font-medium text-text-primary dark:text-text-light">
+                <p className="text-lg font-medium text-text_color dark:text-text-light">
                   {new Date().toLocaleDateString()}
                 </p>
               </div>

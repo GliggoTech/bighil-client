@@ -1,5 +1,5 @@
 import { FileText, FileImage, Download, XCircle } from "lucide-react";
-
+import { IoIosAttach } from "react-icons/io";
 const FilePreview = ({ file }) => {
   const getFileIcon = (fileName) => {
     const ext = fileName?.split(".").pop().toLowerCase();
@@ -15,10 +15,10 @@ const FilePreview = ({ file }) => {
   return (
     <div
       className="relative aspect-square group
-                    border-2 border-border-light dark:border-border-dark 
+                    border-2 border-light dark:border-dark 
                     rounded-xl overflow-hidden 
                     transition-all duration-300 ease-in-out
-                    hover:border-primary dark:hover:border-primary-light
+                    hover:border-dialog_inside_border_color dark:hover:border-light
                     hover:shadow-md"
     >
       <div
@@ -54,13 +54,13 @@ const FilePreview = ({ file }) => {
         rel="noopener noreferrer"
         className="absolute bottom-2 right-2 
                    p-2 rounded-lg shadow-lg
-                   bg-surface-light dark:bg-surface-dark 
+                   bg-primary dark:bg-dark 
                    opacity-0 group-hover:opacity-100 
                    transform translate-y-2 group-hover:translate-y-0
                    transition-all duration-300 ease-in-out
-                   hover:bg-primary/10 dark:hover:bg-primary-dark/10"
+                   hover:bg-primary dark:hover:bg-primary-dark group"
       >
-        <Download className="w-4 h-4 text-primary dark:text-primary-light" />
+        <Download className="w-4 h-4 text-white  dark:text-primary-light" />
       </a>
     </div>
   );
@@ -69,14 +69,14 @@ const FilePreview = ({ file }) => {
 const EmptyState = () => (
   <div
     className="w-full bg-surface-light dark:bg-surface-dark 
-                  rounded-xl p-8 shadow-sm
-                  border border-border-light dark:border-border-dark"
+                  rounded-xl p-3 shadow-sm
+                  "
   >
     <div className="flex flex-col items-center justify-center">
       <div className="p-3 rounded-full bg-background-secondary dark:bg-background-dark">
-        <XCircle className="w-8 h-8 text-text-muted dark:text-text-muted" />
+        <XCircle className="w-8 h-8 text-text_color dark:text-text-muted" />
       </div>
-      <p className="mt-4 text-sm text-text-secondary dark:text-text-muted">
+      <p className="mt-2 text-sm text-text_color dark:text-text-muted">
         No evidence available for this case
       </p>
     </div>
@@ -90,16 +90,22 @@ export default function EvidenceGallery({ evidence }) {
 
   return (
     <div
-      className="bg-surface-light dark:bg-surface-dark 
-                    rounded-xl p-6 shadow-sm
-                    border border-border-light dark:border-border-dark"
+      className=" dark:bg-surface-dark 
+                    rounded-xl p-3 shadow-sm
+                    "
     >
       {/* Optional: Section Header */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-text-primary dark:text-text-light">
-          Evidence Gallery
-        </h3>
-        <p className="text-sm text-text-secondary dark:text-text-muted">
+        <div className="flex items-center gap-3  mb-2">
+          <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary-dark/10">
+            <IoIosAttach className="w-5 h-5 text-primary dark:text-primary-light" />
+          </div>
+          <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
+            Evidence Gallery
+          </h2>
+        </div>
+
+        <p className="text-sm text-text_color dark:text-text-muted">
           {evidence.length} file{evidence.length !== 1 ? "s" : ""} attached
         </p>
       </div>

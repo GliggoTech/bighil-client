@@ -36,11 +36,11 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
       <Textarea
         {...register("note", { required: "Note cannot be empty" })}
         placeholder="Add a new note..."
-        className="min-h-[100px]"
+        className="min-h-[80px] focus-within:ring-0 ring-white border-black/10"
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault(); // Prevent new line
@@ -52,7 +52,7 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
       <Button
         disabled={loading || !noteValue.trim()} // Disable when empty
         type="submit"
-        className="bg-primary-light text-text-primary hover:bg-primary hover:text-text-light"
+        className="bg-primary text-white hover:bg-primary hover:text-text-light"
       >
         {loading ? "Adding.." : "Add New Note"}
       </Button>

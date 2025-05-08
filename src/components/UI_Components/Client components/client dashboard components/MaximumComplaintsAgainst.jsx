@@ -79,7 +79,7 @@ export function MaximumComplaintsAgainst({ data }) {
                     hover:shadow-primary/5 transition-all duration-300"
     >
       <CardHeader className="items-center">
-        <CardTitle className="text-text-primary text-xl">
+        <CardTitle className="text-text_color text-xl">
           Top Complained Person
         </CardTitle>
         <CardDescription className="text-text-secondary">

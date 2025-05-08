@@ -86,7 +86,7 @@ const Clients_Table = ({ clients }) => {
                       key={client._id}
                       className=" p-20 hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
                     >
-                      <TableCell className="text-text-primary dark:text-text-light">
+                      <TableCell className="text-text_color dark:text-text-light">
                         {client.companyName}
                       </TableCell>
                       <TableCell className="text-text-secondary dark:text-text-text_color">

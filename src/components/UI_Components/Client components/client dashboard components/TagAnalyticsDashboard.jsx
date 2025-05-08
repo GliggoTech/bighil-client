@@ -147,7 +147,7 @@ export function TagAnalyticsDashboard({ tagData, totalComplaints }) {
           className="bg-surface-medium backdrop-blur-sm border border-slate-700/50 
                       px-4 py-3 rounded-lg shadow-xl"
         >
-          <p className="text-text-primary font-semibold text-lg capitalize">
+          <p className="text-text_color font-semibold text-lg capitalize">
             {payload[0].name}
           </p>
           <div className="flex items-center gap-2 mt-1">
@@ -174,7 +174,7 @@ export function TagAnalyticsDashboard({ tagData, totalComplaints }) {
         className="items-center 
                            "
       >
-        <CardTitle className="text-text-primary text-xl font-semibold">
+        <CardTitle className="text-text_color text-xl font-semibold">
           Complaint Categories
         </CardTitle>
         <CardDescription className="text-text-secondary mb-2">
@@ -243,8 +243,8 @@ export function TagAnalyticsDashboard({ tagData, totalComplaints }) {
                       className={`text-sm text-wrap transition-colors duration-200
                                 ${
                                   activeIndex === index
-                                    ? "text-text-primary font-medium"
-                                    : "text-text-primary"
+                                    ? "text-text_color font-medium"
+                                    : "text-text_color"
                                 }`}
                     >
                       {entry.name} ({entry.percentage}%)

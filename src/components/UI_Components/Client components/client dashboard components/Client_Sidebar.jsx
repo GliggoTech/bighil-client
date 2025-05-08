@@ -44,7 +44,7 @@ const Client_Sidebar = () => {
 
       <div className="relative z-50 flex flex-col h-full py-6 px-4">
         {/* <motion.button
-          className="absolute top-6 -right-2 w-6 h-6 flex items-center justify-center rounded-full bg-primary-dark text-text-light shadow-lg hover:bg-primary-default transition-colors duration-200 z-20 border border-border-light dark:border-border-dark"
+          className="absolute top-6 -right-2 w-6 h-6 flex items-center justify-center rounded-full bg-primary-dark text-text-light shadow-lg hover:bg-primary-default transition-colors duration-200 z-20 "
           whileTap={{ scale: 0.9 }}
           onClick={toggleSidebar}
           aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}

@@ -26,7 +26,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const { socket, isConnected, connectionError, reconnect } = useSocket();
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const hasDecrementedRef = useRef(false);
   const { userRole, markAsRead } = useNotificationStore();
   const hasJoinedRoomRef = useRef(false);
@@ -69,7 +69,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
     // Only join the room once
     if (!hasJoinedRoomRef.current) {
-      
       socket.emit("joinComplaintRoom", `complaint_${complaint._id}`);
       hasJoinedRoomRef.current = true;
     }
@@ -166,7 +165,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   }, [searchParams, router, userRole, token]);
 
   return (
-    <div className="min-h-screen bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+    <div className="min-h-screen bg-bighil_dashboard_bg  transition-colors duration-300">
       {/* Socket Connection Status */}
       {!socketConnected && (
         <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-4 mb-4">
@@ -185,49 +184,48 @@ const ParticularComplaint = ({ complaint, unread }) => {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className=" px-4 py-8 space-y-3">
         {/* Main Container */}
-        <div className="bg-background-primary dark:bg-background-dark rounded-2xl shadow-lg border border-border-light dark:border-primary-dark overflow-hidden">
+        <div className="bg-white dark:bg-dark rounded-2xl  dark:border-primary-dark overflow-hidden">
           {/* Header Section */}
-          <div className="border-b border-border-light dark:border-primary-dark pb-6 bg-background-secondary dark:bg-surface-dark">
+          <div className="  pb-3 bg-background-secondary ">
             <ComplaintHeader complaint={complaint} userRole={userRole} />
           </div>
 
           {/* Content Grid */}
-          <div className="p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="p-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               {/* Main Content Area */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Complaint Details Card */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-primary-light">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-primary-light">
                   <ComplaintDetails complaint={complaint} />
                 </div>
 
                 {/* Evidence Gallery Section */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-primary-light">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-primary-light">
                   <EvidenceGallery evidence={complaint?.evidence || []} />
                 </div>
 
                 {/* Notes Section */}
-                {userRole !== "user" ||
-                  (userRole !== "BIGHIL" && (
-                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-warning">
-                      <NotesSection
-                        notes={complaint?.notes || []}
-                        complaintId={complaint?._id}
-                      />
-                    </div>
-                  ))}
+                {userRole !== "user" && userRole !== "BIGHIL" && (
+                  <div className="rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-warning">
+                    <NotesSection
+                      notes={complaint?.notes || []}
+                      complaintId={complaint?._id}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Sidebar Content */}
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {/* Timeline Card */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-info">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-info">
                   <Timeline events={timeline} />
                 </div>
 
-                <div className="bg-surface-light w-fit dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-success hover:rounded-xl">
+                <div className=" w-fit  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-success hover:rounded-xl">
                   <StatusSelector
                     status={status}
                     setStatus={setStatus}
@@ -237,7 +235,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
                   />
                 </div>
 
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark transition-colors duration-200 hover:border-accent-danger">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-danger">
                   <ActionTaken
                     complaintId={complaint?._id}
                     onStatusChange={handleStatusChange}
@@ -251,7 +249,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
           </div>
 
           {/* Chat Interface */}
-          <div className="border-t border-border-light dark:border-accent-success mt-8 bg-background-secondary dark:bg-surface-dark">
+          <div className="border-t border-dialog_inside_border_color dark:border-accent-success mt-8 bg-background-secondary ">
             <div className="p-6">
               <ChatInterface
                 complaintId={complaint?._id}

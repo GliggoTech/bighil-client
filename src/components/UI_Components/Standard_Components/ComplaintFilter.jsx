@@ -126,7 +126,6 @@ const ComplaintFilter = ({ bighil = false }) => {
             queryParams.append("year", year);
           }
         }
-        console.log(queryParams.toString());
 
         // API call
         const url = getBackendUrl();

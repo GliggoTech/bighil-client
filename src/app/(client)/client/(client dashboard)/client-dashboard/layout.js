@@ -21,7 +21,7 @@ export default function AdminDashboardLayout({
 
       <div className="relative z-10 container mx-auto py-8 max-w-7xl px-4 sm:px-6">
         {/* Main Content Area */}
-        <div className="mb-8 bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg border border-border-light dark:border-border-dark p-6 transition-all duration-300 hover:shadow-xl backdrop-blur-lg">
+        <div className="mb-8 bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg  p-6 transition-all duration-300 hover:shadow-xl backdrop-blur-lg">
           <div className="flex-1 space-y-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
@@ -40,7 +40,7 @@ export default function AdminDashboardLayout({
         <div className="mb-8 space-y-4">
           <div className="flex items-center">
             <div className="h-8 w-1 bg-gradient-to-b from-primary to-primary-light rounded-full mr-3" />
-            <h2 className="text-xl font-semibold text-text-primary dark:text-text-light">
+            <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
               Dashboard Overview
             </h2>
           </div>
@@ -51,11 +51,11 @@ export default function AdminDashboardLayout({
         <div className="mb-8 space-y-4">
           <div className="flex items-center">
             <div className="h-8 w-1 bg-gradient-to-b from-primary-dark to-secondary-dark rounded-full mr-3" />
-            <h2 className="text-xl font-semibold text-text-primary dark:text-text-light">
+            <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
               Complaint Analytics
             </h2>
           </div>
-          <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg border border-border-light dark:border-border-dark p-6 transition-all duration-300 hover:shadow-xl backdrop-blur-lg">
+          <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg  p-6 transition-all duration-300 hover:shadow-xl backdrop-blur-lg">
             <div className="bg-gradient-to-r from-background-secondary to-surface-medium dark:from-background-dark dark:to-surface-dark p-1 rounded-xl">
               {complaint_chart}
             </div>
@@ -69,14 +69,14 @@ export default function AdminDashboardLayout({
           {/* Header Section */}
           <div className="flex items-center">
             <div className="h-8 w-1 bg-gradient-to-b from-accent-warning to-accent-danger rounded-full mr-3" />
-            <h2 className="text-xl font-semibold text-text-primary dark:text-text-light">
+            <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
               Recent Activities
             </h2>
           </div>
           {/* First Row - Activity Cards Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full auto-rows-fr">
             {/* Recent Complaints Card */}
-            <div className="flex flex-col h-full group bg-surface-light/80 dark:bg-surface-dark rounded-2xl shadow-lg border border-border-light dark:border-border-dark overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div className="flex flex-col h-full group bg-surface-light/80 dark:bg-surface-dark rounded-2xl shadow-lg  overflow-hidden transition-all duration-300 hover:shadow-xl">
               <div className="flex-1 flex flex-col p-1 bg-gradient-to-r from-primary-light/10 to-primary-dark/10 dark:from-primary-light/5 dark:to-primary-dark/5 group-hover:from-primary-light/20 group-hover:to-primary-dark/20 transition-all duration-300">
                 <div className="flex-1 p-4 rounded-2xl">
                   {recent_complaints}
@@ -85,7 +85,7 @@ export default function AdminDashboardLayout({
             </div>
 
             {/* Recent Notifications Card */}
-            <div className="flex flex-col h-full group bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg border border-border-light dark:border-border-dark overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div className="flex flex-col h-full group bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg  overflow-hidden transition-all duration-300 hover:shadow-xl">
               <div className="flex-1 flex flex-col p-1 rounded-2xl bg-gradient-to-r from-secondary-light/10 to-secondary-dark/10 dark:from-secondary-light/5 dark:to-secondary-dark/5 group-hover:from-secondary-light/20 group-hover:to-secondary-dark/20 transition-all duration-300">
                 <div className="flex-1 p-4 rounded-2xl">
                   {recent_notifications}

@@ -7,7 +7,7 @@ export function ComplaintsHeader() {
   return (
     <CardHeader className="bg-gradient-to-r from-background-secondary to-background-tertiary border-b border-border-light dark:border-border-dark">
       <div className="flex items-center justify-between">
-        <CardTitle className="text-lg flex items-center gap-2 font-semibold text-text-primary dark:text-text-light">
+        <CardTitle className="text-lg flex items-center gap-2 font-semibold text-text_color dark:text-text-light">
           <ScrollText className="text-accent-info w-6 h-6  " /> Recent
           Complaints
         </CardTitle>

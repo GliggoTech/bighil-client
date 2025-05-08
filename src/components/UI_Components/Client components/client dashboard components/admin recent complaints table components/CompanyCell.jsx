@@ -14,7 +14,7 @@ export function CompanyCell({ complaint }) {
           </AvatarFallback>
         </Avatar> */}
         <div>
-          <div className="font-medium text-text-primary dark:text-text-light">
+          <div className="font-medium text-text_color dark:text-text-light">
             {complaint.companyName}
           </div>
           <div className=" text-text-secondary dark:text-text-muted flex items-center">

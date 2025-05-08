@@ -9,16 +9,16 @@ import { useSocket } from "@/context/socketContext";
 
 const NoteCard = ({ note }) => (
   <div
-    className="relative p-5 bg-background-secondary dark:bg-surface-dark 
-                  rounded-xl border border-border-light dark:border-border-dark
+    className="relative p-5 bg-white/10 dark:bg-surface-dark 
+                  rounded-xl shadow-lg 
                   transition-all duration-300 hover:shadow-md"
   >
     {/* Timestamp Badge */}
     <span
       className="absolute -top-3 right-4 px-3 py-1 text-xs
-                    bg-accent-warning/50 dark:bg-accent-warning/20
-                    text-text-primary dark:text-text-muted
-                    rounded-full border border-accent-warning/20"
+                    bg-warning/50 dark:bg-warning/20
+                    text-text_color font-semibold dark:text-text-muted
+                    rounded-full border border-warning/20"
     >
       {note.createdAt
         ? !isNaN(new Date(note.createdAt).getTime())
@@ -33,15 +33,15 @@ const NoteCard = ({ note }) => (
     {/* Author and Content */}
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <div className="h-2 w-2 rounded-full bg-accent-info"></div>
-        <span className="text-sm font-medium text-text-primary dark:text-text-light">
+        <div className="h-2 w-2 rounded-full bg-info"></div>
+        <span className="text-sm font-semibold text-text_color dark:text-text-light">
           {note.addedBy}
         </span>
       </div>
 
       <p
-        className="text-text-secondary dark:text-text-muted leading-relaxed
-                    pl-4 border-l-2 border-border-light dark:border-border-dark"
+        className="text-text_color dark:text-text-muted leading-relaxed
+                    pl-5 border-l-2 border-primary dark:border-border-dark"
       >
         {note.complaintNote}
       </p>
@@ -95,24 +95,24 @@ const NotesSection = ({ notes, complaintId }) => {
 
   return (
     <div
-      className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 
-                    shadow-sm border border-border-light dark:border-border-dark
+      className="bg-white dark:bg-surface-dark rounded-xl p-3 
+                    shadow-sm 
                     transition-all duration-300"
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10">
+        <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary-dark/10">
           <FiFileText className="w-5 h-5 text-primary dark:text-primary-light" />
         </div>
-        <h2 className="text-xl font-semibold text-text-primary dark:text-text-light">
+        <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
           Notes
         </h2>
       </div>
 
       {/* Form */}
       <div
-        className="bg-background-primary dark:bg-surface-dark rounded-lg p-4
-                      border border-border-light dark:border-border-dark"
+        className="bg-white dark:bg-surface-dark rounded-lg 
+                      "
       >
         <NotesForm
           complaintId={complaintId}
@@ -122,7 +122,7 @@ const NotesSection = ({ notes, complaintId }) => {
       </div>
 
       {/* Notes List */}
-      <div className="mt-8 space-y-6">
+      <div className="mt-3 space-y-6">
         {currentNotes?.map((note, index) => (
           <NoteCard key={`${note._id}+${index}`} note={note} />
         ))}
@@ -130,7 +130,7 @@ const NotesSection = ({ notes, complaintId }) => {
 
       {/* Empty State */}
       {(!currentNotes || currentNotes.length === 0) && (
-        <div className="text-center py-8 text-text-muted dark:text-text-muted">
+        <div className="text-center py-8 text-text_color dark:text-text-muted">
           No notes added yet.
         </div>
       )}

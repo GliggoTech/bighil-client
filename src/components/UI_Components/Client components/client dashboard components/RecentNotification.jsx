@@ -78,7 +78,7 @@ const RecentNotification = ({ recentNotifications }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BellIcon className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg font-semibold text-text-primary dark:text-text-light">
+            <CardTitle className="text-lg font-semibold text-text_color dark:text-text-light">
               Recent Notifications
             </CardTitle>
           </div>
@@ -107,16 +107,16 @@ const RecentNotification = ({ recentNotifications }) => {
           <TableHeader>
             <TableRow className="bg-background-secondary hover:bg-background-secondary dark:bg-surface-dark">
               <TableHead className="w-[50px]"></TableHead>
-              <TableHead className="font-semibold text-text-primary dark:text-text-light">
+              <TableHead className="font-semibold text-text_color dark:text-text-light">
                 Notification
               </TableHead>
-              <TableHead className="w-[100px] font-semibold text-text-primary dark:text-text-light">
+              <TableHead className="w-[100px] font-semibold text-text_color dark:text-text-light">
                 Type
               </TableHead>
-              {/* <TableHead className="w-[120px] font-semibold text-text-primary dark:text-text-light">
+              {/* <TableHead className="w-[120px] font-semibold text-text_color dark:text-text-light">
                 Time
               </TableHead> */}
-              <TableHead className="w-[100px] font-semibold text-text-primary dark:text-text-light">
+              <TableHead className="w-[100px] font-semibold text-text_color dark:text-text-light">
                 Action
               </TableHead>
             </TableRow>
@@ -146,7 +146,7 @@ const RecentNotification = ({ recentNotifications }) => {
                         <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                       )} */}
                       <div>
-                        <p className="font-medium  text-text-primary dark:text-text-light">
+                        <p className="font-medium  text-text_color dark:text-text-light">
                           {notification.message}
                         </p>
                         {/* <p className="text-xs text-text-secondary mt-1">

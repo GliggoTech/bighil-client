@@ -11,7 +11,7 @@ export const DayProgressBar = ({ currentTime }) => {
           style={{ width: `${progress}%` }}
         ></div>
       </div>
-      <div className="flex justify-between text-xs text-text-primary">
+      <div className="flex justify-between text-xs text-text_color">
         <span>12 AM</span>
         <span>12 PM</span>
         <span>11:59 PM</span>

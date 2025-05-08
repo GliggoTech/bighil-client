@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 
 export default async function ParticularComplaintPage({ params }) {
   try {
-    const { id } = params;
+    const complaintIdParams = await params;
+    const { id } = complaintIdParams;
 
     if (!id) {
       redirect("/"); // Malformed URL, redirect to home or 404

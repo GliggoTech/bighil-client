@@ -314,7 +314,7 @@ export default function PasswordResetPage({ role }) {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-text-primary font-medium flex items-center">
+                          <FormLabel className="text-text_color font-medium flex items-center">
                             <Mail className="w-4 h-4 mr-2 text-primary" />
                             Email Address
                           </FormLabel>
@@ -369,7 +369,7 @@ export default function PasswordResetPage({ role }) {
                     className="space-y-6"
                   >
                     <div className="mb-6 flex items-center justify-center">
-                      <div className="text-center px-6 py-3 rounded-full bg-primary/10 text-text-primary text-sm font-medium">
+                      <div className="text-center px-6 py-3 rounded-full bg-primary/10 text-text_color text-sm font-medium">
                         Code sent to {emailForm.getValues("email")}
                       </div>
                     </div>
@@ -460,7 +460,7 @@ export default function PasswordResetPage({ role }) {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-text-primary font-medium flex items-center">
+                          <FormLabel className="text-text_color font-medium flex items-center">
                             <Lock className="w-4 h-4 mr-2 text-primary" />
                             New Password
                           </FormLabel>
@@ -526,7 +526,7 @@ export default function PasswordResetPage({ role }) {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-text-primary">
+                  <h3 className="text-xl font-bold text-text_color">
                     Password Reset Complete
                   </h3>
 

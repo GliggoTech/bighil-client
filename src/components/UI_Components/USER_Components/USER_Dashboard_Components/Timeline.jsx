@@ -14,32 +14,32 @@ const statusConfig = {
     icon: Clock,
     style: {
       icon: "text-warning dark:text-warning-light",
-      bg: "bg-accent-warning/10 dark:bg-accent-warning/20",
-      border: "border-accent-warning/20 dark:border-accent-warning/30",
+      bg: "bg-warning/10 dark:bg-warning/20",
+      border: "border-warning/20 dark:border-warning/30",
     },
   },
   "In Progress": {
     icon: AlertCircle,
     style: {
-      icon: "text-accent-info dark:text-accent-info-light",
-      bg: "bg-accent-info/10 dark:bg-accent-info/20",
-      border: "border-accent-info/20 dark:border-accent-info/30",
+      icon: "text-info dark:text-info-light",
+      bg: "bg-info/10 dark:bg-info/20",
+      border: "border-info/20 dark:border-info/30",
     },
   },
   Unwanted: {
     icon: ThumbsDown,
     style: {
-      icon: "text-accent-danger dark:text-accent-danger-light",
-      bg: "bg-accent-danger/10 dark:bg-accent-danger/20",
-      border: "border-accent-danger/20 dark:border-accent-danger/30",
+      icon: "text-danger dark:text-danger-light",
+      bg: "bg-danger/10 dark:bg-danger/20",
+      border: "border-danger/20 dark:border-danger/30",
     },
   },
   Resolved: {
     icon: CheckCircle2,
     style: {
-      icon: "text-accent-success dark:text-accent-success-light",
-      bg: "bg-accent-success/10 dark:bg-accent-success/20",
-      border: "border-accent-success/20 dark:border-accent-success/30",
+      icon: "text-success dark:text-success-light",
+      bg: "bg-success/10 dark:bg-success/20",
+      border: "border-success/20 dark:border-success/30",
     },
   },
   default: {
@@ -68,7 +68,7 @@ export const TimelineEvent = ({ event, isLast }) => {
         />
       )}
 
-      <div className="relative flex items-start space-x-4 p-4 bg-background-secondary dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark transition-all duration-300 hover:shadow-md">
+      <div className="relative flex items-start space-x-4 p-4 bg-background-secondary dark:bg-surface-dark rounded-xl  transition-all duration-300 hover:shadow-md">
         <div className="relative flex-shrink-0">
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full border ${config.style.border} ${config.style.bg} transition-all duration-300`}
@@ -83,7 +83,7 @@ export const TimelineEvent = ({ event, isLast }) => {
         <div className="min-w-0 flex-1 pt-1">
           <div className="flex justify-between items-start gap-4">
             <div className="space-y-1">
-              <p className="text-sm font-medium text-text-primary dark:text-text-light">
+              <p className="text-sm font-medium text-text_color dark:text-text-light">
                 {status === "default" ? "Unknown Status" : status}
               </p>
               {event.message && (
@@ -94,7 +94,7 @@ export const TimelineEvent = ({ event, isLast }) => {
             </div>
 
             <time
-              className="flex-shrink-0 text-sm text-text-muted dark:text-text-muted px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark border border-border-light dark:border-border-dark"
+              className="flex-shrink-0 text-sm text-text-muted dark:text-text-muted px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark "
               dateTime={event.timestamp}
             >
               {new Date(event.timestamp).toLocaleDateString("en-US", {
@@ -115,8 +115,8 @@ export default function Timeline({ events }) {
     return (
       <div
         className="p-8 text-center rounded-xl
-                      bg-surface-light dark:bg-surface-dark
-                      border border-border-light dark:border-border-dark"
+                      bg-light dark:bg-dark
+                      "
       >
         <AlertCircle className="w-6 h-6 mx-auto mb-3 text-text-muted dark:text-text-muted" />
         <p className="text-text-secondary dark:text-text-muted">
@@ -130,11 +130,11 @@ export default function Timeline({ events }) {
     <div
       className="flow-root bg-surface-light dark:bg-surface-dark 
                     rounded-xl p-6 shadow-sm
-                    border border-border-light dark:border-border-dark"
+                    "
     >
       {/* Optional: Header */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-text-primary dark:text-text-light">
+        <h3 className="text-lg font-semibold text-text_color dark:text-text-light">
           Timeline
         </h3>
         <p className="text-sm text-text-secondary dark:text-text-muted">
