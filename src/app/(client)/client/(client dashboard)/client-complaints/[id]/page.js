@@ -9,7 +9,6 @@ export default async function Particular_Complaints_Page({ params }) {
   const token = await getToken();
 
   if (!id) return <p>Invalid complaint ID.</p>;
-  if (!token) redirect("/");
 
   const res = await fetchServerSideData(`/api/client/get-complaint/${id}`, {
     method: "GET",

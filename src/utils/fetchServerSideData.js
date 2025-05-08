@@ -10,9 +10,9 @@ export async function fetchServerSideData(endpoint, options = {}) {
     options.retryDelay || 1000
   );
 
-  if (!token) {
-    redirect("/");
-  }
+  // if (!token) {
+  //   redirect("/");
+  // }
 
   const headers = {
     "Content-Type": "application/json",
