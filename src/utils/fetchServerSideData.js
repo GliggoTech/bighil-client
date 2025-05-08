@@ -13,7 +13,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
   // ✅ If no valid token after retry, redirect or throw
   if (!token) {
     console.error("Invalid token format:", token);
-    // redirect("/"); // Or throw new Error("Invalid token format")
+    redirect("/"); // Or throw new Error("Invalid token format")
   }
 
   const headers = {

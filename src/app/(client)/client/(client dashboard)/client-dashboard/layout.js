@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import React from "react";
 import "../../../../globals.css";
@@ -6,11 +6,11 @@ import "../../../../globals.css";
 export default function AdminDashboardLayout({
   children,
   stats,
-  // complaint_chart,
-  // recent_complaints,
-  // recent_notifications,
-  // keywords_chart,
-  // moreNumber_of_complaints,
+  complaint_chart,
+  recent_complaints,
+  recent_notifications,
+  keywords_chart,
+  moreNumber_of_complaints,
 }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background-primary to-background-secondary dark:from-surface-dark dark:to-background-dark relative">
@@ -46,7 +46,7 @@ export default function AdminDashboardLayout({
           <div className="">{stats}</div>
         </div>
 
-        {/* <div className="mb-8 space-y-4">
+        <div className="mb-8 space-y-4">
           <div className="flex items-center">
             <div className="h-8 w-1 bg-gradient-to-b from-primary-dark to-secondary-dark rounded-full mr-3" />
             <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
@@ -61,16 +61,14 @@ export default function AdminDashboardLayout({
         </div>
 
         <div className="space-y-6">
-         
           <div className="flex items-center">
             <div className="h-8 w-1 bg-gradient-to-b from-accent-warning to-accent-danger rounded-full mr-3" />
             <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
               Recent Activities
             </h2>
           </div>
-        
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full auto-rows-fr">
-          
             <div className="flex flex-col h-full group bg-surface-light/80 dark:bg-surface-dark rounded-2xl shadow-lg  overflow-hidden transition-all duration-300 hover:shadow-xl">
               <div className="flex-1 flex flex-col p-1 bg-gradient-to-r from-primary-light/10 to-primary-dark/10 dark:from-primary-light/5 dark:to-primary-dark/5 group-hover:from-primary-light/20 group-hover:to-primary-dark/20 transition-all duration-300">
                 <div className="flex-1 p-4 rounded-2xl">
@@ -87,9 +85,8 @@ export default function AdminDashboardLayout({
               </div>
             </div>
           </div>
-         
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-           
             <div
               className="flex flex-col h-full bg-gradient-to-br from-background-primary/90 to-background-secondary/90 
                   rounded-2xl shadow-lg border border-border-light/20 
@@ -99,7 +96,6 @@ export default function AdminDashboardLayout({
               <div className="flex-1 ">{keywords_chart}</div>
             </div>
 
-           
             <div
               className="flex flex-col h-full bg-gradient-to-br from-background-primary/90 to-background-secondary/90 
                   rounded-2xl shadow-lg border border-border-light/20 
@@ -114,7 +110,7 @@ export default function AdminDashboardLayout({
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
