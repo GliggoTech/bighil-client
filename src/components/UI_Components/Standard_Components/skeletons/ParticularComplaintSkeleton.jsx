@@ -5,12 +5,12 @@ import React from "react";
 
 const ParticularComplaintSkeleton = () => {
   return (
-    <div className="min-h-screen bg-surface-light dark:bg-surface-dark transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <div className="min-h-screen bg-light dark:bg-dark transition-colors duration-300">
+      <div className="space-y-8">
         {/* Main Container */}
-        <div className="bg-background-primary dark:bg-background-dark rounded-2xl shadow-lg border border-border-light dark:border-primary-dark overflow-hidden">
+        <div className="bg-primary/10 dark:bg-dark rounded-2xl shadow-lg border border-dialog_inside_border_color dark:border-primary-dark overflow-hidden">
           {/* Header Section Skeleton */}
-          <div className="border-b border-border-light dark:border-primary-dark pb-6 bg-background-secondary dark:bg-surface-dark p-6">
+          <div className="border-b border-dialog_inside_border_color dark:border-primary-dark pb-6 bg-white dark:bg-dark p-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex items-center gap-4 w-full sm:w-auto">
                 <Skeleton className="h-14 w-14 rounded-full" />
@@ -32,7 +32,7 @@ const ParticularComplaintSkeleton = () => {
               {/* Main Content Area */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Complaint Details Card Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-4">
                     <Skeleton className="h-7 w-48" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -61,7 +61,7 @@ const ParticularComplaintSkeleton = () => {
                 </div>
 
                 {/* Evidence Gallery Section Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-4">
                     <Skeleton className="h-6 w-40" />
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -74,7 +74,7 @@ const ParticularComplaintSkeleton = () => {
                 </div>
 
                 {/* Notes Section Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-4">
                     <Skeleton className="h-6 w-32" />
                     <div className="space-y-4">
@@ -101,7 +101,7 @@ const ParticularComplaintSkeleton = () => {
               {/* Sidebar Content */}
               <div className="space-y-6">
                 {/* Timeline Card Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-4">
                     <Skeleton className="h-6 w-28" />
                     <div className="space-y-6">
@@ -120,7 +120,7 @@ const ParticularComplaintSkeleton = () => {
                 </div>
 
                 {/* Status Selector Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-3">
                     <Skeleton className="h-6 w-40" />
                     <div className="flex flex-wrap gap-2">
@@ -132,7 +132,7 @@ const ParticularComplaintSkeleton = () => {
                 </div>
 
                 {/* Action Taken Section Skeleton */}
-                <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-secondary-dark p-6">
+                <div className="bg-light dark:bg-dark rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark p-6">
                   <div className="space-y-4">
                     <Skeleton className="h-6 w-36" />
                     <Skeleton className="h-24 w-full rounded-md" />
@@ -144,7 +144,7 @@ const ParticularComplaintSkeleton = () => {
           </div>
 
           {/* Chat Interface Skeleton */}
-          <div className="border-t border-border-light dark:border-accent-success mt-8 bg-background-secondary dark:bg-surface-dark">
+          <div className="border-t border-dialog_inside_border_color dark:border-accent-success mt-8 bg-background-secondary dark:bg-dark">
             <div className="p-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

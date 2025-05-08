@@ -6,7 +6,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-const statusConfig = {
+const statusBadgeConfig = {
   pending: {
     color:
       "bg-amber-100 text-amber-800 dark:bg-amber-700/20 dark:text-amber-300",
@@ -36,7 +36,7 @@ export default function StatusBadge({ status }) {
   const normalizedStatus =
     status?.toLowerCase().replace(/_/g, " ") || "default";
   const { color, icon } =
-    statusConfig[normalizedStatus] || statusConfig.default;
+    statusBadgeConfig[normalizedStatus] || statusBadgeConfig.default;
 
   return (
     <div

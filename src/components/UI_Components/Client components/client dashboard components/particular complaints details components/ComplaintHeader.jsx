@@ -35,7 +35,7 @@ const ComplaintHeader = ({ complaint, userRole }) => {
             href={redirectLink}
             className="flex items-center gap-2 px-2 py-2 rounded-lg
                        text-text_color dark:text-text-muted
-                       hover:text-text_color bg-back_bg  hover:dark:text-primary-light
+                       hover:text-text_color bg-indigo/20  hover:dark:text-primary-light
                        transition-colors duration-200 ease-in-out
                        hover:bg-primary/30 dark:hover:bg-surface-medium/10"
           >

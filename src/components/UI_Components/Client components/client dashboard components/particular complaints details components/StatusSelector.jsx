@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { useSocket } from "@/context/socketContext";
 import { Loader2, AlertTriangle } from "lucide-react";
+import { statusConfig } from "@/utils/timeLineColors";
 
 const StatusSelector = ({
   status,
@@ -24,6 +24,9 @@ const StatusSelector = ({
   const { loading, success, error, fetchData } = useFetch();
   const token = useAccessToken();
   const socket = useSocket();
+
+  const config = statusConfig[status] || statusConfig.default;
+  console.log(config);
 
   // Only ADMIN or SUPER ADMIN can edit
   const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";
@@ -44,7 +47,9 @@ const StatusSelector = ({
   // If Resolved, always show read-only
   if (status === "Resolved") {
     return (
-      <div className="w-[180px] px-4 py-2 border rounded-md bg-gray-100 text-gray-600 text-center text-sm font-medium shadow-sm">
+      <div
+        className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
+      >
         {status}
       </div>
     );
@@ -53,7 +58,9 @@ const StatusSelector = ({
   // If not editable, show read-only
   if (!isEditable) {
     return (
-      <div className="w-[180px] px-4 py-2 border rounded-md bg-gray-100 text-gray-600 text-center text-sm font-medium shadow-sm">
+      <div
+        className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
+      >
         {status}
       </div>
     );
@@ -63,7 +70,7 @@ const StatusSelector = ({
     <div className="relative w-[180px]">
       <Select value={status} onValueChange={handleChange} disabled={loading}>
         <SelectTrigger
-          className={`w-full rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition ${
+          className={`w-full rounded-lg border-none ring-0  px-4 py-2 text-sm font-medium shadow-sm transition ${
             loading ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >
@@ -77,22 +84,22 @@ const StatusSelector = ({
           )}
         </SelectTrigger>
 
-        <SelectContent className="rounded-xl bg-white text-gray-800 shadow-lg">
+        <SelectContent className="rounded-xl bg-white border-none text-gray-800 shadow-lg">
           <SelectItem
             value="Pending"
-            className="hover:bg-gray-100 cursor-pointer text-sm"
+            className="hover:bg-primary/10 cursor-pointer text-sm"
           >
             Pending
           </SelectItem>
           <SelectItem
             value="In Progress"
-            className="hover:bg-gray-100 cursor-pointer text-sm"
+            className="hover:bg-primary/10 cursor-pointer text-sm"
           >
             In Progress
           </SelectItem>
           <SelectItem
             value="Unwanted"
-            className="hover:bg-gray-100 cursor-pointer text-sm"
+            className="hover:bg-primary/10 cursor-pointer text-sm"
           >
             Unwanted
           </SelectItem>
@@ -101,7 +108,7 @@ const StatusSelector = ({
 
       {/* Error State */}
       {error && (
-        <div className="mt-2 flex items-center text-red-500 text-xs">
+        <div className="mt-2 flex items-center text-red text-xs">
           <AlertTriangle className="h-4 w-4 mr-1" />
           <span>Something went wrong!</span>
         </div>

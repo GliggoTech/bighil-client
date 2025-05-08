@@ -232,9 +232,9 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     () => (
       <button
         onClick={handleToggleChat}
-        className={`bg-gradient-to-br from-blue-600 to-purple-600 text-white p-4 rounded-full shadow-2xl transition-all
+        className={`bg-gradient-to-br from-blue to-purple text-white p-4 rounded-full shadow-2xl transition-all
           ${isOpen ? "scale-0" : "scale-100"}
-          hover:from-blue-700 hover:to-purple-700 fixed bottom-6 right-6 z-50 group`}
+          hover:from-blue/90 hover:to-purple/90 fixed bottom-6 right-6 z-50 group`}
         disabled={!isTokenReady}
       >
         {!isTokenReady ? (
@@ -242,7 +242,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
         ) : (
           <>
             {unreadedMessages > 0 && (
-              <div className="absolute top-0 right-0 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs text-white font-semibold">
+              <div className="absolute top-0 right-0 w-6 h-6 bg-red rounded-full flex items-center justify-center text-xs text-white font-semibold">
                 {unreadedMessages}
               </div>
             )}
@@ -292,7 +292,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
                   "relative flex flex-col space-y-1 rounded-2xl p-4 shadow-sm transform transition-all",
                   "duration-200 hover:scale-[1.015] hover:shadow-lg",
                   {
-                    "bg-gradient-to-br from-blue-600 to-indigo-500 text-white":
+                    "bg-gradient-to-br from-blue/80 to-indigo/80 text-white":
                       isOwnMessage,
                     "bg-white border border-gray-100 shadow-md": !isOwnMessage,
                     "ml-0": !isOwnMessage && !isConsecutive,
@@ -303,7 +303,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
               >
                 {/* Sender Label - Always show for admin messages in privileged view */}
                 {!isConsecutive && isAdminMessage && isPrivilegedViewer && (
-                  <span className="text-xs font-medium text-blue-100 mb-1">
+                  <span className="text-xs font-medium text-black mb-1">
                     {msg.sender}
                   </span>
                 )}
@@ -374,12 +374,12 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
       {chatToggleButton}
 
       <div
-        className={`glass-container bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl transition-transform duration-300 transform origin-bottom-right overflow-hidden
+        className={`glass-container bg-primary backdrop-blur-lg rounded-2xl shadow-2xl transition-transform duration-300 transform origin-bottom-right overflow-hidden
           ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}
           fixed bottom-20 right-6 w-[400px] h-[70vh] flex flex-col`}
       >
-        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 z-50">
-          <h3 className="text-lg font-semibold text-white">Chat Support</h3>
+        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue to-purple z-50">
+          <h3 className="text-lg font-medium text-white">Chat Support</h3>
           <button
             onClick={() => setIsOpen(false)}
             className="text-white/80 hover:text-white transition-colors"
@@ -412,14 +412,14 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
                 onKeyPress={(e) => e.key === "Enter" && sendMessage()}
                 placeholder="Type your message..."
                 className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none
-          focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all
-          placeholder:text-gray-400 text-sm"
+          focus:border-purple/50  focus:ring-purple-200 transition-all
+          placeholder:text-text_color text-sm"
               />
 
               <button
                 onClick={sendMessage}
                 disabled={!message.trim()}
-                className="p-3 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 text-white
+                className="p-3 rounded-xl bg-gradient-to-br from-blue to-purple text-white
           hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed
           transition-all transform hover:scale-105 active:scale-95 shadow-sm"
               >

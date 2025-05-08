@@ -165,7 +165,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   }, [searchParams, router, userRole, token]);
 
   return (
-    <div className="min-h-screen bg-bighil_dashboard_bg  transition-colors duration-300">
+    <div className="min-h-screen bg-bighil_dashboard_bg rounded-none transition-colors duration-300">
       {/* Socket Connection Status */}
       {!socketConnected && (
         <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-4 mb-4">
@@ -184,9 +184,9 @@ const ParticularComplaint = ({ complaint, unread }) => {
         </div>
       )}
 
-      <div className=" px-4 py-8 space-y-3">
+      <div className=" rounded-none space-y-3">
         {/* Main Container */}
-        <div className="bg-white dark:bg-dark rounded-2xl  dark:border-primary-dark overflow-hidden">
+        <div className="bg-white dark:bg-dark   dark:border-primary-dark overflow-hidden">
           {/* Header Section */}
           <div className="  pb-3 bg-background-secondary ">
             <ComplaintHeader complaint={complaint} userRole={userRole} />
@@ -194,7 +194,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
           {/* Content Grid */}
           <div className="p-3">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
               {/* Main Content Area */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Complaint Details Card */}
@@ -203,13 +203,13 @@ const ParticularComplaint = ({ complaint, unread }) => {
                 </div>
 
                 {/* Evidence Gallery Section */}
-                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-primary-light">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-light">
                   <EvidenceGallery evidence={complaint?.evidence || []} />
                 </div>
 
                 {/* Notes Section */}
                 {userRole !== "user" && userRole !== "BIGHIL" && (
-                  <div className="rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-warning">
+                  <div className="rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 ">
                     <NotesSection
                       notes={complaint?.notes || []}
                       complaintId={complaint?._id}
@@ -221,11 +221,11 @@ const ParticularComplaint = ({ complaint, unread }) => {
               {/* Sidebar Content */}
               <div className="space-y-3">
                 {/* Timeline Card */}
-                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-info">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
                   <Timeline events={timeline} />
                 </div>
 
-                <div className=" w-fit  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-success hover:rounded-xl">
+                <div className=" w-fit  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color hover:rounded-xl">
                   <StatusSelector
                     status={status}
                     setStatus={setStatus}
@@ -235,7 +235,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
                   />
                 </div>
 
-                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-accent-danger">
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
                   <ActionTaken
                     complaintId={complaint?._id}
                     onStatusChange={handleStatusChange}
@@ -249,8 +249,8 @@ const ParticularComplaint = ({ complaint, unread }) => {
           </div>
 
           {/* Chat Interface */}
-          <div className="border-t border-dialog_inside_border_color dark:border-accent-success mt-8 bg-background-secondary ">
-            <div className="p-6">
+          <div className="border-t border-dialog_inside_border_color dark:border-success mt-8 bg-background-secondary ">
+            <div className="p-3">
               <ChatInterface
                 complaintId={complaint?._id}
                 unseenMessageCount={unseenMessageCount}
