@@ -1,40 +1,30 @@
 "use client";
 
-import useAccessToken from "@/custom hooks/useAccessToken";
-import useFetch from "@/custom hooks/useFetch";
-import { getBackendUrl } from "@/lib/getBackendUrl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useCallback } from "react";
 import { Loader2, LogOut } from "lucide-react";
+import { bighilLogout } from "@/app/actions/bighil.actions";
 
 const Bighil_Navbar = ({ isOpen }) => {
   const router = useRouter();
-
-  const token = useAccessToken();
-  const { loading, fetchData } = useFetch();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleLogOut = useCallback(async () => {
-    setError(null);
+  const handleLogOut = async () => {
     try {
-      const url = getBackendUrl();
-      const res = await fetchData(
-        `${url}/api/bighil-auth/bighil-logout`,
-        "POST",
-        {},
-        token,
-        false
-      );
+      setLoading(true);
+      const res = await bighilLogout();
       if (res.success) {
+        setError(null);
+        setLoading(false);
         router.push("/");
-      } else {
-        throw new Error(res.message || "Logout failed");
       }
-    } catch (err) {
-      setError(err.message || "An unexpected error occurred.");
+    } catch (error) {
+      setError(res.message);
+      setLoading(false);
     }
-  }, [fetchData, token, router]);
+  };
 
   return (
     <motion.div

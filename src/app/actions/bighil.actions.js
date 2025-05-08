@@ -35,3 +35,18 @@ export async function BighilLogin(loginData) {
     return { success: false, message: "Something went wrong" };
   }
 }
+
+export async function bighilLogout() {
+  try {
+    // First await cookies() to get the cookie store
+    const cookieStore = await cookies();
+
+    // Then use the cookie store
+    cookieStore.delete("access_token");
+
+    return { success: true, message: "Signed out successfully." };
+  } catch (error) {
+    console.error("Signout Error:", error);
+    return { success: false, message: "Failed to sign out." };
+  }
+}

@@ -11,7 +11,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
   );
 
   // ✅ If no valid token after retry, redirect or throw
-  if (!token || typeof token !== "string" || token.split(".").length !== 3) {
+  if (!token) {
     console.error("Invalid token format:", token);
     redirect("/"); // Or throw new Error("Invalid token format")
   }
@@ -58,7 +58,7 @@ async function getTokenWithRetry(maxRetries = 3, delay = 1000) {
     const token = await getToken();
 
     // ✅ Validate token format (basic check for JWT)
-    if (token && typeof token === "string" && token.split(".").length === 3) {
+    if (token && token.split(".").length === 3) {
       return token;
     }
 
