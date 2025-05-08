@@ -6,14 +6,14 @@ export const dynamic = "force-dynamic";
 
 export async function fetchServerSideData(endpoint, options = {}) {
   const token = await getTokenWithRetry(
-    options.maxRetries || 3,
+    options.maxRetries || 10,
     options.retryDelay || 1000
   );
 
   // ✅ If no valid token after retry, redirect or throw
   if (!token) {
     console.error("Invalid token format:", token);
-    redirect("/"); // Or throw new Error("Invalid token format")
+    // redirect("/"); // Or throw new Error("Invalid token format")
   }
 
   const headers = {
@@ -51,7 +51,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
   }
 }
 
-async function getTokenWithRetry(maxRetries = 3, delay = 1000) {
+async function getTokenWithRetry(maxRetries = 10, delay = 1000) {
   let retries = 0;
 
   while (retries < maxRetries) {
