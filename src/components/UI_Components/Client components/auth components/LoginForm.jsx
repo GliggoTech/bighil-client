@@ -66,6 +66,7 @@ export default function LoginForm() {
 
       const res = await clientLogin(data);
 
+      console.log(res);
       if (res.success) {
         setIsSuccess(true);
         setCurrentUserId(res.user.id);
