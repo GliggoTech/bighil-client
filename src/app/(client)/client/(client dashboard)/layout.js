@@ -14,9 +14,9 @@ export const metadata = {
 export default async function ClientDashboard_Layout({ children }) {
   const token = await getToken();
   console.log(token);
-  if (!token) {
-    redirect("/");
-  }
+  // if (!token) {
+  //   redirect("/");
+  // }
 
   return (
     <SocketProvider>
