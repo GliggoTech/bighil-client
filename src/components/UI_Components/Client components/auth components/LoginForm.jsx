@@ -74,7 +74,7 @@ export default function LoginForm() {
 
         // Delay navigation for better UX
         setTimeout(() => {
-          router.push("/client/client-complaints");
+          router.push("/client/client-dashboard");
         }, 1500);
       } else {
         setErrorMessage(
