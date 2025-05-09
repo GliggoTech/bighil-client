@@ -30,7 +30,15 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { roleBadgeColors, roleIcons } from "@/utils/adminsConstants";
 
-const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
+const AdminAccountsStep = ({
+  form,
+  assignedRoles,
+  fields,
+  append,
+  remove,
+  viewMode,
+  setViewMode,
+}) => {
   return (
     <div className="space-y-6 ">
       <div className="flex items-center justify-between">
@@ -43,34 +51,38 @@ const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
           </h3>
         </div>
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                size="sm"
-                onClick={() =>
-                  append({
-                    name: "",
-                    email: "",
-                    role: assignedRoles["SUPER ADMIN"]
-                      ? assignedRoles["ADMIN"]
-                        ? "SUB ADMIN"
-                        : "ADMIN"
-                      : "SUPER ADMIN",
-                  })
-                }
-                className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/90 text-white shadow-md hover:shadow-primary/30 transition-all"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Add Admin
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="bg-black text-text-text_color text-white border-gray-700">
-              Add another admin to this company
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        {!viewMode && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() =>
+                    append({
+                      name: "",
+                      email: "",
+                      role: assignedRoles["SUPER ADMIN"]
+                        ? assignedRoles["ADMIN"]
+                          ? "SUB ADMIN"
+                          : "ADMIN"
+                        : "SUPER ADMIN",
+                    })
+                  }
+                  className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/90 text-white shadow-md hover:shadow-primary/30 transition-all"
+                >
+                  <span className="flex items-center">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Admin
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black text-text-text_color text-white border-gray-700">
+                Add another admin to this company
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
 
       {/* <Separator className="bg-dialog_inside_border_color dark:bg-gray-700" /> */}
@@ -98,19 +110,21 @@ const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className={cn(
-                        "absolute right-2 -top-2 opacity-100 group-hover:opacity-100",
-                        "transition-opacity rounded-full w-8 h-8",
-                        "bg-red hover:bg-red/80 text-white"
-                      )}
-                      onClick={() => remove(index)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    {!viewMode && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className={cn(
+                          "absolute right-2 -top-2 opacity-100 group-hover:opacity-100",
+                          "transition-opacity rounded-full w-8 h-8",
+                          "bg-red hover:bg-red/80 text-white"
+                        )}
+                        onClick={() => remove(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
                   </TooltipTrigger>
                   <TooltipContent className=" bg-black text-white border-gray-700">
                     <p>Remove this admin</p>
@@ -133,6 +147,7 @@ const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
                       placeholder="John Doe"
                       {...field}
                       className="border-gray-300   dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
+                      readOnly={viewMode}
                     />
                   </FormControl>
                   <FormMessage className="text-red dark:text-red" />
@@ -156,6 +171,7 @@ const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
                         {...field}
                         className="border-gray-300   dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
                         type="email"
+                        readOnly={viewMode}
                       />
                     </FormControl>
                     <FormMessage className="text-red dark:text-red" />
@@ -178,7 +194,10 @@ const AdminAccountsStep = ({ form, assignedRoles, fields, append, remove }) => {
                       disabled={index === 0}
                     >
                       <FormControl>
-                        <SelectTrigger className="border-gray-300  dark:border-gray-600 dark:bg-texttext-text_color dark:text-white">
+                        <SelectTrigger
+                          disabled={viewMode}
+                          className="border-gray-300  dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
+                        >
                           <div className="flex items-center">
                             {roleIcons[field.value]}
                             <SelectValue placeholder="Select role" />

@@ -17,7 +17,7 @@ export default function AdminDashboardLayout({
         <div className="mb-8 space-y-6">
           <div className="flex items-center gap-3">
             <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
-            <h2 className="text-2xl font-medium text-text_color dark:text-emerald-200">
+            <h2 className="text-xl font-medium text-text_color dark:text-emerald-200">
               Dashboard Overview
             </h2>
           </div>
@@ -27,12 +27,12 @@ export default function AdminDashboardLayout({
           </div>
         </div>
 
-        <div className="grid  lg:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-4">
+        <div className="grid  lg:grid-cols-2 2xl:grid-cols-3 grid-cols-1 gap-4">
           {/* Clients Overview */}
           <div className="mb-8 space-y-6">
             <div className="flex items-center gap-3">
               <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
-              <h2 className="text-2xl font-medium dark:text-white">
+              <h2 className="text-xl font-medium dark:text-white">
                 Clients Overview
               </h2>
             </div>
@@ -46,7 +46,7 @@ export default function AdminDashboardLayout({
           <div className="mb-8 space-y-6">
             <div className="flex items-center gap-3">
               <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
-              <h2 className="text-2xl font-medium dark:text-white">
+              <h2 className="text-xl font-medium dark:text-white">
                 Users Overview{" "}
                 <span className="text-base font-light text-center  dark:text-white">
                   (Last 7 Days Signups)
@@ -61,7 +61,7 @@ export default function AdminDashboardLayout({
           <div className="mb-8 space-y-6">
             <div className="flex items-center gap-3">
               <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
-              <h2 className="text-2xl font-medium dark:text-white">
+              <h2 className="text-xl font-medium dark:text-white">
                 Category Overview{" "}
                 {/* <span className="text-md font-light text-center  dark:text-white">
                   (Last 7 Days Signups)
@@ -77,7 +77,7 @@ export default function AdminDashboardLayout({
         <div className="mb-8 space-y-6">
           <div className="flex items-center gap-3">
             <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
-            <h2 className="text-2xl font-medium dark:text-white">
+            <h2 className="text-xl font-medium dark:text-white">
               Complaints Overview{" "}
               {/* <span className="text-md font-light text-center  dark:text-white">
                   (Last 7 Days Signups)

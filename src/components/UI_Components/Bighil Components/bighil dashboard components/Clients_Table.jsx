@@ -15,11 +15,13 @@ import Delete_Client from "./Delete_Client";
 import Bighil_Client_Dialog from "./Bighil_Client_Dialog";
 import Edit_Client from "./Edit_Client";
 import { formatDate } from "@/lib/formatDateFun";
+import ViewClient from "./ViewClient";
 
 const Clients_Table = ({ clients }) => {
   const [currentClients, setCurrentClients] = useState(clients);
   const [selectedClient, setSelectedClient] = useState(null);
   const [open, setOpen] = useState(false);
+  const [viewMode, setViewMode] = useState(false);
 
   return (
     <Card className="border-none shadow-none">
@@ -43,6 +45,8 @@ const Clients_Table = ({ clients }) => {
             selectedClient={selectedClient}
             setSelectedClient={setSelectedClient}
             setCurrentClients={setCurrentClients}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
           />
         </div>
       </CardHeader>
@@ -97,6 +101,13 @@ const Clients_Table = ({ clients }) => {
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex gap-2 justify-center">
+                          <ViewClient
+                            client={client}
+                            setSelectedClient={setSelectedClient}
+                            setOpen={setOpen}
+                            viewMode={viewMode}
+                            setViewMode={setViewMode}
+                          />
                           <Edit_Client
                             client={client}
                             setSelectedClient={setSelectedClient}

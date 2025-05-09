@@ -17,11 +17,14 @@ const Bighil_Client_Dialog = ({
   selectedClient,
   setCurrentClients,
   setSelectedClient,
+  viewMode = false,
+  setViewMode,
 }) => {
   const handleDialogClose = (isOpen) => {
     setOpen(isOpen);
     if (!isOpen) {
       setSelectedClient(null);
+      setViewMode(false);
     }
   };
 
@@ -29,12 +32,14 @@ const Bighil_Client_Dialog = ({
     <div className="relative">
       <Dialog open={open} onOpenChange={handleDialogClose}>
         <DialogTrigger asChild>
-          <Button
-            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/80 text-white font-light shadow-lg hover:shadow-primary/30 transition-all"
-            size="lg"
-          >
-            {selectedClient ? "Edit Client" : "Add New Client"}
-          </Button>
+          {!viewMode && (
+            <Button
+              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/80 text-white font-light shadow-lg hover:shadow-primary/30 transition-all"
+              size="lg"
+            >
+              {selectedClient ? "Edit Client" : "Add New Client"}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent
           className="max-w-4xl p-0 rounded-lg overflow-hidden border-0 shadow-xl"
@@ -52,6 +57,8 @@ const Bighil_Client_Dialog = ({
               currentClients={currentClients}
               setCurrentClients={setCurrentClients}
               setSelectedClient={setSelectedClient}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
             />
           </div>
         </DialogContent>

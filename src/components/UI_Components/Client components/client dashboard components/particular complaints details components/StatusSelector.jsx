@@ -23,7 +23,6 @@ const StatusSelector = ({
 }) => {
   const { loading, success, error, fetchData } = useFetch();
   const token = useAccessToken();
-  const socket = useSocket();
 
   const config = statusConfig[status] || statusConfig.default;
   console.log(config);
@@ -47,22 +46,24 @@ const StatusSelector = ({
   // If Resolved, always show read-only
   if (status === "Resolved") {
     return (
-      <div
-        className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
-      >
-        {status}
-      </div>
+      // <div
+      //   className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
+      // >
+      //   {status}
+      // </div>
+      null
     );
   }
 
   // If not editable, show read-only
   if (!isEditable) {
     return (
-      <div
-        className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
-      >
-        {status}
-      </div>
+      // <div
+      //   className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
+      // >
+      //   {status}
+      // </div>
+      null
     );
   }
 

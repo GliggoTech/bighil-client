@@ -94,7 +94,7 @@ export default function CategoryChart({ categoryData }) {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={coloredData}
-            cx="50%"
+            cx="47%"
             cy="50%"
             innerRadius={100}
             outerRadius={120}

@@ -6,7 +6,7 @@ import { roleBadgeColors, roleColors } from "@/utils/adminsConstants";
 import { Building, CheckCircle2, Shield } from "lucide-react";
 import React from "react";
 
-const ReviewStep = ({ formValues, setCurrentStep }) => {
+const ReviewStep = ({ formValues, setCurrentStep, viewMode, setViewMode }) => {
   return (
     <div className="space-y-4 ">
       <div className="flex items-center space-x-3">
@@ -46,14 +46,16 @@ const ReviewStep = ({ formValues, setCurrentStep }) => {
             </div>
           </div>
 
-          <Button
-            type="button"
-            variant="ghost"
-            className="text-primary text-sm mt-3"
-            onClick={() => setCurrentStep(1)}
-          >
-            Edit Company Details
-          </Button>
+          {!viewMode && (
+            <Button
+              type="button"
+              variant="ghost"
+              className="text-primary text-sm mt-3"
+              onClick={() => setCurrentStep(1)}
+            >
+              Edit Company Details
+            </Button>
+          )}
         </div>
 
         {/* Admin Accounts Review */}
@@ -93,14 +95,16 @@ const ReviewStep = ({ formValues, setCurrentStep }) => {
             ))}
           </div>
 
-          <Button
-            type="button"
-            variant="ghost"
-            className="text-primary text-sm mt-3"
-            onClick={() => setCurrentStep(2)}
-          >
-            Edit Admin Accounts
-          </Button>
+          {!viewMode && (
+            <Button
+              type="button"
+              variant="ghost"
+              className="text-primary text-sm mt-3"
+              onClick={() => setCurrentStep(2)}
+            >
+              Edit Admin Accounts
+            </Button>
+          )}
         </div>
       </div>
     </div>

@@ -216,6 +216,16 @@ const ParticularComplaint = ({ complaint, unread }) => {
                     />
                   </div>
                 )}
+
+                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
+                  <ActionTaken
+                    complaintId={complaint?._id}
+                    onStatusChange={handleStatusChange}
+                    status={status}
+                    setStatus={setStatus}
+                    actionMessage={complaint?.actionMessage || ""}
+                  />
+                </div>
               </div>
 
               {/* Sidebar Content */}
@@ -232,16 +242,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
                     complaintId={complaint?._id}
                     onStatusChange={handleStatusChange}
                     userRole={userRole}
-                  />
-                </div>
-
-                <div className="  rounded-xl shadow-sm border border-dialog_inside_border_color dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
-                  <ActionTaken
-                    complaintId={complaint?._id}
-                    onStatusChange={handleStatusChange}
-                    status={status}
-                    setStatus={setStatus}
-                    actionMessage={complaint?.actionMessage || ""}
                   />
                 </div>
               </div>

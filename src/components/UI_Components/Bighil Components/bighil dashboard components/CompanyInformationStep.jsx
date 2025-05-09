@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Building, Phone } from "lucide-react";
 import React from "react";
 
-const CompanyInformationStep = ({ form }) => {
+const CompanyInformationStep = ({ form, viewMode, setViewMode }) => {
   return (
     <div className="space-y-2 ">
       <div className="flex items-center space-x-1">
@@ -40,6 +40,7 @@ const CompanyInformationStep = ({ form }) => {
                   placeholder="Acme Corporation"
                   {...field}
                   className="border-gray-300  dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  readOnly={viewMode}
                 />
               </FormControl>
               <FormDescription className="text-text_color/80 dark:text-gray-400">
@@ -70,6 +71,7 @@ const CompanyInformationStep = ({ form }) => {
                       field.onChange(value);
                     }
                   }}
+                  readOnly={viewMode}
                 />
               </FormControl>
               <FormDescription className="text-text_color/80 dark:text-gray-400">

@@ -31,9 +31,10 @@ const Bighil_Navbar = ({ isOpen }) => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={` h-20 bg-white/50 shadow-md flex items-center justify-between px-6 sm:px-10 transition-all duration-200 ${
-        isOpen ? "ml-[240px]" : "ml-[72px]"
-      }`}
+      className={` bg-white/50 shadow-md flex items-center justify-between px-6 sm:px-10 transition-all duration-200
+    ${isOpen ? "ml-[240px]" : "ml-[72px]"}
+    min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
+  `}
     >
       {/* Left side: Welcome Text */}
       <h1 className="text-lg  text-text_color ">Hi, Welcome to Dashboard</h1>

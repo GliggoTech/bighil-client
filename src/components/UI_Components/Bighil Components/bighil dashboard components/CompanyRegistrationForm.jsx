@@ -23,6 +23,8 @@ export default function CompanyRegistrationForm({
   currentClients,
   setCurrentClients,
   setSelectedClient,
+  viewMode,
+  setViewMode,
 }) {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
@@ -96,8 +98,13 @@ export default function CompanyRegistrationForm({
   async function onSubmit(values) {
     const url = getBackendUrl();
     let res;
+    if (selectedClient && viewMode == true) {
+      setViewMode(false);
+      setCurrentStep(1);
+      return;
+    }
 
-    if (selectedClient) {
+    if (selectedClient && viewMode == false) {
       res = await fetchData(
         `${url}/api/bighil-clients/edit-client/${selectedClient._id}`,
         "PATCH",
@@ -198,7 +205,12 @@ export default function CompanyRegistrationForm({
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="">
                 {currentStep === 1 && (
-                  <CompanyInformationStep form={form} key="company" />
+                  <CompanyInformationStep
+                    form={form}
+                    key="company"
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
+                  />
                 )}
                 {currentStep === 2 && (
                   <AdminAccountsStep
@@ -208,6 +220,8 @@ export default function CompanyRegistrationForm({
                     append={append}
                     remove={remove}
                     key="admins"
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
                   />
                 )}
                 {currentStep === 3 && (
@@ -215,6 +229,8 @@ export default function CompanyRegistrationForm({
                     formValues={form.watch()}
                     setCurrentStep={setCurrentStep}
                     key="review"
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
                   />
                 )}
               </div>
@@ -249,6 +265,7 @@ export default function CompanyRegistrationForm({
                     onClick={() => {
                       setSelectedClient(null);
                       setOpen(false);
+                      setViewMode(false);
                     }}
                     className="border-dialog_inside_border_color text-white bg-red hover:bg-red/80 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-texttext-text_color"
                   >
@@ -299,7 +316,9 @@ export default function CompanyRegistrationForm({
                             </svg>
                             {selectedClient ? "Updating..." : "Registering..."}
                           </>
-                        ) : selectedClient ? (
+                        ) : selectedClient && viewMode ? (
+                          "Edit"
+                        ) : selectedClient && !viewMode ? (
                           "Update Company"
                         ) : (
                           "Register Company"
