@@ -11,11 +11,11 @@ const NoteCard = ({ note }) => (
   <div
     className="relative p-5 bg-white/10 dark:bg-surface-dark 
                   rounded-xl shadow-lg 
-                  transition-all duration-300 hover:shadow-md"
+                  transition-all duration-300 hover:shadow-md mt-10 sm:mt-0"
   >
     {/* Timestamp Badge */}
     <span
-      className="absolute -top-3 right-4 px-3 py-1 text-xs
+      className="absolute sm:-top-3 -top-6 right-4 px-3 py-1 text-xs
                     bg-warning/50 dark:bg-warning/20
                     text-text_color font-semibold dark:text-text-muted
                     rounded-full border border-warning/20"
@@ -122,7 +122,7 @@ const NotesSection = ({ notes, complaintId }) => {
       </div>
 
       {/* Notes List */}
-      <div className="mt-3 space-y-6">
+      <div className="mt-3 space-y-10 sm:space-y-5">
         {currentNotes?.map((note, index) => (
           <NoteCard key={`${note._id}+${index}`} note={note} />
         ))}

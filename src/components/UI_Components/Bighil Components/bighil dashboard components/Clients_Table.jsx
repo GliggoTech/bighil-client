@@ -26,7 +26,7 @@ const Clients_Table = ({ clients }) => {
   return (
     <Card className="border-none shadow-none">
       <CardHeader>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 w-full">
+        <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center md:justify-between gap-1 w-full">
           <div className="flex items-start md:items-center gap-3">
             <div className="p-2 rounded-lg bg-primary">
               <Users className="h-5 w-5 text-white dark:text-primary-light" />
@@ -154,6 +154,13 @@ const Clients_Table = ({ clients }) => {
                   </div>
 
                   <div className="flex gap-2 justify-end border-t border-dialog_inside_border_color dark:border-border-dark pt-3">
+                    <ViewClient
+                      client={client}
+                      setSelectedClient={setSelectedClient}
+                      setOpen={setOpen}
+                      viewMode={viewMode}
+                      setViewMode={setViewMode}
+                    />
                     <Edit_Client
                       client={client}
                       setSelectedClient={setSelectedClient}

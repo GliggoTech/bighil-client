@@ -3,7 +3,7 @@ import ComplaintFilter from "@/components/UI_Components/Standard_Components/Comp
 
 export default async function ClientComplaintsPage({ searchParams }) {
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div>
       <ComplaintFilter />
       <ContactComponent />
     </div>

@@ -16,7 +16,7 @@ import CompanyInformationStep from "./CompanyInformationStep";
 import AdminAccountsStep from "./AdminAccountsStep";
 import { clientAdminSchema } from "@/utils/adminsConstants";
 import ReviewStep from "./ReviewStep";
-
+import { MdOutlineCancel } from "react-icons/md";
 export default function CompanyRegistrationForm({
   setOpen,
   selectedClient,
@@ -243,7 +243,7 @@ export default function CompanyRegistrationForm({
                 </div>
               )}
 
-              <CardFooter className="flex justify-between items-center pt-2 pb-2 px-0  mt-4">
+              <CardFooter className="flex justify-between items-center  pt-2 pb-2 px-0  mt-4">
                 <div>
                   {currentStep > 1 && (
                     <Button
@@ -253,7 +253,7 @@ export default function CompanyRegistrationForm({
                       className="border-dialog_inside_border_color text-text_color bg-back_bg/50 hover:bg-back_bg dark:border-gray-600 dark:text-gray-300 dark:hover:bg-texttext-text_color"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      Back
+                      <span className="hidden sm:block">Back</span>
                     </Button>
                   )}
                 </div>
@@ -269,7 +269,8 @@ export default function CompanyRegistrationForm({
                     }}
                     className="border-dialog_inside_border_color text-white bg-red hover:bg-red/80 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-texttext-text_color"
                   >
-                    Cancel
+                    <MdOutlineCancel className="mr-2 h-4 w-4 text-white" />
+                    <span className="hidden sm:block">Cancel</span>
                   </Button>
 
                   {currentStep < totalSteps ? (
@@ -278,7 +279,7 @@ export default function CompanyRegistrationForm({
                       onClick={goToNextStep}
                       className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white shadow-md hover:shadow-primary/30 transition-all"
                     >
-                      Next
+                      <span className="hidden sm:block">Next</span>
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   ) : (

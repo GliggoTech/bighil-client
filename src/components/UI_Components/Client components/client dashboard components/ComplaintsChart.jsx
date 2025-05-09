@@ -54,7 +54,7 @@ const chartConfig = {
   // },
   Unwanted: {
     label: "Unwanted",
-    color: "hsl(var(--chart-5))",
+    color: "#6610f2",
   },
 };
 
@@ -118,22 +118,24 @@ export default function ComplaintsChart() {
   const summary = calculateSummary();
 
   return (
-    <Card className="w-full">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+    <Card className="w-full border-none bg-white">
+      <CardHeader className="flex items-center gap-2 space-y-0   sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Complaints Timeline</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg font-bold text-text_color dark:text-text-light">
+            Complaints Timeline
+          </CardTitle>
+          <CardDescription className="text-text_color">
             Showing complaint activity for the selected time period
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={handleTimeRangeChange}>
           <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto"
+            className="w-[150px] border-light-border-subtle bg-primary-bg-subtle hover:bg-primary-bg-subtle-hover"
             aria-label="Select time range"
           >
             <SelectValue placeholder="Last 7 days" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl">
+          <SelectContent className="rounded-xl border-dialog_inside_border_color bg-white">
             <SelectItem value="7" className="rounded-lg">
               Last 7 days
             </SelectItem>
@@ -146,7 +148,7 @@ export default function ComplaintsChart() {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+      <CardContent className="px-2  sm:px-6 ">
         {loading ? (
           <div className="flex h-[250px] w-full items-center justify-center">
             <p className="text-muted-foreground">Loading data...</p>
@@ -159,7 +161,7 @@ export default function ComplaintsChart() {
           <>
             <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {/* Summary Cards */}
-              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg shadow-md bg-light dark:bg-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Total Complaints
                 </p>
@@ -168,7 +170,7 @@ export default function ComplaintsChart() {
                 </p>
               </div>
 
-              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg shadow-md  bg-light dark:bg-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Daily Average
                 </p>
@@ -177,7 +179,7 @@ export default function ComplaintsChart() {
                 </p>
               </div>
 
-              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg shadow-md  bg-light dark:bg-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Period
                 </p>
@@ -186,7 +188,7 @@ export default function ComplaintsChart() {
                 </p>
               </div>
 
-              <div className="rounded-lg  bg-surface-light dark:bg-surface-dark p-3">
+              <div className="rounded-lg shadow-md  bg-light dark:bg-dark p-3">
                 <p className="text-sm text-text-secondary dark:text-text-muted">
                   Last Updated
                 </p>

@@ -26,6 +26,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { cn } from "@/lib/utils";
+import { IoDocumentSharp } from "react-icons/io5";
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 //   "pdfjs-dist/build/pdf.worker.min.mjs",
 //   import.meta.url
@@ -171,29 +172,30 @@ const ComplaintsTable = ({
           <Table className="w-full border-b border-b--dialog_inside_border_color border border-dialog_inside_border_color">
             <TableHeader className=" !border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
               <TableRow>
-                <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
+                <TableHead className="text-text_color dark:text-text-light font-medium lg:uppercase ">
                   Complaint ID
                 </TableHead>
                 {bighil ? (
-                  <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
+                  <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase ">
                     Company Name
                   </TableHead>
                 ) : (
-                  <TableHead className="text-text_color dark:text-text-light font-medium uppercase ">
+                  <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase ">
                     Complaint Against
                   </TableHead>
                 )}
 
-                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
+                <TableHead className="text-text_color dark:text-text-light font-medium lg:uppercase  ">
                   Status
                 </TableHead>
-                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
+                <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase  ">
                   Created At
                 </TableHead>
-                <TableHead className="text-text_color dark:text-text-light font-medium uppercase  ">
+                <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase">
                   Priority
                 </TableHead>
-                <TableHead className="text-text_color dark:text-text-light font-medium uppercase   text-center">
+
+                <TableHead className="text-text_color dark:text-text-light font-medium lg:uppercase   text-center">
                   Action
                 </TableHead>
               </TableRow>
@@ -210,7 +212,7 @@ const ComplaintsTable = ({
                   const statusBadge = getStatusBadge(
                     complaint.status_of_client
                   );
-             
+
                   const priorityBadge = getPriorityBadge(complaint.priority);
 
                   return (
@@ -224,7 +226,7 @@ const ComplaintsTable = ({
                         </span>
                       </TableCell>
                       {bighil ? (
-                        <TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           <div
                             className="max-w-xs truncate"
                             title={complaint.companyName}
@@ -233,7 +235,7 @@ const ComplaintsTable = ({
                           </div>
                         </TableCell>
                       ) : (
-                        <TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           <div
                             className="max-w-xs truncate"
                             title={complaint.complaintAgainst}
@@ -252,16 +254,16 @@ const ComplaintsTable = ({
                         </div>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="inline-flex items-center text-muted-foreground">
                           <Calendar className="h-3.5 w-3.5 mr-1.5 text-primary" />
                           {formatDate(complaint.createdAt)}
                         </div>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div
-                          className={`text-center  px-2.5 py-1 -ml-4 w-24 rounded-full text-xs font-medium border ${priorityBadge.bgColor} ${priorityBadge.textColor} ${priorityBadge.borderColor}`}
+                          className={`text-center px-2.5 py-1 w-24 rounded-full text-xs font-medium border ${priorityBadge.bgColor} ${priorityBadge.textColor} ${priorityBadge.borderColor}`}
                         >
                           {complaint.priority}
                         </div>
@@ -277,7 +279,8 @@ const ComplaintsTable = ({
                           className="inline-block"
                         >
                           <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue text-white font-light  rounded transition-all duration-300 transform hover:scale-105">
-                            View Case
+                            <Eye className="h-4 w-4 mr-1 inline md:hidden" />
+                            <span className="hidden md:inline">View</span>
                           </Button>
                         </Link>
                         {complaint.status_of_client === "Resolved" && (
@@ -295,8 +298,10 @@ const ComplaintsTable = ({
                                 <Loader2 className="h-4 w-4 animate-spin" />
                               ) : (
                                 <>
-                                  <Eye className="h-4 w-4 mr-1" />
-                                  Preview
+                                  <IoDocumentSharp className="h-4 w-4 mr-1 inline md:hidden " />
+                                  <span className="hidden md:inline">
+                                    Preview
+                                  </span>
                                 </>
                               )}
                             </Button>

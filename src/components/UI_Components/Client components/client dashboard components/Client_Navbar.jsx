@@ -41,8 +41,8 @@ const Client_Navbar = ({ isOpen }) => {
     <div>
       {/* Main Navbar */}
       <div
-        className={` bg-gray/10 shadow-md  px-6 sm:px-10 transition-all duration-200
-    ${isOpen ? "ml-[240px]" : "ml-[72px]"}
+        className={`w-full overflow-hidden bg-gray/10 shadow-md  px-6 sm:px-10 transition-all duration-200
+    ${isOpen ? "ml-[240px]" : "ml-[40px] md:ml-[60px]"}
     min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
   `}
       >
@@ -52,7 +52,7 @@ const Client_Navbar = ({ isOpen }) => {
               {/* Left Section: Logo & Mobile Menu */}
               <div className="flex items-center">
                 <div className="flex items-center">
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">
+                  <h1 className="text-xl ml-10 sm:text-3xl font-bold tracking-tight text-primary">
                     BIGHIL
                   </h1>
                 </div>

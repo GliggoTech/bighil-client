@@ -10,6 +10,7 @@ const useAccessToken = () => {
     const fetchToken = async () => {
       try {
         const response = await fetch("/api/auth/token", {
+          method: "GET",
           credentials: "include", // Important for including cookies
         });
 

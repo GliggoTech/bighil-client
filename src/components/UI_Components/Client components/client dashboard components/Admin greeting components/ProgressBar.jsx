@@ -5,9 +5,9 @@ export const DayProgressBar = ({ currentTime }) => {
 
   return (
     <div className="space-y-2">
-      <div className="relative h-1.5 w-full bg-background-tertiary dark:bg-surface-dark rounded-full overflow-hidden">
+      <div className="relative h-1.5 w-full bg-white dark:bg-surface-dark rounded-full overflow-hidden">
         <div
-          className="absolute h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500 ease-in-out"
+          className="absolute h-full bg-primary rounded-full transition-all duration-500 ease-in-out"
           style={{ width: `${progress}%` }}
         ></div>
       </div>

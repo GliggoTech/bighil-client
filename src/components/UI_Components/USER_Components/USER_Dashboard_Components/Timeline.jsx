@@ -46,7 +46,7 @@ export const TimelineEvent = ({ event, isLast }) => {
             </div>
 
             <time
-              className="flex-shrink-0 text-sm text-text_color dark:text-text_color px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark "
+              className=" text-sm text-text_color dark:text-text_color px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark "
               dateTime={event.timestamp}
             >
               {new Date(event.timestamp).toLocaleDateString("en-US", {

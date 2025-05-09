@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,9 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CheckCircle, Loader, Trash2, Bell } from "lucide-react";
+import { CheckCircle, Loader, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-
 import { useSocket } from "@/context/socketContext";
 import useNotificationStore from "@/store/notificationStore";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
@@ -22,9 +20,11 @@ import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { toast } from "@/hooks/use-toast";
 
-const NotificationComponent = ({ notifications: initialNotifications }) => {
-  // const [currentNotifications, setCurrentNotifications] =
-  //   useState(notifications);
+const NotificationComponent = ({
+  notifications: initialNotifications,
+  totalUnread,
+  totalPages,
+}) => {
   const [processingIds, setProcessingIds] = useState(new Set());
   const token = useAccessToken();
   const { socket } = useSocket();
@@ -34,19 +34,33 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
     userRole,
     addNotification,
     markAsRead: markNotifications,
-    unreadCount,
+    setTotalUnreadCount,
     notifications,
     deleteNotification,
   } = useNotificationStore();
   const { loading, fetchData } = useFetch();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const page = Number(searchParams.get("page")) || 1;
-  const isAdmin = ["SUB ADMIN", "ADMIN", "SUPER ADMIN"].includes(userRole);
-  const baseRoute = isAdmin
-    ? "/client/client-notifications"
-    : "/user/user-notifications";
 
+  // This useEffect updates notifications in store when initialNotifications change
+  useEffect(() => {
+    if (initialNotifications && Array.isArray(initialNotifications)) {
+      // Pass both notifications and totalUnread to store
+      setNotifications(initialNotifications, totalUnread);
+
+      // If totalUnread is provided, set it directly
+      if (totalUnread !== undefined) {
+        setTotalUnreadCount(totalUnread);
+      }
+    }
+  }, [
+    initialNotifications,
+    totalUnread,
+    setNotifications,
+    setTotalUnreadCount,
+  ]);
+
+  // Socket connection for real-time notifications
   useEffect(() => {
     if (!socket || !userId || !userRole) return;
 
@@ -56,61 +70,16 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
         : "fetch_admin_notifications";
 
     const handleNewNotification = (notification) => {
-      // setCurrentNotifications((prev) => [notification, ...prev]);
       addNotification(notification);
-      // showNewNotificationToast(notification);
-      // if (isNotificationForCurrentUser(notification)) {
-      //   toast({
-      //     title: "New Notification",
-      //     description: (
-      //       <div className="flex items-center justify-between gap-4">
-      //         <span>{notification.message}</span>
-      //         <button
-      //           className="text-sm text-blue-600 hover:underline"
-      //           onClick={() => router.push(getComplaintLink(notification))}
-      //         >
-      //           View
-      //         </button>
-      //       </div>
-      //     ),
-      //   });
-      // }
     };
 
     socket.on(eventName, handleNewNotification);
     return () => {
       socket.off(eventName, handleNewNotification);
     };
-  }, [socket, userId]);
+  }, [socket, userId, userRole, addNotification]);
 
-  useEffect(() => {
-    if (initialNotifications && Array.isArray(initialNotifications)) {
-      setNotifications(initialNotifications);
-    }
-  }, [initialNotifications, setNotifications]);
-
-  const isNotificationForCurrentUser = (notification) => {
-    return notification.recipients.some((r) => r.user === userId);
-  };
-
-  // const showNewNotificationToast = (notification) => {
-  //   if (!isNotificationForCurrentUser(notification)) return;
-  //   toast({
-  //     title: "New Notification",
-  //     description: (
-  //       <div className="flex items-center justify-between gap-4">
-  //         <span>{notification.message}</span>
-  //         <button
-  //           className="text-sm text-blue-600 hover:underline"
-  //           onClick={() => router.push(getComplaintLink(notification))}
-  //         >
-  //           View
-  //         </button>
-  //       </div>
-  //     ),
-  //   });
-  // };
-
+  // Rest of your component remains the same...
   const getComplaintLink = (notification) => {
     return userRole === "user"
       ? `/user/my-complaints/${notification.complaintId}?notificationId=${notification._id}`
@@ -153,7 +122,8 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
     const res = await markNotificationAsRead(id, token, endpoint);
 
     if (res.success) {
-      updateNotificationState(id, true);
+      // This will now update the total count correctly
+      markNotifications(id);
 
       toast({
         title: "Success!",
@@ -164,14 +134,6 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
   };
 
   const deleteNotificationInComponent = async (id) => {
-    // Find the notification in current state
-    const notificationToDelete = notifications.find((n) => n._id === id);
-
-    // Check if notification exists and is unread
-    const wasUnread = notificationToDelete?.recipients?.some(
-      (recipient) => recipient.user === userId && !recipient.read
-    );
-
     try {
       const endpoint =
         userRole === "user"
@@ -182,54 +144,42 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
       const res = await fetchData(url, "DELETE", { id }, token);
 
       if (res.success) {
-        handleSuccessfulDelete(id);
+        // This will now update the total count correctly
         deleteNotification(id);
-
-        // Decrease count only if notification was unread
-        if (wasUnread) {
-        }
 
         toast({
           title: "Success!",
           description: "Notification deleted",
           variant: "success",
         });
+        const currentPage = Number(searchParams.get("page")) || 1;
+        const newTotal = res.data.total; // Assuming API returns new total
+        const newTotalPages = Math.ceil(newTotal / 10);
+        if (currentPage > newTotalPages) {
+          let redirectUrl;
+          switch (userRole) {
+            case "user":
+              redirectUrl = `/user/user-notifications?page=${newTotalPages}`;
+              break;
+            case "ADMIN":
+            case "SUPER ADMIN":
+            case "SUB ADMIN":
+              redirectUrl = `/client/client-notifications?page=${newTotalPages}`;
+          }
+
+          router.push(redirectUrl);
+        } else {
+          router.refresh(); // Refresh data for current page
+        }
       }
     } catch (error) {
       toast({
         title: "Error",
-        description: "You must be logged in to perform this action.",
+        description: "Failed to delete notification",
         variant: "destructive",
       });
       throw error;
     }
-  };
-
-  const updateNotificationState = (id, isRead) => {
-    // setCurrentNotifications((prev) =>
-    //   prev.map((notification) =>
-    //     notification._id === id
-    //       ? updateRecipients(notification, isRead)
-    //       : notification
-    //   )
-    // );
-    markNotifications(id);
-  };
-
-  const updateRecipients = (notification, isRead) => ({
-    ...notification,
-    recipients: notification.recipients.map((recipient) =>
-      recipient.user === userId ? { ...recipient, read: isRead } : recipient
-    ),
-  });
-
-  const handleSuccessfulDelete = (id) => {
-    // setCurrentNotifications((prev) => prev.filter((n) => n._id !== id));
-    // if (currentNotifications.length === 1 && page > 1) {
-    //   const newPage = page === 2 ? baseRoute : `${baseRoute}?page=${page - 1}`;
-    //   router.push(newPage);
-    // }
-    deleteNotification(id);
   };
 
   const getCurrentRecipient = (notification) => {
@@ -237,20 +187,26 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-background-tertiary rounded-lg shadow-md overflow-hidden">
-      <h2 className="text-2xl font-bold text-gray-800 p-6 border-b">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 p-2 sm:p-4">
         Notifications
       </h2>
 
       {notifications.length === 0 ? (
         <p className="p-6 text-gray-500">No notifications available</p>
       ) : (
-        <Table>
-          <TableHeader>
+        <Table className="w-full border-b border-b-dialog_inside_border_color border border-dialog_inside_border_color">
+          <TableHeader className="!border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
             <TableRow>
-              <TableHead>Message</TableHead>
-              <TableHead>Complaint</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-text_color dark:text-text-light font-medium sm:uppercase">
+                Message
+              </TableHead>
+              <TableHead className="text-text_color dark:text-text-light font-medium sm:uppercase">
+                Complaint
+              </TableHead>
+              <TableHead className="text-text_color dark:text-text-light font-medium sm:uppercase">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -264,47 +220,49 @@ const NotificationComponent = ({ notifications: initialNotifications }) => {
                   key={notification._id}
                   className={`${
                     isRead ? "bg-gray-50" : "bg-blue-50"
-                  } transition-colors`}
+                  } transition-colors hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in`}
                 >
-                  <TableCell>{notification.message}</TableCell>
+                  <TableCell className="text-text_color dark:text-text-light">
+                    {notification.message}
+                  </TableCell>
                   <TableCell>
                     <Link
                       href={getComplaintLink(notification)}
-                      className="text-blue-600 hover:underline"
+                      className="text-blue hover:underline"
                     >
                       View Complaint
                     </Link>
                   </TableCell>
-                  <TableCell className="space-x-2">
+                  <TableCell className="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
                     {!isRead && (
                       <Button
-                        variant="ghost"
                         size="sm"
                         onClick={() => handleAction(notification._id, "read")}
                         disabled={isProcessing}
+                        className="bg-green/10 text-green hover:bg-green/70 hover:text-white focus:outline-none"
                       >
                         {isProcessing ? (
                           <Loader className="w-4 h-4 animate-spin" />
                         ) : (
                           <>
                             <CheckCircle className="w-4 h-4 mr-2" />
-                            Mark Read
+                            <span className="sm:block hidden">Mark Read</span>
                           </>
                         )}
                       </Button>
                     )}
                     <Button
-                      variant="destructive"
                       size="sm"
                       onClick={() => handleAction(notification._id, "delete")}
                       disabled={isProcessing}
+                      className="bg-red/10 text-red hover:bg-red/70 hover:text-white focus:outline-none"
                     >
                       {isProcessing ? (
                         <Loader className="w-4 h-4 animate-spin" />
                       ) : (
                         <>
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
+                          <span className="sm:block hidden">Delete</span>
                         </>
                       )}
                     </Button>

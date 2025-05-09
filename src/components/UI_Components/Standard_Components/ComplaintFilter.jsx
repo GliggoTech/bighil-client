@@ -305,12 +305,12 @@ const ComplaintFilter = ({ bighil = false }) => {
         />
       </div>
 
-      <div className="flex justify-between items-center mt-3 ml-3">
+      <div className="flex sm:justify-between sm:items-center sm:flex-row   flex-col mt-3 ml-3">
         <ResultsCount showing={complaints.length} total={totalComplaints} />
         {/* Export Button */}
         <Button
           onClick={handleExport}
-          className="bg-toast_success_bg hover:bg-toast_success_bg/80 text-text_color font-light py-2 px-4 rounded"
+          className="w-fit justify-end bg-toast_success_bg hover:bg-toast_success_bg/80 text-text_color font-light py-2 px-4 rounded"
         >
           Export to CSV
         </Button>
