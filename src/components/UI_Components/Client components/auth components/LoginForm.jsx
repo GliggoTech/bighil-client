@@ -89,31 +89,31 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-client_login_bg to-client_login_bg/90 p-4">
       <div className="w-full max-w-md">
         {/* Main card */}
         <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
           {/* Accent bar */}
-          <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+          {/* <div className="h-2 bg-gradient-to-r from-indigo via-purple to-pink" /> */}
 
-          <div className="p-8 md:p-10">
+          <div className="p-3 lg:p-5">
             {/* Header */}
-            <div className="text-center mb-8">
-              <div className="flex justify-center mb-6">
+            <div className="text-center mb-4">
+              <div className="flex justify-center mb-3">
                 <div className="relative">
-                  <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center">
-                    <User className="h-10 w-10 text-indigo-600" />
+                  <div className="w-20 h-20 bg-indigo/10 rounded-full flex items-center justify-center">
+                    <User className="h-10 w-10 text-indigo" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 bg-indigo-600 rounded-full p-1.5 shadow-lg">
+                  <div className="absolute -bottom-1 -right-1 bg-indigo rounded-full p-1.5 shadow-lg">
                     <Shield className="h-4 w-4 text-white" />
                   </div>
                 </div>
               </div>
 
-              <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
+              <h1 className="text-xl font-semibold text-text_color ">
                 Welcome Back
               </h1>
-              <p className="text-slate-500 mt-2 text-sm">
+              <p className="text-text_color mt-1 text-sm">
                 Sign in to access your dashboard
               </p>
             </div>
@@ -163,21 +163,19 @@ export default function LoginForm() {
                   name="email"
                   render={({ field }) => (
                     <FormItem className="space-y-1.5">
-                      <FormLabel className="text-slate-700 text-sm font-medium">
+                      <FormLabel className="text-text_color text-sm font-medium">
                         Email Address
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                            <Mail className="h-5 w-5" />
+                            <Mail className="h-5 w-5 text-client_login_bg" />
                           </div>
                           <Input
                             placeholder="name@company.com"
                             className={cn(
-                              "pl-11 h-12 rounded-xl border-slate-200 bg-slate-50",
-                              "placeholder:text-slate-400 text-slate-700",
-                              "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200",
-                              "transition-all duration-200"
+                              "pl-11 h-10 rounded-xl border-slate-200 bg-white",
+                              "placeholder:text-slate-400 text-text_color focus:outline-none"
                             )}
                             disabled={isLoading || isSuccess}
                             {...field}
@@ -195,12 +193,12 @@ export default function LoginForm() {
                   render={({ field }) => (
                     <FormItem className="space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <FormLabel className="text-slate-700 text-sm font-medium">
+                        <FormLabel className="text-text_color text-sm font-medium">
                           Password
                         </FormLabel>
                         <Link
                           href="/client/forgot-password"
-                          className="text-indigo-600 hover:text-indigo-800 text-xs font-medium transition-colors"
+                          className="text-indigo hover:text-indigo text-sm transition-colors"
                         >
                           Forgot password?
                         </Link>
@@ -208,30 +206,28 @@ export default function LoginForm() {
                       <FormControl>
                         <div className="relative">
                           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                            <KeyRound className="h-5 w-5" />
+                            <KeyRound className="h-5 w-5 text-client_login_bg" />
                           </div>
                           <Input
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
                             className={cn(
-                              "pl-11 pr-11 h-12 rounded-xl border-slate-200 bg-slate-50",
-                              "placeholder:text-slate-400 text-slate-700",
-                              "focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200",
-                              "transition-all duration-200"
+                              "pl-11 h-10 rounded-xl border-slate-200 bg-white",
+                              "placeholder:text-slate-400 text-text_color focus:outline-none"
                             )}
                             disabled={isLoading || isSuccess}
                             {...field}
                           />
                           <button
                             type="button"
-                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-text_color transition-colors"
                             onClick={() => setShowPassword(!showPassword)}
                             tabIndex={-1}
                           >
                             {showPassword ? (
-                              <EyeOff className="h-5 w-5" />
+                              <EyeOff className="h-5 w-5 text-client_login_bg" />
                             ) : (
-                              <Eye className="h-5 w-5" />
+                              <Eye className="h-5 w-5 text-client_login_bg" />
                             )}
                           </button>
                         </div>
@@ -246,10 +242,10 @@ export default function LoginForm() {
                     type="submit"
                     disabled={isLoading || isSuccess}
                     className={cn(
-                      "w-full h-12 rounded-xl font-medium text-sm transition-all",
+                      "w-full h-12 rounded-xl font-bold text-white text-sm transition-all",
                       isSuccess
                         ? "bg-emerald-500 hover:bg-emerald-600"
-                        : "bg-indigo-600 hover:bg-indigo-700",
+                        : "bg-client_login_bg hover:bg-client_login_bg/90",
                       "shadow-md hover:shadow-lg"
                     )}
                   >
@@ -291,7 +287,7 @@ export default function LoginForm() {
               {showCredentials && (
                 <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 overflow-hidden animate-fadeIn">
                   <div className="px-4 py-3 bg-slate-100 border-b border-slate-200">
-                    <h3 className="text-slate-700 font-medium text-sm">
+                    <h3 className="text-text_color font-medium text-sm">
                       Demo Credentials
                     </h3>
                   </div>
@@ -303,11 +299,11 @@ export default function LoginForm() {
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                         <span className="text-slate-500">Email:</span>
-                        <span className="text-slate-700">
+                        <span className="text-text_color">
                           vijayakumar.r@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-slate-700">123456</span>
+                        <span className="text-text_color">123456</span>
                       </div>
                     </div>
 
@@ -317,11 +313,11 @@ export default function LoginForm() {
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                         <span className="text-slate-500">Email:</span>
-                        <span className="text-slate-700">
+                        <span className="text-text_color">
                           mohammed.shahul@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-slate-700">123456</span>
+                        <span className="text-text_color">123456</span>
                       </div>
                     </div>
 
@@ -331,11 +327,11 @@ export default function LoginForm() {
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                         <span className="text-slate-500">Email:</span>
-                        <span className="text-slate-700">
+                        <span className="text-text_color">
                           muruganantham.s@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-slate-700">123456</span>
+                        <span className="text-text_color">123456</span>
                       </div>
                     </div>
                   </div>
@@ -345,8 +341,8 @@ export default function LoginForm() {
 
             {/* Security badge */}
             <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs">
-                <Shield className="w-3 h-3 text-indigo-500" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-client_login_bg border border-slate-200 text-white text-xs">
+                <Shield className="w-3 h-3 text-white" />
                 Secured with end-to-end encryption
               </div>
             </div>

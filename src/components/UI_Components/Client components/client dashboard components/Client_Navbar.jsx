@@ -1,39 +1,35 @@
 "use client";
-
 import { useState } from "react";
-import useAccessToken from "@/custom hooks/useAccessToken";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, AlertCircle, X } from "lucide-react";
 import { clientLogout } from "@/app/actions/client.actions";
 import useNotificationStore from "@/store/notificationStore";
+import { LogOut, AlertCircle, Menu, X, ChevronRight } from "lucide-react";
 
-const Client_Navbar = () => {
-  const router = useRouter();
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+const Client_Navbar = ({ isOpen }) => {
   const { userRole } = useNotificationStore();
-
-  // State management
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleLogOut = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
-
+      setLoading(true);
       const res = await clientLogout();
-
       if (res.success) {
+        setError(null);
+        setLoading(false);
         router.push("/");
       } else {
         setError(res.message || "Logout failed. Please try again.");
+        setLoading(false);
       }
-    } catch (err) {
+    } catch (error) {
       setError("An unexpected error occurred. Please try again.");
-      console.error("Logout error:", err);
-    } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -42,102 +38,109 @@ const Client_Navbar = () => {
   };
 
   return (
-    <motion.div
-      className="w-full bg-gradient-to-r from-primary/10 via-primary-light/20 to-primary-dark/30
-                 border-b border-border-dark/10 relative"
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      {/* Error notification */}
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            className="absolute top-full left-0 right-0 z-50 mx-auto mt-2 max-w-md"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg shadow-lg mx-4 flex items-center p-3">
-              <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mr-2" />
-              <p className="flex-1 text-sm">{error}</p>
-              <button
-                onClick={dismissError}
-                className="p-1.5 rounded-full hover:bg-red-100 text-red-500 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
+    <div>
+      {/* Main Navbar */}
+      <div
+        className={` bg-gray/10 shadow-md  px-6 sm:px-10 transition-all duration-200
+    ${isOpen ? "ml-[240px]" : "ml-[72px]"}
+    min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
+  `}
+      >
+        <div>
+          <div className=" px-4 sm:px-6">
+            <div className="h-16 md:h-20 flex items-center justify-between">
+              {/* Left Section: Logo & Mobile Menu */}
+              <div className="flex items-center">
+                <div className="flex items-center">
+                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">
+                    BIGHIL
+                  </h1>
+                </div>
+              </div>
+
+              {/* Right Section: User Info & Actions */}
+              <div className="flex items-center space-x-4">
+                {/* User Role Badge - Different styles for different roles */}
+                {userRole && (
+                  <div className="hidden sm:flex items-center">
+                    <Card
+                      className={`
+                      px-3 py-1.5 border-0 shadow-md
+                      ${
+                        userRole === "ADMIN"
+                          ? "bg-purple/10 dark:bg-purple-900/20 text-purple dark:text-purple-300"
+                          : userRole === "SUPER ADMIN"
+                          ? "bg-blue/10 dark:bg-blue-900/20 text-blue dark:text-blue-300"
+                          : "bg-green/10 dark:bg-green-900/20 text-green dark:text-green-300"
+                      }
+                    `}
+                    >
+                      <span className="text-sm font-medium flex items-center">
+                        <span
+                          className={`
+                          inline-block w-2 h-2 rounded-full mr-2
+                          ${
+                            userRole === "ADMIN"
+                              ? "bg-purple"
+                              : userRole === "SUPER ADMIN"
+                              ? "bg-blue"
+                              : "bg-green"
+                          }
+                        `}
+                        ></span>
+                        {userRole}
+                      </span>
+                    </Card>
+                  </div>
+                )}
+
+                {/* Logout Button */}
+                <Button
+                  onClick={handleLogOut}
+                  disabled={loading}
+                  variant="default"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 h-9 sm:h-10 flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <span className="hidden sm:inline">
+                    {loading ? "Logging Out..." : "Logout"}
+                  </span>
+                  <span className="sm:hidden">
+                    {loading ? "..." : "Logout"}
+                  </span>
+                  <LogOut
+                    className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+                  />
+                </Button>
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <nav className="max-w-7xl mx-auto h-20 px-6 sm:px-10">
-        <div className="h-full flex items-center justify-between">
-          {/* Logo Section */}
-          <motion.div
-            className="flex items-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-          >
-            <div className="relative">
-              <h1
-                className="relative bg-background-dark rounded-lg px-4 py-2
-                           md:text-3xl font-bold font-Questrial 
-                           bg-clip-text text-transparent 
-                           bg-gradient-to-r from-primary via-secondary to-accent-info"
-              >
-                BIGHIL
-              </h1>
-            </div>
-          </motion.div>
-
-          {/* Actions Section */}
-          <div className="flex items-center space-x-6">
-            {/* Role Badge */}
-            {userRole && (
-              <motion.div
-                className="px-4 py-1.5 rounded-full 
-                         bg-gradient-to-r from-primary to-primary/80
-                         border border-border-dark/20
-                         backdrop-blur-sm md:block hidden"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="text-text-light font-medium text-sm">
-                  {userRole}
-                </span>
-              </motion.div>
-            )}
-
-            {/* Logout Button */}
-            <motion.button
-              onClick={handleLogOut}
-              disabled={isLoading}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg
-                         bg-gradient-to-r from-primary to-secondary
-                         hover:from-primary-dark hover:to-secondary-dark
-                         text-text-light font-medium
-                         shadow-lg hover:shadow-xl
-                         transition-all duration-300
-                         disabled:opacity-70 disabled:cursor-not-allowed
-                         group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span>{isLoading ? "Logging Out..." : "Logout"}</span>
-              <LogOut
-                className={`h-4 w-4 transition-all duration-300 ${
-                  isLoading
-                    ? "animate-pulse"
-                    : "transform group-hover:-rotate-12"
-                }`}
-              />
-            </motion.button>
           </div>
         </div>
-      </nav>
-    </motion.div>
+      </div>
+
+      {/* Error Alert */}
+      {error && (
+        <div className="absolute top-full left-0 right-0 px-4 pt-3 z-50">
+          <Alert
+            variant="destructive"
+            className="max-w-md mx-auto animate-slide-down"
+          >
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription className="flex items-center justify-between">
+              <span>{error}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={dismissError}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+    </div>
   );
 };
 

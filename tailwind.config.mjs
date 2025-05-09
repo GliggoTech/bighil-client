@@ -32,6 +32,7 @@ const config = {
         bighil_dashboard_bg: "#f0f0f8",
         pagination_border: "#dee2e6",
         dialog_inside_border_color: "#eff0f6",
+        client_login_bg: "#525ce5",
         "active-link": "#0d6efd",
         "gray-dark": "#343a40",
         "gray-100": "#f8f9fa",
