@@ -39,6 +39,7 @@ const formSchema = z
 
 export default function SettingComponent({ data }) {
   const { name, email, role } = data;
+  console.log(name, email, role);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,20 +81,20 @@ export default function SettingComponent({ data }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-bighil_dashboard_bg  dark:from-texttext-text_color dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="text-center mb-4">
+          <h1 className="text-xl font-bold text-text_color dark:text-white mb-2">
             Account Settings
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-900 dark:text-gray-400">
             Manage your account details and security
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Profile Information Card */}
-          <Card className="lg:col-span-1 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
+          <Card className="lg:col-span-1 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-dialog_inside_border_color dark:border-gray-700">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl text-center">
                 Profile Information
@@ -103,44 +104,46 @@ export default function SettingComponent({ data }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple to-blue rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
                 {name?.charAt(0) || data.username.charAt(0)}
               </div>
 
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-                    <UserIcon className="h-4 w-4" />
-                    <span className="text-sm">Name</span>
+                {name && (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                      <UserIcon className="h-4 w-4" />
+                      <span className="text-sm">Name</span>
+                    </div>
+                    <div className="font-light text-sm text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
+                      {name}
+                    </div>
                   </div>
-                  <div className="font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
-                    {name}
-                  </div>
-                </div>
+                )}
 
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-                    <MailIcon className="h-4 w-4" />
-                    <span className="text-sm">Email</span>
+                    <MailIcon className="h-4 w-4 text-primary" />
+                    <span className="text-sm text-primary">Email</span>
                   </div>
-                  <div className="font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
+                  <div className="font-light text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
                     {email}
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-                    <ShieldIcon className="h-4 w-4" />
-                    <span className="text-sm">Role</span>
+                    <ShieldIcon className="h-4 w-4 text-primary" />
+                    <span className="text-sm text-primary">Role</span>
                   </div>
-                  <div className="font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
+                  <div className="font-light text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
                     {role}
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="lg:col-span-2 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
+          <Card className="lg:col-span-2 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-gray-200 dark:border-gray-700">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl">Change Password</CardTitle>
               <CardDescription>
@@ -159,15 +162,15 @@ export default function SettingComponent({ data }) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="flex items-center space-x-2">
-                          <Lock className="h-4 w-4" />
-                          <span>New Password</span>
+                          <Lock className="h-4 w-4 text-primary" />
+                          <span className="text-primary">New Password</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="password"
                             placeholder="Enter new password"
-                            className="rounded-lg py-5 px-4 border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500"
+                            className="rounded-lg py-5 px-4  border border-dialog_inside_border_color"
                           />
                         </FormControl>
                         <FormMessage />
@@ -181,15 +184,15 @@ export default function SettingComponent({ data }) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="flex items-center space-x-2">
-                          <Lock className="h-4 w-4" />
-                          <span>Confirm Password</span>
+                          <Lock className="h-4 w-4 text-primary" />
+                          <span className="text-primary">Confirm Password</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="password"
                             placeholder="Confirm new password"
-                            className="rounded-lg py-5 px-4 border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500"
+                            className="rounded-lg py-5 px-4 border-gray-300 border border-dialog_inside_border_color"
                           />
                         </FormControl>
                         <FormMessage />
@@ -200,7 +203,7 @@ export default function SettingComponent({ data }) {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
+                    className="w-full bg-gradient-to-r from-blue to-purple hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
                   >
                     {loading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

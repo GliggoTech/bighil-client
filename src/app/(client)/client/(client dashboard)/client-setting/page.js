@@ -1,6 +1,4 @@
-import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
-import SettingsContainer from "@/components/UI_Components/Standard_Components/Settings components/SettingsContainer";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { Suspense } from "react";
@@ -14,9 +12,9 @@ export default async function Client_Setting_Page() {
 
   return (
     <div>
-      {/* <SettingComponent data={data} /> */}
-      <SettingsContainer data={data} />
-      <ContactComponent />
+      <SettingComponent data={data} />
+      {/* <SettingsContainer data={data} />
+      <ContactComponent /> */}
     </div>
   );
 }
