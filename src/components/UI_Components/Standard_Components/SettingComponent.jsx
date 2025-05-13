@@ -39,7 +39,7 @@ const formSchema = z
 
 export default function SettingComponent({ data }) {
   const { name, email, role } = data;
-  console.log(name, email, role);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {

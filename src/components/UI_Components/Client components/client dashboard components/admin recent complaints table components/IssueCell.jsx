@@ -7,7 +7,7 @@ export function IssueCell({ complaint }) {
         <div className="font-medium text-sm text-text_color dark:text-text-light pl-2">
           {complaint.complaintAgainst}
         </div>
-        <div className="text-xs text-text-secondary dark:text-text-muted truncate max-w-[200px] pl-2">
+        <div className="text-xs text-text-secondary dark:text-text-muted truncate max-w-[10px] pl-2">
           {complaint.complaintMessage}
         </div>
       </div>

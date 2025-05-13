@@ -29,7 +29,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
         token,
         false
       );
-      console.log(res);
+
       if (res && res.success) {
         setTotalUnreadCount(res.data.count);
       }

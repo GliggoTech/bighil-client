@@ -3,7 +3,7 @@ import { MaximumComplaintsAgainst } from "@/components/UI_Components/Client comp
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 export const dynamic = "force-dynamic";
-export default async function More_Nuumber_Of_Complaints_Against() {
+export default async function More_Number_Of_Complaints_Against() {
   let res;
   try {
     res = await fetchServerSideData(
@@ -16,6 +16,7 @@ export default async function More_Nuumber_Of_Complaints_Against() {
   } catch (error) {
     return <div>Error from more-complaints-against</div>;
   }
+  console.log(res);
 
   return <MaximumComplaintsAgainst data={res} />;
 }

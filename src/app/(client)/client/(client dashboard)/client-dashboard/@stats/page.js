@@ -33,7 +33,6 @@ export default async function AdminStats() {
       cache: "no-cache",
     }
   );
-  console.log(stats);
 
   // Data validation
   if (!stats) {

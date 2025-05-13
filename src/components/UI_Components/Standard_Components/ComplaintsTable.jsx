@@ -169,7 +169,7 @@ const ComplaintsTable = ({
     <>
       <div className="rounded-lg  overflow-hidden shadow-sm transition-all hover:shadow-md">
         <div className="p-4 bg-default_bg">
-          <Table className="w-full border-b border-b--dialog_inside_border_color border border-dialog_inside_border_color">
+          <Table className="w-full border-b border-b-dialog_inside_border_color border border-dialog_inside_border_color">
             <TableHeader className=" !border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
               <TableRow>
                 <TableHead className="text-text_color dark:text-text-light font-medium lg:uppercase ">
@@ -218,7 +218,7 @@ const ComplaintsTable = ({
                   return (
                     <TableRow
                       key={complaint._id}
-                      className=" p-20 hover:bg-gray-200/50 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
+                      className=" hover:bg-gray-200/50 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
                     >
                       <TableCell className="font-medium">
                         <span className="text-primary">

@@ -8,6 +8,7 @@ import {
   XAxis,
   Tooltip,
   ResponsiveContainer,
+  YAxis,
 } from "recharts";
 import {
   Card,
@@ -91,13 +92,6 @@ export default function ComplaintsChart() {
   };
 
   // Format dates for display
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   // Calculate summary statistics
   const calculateSummary = () => {
@@ -197,89 +191,58 @@ export default function ComplaintsChart() {
                 </p>
               </div>
             </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart
+                data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                style={{
+                  borderRadius: "12px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.05)",
+                  backgroundColor: "#fff",
+                  padding: "0.5rem",
+                }}
+              >
+                <defs>
+                  <linearGradient
+                    id="totalComplaints"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#7C3AED" stopOpacity={0.3} />
+                  </linearGradient>
+                </defs>
 
-            <ChartContainer
-              config={chartConfig}
-              className="aspect-auto h-[300px] w-full"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
-                  <defs>
-                    {Object.entries(chartConfig).map(([key, config]) => (
-                      <linearGradient
-                        key={key}
-                        id={`fill-${key}`}
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor={config.color}
-                          stopOpacity={0.8}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor={config.color}
-                          stopOpacity={0.1}
-                        />
-                      </linearGradient>
-                    ))}
-                  </defs>
-                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="date"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    minTickGap={32}
-                    tickFormatter={formatDate}
-                    angle={-45}
-                    textAnchor="end"
-                    color="yellow"
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={
-                      <ChartTooltipContent
-                        labelFormatter={formatDate}
-                        indicator="dot"
-                      />
-                    }
-                  />
-                  {/* <Area
-                    dataKey="totalComplaints"
-                    type="monotone"
-                    fill="url(#fill-Pending)"
-                    stroke={chartConfig.Pending.color}
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="totalComplaints"
-                    type="monotone"
-                    fill="url(#fill-In Progress)"
-                    stroke={chartConfig["In Progress"].color}
-                    stackId="a"
-                  /> */}
-                  {/* <Area
-                    dataKey="totalComplaints"
-                    type="monotone"
-                    fill="url(#fill-Resolved)"
-                    stroke={chartConfig.Resolved.color}
-                    stackId="a"
-                  /> */}
-                  <Area
-                    dataKey="totalComplaints"
-                    type="monotone"
-                    fill="url(#fill-Unwanted)"
-                    stroke={chartConfig.Unwanted.color}
-                    stackId="a"
-                  />
-                  <ChartLegend content={<ChartLegendContent />} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+                <CartesianGrid strokeDasharray="4 4" />
+                <XAxis dataKey="name" stroke="#94A3B8" />
+                <YAxis allowDecimals={false} stroke="#94A3B8" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    borderColor: "#d1d5db",
+                    borderRadius: 10,
+                    fontSize: 14,
+                  }}
+                  labelStyle={{ color: "#1f2937", fontWeight: 600 }}
+                  cursor={{ fill: "#eff6ff" }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="totalComplaints"
+                  stroke="#7C3AED"
+                  strokeWidth={1}
+                  fill="url(#totalComplaints)"
+                  dot={{
+                    r: 1.2,
+                    strokeWidth: 1,
+                    strokeWidth: 2,
+                    fill: "#fff",
+                  }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </>
         )}
       </CardContent>

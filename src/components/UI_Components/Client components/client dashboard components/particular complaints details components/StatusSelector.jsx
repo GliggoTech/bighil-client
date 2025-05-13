@@ -25,7 +25,6 @@ const StatusSelector = ({
   const token = useAccessToken();
 
   const config = statusConfig[status] || statusConfig.default;
-  console.log(config);
 
   // Only ADMIN or SUPER ADMIN can edit
   const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";

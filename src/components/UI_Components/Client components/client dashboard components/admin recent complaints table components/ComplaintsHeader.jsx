@@ -5,25 +5,14 @@ import { ScrollText } from "lucide-react";
 
 export function ComplaintsHeader() {
   return (
-    <CardHeader className="bg-gradient-to-r from-background-secondary to-background-tertiary border-b border-border-light dark:border-border-dark">
+    <CardHeader className="bg-white dark:border-border-dark !border-b-[2px] !border-dialog_inside_border_color dark:!border-b-gray-700">
       <div className="flex items-center justify-between">
         <CardTitle className="text-lg flex items-center gap-2 font-semibold text-text_color dark:text-text-light">
-          <ScrollText className="text-accent-info w-6 h-6  " /> Recent
-          Complaints
+          <ScrollText className="text-primary w-6 h-6  " /> Recent Complaints
         </CardTitle>
-        {/* <Link href="/client/client-complaints" asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs bg-surface-light dark:bg-surface-dark hover:bg-primary hover:text-white dark:hover:bg-background-dark"
-          >
-            View All
-          </Button>
-        </Link> */}
+
         <Button
-          variant="outline"
-          size="sm"
-          className="text-xs bg-surface-light dark:bg-surface-dark hover:bg-primary hover:text-white dark:hover:bg-background-dark"
+          className="relative z-10 px-4 py-2 text-sm font-medium text-white bg-blue hover:bg-blue/90 transition-colors"
           asChild
         >
           <Link href="/client/client-complaints">View All</Link>
