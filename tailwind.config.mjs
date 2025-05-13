@@ -24,15 +24,24 @@ const config = {
         cyan: "#0dcaf0",
         gray: "#6c757d",
         text_color: "#242e4c",
-        default_bg: "#f7f8f9",
-        info_bg: "#2f89f5",
-        danger_bg: "#fb5454",
-        back_bg: "#f4f6fd",
-        toast_success_bg: "#56d094",
-        bighil_dashboard_bg: "#f0f0f8",
-        pagination_border: "#dee2e6",
-        dialog_inside_border_color: "#eff0f6",
-        client_login_bg: "#525ce5",
+        // default_bg: "#f7f8f9",
+        // info_bg: "#2f89f5",
+        // danger_bg: "#fb5454",
+        // back_bg: "#f4f6fd",
+        // toast_success_bg: "#56d094",
+        // bighil_dashboard_bg: "#f0f0f8",
+        // pagination_border: "#dee2e6",
+        // dialog_inside_border_color: "#eff0f6",
+        // client_login_bg: "#525ce5",
+        default_bg: "#f7f9f8", // Retained lightness with slight green undertone
+        info_bg: "#2f9e63", // Direct green equivalent to #2f89f5, same vibrancy
+        danger_bg: "#fb5454", // Keeping red for danger (universal convention)
+        back_bg: "#f4fdf6", // Light background with green tint instead of blue
+        toast_success_bg: "#56d094", // Keeping as is (already green)
+        bighil_dashboard_bg: "#f1f9f5", // Keeping as is (already green-tinted)
+        pagination_border: "#dce6de", // Slight green tint to border
+        dialog_inside_border_color: "#eff6f1", // Green-tinted light border
+        client_login_bg: "#37a367", // Rich green equivalent to blue
         "active-link": "#0d6efd",
         "gray-dark": "#343a40",
         "gray-100": "#f8f9fa",
@@ -48,7 +57,8 @@ const config = {
         white: "#ffffff",
 
         // Theme aliases
-        primary: "#0d6efd",
+        // primary: "#0d6efd",
+        primary: "#198754",
         secondary: "#6c757d",
         success: "#198754",
         info: "#0dcaf0",

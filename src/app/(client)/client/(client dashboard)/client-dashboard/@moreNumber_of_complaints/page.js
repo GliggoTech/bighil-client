@@ -16,7 +16,6 @@ export default async function More_Number_Of_Complaints_Against() {
   } catch (error) {
     return <div>Error from more-complaints-against</div>;
   }
-  console.log(res);
 
   return <MaximumComplaintsAgainst data={res} />;
 }

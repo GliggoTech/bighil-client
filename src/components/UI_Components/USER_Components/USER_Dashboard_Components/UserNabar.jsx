@@ -1,142 +1,134 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  FiMenu,
-  FiX,
-  FiPlusCircle,
-  FiList,
-  FiLogOut,
-  FiUser,
-} from "react-icons/fi";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
-import useFetch from "@/custom hooks/useFetch";
-
-import { getBackendUrl } from "@/lib/getBackendUrl";
-import { useRouter } from "next/navigation";
-import useAccessToken from "@/custom hooks/useAccessToken";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiMenu, FiX, FiLogOut, FiBell } from "react-icons/fi";
+import { Button } from "@/components/ui/button";
 import useNotificationStore from "@/store/notificationStore";
-import { IconBase } from "react-icons";
-import { CiSettings } from "react-icons/ci";
+import { cn } from "@/lib/utils";
+import { navLinks } from "@/lib/dashboard constants/SidebarConstants";
+import { useRouter } from "next/navigation";
 import { userSignout } from "@/app/actions/user.action";
+import { LogOut } from "lucide-react";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("user-add-complaint");
-  const { userId, userRole, notificationCount } = useNotificationStore();
-
-  const { loading, fetchData } = useFetch();
+  const [activeLink, setActiveLink] = useState("/user/user-add-complaint");
+  const { notificationCount } = useNotificationStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
-  const token = useAccessToken();
-
-  const navLinks = [
-    {
-      name: "Add Complaint",
-      icon: <FiPlusCircle className="mr-2 h-5 w-5" />,
-      url: "/user/user-add-complaint",
-    },
-    {
-      name: "My Complaints",
-      icon: <FiList className="mr-2 h-5 w-5" />,
-      url: "/user/my-complaints",
-    },
-  ];
-
   const handleLogOut = async () => {
-    const res = await userSignout();
-    if (res.success) {
-      router.push("/");
-    } else {
-      console.error(res.message);
+    try {
+      setLoading(true);
+      const res = await userSignout();
+      if (res.success) {
+        setLoading(false);
+        router.push("/");
+      } else {
+        setLoading(false);
+        setError(res.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError("An unexpected error occurred. Please try again.");
     }
+  };
+  const menuVariants = {
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+    closed: { opacity: 0, y: -20 },
+  };
+
+  const itemVariants = {
+    open: { opacity: 1, y: 0 },
+    closed: { opacity: 0, y: -20 },
   };
 
   return (
-    <nav className="bg-black/50 backdrop-blur supports-[backdrop-filter]:bg-black/50 border-b border-neutral-100/30">
+    <nav className="bg-light-bg-subtle border-b border-light-border-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center space-x-2">
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-shrink-0"
+          >
+            <span className="text-2xl font-bold bg-primary bg-clip-text text-transparent">
               BIGHIL
             </span>
-          </div>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            {navLinks.map((link) => (
-              <Button
-                asChild
-                key={link.name}
-                variant="ghost"
-                className={cn(
-                  "hover:bg-hoverState text-white transition-colors",
-                  activeLink === link.name
-                    ? "text-primary border-b-2 border-primary"
-                    : "hover:text-primary"
-                )}
-                onClick={() => setActiveLink(link.name)}
-              >
-                <Link href={link.url}>
-                  {link.icon}
-                  {link.name}
-                </Link>
-              </Button>
-            ))}
-
-            {/* User Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="rounded-full h-10 w-10 p-0 ">
-                  <Avatar className="h-8 w-8  border-primary bg-secondary">
-                    <AvatarImage src="/user-avatar.png" />
-                    <AvatarFallback>
-                      <FiUser className="h-4 w-4 text-white" />
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="border-neutral-100/30"
-              >
-                <DropdownMenuItem
-                  className="text-red-600 hover:bg-red-50/50 cursor-pointer"
-                  onClick={handleLogOut}
+          <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
+            <motion.ul
+              initial="closed"
+              animate="open"
+              variants={menuVariants}
+              className="flex items-center gap-2"
+            >
+              {navLinks.map((link) => (
+                <motion.li
+                  key={link.name}
+                  variants={itemVariants}
+                  className="relative"
                 >
-                  <FiLogOut className="mr-2 h-4 w-4 text-blue-600" />
-                  Logout
-                </DropdownMenuItem>
-                <DropdownMenuItem className=" hover:bg-red-50/50 cursor-pointer flex">
                   <Link
-                    href={`/user/user-setting`}
-                    className="flex items-center"
+                    href={link.url}
+                    onClick={() => setActiveLink(link.url)}
+                    className={cn(
+                      "flex items-center text-base px-2 py-2 rounded-lg transition-colors",
+                      activeLink === link.url
+                        ? "bg-primary/10 text-primary font-light"
+                        : "text-text_color hover:bg-primary/5 hover:text-primary"
+                    )}
                   >
-                    <CiSettings className="mr-2 h-4 w-4 text-blue-600" />
-                    Setting
+                    {link.icon}
+                    <span className="ml-2">{link.name}</span>
+                    {link.name === "Notifications" && notificationCount > 0 && (
+                      <span className="ml-2 bg-danger text-white text-xs font-semibold px-2 py-1 rounded-full">
+                        {notificationCount > 99 ? "99+" : notificationCount}
+                      </span>
+                    )}
                   </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Link href="/user/user-notifications">
-              <div className="relative p-2 bg-black rounded-full">
-                🔔
-                {notificationCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-xs px-2 rounded-full">
-                    {notificationCount}
-                  </span>
-                )}
-              </div>
-            </Link>
+                  {activeLink === link.url && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-x-0 -bottom-px h-0.5 bg-primary"
+                    />
+                  )}
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
+
+          {/* Desktop Logout */}
+          <div className="hidden md:flex">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              {/* Logout Button */}
+              <Button
+                onClick={handleLogOut}
+                disabled={loading}
+                variant="default"
+                className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 h-9 sm:h-10 flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                <span className="hidden sm:inline">
+                  {loading ? "Logging Out..." : "Logout"}
+                </span>
+                <span className="sm:hidden">{loading ? "..." : "Logout"}</span>
+                <LogOut
+                  className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+                />
+              </Button>
+              {error && <p className="text-red text-sm mt-1">{error}</p>}
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -144,7 +136,7 @@ const UserNavbar = () => {
             <Button
               variant="ghost"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-neutral-700 hover:bg-hoverState"
+              className="text-gray-600 hover:bg-primary/5 hover:text-primary"
             >
               {isMobileMenuOpen ? (
                 <FiX className="h-6 w-6" />
@@ -156,46 +148,66 @@ const UserNavbar = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden overflow-hidden transition-all duration-300",
-            isMobileMenuOpen ? "max-h-96" : "max-h-0"
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden overflow-hidden"
+            >
+              <motion.div
+                variants={menuVariants}
+                initial="closed"
+                animate="open"
+                className="px-2 pt-2 pb-4 space-y-1"
+              >
+                {navLinks.map((link) => (
+                  <motion.div
+                    key={link.name}
+                    variants={itemVariants}
+                    className="relative"
+                  >
+                    <Link
+                      href={link.url}
+                      onClick={() => {
+                        setActiveLink(link.url);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={cn(
+                        "flex items-center px-4 py-3 rounded-lg transition-colors",
+                        activeLink === link.url
+                          ? "bg-primary/10 text-primary font-medium"
+                          : "text-gray-600 hover:bg-primary/5"
+                      )}
+                    >
+                      {link.icon}
+                      <span className="ml-3">{link.name}</span>
+                      {link.name === "Notifications" &&
+                        notificationCount > 0 && (
+                          <span className="ml-auto bg-danger text-white text-xs font-semibold px-2 py-1 rounded-full">
+                            {notificationCount > 99 ? "99+" : notificationCount}
+                          </span>
+                        )}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  variants={itemVariants}
+                  className="border-t border-light-border-subtle pt-2 mt-2"
+                >
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-gray-600 hover:bg-primary/5 hover:text-primary"
+                  >
+                    <FiLogOut className="mr-3 h-5 w-5" />
+                    Logout
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           )}
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={cn(
-                  "flex items-center p-3 rounded-lg transition-colors",
-                  activeLink === link.name
-                    ? "bg-primary text-onPrimary"
-                    : "text-neutral-700 hover:bg-hoverState"
-                )}
-                onClick={() => {
-                  setActiveLink(link.name);
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                {link.icon}
-                {link.name}
-              </a>
-            ))}
-
-            {/* Mobile Logout */}
-            <div className="border-t border-neutral-100/30 pt-2 mt-2">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-red-600 hover:bg-red-50/50"
-                onClick={handleLogOut}
-              >
-                <FiLogOut className="mr-2 h-5 w-5" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
+        </AnimatePresence>
       </div>
     </nav>
   );

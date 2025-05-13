@@ -6,6 +6,7 @@ import {
   MessageSquareText,
   Settings,
 } from "lucide-react";
+import { FiBell, FiList, FiPlusCircle } from "react-icons/fi";
 
 // Enhanced sidebar items with additional metadata
 export const clientSidebarValues = [
@@ -68,5 +69,28 @@ export const bighilSidebarValues = [
     title: "Settings",
     path: "/bighil/bighil-setting",
     icon: Settings,
+  },
+];
+
+export const navLinks = [
+  {
+    name: "Add Complaint",
+    icon: <FiPlusCircle className="mr-2 h-5 w-5" />,
+    url: "/user/user-add-complaint",
+  },
+  {
+    name: "My Complaints",
+    icon: <FiList className="mr-2 h-5 w-5" />,
+    url: "/user/my-complaints",
+  },
+  {
+    name: "Notifications",
+    icon: <FiBell className="mr-2 h-5 w-5" />,
+    url: "/user/user-notifications",
+  },
+  {
+    name: "Settings",
+    icon: <Settings className="mr-2 h-5 w-5" />,
+    url: "/user/user-setting",
   },
 ];

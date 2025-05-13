@@ -116,16 +116,16 @@ const SignupSigninForm = ({ mode = "signup" }) => {
   };
 
   return (
-    <div className=" bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
+    <div className=" min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in">
         {/* Card container */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden ">
           {/* Form header */}
-          <div className="p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <div className="p-6 bg-primary text-white">
             <h2 className="text-2xl font-bold">
               {mode === "signup" ? "Create Account" : "Welcome Back"}
             </h2>
-            <p className="mt-1 opacity-90">
+            <p className="mt-1 ">
               {mode === "signup"
                 ? "Join our community to share your voice"
                 : "Sign in to access your account"}
@@ -136,7 +136,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
           <div className="p-6 pt-8">
             {/* Success message */}
             {formSuccess && (
-              <Alert className="mb-6 bg-green-50 text-green-700 border-green-200">
+              <Alert className="mb-6 bg-green/10 text-green border-green">
                 <CheckCircle className="h-4 w-4" />
                 <AlertTitle>Success</AlertTitle>
                 <AlertDescription>{formSuccess}</AlertDescription>
@@ -146,7 +146,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
             {/* Error message */}
             {formError && (
               <Alert
-                className="mb-6 bg-red-50 text-red-700 border-red-200"
+                className="mb-6 bg-red/10 text-red border-red/20"
                 variant="destructive"
               >
                 <AlertCircle className="h-4 w-4" />
@@ -167,20 +167,21 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">
+                        <FormLabel className="text-text_color font-medium">
                           Full Name
                         </FormLabel>
                         <div className="relative mt-1">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
                           <FormControl>
                             <Input
                               {...field}
+                              type="text"
                               disabled={isLoading}
-                              className="pl-10 h-12 border-gray-300 bg-gray-50 focus:border-blue-500 focus:ring-blue-500/20"
+                              className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
                               placeholder="Jane Doe"
                             />
                           </FormControl>
-                          <FormMessage className="text-red-500 text-sm mt-1" />
+                          <FormMessage className="text-red text-sm mt-1" />
                         </div>
                       </FormItem>
                     )}
@@ -193,17 +194,17 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">
+                      <FormLabel className="text-text_color font-medium">
                         Email Address
                       </FormLabel>
                       <div className="relative mt-1">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
                         <FormControl>
                           <Input
                             {...field}
                             type="email"
                             disabled={isLoading}
-                            className="pl-10 h-12 border-gray-300 bg-gray-50 focus:border-blue-500 focus:ring-blue-500/20"
+                            className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
                             placeholder="your@email.com"
                           />
                         </FormControl>
@@ -220,26 +221,26 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex justify-between items-center">
-                        <FormLabel className="text-gray-700 font-medium">
+                        <FormLabel className="text-text_color font-medium">
                           Password
                         </FormLabel>
                         {mode === "signin" && (
                           <Link
                             href="/user/forgot-password"
-                            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                            className="text-sm text-primary hover:text-primary/80 transition-colors"
                           >
                             Forgot Password?
                           </Link>
                         )}
                       </div>
                       <div className="relative mt-1">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
                         <FormControl>
                           <Input
                             {...field}
                             type={showPassword ? "text" : "password"}
                             disabled={isLoading}
-                            className="pl-10 h-12 border-gray-300 bg-gray-50 focus:border-blue-500 focus:ring-blue-500/20"
+                            className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
                             placeholder="••••••••"
                           />
                         </FormControl>
@@ -254,7 +255,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                           {showPassword ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 text-gray-500 hover:text-gray-700"
+                              className="h-5 w-5 text-gray-500 hover:text-text_color"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -269,7 +270,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                           ) : (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 text-gray-500 hover:text-gray-700"
+                              className="h-5 w-5 text-gray-500 hover:text-text_color"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -299,7 +300,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 mt-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200 text-white font-medium"
+                  className="w-full h-10 mt-3 bg-gradient-to-r from-primary to-green hover:from-blue-700 hover:to-primary-700 transition-all duration-200 text-white font-medium"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -319,13 +320,13 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                 {/* Divider */}
                 <div className="relative flex items-center justify-center my-6">
                   <div className="h-px w-full bg-gray-200"></div>
-                  <span className="absolute bg-white px-4 text-gray-500 text-sm">
+                  <span className="absolute bg-white px-4 text-text_color text-sm">
                     OR
                   </span>
                 </div>
 
                 {/* Toggle between signup and signin */}
-                <div className="text-center text-gray-600">
+                <div className="text-center text-text_color">
                   {mode === "signup"
                     ? "Already have an account?"
                     : "Don't have an account?"}{" "}
@@ -335,7 +336,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         ? "/user/user-login"
                         : "/user/user-register"
                     }
-                    className="font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                    className="font-medium text-primary hover:text-primary transition-colors hover:underline"
                   >
                     {mode === "signup" ? "Sign in" : "Sign up"}
                   </Link>
@@ -343,7 +344,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
 
                 {/* Demo credentials */}
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="text-center text-sm font-medium text-gray-700 mb-2">
+                  <p className="text-center text-sm font-medium text-text_color mb-2">
                     Demo Credentials
                   </p>
                   <div className="grid grid-cols-2 gap-2 text-sm">
@@ -363,8 +364,8 @@ const SignupSigninForm = ({ mode = "signup" }) => {
         </div>
 
         {/* Security badge */}
-        <div className="mt-6 text-center">
-          <p className="text-gray-500 text-sm flex items-center justify-center gap-1">
+        <div className="mt-6 text-center bg-primary rounded-full shadow-md p-2">
+          <p className="text-white text-sm flex items-center justify-center gap-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"

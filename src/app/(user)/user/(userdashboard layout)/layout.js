@@ -22,8 +22,8 @@ export default async function UserDashboard_Layout({ children }) {
     <SocketProvider>
       <Toaster position="top-right" richColors />
       <UserNavbar />
-      {children}
-      <PortalFooter />
+      <div className="bg-bighil_dashboard_bg ">{children}</div>
+      {/* <PortalFooter /> */}
     </SocketProvider>
   );
 }
