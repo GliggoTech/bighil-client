@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsTouchDevice } from "@/custom hooks/useIsTouchDevice";
 
 const sidebarVariants = {
   open: { width: 240 },
@@ -13,6 +14,7 @@ const sidebarVariants = {
 };
 const Bighil_Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
+  const isTouchDevice = useIsTouchDevice(); // Use the touch detection hook
 
   const toggleSidebar = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -81,11 +83,12 @@ const Bighil_Sidebar = ({ isOpen, setIsOpen }) => {
               </Link>
 
               {/* Tooltip on hover when collapsed */}
-              {!isOpen && (
-                <span className="absolute left-10 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                  {item.title}
-                </span>
-              )}
+              {!isOpen &&
+                !isTouchDevice && ( // Add !isTouchDevice condition
+                  <span className="absolute left-10 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                    {item.title}
+                  </span>
+                )}
             </div>
           );
         })}
