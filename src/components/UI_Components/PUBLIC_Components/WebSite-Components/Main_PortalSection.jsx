@@ -46,10 +46,7 @@ const Main_PortalSection = () => {
   ];
 
   return (
-    <section
-      id="portals"
-      className="py-8 scroll-mt-16 md:scroll-mt-24 md:py-12"
-    >
+    <section id="portals" className="py-8 scroll-mt-16  md:py-12">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

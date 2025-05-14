@@ -52,10 +52,7 @@ const Main_FeaturesSection = () => {
   ];
 
   return (
-    <section
-      id="features"
-      className="py-8 md:py-12  scroll-mt-16 md:scroll-mt-24 border-none"
-    >
+    <section id="features" className="py-8 md:py-12  scroll-mt-16  border-none">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

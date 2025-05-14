@@ -7,7 +7,7 @@ const Main_Hero_Section = () => {
   return (
     <section
       id="home"
-      className="bg-gradient-to-r scroll-mt-16 md:scroll-mt-24 from-primary to-primary/90 pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden"
+      className="bg-gradient-to-r scroll-mt-16  from-primary to-primary/90 pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-8">

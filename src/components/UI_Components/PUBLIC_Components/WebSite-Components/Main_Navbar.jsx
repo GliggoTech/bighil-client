@@ -62,18 +62,18 @@ const Main_Navbar = () => {
                 className={`relative font-medium transition-colors ${
                   scrolled
                     ? "text-gray-700 hover:text-primary"
-                    : "text-white hover:text-primary/90"
+                    : "text-white hover:text-white/90"
                 }`}
               >
                 {item.title}
-                {!scrolled && (
+                {/* {!scrolled && (
                   <motion.div
                     className="absolute bottom-0 left-0 w-full h-px bg-white/30"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.3 }}
                   />
-                )}
+                )} */}
               </motion.a>
             ))}
 
@@ -82,8 +82,8 @@ const Main_Navbar = () => {
                 href="/user/user-login"
                 className={`px-4 py-2 rounded-full border transition-all ${
                   scrolled
-                    ? "border-primary text-primary hover:bg-primary/5"
-                    : "border-white text-white hover:bg-white/10"
+                    ? " text-primary hover:bg-primary/5"
+                    : " text-white hover:bg-white/10"
                 }`}
               >
                 User Login
@@ -152,9 +152,7 @@ const Main_Navbar = () => {
               <Link
                 href="/user/user-login"
                 className={`px-4 py-3 rounded-full text-center ${
-                  scrolled
-                    ? "border border-primary text-primary"
-                    : "border border-white text-white"
+                  scrolled ? " text-primary" : " text-white"
                 }`}
               >
                 User Login
