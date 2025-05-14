@@ -19,7 +19,7 @@ const Main_Navbar = () => {
 
   return (
     <nav
-      className={`fixed  w-full z-50 transition-all duration-300 ${
+      className={`fixed  w-full z-50 transition-all duration-300  ${
         scrolled
           ? "bg-white backdrop-blur-lg shadow-sm py-3 border-b border-dialog_inside_border_color"
           : "bg-transparent py-5"

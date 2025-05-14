@@ -7,7 +7,7 @@ const Main_Hero_Section = () => {
   return (
     <section
       id="home"
-      className="bg-gradient-to-r from-primary to-primary/90 pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden"
+      className="bg-gradient-to-r scroll-mt-16 md:scroll-mt-24 from-primary to-primary/90 pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -19,11 +19,12 @@ const Main_Hero_Section = () => {
             className="md:w-1/2 mb-10 md:mb-0 text-center md:text-left"
           >
             <h1 className="text-white text-2xl md:text-3xl lg:text-4xl font-medium mb-6">
-              Simplify Your Business Management with BigHil
+              Centralized Complaint Management for Businesses & Clients
             </h1>
             <p className="text-white text-base md:text-lg mb-6 opacity-90">
-              A comprehensive platform that streamlines your operations,
-              customer complaints, and business workflows in one place.
+              BigHil helps businesses handle customer/employees complaints
+              efficiently with real-time updates, role-based access, and
+              streamlined workflows — all from a powerful dashboard.
             </p>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <motion.a

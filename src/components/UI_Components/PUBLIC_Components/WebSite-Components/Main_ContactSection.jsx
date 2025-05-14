@@ -9,7 +9,10 @@ import ContactFormCard from "./ContactFormCard";
 
 const Main_ContactSection = () => {
   return (
-    <section id="contact" className="py-8 md:py-12 bg-default_bg">
+    <section
+      id="contact"
+      className="py-8 md:py-12 scroll-mt-16 md:scroll-mt-24 bg-default_bg"
+    >
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row">
           <motion.div

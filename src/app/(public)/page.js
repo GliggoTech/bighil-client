@@ -19,17 +19,3 @@ export default function Public_Home_Page() {
     </div>
   );
 }
-
-// const BigHilWebsite = () => {
-//   return (
-//     <div className="text-text-color bg-default-bg">
-//       <Navbar />
-//
-//
-//
-//
-//
-//
-//     </div>
-//   );
-// };
