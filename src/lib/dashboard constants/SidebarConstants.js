@@ -2,10 +2,13 @@ import {
   AlertCircle,
   Bell,
   Building2,
+  FileText,
   LayoutDashboard,
+  Lock,
   MessageSquareText,
   Settings,
 } from "lucide-react";
+import { title } from "process";
 import { FiBell, FiList, FiPlusCircle } from "react-icons/fi";
 
 // Enhanced sidebar items with additional metadata
@@ -92,5 +95,52 @@ export const navLinks = [
     name: "Settings",
     icon: <Settings className="mr-2 h-5 w-5" />,
     url: "/user/user-setting",
+  },
+];
+
+export const STEPS = [
+  {
+    icon: AlertCircle,
+    title: "Report Issue",
+    description:
+      "File your grievance with detailed information and supporting documents",
+  },
+  {
+    icon: FileText,
+    title: "Track Progress",
+    description: "Monitor real-time updates through our secure client portal",
+  },
+  {
+    icon: Lock,
+    title: "Resolution",
+    description: "Get notified when your complaint is resolved satisfactorily",
+  },
+];
+
+export const main_Navbar_Values = [
+  {
+    id: 1,
+    title: "Home",
+    url: "#home",
+  },
+  {
+    id: 2,
+    title: "Features",
+    url: "#features",
+  },
+  {
+    id: 3,
+    title: "File Complaint",
+    url: "#complaint",
+  },
+  {
+    id: 4,
+    title: "Client Portals",
+    url: "#portals",
+  },
+  {
+    id: 5,
+    title: "Contact",
+    url: "#contact",
   },
 ];

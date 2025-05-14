@@ -1,25 +1,35 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Main_ComplaintSection from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_ComplaintSection";
+import Main_ContactSection from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_ContactSection";
+import Main_FeaturesSection from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_FeaturesSection";
+import Main_FooterSection from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_FooterSection";
+import Main_Hero_Section from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_Hero_Section";
+import Main_Navbar from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_Navbar";
+import Main_PortalSection from "@/components/UI_Components/PUBLIC_Components/WebSite-Components/Main_PortalSection";
 
-export default function Home() {
+export default function Public_Home_Page() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen gap-y-10">
-      <Button>
-        {" "}
-        <Link href={"/user/user-register"}>User Register</Link>{" "}
-      </Button>
-      <Button className="bg-black text-white hover:bg-pink-500">
-        {" "}
-        <Link href={"/bighil/bighil-login"}>Bighil Login</Link>{" "}
-      </Button>
-      <Button className="bg-red text-white hover:bg-pink-500">
-        {" "}
-        <Link href={"/client/client-login"}>Client Login</Link>{" "}
-      </Button>
-      <div>
-        <h1> This is demo website for Bighil</h1>
-        <p>Hello World</p>
-      </div>
+    <div className="text-text-color bg-default-bg">
+      <Main_Navbar />
+      <Main_Hero_Section />
+      <Main_FeaturesSection />
+      <Main_ComplaintSection />
+      <Main_PortalSection />
+      <Main_ContactSection />
+      <Main_FooterSection />
     </div>
   );
 }
+
+// const BigHilWebsite = () => {
+//   return (
+//     <div className="text-text-color bg-default-bg">
+//       <Navbar />
+//
+//
+//
+//
+//
+//
+//     </div>
+//   );
+// };

@@ -95,7 +95,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
             <div
               key={item.id}
               className="relative group"
-              onClick={() => isTouchDevice && setIsOpen(false)}
+              onClick={() => setIsOpen(false)}
             >
               <Link
                 href={item.path}

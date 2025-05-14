@@ -1,0 +1,59 @@
+
+
+// Contact Info Item Component
+const ContactInfoItem = () => {
+
+};
+
+// Social Media Icon Component
+
+
+// Contact Section Component
+const ContactSection = () => {
+  
+};
+
+// Footer Link Component
+const FooterLink = () => {
+ 
+};
+
+// Footer Section Component
+const FooterSection = () => {
+
+};
+
+// Main App Component
+
+
+// Add Tailwind CSS colors
+const tailwindConfig = {
+  theme: {
+    extend: {
+      colors: {
+        blue: "#0d6efd",
+        indigo: "#6610f2",
+        purple: "#6f42c1",
+        pink: "#d63384",
+        red: "#dc3545",
+        orange: "#fd7e14",
+        yellow: "#ffc107",
+        green: "#198754",
+        teal: "#20c997",
+        cyan: "#0dcaf0",
+        gray: "#6c757d",
+        primary: "#198754",
+        "text-color": "#242e4c",
+        "default-bg": "#f7f9f8",
+        "info-bg": "#2f9e63",
+        "danger-bg": "#fb5454",
+        "back-bg": "#f4fdf6",
+        "toast-success-bg": "#56d094",
+        "bighil-dashboard-bg": "#f1f9f5",
+        "active-link": "#0ca750",
+      },
+    },
+  },
+};
+
+export default BigHilWebsite;
