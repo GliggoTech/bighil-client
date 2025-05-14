@@ -22,11 +22,11 @@ export default function TopClientsChart({ topClients, totalClients }) {
             {totalClients}
           </span>
         </h2>
-        <div className="bg-white cursor-pointer">
+        {/* <div className="bg-white cursor-pointer">
           <Button className="w-full sm:w-auto bg-primary text-white font-light hover:bg-primary/50">
             Export As CSV
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Chart Section */}
@@ -60,7 +60,7 @@ export default function TopClientsChart({ topClients, totalClients }) {
           <Line
             type="monotone"
             dataKey="count"
-            stroke="#fd7e14"
+            stroke="#198754"
             strokeWidth={1.5}
             activeDot={{ r: 6, strokeWidth: 3, stroke: "#ced4da" }}
             name="Complaints"

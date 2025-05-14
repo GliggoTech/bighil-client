@@ -104,7 +104,7 @@ export default function SettingComponent({ data }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple to-blue rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-success rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
                 {name?.charAt(0) || data.username.charAt(0)}
               </div>
 
@@ -112,8 +112,8 @@ export default function SettingComponent({ data }) {
                 {name && (
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-                      <UserIcon className="h-4 w-4" />
-                      <span className="text-sm">Name</span>
+                      <UserIcon className="h-4 w-4 text-primary" />
+                      <span className="text-sm text-primary">Name</span>
                     </div>
                     <div className="font-light text-sm text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
                       {name}
@@ -192,7 +192,7 @@ export default function SettingComponent({ data }) {
                             {...field}
                             type="password"
                             placeholder="Confirm new password"
-                            className="rounded-lg py-5 px-4 border-gray-300 border border-dialog_inside_border_color"
+                            className="rounded-lg py-5 px-4  border border-dialog_inside_border_color"
                           />
                         </FormControl>
                         <FormMessage />
@@ -203,7 +203,7 @@ export default function SettingComponent({ data }) {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-blue to-purple hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
+                    className="w-full bg-gradient-to-r from-primary to-success hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
                   >
                     {loading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

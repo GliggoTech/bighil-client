@@ -278,7 +278,7 @@ const ComplaintsTable = ({
                           }
                           className="inline-block"
                         >
-                          <Button className="w-fit bg-gradient-to-r from-primary to-primary/90 hover:to-blue text-white font-light  rounded transition-all duration-300 transform hover:scale-105">
+                          <Button className="w-fit bg-gradient-to-r from-primary to-primary/80 text-white font-light  rounded transition-all duration-300 transform hover:scale-105">
                             <Eye className="h-4 w-4 mr-1 inline md:hidden" />
                             <span className="hidden md:inline">View</span>
                           </Button>
@@ -287,7 +287,7 @@ const ComplaintsTable = ({
                           <div className="">
                             <Button
                               onClick={() => handlePdfPreview(complaint._id)}
-                              className="w-fit bg-success/10 text-success text-center py-1 rounded-md hover:bg-success hover:text-white"
+                              className="w-fit bg-success/10 text-success text-center py-1 rounded-md hover:bg-white hover:text-primary"
                               disabled={
                                 previewLoading &&
                                 selectedComplaintId === complaint._id

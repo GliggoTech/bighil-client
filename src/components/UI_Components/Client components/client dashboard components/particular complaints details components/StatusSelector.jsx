@@ -10,23 +10,15 @@ import {
 import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
-import { useSocket } from "@/context/socketContext";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { statusConfig } from "@/utils/timeLineColors";
+import { FaExchangeAlt } from "react-icons/fa";
 
-const StatusSelector = ({
-  status,
-  setStatus,
-  complaintId,
-  onStatusChange,
-  userRole,
-}) => {
-  const { loading, success, error, fetchData } = useFetch();
+const StatusSelector = ({ status, complaintId, userRole }) => {
+  const { loading, error, fetchData } = useFetch();
   const token = useAccessToken();
-
   const config = statusConfig[status] || statusConfig.default;
 
-  // Only ADMIN or SUPER ADMIN can edit
   const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";
 
   const handleChange = async (value) => {
@@ -38,39 +30,29 @@ const StatusSelector = ({
       token,
       false
     );
-    // setStatus(value); // Update local state
-    // onStatusChange(value); // Optional callback
   };
 
-  // If Resolved, always show read-only
-  if (status === "Resolved") {
-    return (
-      // <div
-      //   className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
-      // >
-      //   {status}
-      // </div>
-      null
-    );
-  }
-
-  // If not editable, show read-only
-  if (!isEditable) {
-    return (
-      // <div
-      //   className={`w-[180px] px-4 py-2 ${config.style.border} rounded-xl ${config.style.bg} text-black text-center text-sm font-medium shadow-sm`}
-      // >
-      //   {status}
-      // </div>
-      null
-    );
-  }
+  if (status === "Resolved" || !isEditable) return null;
 
   return (
-    <div className="relative w-[180px]">
+    <div className="relative bg-white dark:bg-surface-dark rounded-xl p-3 shadow-sm">
+      {/* Title and Description */}
+      <div className="flex items-center gap-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 transition-all duration-300">
+          <FaExchangeAlt className="h-5 w-5 text-primary" aria-hidden="true" />
+        </div>
+        <h3 className="text-lg font-semibold text-text_color dark:text-text-light">
+          Update Case Status
+        </h3>
+      </div>
+      <p className="text-sm text-text_color dark:text-text_color mt-2 mb-4">
+        Change and track the current status of this case.
+      </p>
+
+      {/* Status Selector */}
       <Select value={status} onValueChange={handleChange} disabled={loading}>
         <SelectTrigger
-          className={`w-full rounded-lg border-none ring-0  px-4 py-2 text-sm font-medium shadow-sm transition ${
+          className={`w-40 bg-white rounded-lg border-primary px-4 py-2 text-sm font-medium shadow-sm transition ${
             loading ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >

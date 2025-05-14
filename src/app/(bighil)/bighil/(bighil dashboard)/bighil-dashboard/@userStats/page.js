@@ -16,7 +16,7 @@ export default async function UserStatsPage() {
   } catch (error) {
     return <ErrorComponent />;
   }
-
+  console.log(res);
   return (
     <SignupChart
       last7DaysSignups={res.last7DaysSignups}

@@ -18,14 +18,7 @@ const useNotificationStore = create(
       // Update this method to accept the total unread count from API
       setNotifications: (notifications, totalUnread = null) => {
         set({ notifications });
-
-        // If totalUnread is provided from API, use it
-        if (totalUnread !== null) {
-          set({ notificationCount: totalUnread });
-        } else {
-          // Otherwise fall back to calculating from current page
-          get().recalculateUnreadCount();
-        }
+        console.log("Notifications set in store:", totalUnread);
       },
 
       addNotification: (notification) => {
@@ -102,15 +95,6 @@ const useNotificationStore = create(
       // Set the total unread count directly from API
       setTotalUnreadCount: (count) => {
         set({ notificationCount: count });
-      },
-
-      // This becomes a fallback when we don't have the total from API
-      recalculateUnreadCount: () => {
-        const userId = get().userId;
-        const unread = get().notifications.filter((n) =>
-          n.recipients.some((r) => r.user === userId && !r.read)
-        ).length;
-        set({ notificationCount: unread });
       },
     }),
     {

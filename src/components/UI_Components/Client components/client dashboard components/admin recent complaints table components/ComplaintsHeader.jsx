@@ -12,7 +12,7 @@ export function ComplaintsHeader() {
         </CardTitle>
 
         <Button
-          className="relative z-10 px-4 py-2 text-sm font-medium text-white bg-blue hover:bg-blue/90 transition-colors"
+          className="relative z-10 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors"
           asChild
         >
           <Link href="/client/client-complaints">View All</Link>

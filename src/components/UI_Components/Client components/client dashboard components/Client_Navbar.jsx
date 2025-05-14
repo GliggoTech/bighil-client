@@ -41,9 +41,9 @@ const Client_Navbar = ({ isOpen }) => {
     <div>
       {/* Main Navbar */}
       <div
-        className={`w-full overflow-hidden bg-gray/10 shadow-md  px-6 sm:px-10 transition-all duration-200
-    ${isOpen ? "ml-[240px]" : "ml-[40px] md:ml-[60px]"}
-    min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
+        className={`w-full overflow-hidden bg-white shadow-md  px-6 sm:px-10 transition-all duration-200
+    ${isOpen ? "ml-[240px]" : "ml-[30px] md:ml-[45px]"}
+    min-h-16 sm:min-h-16 md:min-h-16 lg:min-h-14 xl:min-h-16
   `}
       >
         <div>

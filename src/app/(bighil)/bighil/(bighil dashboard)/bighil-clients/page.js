@@ -17,7 +17,7 @@ export default async function Bighil_Clients_Page() {
     errorMessage = error?.message || "Failed to load client information";
   }
   return (
-    <div className="p-0  bg-bighil_dashboard_bg min-h-screen">
+    <div className="p-0  bg-primary/10 min-h-screen">
       <Clients_Table clients={clients} />
     </div>
   );

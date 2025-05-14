@@ -23,17 +23,17 @@ const ComplaintHeader = ({ complaint, userRole }) => {
 
   return (
     <div
-      className="relative overflow-hidden  dark:bg-surface-dark -2xl p-3 
-                     border border-dialog_inside_border_color dark:border-border-dark
+      className=" overflow-hidden  dark:bg-surface-dark -2xl p-3 
+                     dark:border-border-dark
                     transition-all duration-300 ease-in-out group"
     >
       {/* Header Content */}
-      <div className="relative z-10">
+      <div className=" ">
         {/* Top Navigation Row */}
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
           <Link
             href={redirectLink}
-            className="flex items-center gap-2 px-2 py-2 rounded-lg
+            className="relative flex items-center gap-2 px-2 py-2 rounded-lg
                        text-text_color dark:text-text-muted
                        hover:text-text_color bg-indigo/20  hover:dark:text-primary-light
                        transition-colors duration-200 ease-in-out

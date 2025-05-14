@@ -1,9 +1,9 @@
 "use client";
+
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 const ToastProvider = ToastPrimitives.Provider;
@@ -26,8 +26,7 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: "border bg-background text-foreground relative",
-        destructive:
-          " relative border-red/80 bg-red/80 text-white group bg-red",
+        destructive: "relative border-red/80 bg-red/80 text-white group bg-red",
         success:
           "relative border-green/80 bg-toast_success_bg text-white group bg-green",
       },
@@ -65,13 +64,13 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity focus:outline-none focus:ring-1 group-hover:opacity group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red",
+      "absolute right-1 top-1 rounded-md p-1 text-white hover:text-white focus:outline-none focus:ring-1 transition-opacity group-hover:opacity-100 group-hover:text-white !important",
       className
     )}
     toast-close=""
     {...props}
   >
-    <X className="h-4 w-4 text-white" />
+    <X className="h-4 w-4" />
   </ToastPrimitives.Close>
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;

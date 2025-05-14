@@ -16,8 +16,12 @@ export default async function User_Notification_Page({ searchParams }) {
   notifications = res.notifications;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <Notification_Component notifications={notifications} />
+    <div className="max-w-4xl mx-auto p-6 space-y-6 min-h-screen">
+      <Notification_Component
+        notifications={notifications}
+        totalUnread={res.totalUnread}
+        totalPages={res.totalPages}
+      />
 
       <div className="w-full flex justify-between items-center">
         <PaginationControlsWrapper

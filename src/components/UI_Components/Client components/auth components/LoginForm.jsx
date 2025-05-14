@@ -94,17 +94,17 @@ export default function LoginForm() {
         {/* Main card */}
         <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
           {/* Accent bar */}
-          {/* <div className="h-2 bg-gradient-to-r from-indigo via-purple to-pink" /> */}
+          {/* <div className="h-2 bg-gradient-to-r from-primary via-purple to-pink" /> */}
 
           <div className="p-3 lg:p-5">
             {/* Header */}
             <div className="text-center mb-4">
               <div className="flex justify-center mb-3">
                 <div className="relative">
-                  <div className="w-20 h-20 bg-indigo/10 rounded-full flex items-center justify-center">
-                    <User className="h-10 w-10 text-indigo" />
+                  <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                    <User className="h-10 w-10 text-primary" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 bg-indigo rounded-full p-1.5 shadow-lg">
+                  <div className="absolute -bottom-1 -right-1 bg-primary rounded-full p-1.5 shadow-lg">
                     <Shield className="h-4 w-4 text-white" />
                   </div>
                 </div>
@@ -198,7 +198,7 @@ export default function LoginForm() {
                         </FormLabel>
                         <Link
                           href="/client/forgot-password"
-                          className="text-indigo hover:text-indigo text-sm transition-colors"
+                          className="text-primary hover:text-primary text-sm transition-colors"
                         >
                           Forgot password?
                         </Link>
@@ -274,7 +274,7 @@ export default function LoginForm() {
             <div className="mt-8">
               <button
                 onClick={() => setShowCredentials(!showCredentials)}
-                className="flex items-center justify-center gap-2 w-full text-slate-500 hover:text-indigo-600 text-sm py-2 transition-colors"
+                className="flex items-center justify-center gap-2 w-full text-slate-500 hover:text-primary-600 text-sm py-2 transition-colors"
               >
                 <Info className="h-4 w-4" />
                 <span>
@@ -294,7 +294,7 @@ export default function LoginForm() {
 
                   <div className="divide-y divide-slate-200">
                     <div className="px-4 py-3">
-                      <div className="text-indigo-600 text-xs font-medium mb-1">
+                      <div className="text-primary-600 text-xs font-medium mb-1">
                         Super Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
@@ -308,7 +308,7 @@ export default function LoginForm() {
                     </div>
 
                     <div className="px-4 py-3">
-                      <div className="text-indigo-600 text-xs font-medium mb-1">
+                      <div className="text-primary-600 text-xs font-medium mb-1">
                         Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
@@ -322,7 +322,7 @@ export default function LoginForm() {
                     </div>
 
                     <div className="px-4 py-3">
-                      <div className="text-indigo-600 text-xs font-medium mb-1">
+                      <div className="text-primary-600 text-xs font-medium mb-1">
                         Sub Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">

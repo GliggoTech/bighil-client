@@ -26,14 +26,14 @@ export default async function MyComplaintsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen  p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-8 space-y-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
             My Complaints
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-text_color dark:text-gray-400">
             {complaints.length} registered cases
           </p>
         </div>

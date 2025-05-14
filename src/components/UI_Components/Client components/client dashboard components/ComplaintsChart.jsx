@@ -17,14 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+
 import {
   Select,
   SelectContent,
@@ -35,29 +28,6 @@ import {
 import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
-
-const chartConfig = {
-  // total: {
-  //   label: "Total",
-  //   color: "hsl(var(--chart-1))",
-  // },
-  // Pending: {
-  //   label: "Pending",
-  //   color: "hsl(var(--chart-2))",
-  // },
-  // "In Progress": {
-  //   label: "In Progress",
-  //   color: "hsl(var(--chart-3))",
-  // },
-  // Resolved: {
-  //   label: "Resolved",
-  //   color: "hsl(var(--chart-4))",
-  // },
-  Unwanted: {
-    label: "Unwanted",
-    color: "#6610f2",
-  },
-};
 
 export default function ComplaintsChart() {
   const [data, setData] = useState([]);
@@ -210,14 +180,14 @@ export default function ComplaintsChart() {
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#7C3AED" stopOpacity={0.3} />
+                    <stop offset="0%" stopColor="#198754" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#198754" stopOpacity={0.3} />
                   </linearGradient>
                 </defs>
 
                 <CartesianGrid strokeDasharray="4 4" />
-                <XAxis dataKey="name" stroke="#94A3B8" />
-                <YAxis allowDecimals={false} stroke="#94A3B8" />
+                <XAxis dataKey="name" stroke="#198754" />
+                <YAxis allowDecimals={false} stroke="#198754" />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#ffffff",
@@ -231,7 +201,7 @@ export default function ComplaintsChart() {
                 <Area
                   type="monotone"
                   dataKey="totalComplaints"
-                  stroke="#7C3AED"
+                  stroke="#198754"
                   strokeWidth={1}
                   fill="url(#totalComplaints)"
                   dot={{

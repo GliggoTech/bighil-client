@@ -9,12 +9,12 @@ const BighilLayoutWrapper = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex min-h-screen overflow-hidden">
       <Bighil_Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="flex flex-col flex-1">
         <Bighil_Navbar isOpen={isOpen} />
         <main
-          className={`overflow-auto  transition-all duration-200 ${
+          className={`min-h-screen  transition-all duration-200 ${
             isOpen ? "ml-[240px]" : "ml-[72px]"
           }`}
         >

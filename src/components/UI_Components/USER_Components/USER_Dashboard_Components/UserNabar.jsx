@@ -58,13 +58,13 @@ const UserNavbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex-shrink-0"
           >
-            <span className="text-2xl font-bold bg-primary bg-clip-text text-transparent">
+            <span className="text-xl lg:text-2xl font-bold bg-primary bg-clip-text text-transparent">
               BIGHIL
             </span>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
+          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center">
             <motion.ul
               initial="closed"
               animate="open"
@@ -88,7 +88,7 @@ const UserNavbar = () => {
                     )}
                   >
                     {link.icon}
-                    <span className="ml-2">{link.name}</span>
+                    <span className="ml-2 text-sm">{link.name}</span>
                     {link.name === "Notifications" && notificationCount > 0 && (
                       <span className="ml-2 bg-danger text-white text-xs font-semibold px-2 py-1 rounded-full">
                         {notificationCount > 99 ? "99+" : notificationCount}
@@ -107,7 +107,7 @@ const UserNavbar = () => {
           </div>
 
           {/* Desktop Logout */}
-          <div className="hidden md:flex">
+          <div className="hidden lg:flex">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -132,7 +132,7 @@ const UserNavbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Button
               variant="ghost"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -154,7 +154,7 @@ const UserNavbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden"
             >
               <motion.div
                 variants={menuVariants}
@@ -197,11 +197,22 @@ const UserNavbar = () => {
                   className="border-t border-light-border-subtle pt-2 mt-2"
                 >
                   <Button
-                    variant="ghost"
-                    className="w-full justify-start text-gray-600 hover:bg-primary/5 hover:text-primary"
+                    onClick={handleLogOut}
+                    disabled={loading}
+                    variant="default"
+                    className="w-full justify-start text-white  hover:text-primary hover:bg-white"
                   >
-                    <FiLogOut className="mr-3 h-5 w-5" />
-                    Logout
+                    <span className="hidden sm:inline">
+                      {loading ? "Logging Out..." : "Logout"}
+                    </span>
+                    <span className="sm:hidden">
+                      {loading ? "..." : "Logout"}
+                    </span>
+                    <LogOut
+                      className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+                    />
+                    {/* <FiLogOut className="mr-3 h-5 w-5 text-white" />
+                    Logout */}
                   </Button>
                 </motion.div>
               </motion.div>

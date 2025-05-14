@@ -42,7 +42,8 @@ const config = {
         pagination_border: "#dce6de", // Slight green tint to border
         dialog_inside_border_color: "#eff6f1", // Green-tinted light border
         client_login_bg: "#37a367", // Rich green equivalent to blue
-        "active-link": "#0d6efd",
+        "active-link": "#0ca750",
+        // "active-link": "#0d6efd",
         "gray-dark": "#343a40",
         "gray-100": "#f8f9fa",
         "gray-200": "#e9ecef",

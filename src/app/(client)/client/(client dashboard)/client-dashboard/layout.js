@@ -13,7 +13,7 @@ export default function AdminDashboardLayout({
   moreNumber_of_complaints,
 }) {
   return (
-    <div className="min-h-screen bg-[#f0f0f8] dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 relative overflow-hidden">
+    <div className="min-h-screen bg-primary/5 dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 relative overflow-hidden">
       <div className="relative z-10 py-4 px-4 sm:px-6 lg:px-8">
         {/* Main Content Area */}
         <div className="p-1">{children}</div>

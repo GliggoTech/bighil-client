@@ -29,7 +29,7 @@ export default async function CardsStatusPage() {
     {
       title: "Total Complaints",
       value: res.totalComplaints,
-      icon: <ClipboardList className="h-5 w-5 text-blue-600" />,
+      icon: <ClipboardList className="h-5 w-5 text-blue" />,
       description: "All-time complaints",
       color: "bg-white",
       hoverBorderColor: "hover:border-blue",
@@ -40,7 +40,7 @@ export default async function CardsStatusPage() {
     {
       title: "This Week",
       value: res.thisWeekComplaints,
-      icon: <Calendar className="h-5 w-5 text-purple-600" />,
+      icon: <Calendar className="h-5 w-5 text-purple" />,
       description: "New complaints this week",
       color: "bg-white",
       hoverBorderColor: "hover:border-purple",
@@ -51,7 +51,7 @@ export default async function CardsStatusPage() {
     {
       title: "Today",
       value: res.todayComplaints,
-      icon: <Clock className="h-5 w-5 text-pink-600" />,
+      icon: <Clock className="h-5 w-5 text-pink" />,
       description: "New complaints today",
       color: "bg-white",
       hoverBorderColor: "hover:border-pink",
@@ -62,7 +62,7 @@ export default async function CardsStatusPage() {
     {
       title: "In Progress",
       value: res.inProgressComplaints,
-      icon: <Activity className="h-5 w-5 text-orange-600" />,
+      icon: <Activity className="h-5 w-5 text-orange" />,
       description: "Currently being processed",
       color: "bg-white",
       hoverBorderColor: "hover:border-orange",
@@ -73,7 +73,7 @@ export default async function CardsStatusPage() {
     {
       title: "Resolved",
       value: res.resolvedComplaints,
-      icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+      icon: <CheckCircle className="h-5 w-5 text-green" />,
       description: "Successfully closed complaints",
       color: "bg-white",
       hoverBorderColor: "hover:border-green",
@@ -84,7 +84,7 @@ export default async function CardsStatusPage() {
     {
       title: "Unwanted",
       value: res.unwantedComplaints,
-      icon: <XCircle className="h-5 w-5 text-red-600" />,
+      icon: <XCircle className="h-5 w-5 text-red" />,
       description: "Marked as unwanted",
       color: "bg-white",
       hoverBorderColor: "hover:border-red",
@@ -95,7 +95,7 @@ export default async function CardsStatusPage() {
     {
       title: "Critical Priority",
       value: res.criticalPriorityComplaints,
-      icon: <AlertTriangle className="h-5 w-5 text-amber-600" />,
+      icon: <AlertTriangle className="h-5 w-5 text-amber" />,
       description: "Urgent attention required",
       color: "bg-white",
       hoverBorderColor: "hover:border-yellow",
@@ -106,7 +106,7 @@ export default async function CardsStatusPage() {
     {
       title: "Avg. Resolution Time",
       value: `${res.avgResolutionTime} days`,
-      icon: <Clock className="h-5 w-5 text-indigo-600" />,
+      icon: <Clock className="h-5 w-5 text-indigo" />,
       description: "Average time to resolve",
       color: "bg-white",
       hoverBorderColor: "hover:border-indigo",

@@ -40,7 +40,7 @@ export default function StatusBadge({ status }) {
 
   return (
     <div
-      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${color}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-light ${color}`}
     >
       {icon}
       <span className="ml-2 capitalize">

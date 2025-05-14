@@ -1,11 +1,13 @@
 "use client";
-import { useCallback, useEffect } from "react";
+
+import { useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import useNotificationStore from "@/store/notificationStore";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { clientSidebarValues } from "@/lib/dashboard constants/SidebarConstants";
 import { usePathname } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import useNotificationStore from "@/store/notificationStore";
+import { clientSidebarValues } from "@/lib/dashboard constants/SidebarConstants";
 import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
@@ -21,24 +23,42 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
   const { notificationCount, setTotalUnreadCount } = useNotificationStore();
   const { fetchData } = useFetch();
   const token = useAccessToken();
-  const isTouchDevice = useIsTouchDevice(); // Initialized hook
+  const isTouchDevice = useIsTouchDevice();
+
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
     const fetchNotificationCount = async () => {
-      const url = getBackendUrl();
-      const res = await fetchData(
-        `${url}/api/client-notifications/unread-count`,
-        "GET",
-        {},
-        token,
-        false
-      );
-      res?.success && setTotalUnreadCount(res.data.count);
-    };
-    token && fetchNotificationCount();
-  }, [token, fetchData]);
+      if (!token || hasFetchedRef.current) return;
 
-  const toggleSidebar = useCallback(() => setIsOpen((prev) => !prev), []);
+      try {
+        const url = getBackendUrl();
+        const res = await fetchData(
+          `${url}/api/client-notifications/unread-count`,
+          "GET",
+          {},
+          token,
+          false
+        );
+
+        if (res?.success) {
+          hasFetchedRef.current = true;
+          if (notificationCount !== res.data.count) {
+            setTotalUnreadCount(res.data.count);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching notification count:", error);
+      }
+    };
+
+    fetchNotificationCount();
+  }, [token, fetchData, setTotalUnreadCount, notificationCount]);
+
+  const toggleSidebar = useCallback(
+    () => setIsOpen((prev) => !prev),
+    [setIsOpen]
+  );
 
   return (
     <motion.aside
@@ -46,22 +66,25 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
       animate={isOpen ? "open" : "closed"}
       variants={sidebarVariants}
       transition={{ duration: 0.1 }}
-      className="fixed top-0 left-0 z-40 h-screen bg-[#f3f3f3]/90 border-r border-client_login_bg shadow-sm flex flex-col p-4 transition-all"
+      className="fixed top-0 left-0 z-40 h-screen bg-white border-r border-dialog_inside_border_color shadow-sm flex flex-col p-3 transition-all"
     >
+      {/* Sidebar Toggle Button */}
       <button
-        className="absolute top-5 -right-4 bg-active-link hover:bg-green-800 text-white p-1 rounded-full transition-colors"
+        className="absolute top-5 -right-4 bg-active-link hover:bg-green text-white p-1 rounded-full transition-colors"
         onClick={toggleSidebar}
         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
       >
         {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
       </button>
 
+      {/* Logo or Short Form */}
       <div className="flex items-center justify-center mb-10">
         <span className="text-active-link font-bold text-xl tracking-wide">
           {isOpen ? "BIGHIL" : "BH"}
         </span>
       </div>
 
+      {/* Sidebar Navigation */}
       <nav className="flex flex-col gap-2">
         {clientSidebarValues.map((item) => {
           const isActive = pathname === item.path;
@@ -72,26 +95,28 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
             <div
               key={item.id}
               className="relative group"
-              onClick={() => setIsOpen(false)}
+              onClick={() => isTouchDevice && setIsOpen(false)}
             >
               <Link
                 href={item.path}
-                className={`flex items-center px-3 py-2 rounded-lg text-sm transition-colors relative ${
+                className={`flex items-center px-1 py-2 rounded-lg text-sm transition-colors relative ${
                   isActive
                     ? "bg-active-link text-white"
-                    : "text-green-900 hover:bg-active-link/90 hover:text-white"
-                } ${isOpen ? "justify-start gap-3" : "justify-center"}`}
+                    : "hover:bg-active-link/80 group-hover:text-white"
+                } ${isOpen ? "justify-start gap-4" : "justify-center"}`}
               >
                 <item.icon
-                  className={`w-5 h-5 text-3xl ${
-                    isActive ? "text-white" : "text-indigo"
+                  className={`w-5 h-5 ${
+                    isActive
+                      ? "text-white"
+                      : "text-primary group-hover:text-white"
                   }`}
                 />
 
                 {showNotificationBadge && (
                   <span
-                    className={`absolute top-1 left-6  ${
-                      isOpen ? "ml-36" : ""
+                    className={`absolute top-2 left-8 ${
+                      isOpen ? "ml-36" : "group-hover:hidden"
                     } bg-red text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full z-10`}
                   >
                     {notificationCount > 99 ? "99+" : notificationCount}
@@ -113,9 +138,8 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
                 </AnimatePresence>
               </Link>
 
-              {/* Touch device check added here */}
               {!isOpen && !isTouchDevice && (
-                <span className="absolute left-10 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <span className="absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
                   {item.title}
                   {showNotificationBadge && (
                     <span className="ml-1 bg-red text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">

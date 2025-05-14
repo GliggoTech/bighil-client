@@ -12,7 +12,7 @@ const SectionHeading = ({ icon, label, title, color }) => {
         </div>
       </div>
       <div className="">
-        <div className="text-sm font-medium text-text_color/90 dark:text-text-light">
+        <div className="text-sm font-light text-text_color/90 dark:text-text-light">
           {label}
         </div>
         <h2 className="text-lg font-light text-text_color dark:text-text-light mt-1">

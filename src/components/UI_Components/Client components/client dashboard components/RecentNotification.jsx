@@ -75,7 +75,7 @@ const RecentNotification = ({ recentNotifications }) => {
             </CardTitle>
           </div>
           <Button
-            className="text-sm font-medium text-white bg-blue hover:bg-blue/90"
+            className="text-sm font-medium text-white bg-primary hover:bg-primary/90"
             asChild
           >
             <Link href="/client/client-notifications">View All</Link>

@@ -58,12 +58,12 @@ export const bighilSidebarValues = [
     path: "/bighil/bighil-complaints",
     icon: AlertCircle,
   },
-  {
-    id: 4,
-    title: "Messages",
-    path: "/bighil/bighil-messages",
-    icon: MessageSquareText,
-  },
+  // {
+  //   id: 4,
+  //   title: "Messages",
+  //   path: "/bighil/bighil-messages",
+  //   icon: MessageSquareText,
+  // },
   {
     id: 5,
     title: "Settings",

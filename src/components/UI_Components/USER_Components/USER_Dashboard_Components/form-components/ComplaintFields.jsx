@@ -47,7 +47,7 @@ export function ComplaintFields({ form }) {
             <Textarea
               {...field}
               placeholder="Describe your complaint in detail..."
-              className="min-h-[120px] sm:min-h-[200px] text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none"
+              className="min-h-[80px] md:min-h-[120px] resize-y text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none"
               style={noFocusStyle}
             />
             <FormMessage className="text-xs text-red" />

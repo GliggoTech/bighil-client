@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useState, useCallback, useEffect } from "react";
 import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import { ConfirmationDialog } from "./ConfirmationDialog";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { formSchema } from "@/lib/complaintSchema";
 
@@ -15,6 +14,7 @@ import { CompanySelector } from "./form-components/CompanySelector";
 import { ComplaintFields } from "./form-components/ComplaintFields";
 import { TagSelector } from "./form-components/TagSelector";
 import { FileUploader } from "./form-components/FileUploader";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 export function ComplaintForm() {
   const form = useForm({
@@ -118,8 +118,8 @@ export function ComplaintForm() {
 
   return (
     <div className="max-w-3xl mx-auto p-3 sm:p-5 bg-white text-black rounded-lg sm:rounded-3xl shadow-lg sm:shadow-2xl overflow-auto">
-      <h1 className="text-xl sm:text-2xl font-bold text-center bg-primary text-transparent bg-clip-text mb-4">
-        Submit a Complaint
+      <h1 className="text-xl sm:text-2xl font-bold text-center bg-gradient-to-r from-primary to-success bg-clip-text text-transparent mb-4">
+        File a Complaint
       </h1>
 
       <Form {...form}>

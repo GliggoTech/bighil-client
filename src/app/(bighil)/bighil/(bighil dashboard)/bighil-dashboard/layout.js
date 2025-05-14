@@ -9,7 +9,7 @@ export default function AdminDashboardLayout({
   complaintsStats,
 }) {
   return (
-    <div className="min-h-screen bg-[#f0f0f8] dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 relative overflow-hidden">
+    <div className="min-h-screen bg-primary/10 dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 relative overflow-hidden">
       <div className="relative z-10 py-4 px-4 sm:px-6 lg:px-8">
         <div className="p-1">{children}</div>
 

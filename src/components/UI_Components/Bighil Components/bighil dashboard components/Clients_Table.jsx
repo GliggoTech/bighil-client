@@ -88,7 +88,7 @@ const Clients_Table = ({ clients }) => {
                   {currentClients.map((client, index) => (
                     <TableRow
                       key={client._id}
-                      className=" p-20 hover:bg-background-secondary/40 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
+                      className=" p-20 hover:bg-gray-200 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
                     >
                       <TableCell className="text-text_color dark:text-text-light">
                         {client.companyName}

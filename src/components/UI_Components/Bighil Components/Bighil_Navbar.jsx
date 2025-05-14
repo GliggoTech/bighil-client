@@ -31,12 +31,12 @@ const Bighil_Navbar = ({ isOpen }) => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={` bg-gray/20 shadow-md flex justify-end sm:items-center sm:justify-between px-6 sm:px-10 transition-all duration-200
-    ${isOpen ? "ml-[240px]" : "ml-[50px] md:ml-[60px]"}
+      className={` bg-white shadow-md flex justify-between items-center sm:items-center sm:justify-between px-6 sm:px-10 transition-all duration-200
+    ${isOpen ? "ml-[240px]" : "ml-[70px] md:ml-[60px]"}
     min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
   `}
     >
-      <div className="text-lg  text-text_color hidden sm:flex px-2 ">
+      <div className=" text-sm sm:text-lg max-w-48 sm:max-w-96  text-text_color  sm:flex px-2 ">
         <span>Hi,</span>
         <span>Welcome to Dashboard</span>
       </div>
@@ -56,7 +56,7 @@ const Bighil_Navbar = ({ isOpen }) => {
           whileHover={{ scale: 1.05 }}
           disabled={loading}
           onClick={handleLogOut}
-          className="flex items-center justify-end gap-2 bg-purple hover:bg-purple/80 text-white px-2 py-2 rounded-md  transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+          className="flex items-center justify-end gap-2 bg-primary hover:bg-primary/80 text-white px-2 py-2 rounded-md  transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />

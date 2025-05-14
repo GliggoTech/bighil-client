@@ -147,7 +147,7 @@ const ActionTaken = ({
                     />
                   )}
                 />
-                <Label htmlFor={`ack-${idx}`} className="ml-2">
+                <Label htmlFor={`ack-${idx}`} className="ml-2 font-light">
                   {option.label}
                 </Label>
               </div>
@@ -162,7 +162,7 @@ const ActionTaken = ({
             <Button
               disabled={loading}
               type="submit"
-              className="bg-blue text-white"
+              className="bg-primary text-white"
             >
               {loading ? <Loader /> : "Submit"}
             </Button>

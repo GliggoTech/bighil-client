@@ -31,6 +31,7 @@ const SectionCard = ({ icon: Icon, title, children }) => (
 );
 
 const ComplaintDetails = ({ complaint }) => {
+  console.log(complaint.tags);
   return (
     <SectionCard icon={FiInfo} title="Case Details">
       <div className="space-y-3">
@@ -45,7 +46,7 @@ const ComplaintDetails = ({ complaint }) => {
             {complaint.complaintMessage}
           </div>
         </DetailField>
-        {complaint.tags.length > 0 && (
+        {complaint.tags.length > 1 && (
           <DetailField label="Categories">
             <div className="flex gap-2 flex-wrap mt-2">
               {complaint.tags?.map((tag) => (

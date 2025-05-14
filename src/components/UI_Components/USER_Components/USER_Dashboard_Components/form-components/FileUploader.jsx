@@ -5,7 +5,7 @@ import { UploadCloud, FileText, X } from "lucide-react";
 export function FileUploader({ handleFileUpload, localFiles, removeFile }) {
   return (
     <div>
-      <FormLabel>Upload Evidence</FormLabel>
+      <FormLabel className="text-text_color">Upload Evidence</FormLabel>
       <input
         type="file"
         multiple
@@ -15,11 +15,11 @@ export function FileUploader({ handleFileUpload, localFiles, removeFile }) {
       />
       <label
         htmlFor="file-upload"
-        className="block w-full border-2 border-dashed rounded-lg p-3 sm:p-4 text-center cursor-pointer hover:border-blue-500 transition-colors"
+        className="block w-full border-2 mt-2 border-primary/5 rounded-lg p-1 sm:p-1 text-center cursor-pointer hover:border-blue-500 transition-colors"
       >
-        <UploadCloud className="mx-auto text-blue-500 h-5 w-5 sm:h-6 sm:w-6 mb-1" />
+        <UploadCloud className="mx-auto text-primary h-5 w-5 sm:h-6 sm:w-6 mb-1" />
         <p className="text-sm sm:text-base text-gray-600">
-          Click or drag files to upload
+          Click files to upload
         </p>
       </label>
 
@@ -39,7 +39,7 @@ export function FileUploader({ handleFileUpload, localFiles, removeFile }) {
                 onClick={() => removeFile(index)}
                 className="text-red-500 hover:text-red-700 transition-colors p-1 rounded-full hover:bg-red-50"
               >
-                <X className="h-4 w-4" />
+                <X className="h-4 w-4 text-red" />
               </button>
             </div>
           ))}
