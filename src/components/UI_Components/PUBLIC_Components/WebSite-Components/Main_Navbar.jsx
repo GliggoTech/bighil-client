@@ -40,7 +40,7 @@ const Main_Navbar = () => {
                   scrolled ? "scale-100" : "scale-125"
                 }`}
               >
-                <span className="text-white font-bold text-lg">BH</span>
+                {/* <span className="text-white font-bold text-lg">BH</span> */}
               </div>
               <span
                 className={`text-xl font-bold ${
