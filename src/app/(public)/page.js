@@ -8,7 +8,7 @@ import Main_PortalSection from "@/components/UI_Components/PUBLIC_Components/Web
 
 export default function Public_Home_Page() {
   return (
-    <div className="text-text-color bg-default-bg">
+    <div className="text-text-color bg-default_bg relative">
       <Main_Navbar />
       <Main_Hero_Section />
       <Main_FeaturesSection />

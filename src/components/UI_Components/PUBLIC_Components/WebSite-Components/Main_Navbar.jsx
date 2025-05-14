@@ -11,7 +11,7 @@ const Main_Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -19,124 +19,155 @@ const Main_Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled || isMenuOpen
-          ? "bg-white shadow-md py-2"
-          : "bg-transparent py-4"
+      className={`fixed  w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white backdrop-blur-lg shadow-sm py-3 border-b border-dialog_inside_border_color"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <div className="text-2xl font-bold text-primary flex items-center">
+          <Link href="/" className="flex items-center gap-2">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className={`flex items-center transition-all ${
+                scrolled ? "gap-2" : "gap-3"
+              }`}
+            >
+              <div
+                className={`w-8 h-8 rounded-lg bg-primary flex items-center justify-center ${
+                  scrolled ? "scale-100" : "scale-125"
+                }`}
+              >
+                <span className="text-white font-bold text-lg">BH</span>
+              </div>
               <span
-                className={
-                  scrolled || isMenuOpen ? "text-text_color" : "text-white"
-                }
+                className={`text-xl font-bold ${
+                  scrolled ? "text-text_color" : "text-white"
+                }`}
               >
                 BigHil
               </span>
-            </div>
+            </motion.div>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-6">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8">
             {main_Navbar_Values.map((item) => (
-              <a
+              <motion.a
                 key={item.title}
                 href={item.url}
-                className={`font-medium transition-colors duration-300 ${
+                whileHover={{ y: -2 }}
+                className={`relative font-medium transition-colors ${
                   scrolled
                     ? "text-gray-700 hover:text-primary"
-                    : "text-white hover:text-white/80"
+                    : "text-white hover:text-primary/90"
                 }`}
               >
                 {item.title}
-              </a>
+                {!scrolled && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 w-full h-px bg-white/30"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+              </motion.a>
             ))}
 
-            {/* Buttons */}
-            <Link
-              href="/user/user-login"
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                scrolled
-                  ? "bg-primary text-white hover:bg-primary/90"
-                  : "bg-white text-primary hover:bg-gray-100"
-              }`}
-            >
-              User Login
-            </Link>
-            <Link
-              href="/client/client  -login"
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                scrolled
-                  ? "bg-primary text-white hover:bg-primary/90"
-                  : "bg-white text-primary hover:bg-gray-100"
-              }`}
-            >
-              Company Login
-            </Link>
+            <div className="flex gap-4 ml-4">
+              <Link
+                href="/user/user-login"
+                className={`px-4 py-2 rounded-full border transition-all ${
+                  scrolled
+                    ? "border-primary text-primary hover:bg-primary/5"
+                    : "border-white text-white hover:bg-white/10"
+                }`}
+              >
+                User Login
+              </Link>
+              <Link
+                href="/company/login"
+                className={`px-4 py-2 rounded-full transition-all ${
+                  scrolled
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : "bg-white text-primary hover:bg-white/90"
+                }`}
+              >
+                Company Login
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden focus:outline-none"
+            whileTap={{ scale: 0.95 }}
+            className="lg:hidden p-2 rounded-lg focus:outline-none"
           >
             {isMenuOpen ? (
               <X
-                className={
-                  scrolled || isMenuOpen ? "text-gray-700" : "text-white"
-                }
-                size={24}
+                className={scrolled ? "text-gray-700" : "text-white"}
+                size={28}
               />
             ) : (
               <Menu
-                className={
-                  scrolled || isMenuOpen ? "text-gray-700" : "text-white"
-                }
-                size={24}
+                className={scrolled ? "text-gray-700" : "text-white"}
+                size={28}
               />
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="lg:hidden bg-white shadow-md absolute top-full w-full py-6 px-6 z-50"
+          className={`lg:hidden absolute w-full py-6 px-4 ${
+            scrolled ? "bg-white" : "bg-primary"
+          } shadow-xl`}
         >
-          <div className="flex flex-col space-y-5">
+          <div className="flex flex-col gap-4">
             {main_Navbar_Values.map((item) => (
               <Link
                 key={item.title}
                 href={item.url}
+                className={`px-4 py-3 rounded-lg transition-colors ${
+                  scrolled
+                    ? "text-gray-700 hover:bg-primary/10"
+                    : "text-white hover:bg-white/10"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-700 text-base hover:text-primary font-medium"
               >
                 {item.title}
               </Link>
             ))}
-            <Link
-              href="/user/user-login"
-              onClick={() => setIsMenuOpen(false)}
-              className="bg-primary text-white px-4 py-2 rounded-md text-center text-sm font-medium"
-            >
-              User Login
-            </Link>
-            <Link
-              href="/client/client-login"
-              onClick={() => setIsMenuOpen(false)}
-              className="bg-primary text-white px-4 py-2 rounded-md text-center text-sm font-medium"
-            >
-              Company Login
-            </Link>
+            <div className="flex flex-col gap-3 mt-4">
+              <Link
+                href="/user/user-login"
+                className={`px-4 py-3 rounded-full text-center ${
+                  scrolled
+                    ? "border border-primary text-primary"
+                    : "border border-white text-white"
+                }`}
+              >
+                User Login
+              </Link>
+              <Link
+                href="/company/login"
+                className={`px-4 py-3 rounded-full text-center ${
+                  scrolled ? "bg-primary text-white" : "bg-white text-primary"
+                }`}
+              >
+                Company Login
+              </Link>
+            </div>
           </div>
         </motion.div>
       )}
