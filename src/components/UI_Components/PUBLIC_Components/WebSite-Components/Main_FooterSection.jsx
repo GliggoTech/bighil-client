@@ -41,7 +41,7 @@ const Main_FooterSection = () => {
           </div>
 
           {/* Quick links */}
-          <div className="md:ml-auto">
+          <div className="flex flex-col justify-start items-start md:justify-center md:items-center">
             <h4 className="text-text_color text-xl font-semibold mb-6">
               Quick Links
             </h4>

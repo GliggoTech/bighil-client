@@ -35,16 +35,16 @@ const Main_Navbar = () => {
                 scrolled ? "gap-2" : "gap-3"
               }`}
             >
-              <div
+              {/* <div
                 className={`w-8 h-8 rounded-lg bg-primary flex items-center justify-center ${
                   scrolled ? "scale-100" : "scale-125"
                 }`}
               >
-                {/* <span className="text-white font-bold text-lg">BH</span> */}
-              </div>
+                <span className="text-white font-bold text-lg">BH</span>
+              </div> */}
               <span
                 className={`text-xl font-bold ${
-                  scrolled ? "text-text_color" : "text-white"
+                  scrolled ? "text-primary" : "text-white"
                 }`}
               >
                 BigHil
