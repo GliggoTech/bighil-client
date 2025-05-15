@@ -72,8 +72,8 @@ export default function PasswordResetPage({ role }) {
 
   // Get the correct endpoint based on the role
   const roleType = role?.toLowerCase() || "client";
-  const otpsentEndPoint = endpoints[roleType]?.otpSent || "/default/sendOtp";
-  const otpverifyEndPoint =
+  const otpSentEndPoint = endpoints[roleType]?.otpSent || "/default/sendOtp";
+  const otpVerifyEndPoint =
     endpoints[roleType]?.otpVerify || "/default/verifyOtp";
   const resetpasswordEndPoint =
     endpoints[roleType]?.resetPassword || "/default/resetPassword";
@@ -91,7 +91,7 @@ export default function PasswordResetPage({ role }) {
   const handleSendOtp = async (data) => {
     try {
       const res = await fetchData(
-        `${url}${otpsentEndPoint}`,
+        `${url}${otpSentEndPoint}`,
         "POST",
         data,
         token,
@@ -114,7 +114,7 @@ export default function PasswordResetPage({ role }) {
 
     try {
       const res = await fetchData(
-        `${url}${otpverifyEndPoint}`,
+        `${url}${otpVerifyEndPoint}`,
         "POST",
         sendToBackend,
         token,
@@ -156,7 +156,7 @@ export default function PasswordResetPage({ role }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background-primary via-background-secondary to-background-primary">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-white">
       {/* Main container with glass effect */}
       <div className="w-full max-w-lg relative">
         {/* Progress steps */}
@@ -167,8 +167,8 @@ export default function PasswordResetPage({ role }) {
                 className={cn(
                   "w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300",
                   currentStepIndex >= index
-                    ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg shadow-primary/20"
-                    : "bg-background-primary border-2 border-border-light text-text-secondary"
+                    ? "bg-primary text-white shadow-lg shadow-primary/20"
+                    : " border-2 border-primary text-primary"
                 )}
               >
                 <step.icon className="w-5 h-5" />
@@ -191,7 +191,7 @@ export default function PasswordResetPage({ role }) {
                   }}
                 >
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                    className="h-full bg-primary transition-all duration-500"
                     style={{ width: currentStepIndex > index ? "100%" : "0%" }}
                   ></div>
                 </div>
@@ -203,18 +203,18 @@ export default function PasswordResetPage({ role }) {
         {/* Card container with subtle animation */}
         <div
           className={cn(
-            "bg-background-primary rounded-3xl overflow-hidden shadow-2xl border border-white/10",
-            "backdrop-blur-sm relative z-10"
+            "bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/10",
+            " relative z-10"
           )}
         >
           {/* Top gradient line */}
-          <div className="h-1 w-full bg-gradient-to-r from-primary via-secondary to-primary"></div>
+          <div className="h-1 w-full bg-primary"></div>
 
           <div className="p-8 sm:p-10">
             {/* Title area */}
             <div className="flex flex-col items-center mb-8 text-center">
-              <div className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 mb-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
+              <div className="inline-flex items-center justify-center p-2 rounded-full bg-primary/50 mb-4">
+                <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg">
                   {currentStep === "email" && (
                     <Mail className="h-6 w-6 text-white" />
                   )}
@@ -230,14 +230,14 @@ export default function PasswordResetPage({ role }) {
                 </div>
               </div>
 
-              <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold mb-2 bg-primary bg-clip-text text-transparent">
                 {currentStep === "email" && "Reset Password"}
                 {currentStep === "otp" && "Verify Identity"}
                 {currentStep === "password" && "Create New Password"}
                 {currentStep === "success" && "All Done!"}
               </h1>
 
-              <p className="text-text-secondary max-w-md">
+              <p className="text-text_color max-w-md">
                 {currentStep === "email" &&
                   "Enter your email to receive a verification code"}
                 {currentStep === "otp" &&
@@ -251,7 +251,7 @@ export default function PasswordResetPage({ role }) {
 
             {/* Error/Success messages */}
             {error && (
-              <Alert variant="destructive" className="mb-6 animate-fade-in">
+              <Alert className="mb-6 animate-fade-in bg-red/10 text-red border-red/20">
                 <AlertDescription className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -273,7 +273,7 @@ export default function PasswordResetPage({ role }) {
             )}
 
             {success && (
-              <Alert className="mb-6 bg-accent-success/10 text-accent-success border-accent-success/20 animate-fade-in">
+              <Alert className="mb-6 bg-success/10 text-success border-success/20 animate-fade-in">
                 <AlertDescription className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -323,10 +323,10 @@ export default function PasswordResetPage({ role }) {
                               <Input
                                 {...field}
                                 placeholder="name@example.com"
-                                className="pl-4 pr-4 py-6 bg-background-primary border-2 border-border-light rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
+                                className="pl-4 pr-4 py-4 h-10 bg-primary/5 border-2 border-primary/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
                               />
                               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text-secondary/50">
-                                <Mail className="h-5 w-5" />
+                                <Mail className="h-5 w-5 text-primary" />
                               </div>
                             </div>
                           </FormControl>
@@ -337,7 +337,7 @@ export default function PasswordResetPage({ role }) {
                     <Button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20"
+                      className="w-full py-6 rounded-xl bg-primary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20"
                     >
                       {loading ? (
                         <div className="flex items-center justify-center">
@@ -389,19 +389,19 @@ export default function PasswordResetPage({ role }) {
                                 onChange={field.onChange}
                                 maxLength={6}
                               >
-                                <InputOTPGroup>
+                                <InputOTPGroup className="flex justify-center gap-2 ">
                                   {[0, 1, 2, 3, 4, 5].map((index) => (
                                     <InputOTPSlot
                                       key={index}
                                       index={index}
-                                      className="w-12 h-16 text-xl font-bold border-2 border-border-light focus:border-primary rounded-xl shadow-sm bg-background-primary"
+                                      className="w-10 h-10 text-xl font-light  border-2 border-primary focus:border-primary rounded-xl shadow-sm bg-background-primary"
                                     />
                                   ))}
                                 </InputOTPGroup>
                               </InputOTP>
                             </div>
                           </FormControl>
-                          <FormMessage className="text-center text-accent-danger mt-1" />
+                          <FormMessage className="text-center text-danger mt-1" />
                         </FormItem>
                       )}
                     />
@@ -410,7 +410,7 @@ export default function PasswordResetPage({ role }) {
                       <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20"
+                        className="w-full py-6 rounded-xl bg-primary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20"
                       >
                         {loading ? (
                           <div className="flex items-center justify-center">
@@ -470,9 +470,9 @@ export default function PasswordResetPage({ role }) {
                                 {...field}
                                 type="password"
                                 placeholder="••••••••"
-                                className="pl-4 pr-4 py-6 bg-background-primary border-2 border-border-light rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
+                                className="pl-4 pr-4 py-6 bg-primary/10 border-2 border-primary/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
                               />
-                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text-secondary/50">
+                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text_color">
                                 <Lock className="h-5 w-5" />
                               </div>
                             </div>
@@ -490,7 +490,7 @@ export default function PasswordResetPage({ role }) {
                       <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20"
+                        className="w-full py-6 rounded-xl bg-primary   text-white font-medium text-base shadow-lg shadow-primary/20"
                       >
                         {loading ? (
                           <div className="flex items-center justify-center">
@@ -536,7 +536,7 @@ export default function PasswordResetPage({ role }) {
                   </p>
 
                   <Link href={loginLink} className="block">
-                    <Button className="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-medium text-base shadow-lg shadow-primary/20">
+                    <Button className="w-full py-6 rounded-xl bg-primary  text-white font-medium text-base shadow-lg shadow-primary/20">
                       Sign In
                     </Button>
                   </Link>
