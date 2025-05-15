@@ -1,0 +1,22 @@
+/* Month picker - hide day grid */
+.month-picker .rdp-day {
+  display: none;
+}
+
+.month-picker .rdp-caption {
+  display: flex;
+  justify-content: center;
+}
+
+/* Year picker - hide month/day */
+.year-picker .rdp-month {
+  display: none;
+}
+
+.year-picker .rdp-caption {
+  justify-content: center;
+}
+
+.year-picker .rdp-dropdown_year {
+  width: 120px !important;
+}
