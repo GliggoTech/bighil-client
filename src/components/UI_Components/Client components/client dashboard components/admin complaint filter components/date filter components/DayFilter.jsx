@@ -5,27 +5,38 @@ import {
 } from "@/utils/date_filter";
 import DateSelect from "./DateSelect";
 
-const DayFilter = ({ dateFilter, setDateFilter }) => {
-  const handleDayChange = (day) => {
-    setDateFilter((prev) => ({
-      ...prev,
-      day,
-      ...(day === "allDay" && { month: "anyMonth", year: "anyYear" }),
-    }));
+const DayFilter = ({ dateFilter, onChange }) => {
+  const handleChange = (field, value) => {
+    const newFilter = {
+      ...dateFilter,
+      [field]: value,
+      // Reset dependent fields when changing scope
+      ...(field === "year" &&
+        value === "anyYear" && {
+          month: "anyMonth",
+          day: "allDay",
+        }),
+      ...(field === "month" &&
+        value === "anyMonth" && {
+          day: "allDay",
+        }),
+    };
+    onChange(newFilter);
   };
+
   return (
     <div className="grid grid-cols-3 gap-2">
       <DateSelect
         value={dateFilter.day}
-        onChange={handleDayChange}
+        onChange={(v) => handleChange("day", v)}
         placeholder="Day"
         options={getDayOptions()}
-        anyOption={{ value: "allDay", label: "Any" }}
+        anyOption={{ value: "allDay", label: "All" }}
       />
 
       <DateSelect
         value={dateFilter.month}
-        onChange={(value) => setDateFilter({ ...dateFilter, month: value })}
+        onChange={(v) => handleChange("month", v)}
         placeholder="Month"
         options={getMonthOptions()}
         anyOption={{ value: "anyMonth", label: "Any" }}
@@ -33,7 +44,7 @@ const DayFilter = ({ dateFilter, setDateFilter }) => {
 
       <DateSelect
         value={dateFilter.year}
-        onChange={(value) => setDateFilter({ ...dateFilter, year: value })}
+        onChange={(v) => handleChange("year", v)}
         placeholder="Year"
         options={getYearOptions()}
         anyOption={{ value: "anyYear", label: "Any" }}

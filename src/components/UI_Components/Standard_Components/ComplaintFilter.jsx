@@ -54,21 +54,19 @@ const ComplaintFilter = ({ bighil = false }) => {
       complaintNumber,
       status,
       dateFilter: {
-        ...dateFilter,
-        valid: (() => {
-          switch (dateFilter.type) {
-            case "day":
-              return (
-                !!dateFilter.day && !!dateFilter.month && !!dateFilter.year
-              );
-            case "month":
-              return !!dateFilter.month && !!dateFilter.year;
-            case "year":
-              return !!dateFilter.year;
-            default:
-              return false;
-          }
-        })(),
+        type: dateFilter.type,
+        ...(dateFilter.type === "day" && {
+          day: dateFilter.day !== "allDay" ? dateFilter.day : undefined,
+          month: dateFilter.month !== "anyMonth" ? dateFilter.month : undefined,
+          year: dateFilter.year !== "anyYear" ? dateFilter.year : undefined,
+        }),
+        ...(dateFilter.type === "month" && {
+          month: dateFilter.month !== "anyMonth" ? dateFilter.month : undefined,
+          year: dateFilter.year !== "anyYear" ? dateFilter.year : undefined,
+        }),
+        ...(dateFilter.type === "year" && {
+          year: dateFilter.year !== "anyYear" ? dateFilter.year : undefined,
+        }),
       },
       clientName,
       page,
@@ -114,8 +112,8 @@ const ComplaintFilter = ({ bighil = false }) => {
         // }
 
         // Date filter handling
-        const { type, day, month, year, valid } = params.dateFilter || {};
-        if (valid) {
+        const { type, day, month, year } = params.dateFilter || {};
+        if (true) {
           if (type === "day" && day && day !== "allDay") {
             queryParams.append("day", day);
           }
@@ -126,6 +124,7 @@ const ComplaintFilter = ({ bighil = false }) => {
             queryParams.append("year", year);
           }
         }
+        console.log(queryParams);
 
         // API call
         const url = getBackendUrl();
