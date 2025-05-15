@@ -4,77 +4,58 @@ import DateTypeSelector from "./DateTypeSelector";
 import DayFilter from "./DayFilter";
 import MonthFilter from "./MonthFilter";
 import YearFilter from "./YearFilter";
-import { debounce } from "lodash";
 
 const DateFilter = ({ dateFilter, setDateFilter }) => {
-  console.log("DateFilter rendered", dateFilter);
   const [localDateFilter, setLocalDateFilter] = useState(dateFilter);
-  const debouncedSetDateFilter = useRef(debounce(setDateFilter, 500)).current;
-  // Add validation state
-  const [isValid, setIsValid] = useState(false);
+  const initialRender = useRef(true);
 
-  const validateDateSelection = (currentFilter) => {
-    switch (currentFilter.type) {
-      case "day":
-        return (
-          !!currentFilter.day && !!currentFilter.month && !!currentFilter.year
-        );
-      case "month":
-        return !!currentFilter.month && !!currentFilter.year;
-      case "year":
-        return !!currentFilter.year;
-      default:
-        return false;
-    }
-  };
-
+  // Sync with parent state
   useEffect(() => {
-    const isValid = validateDateSelection(localDateFilter);
-    setIsValid(isValid);
-
-    if (isValid) {
-      debouncedSetDateFilter(localDateFilter);
-    }
-  }, [localDateFilter, debouncedSetDateFilter, validateDateSelection]);
-
-  useEffect(() => {
-    // Sync local state with parent state
+    if (!initialRender.current) return;
+    initialRender.current = false;
     setLocalDateFilter(dateFilter);
-  }, [dateFilter, setDateFilter]);
+  }, [dateFilter]);
+
+  // Handle filter changes immediately
+  const handleFilterUpdate = useCallback(
+    (newFilter) => {
+      setLocalDateFilter(newFilter);
+      setDateFilter(newFilter);
+    },
+    [setDateFilter]
+  );
 
   const handleTypeChange = (type) => {
-    setLocalDateFilter((prev) => ({
-      ...prev,
+    const newFilter = {
       type,
-      // Reset irrelevant fields when type changes
-      ...(type !== "day" && { day: "" }),
-      ...(type !== "month" && { month: "" }),
-      ...(type !== "year" && { year: "" }),
-    }));
+      day: type === "day" ? localDateFilter.day : "",
+      month: type === "day" || type === "month" ? localDateFilter.month : "",
+      year: localDateFilter.year,
+    };
+    handleFilterUpdate(newFilter);
   };
+
   const renderFilter = () => {
-    switch (
-      localDateFilter.type // Change from dateFilter.type to localDateFilter.type
-    ) {
+    switch (localDateFilter.type) {
       case "day":
         return (
           <DayFilter
             dateFilter={localDateFilter}
-            setDateFilter={setLocalDateFilter}
+            onChange={handleFilterUpdate}
           />
         );
       case "month":
         return (
           <MonthFilter
             dateFilter={localDateFilter}
-            setDateFilter={setLocalDateFilter}
+            onChange={handleFilterUpdate}
           />
         );
       case "year":
         return (
           <YearFilter
             dateFilter={localDateFilter}
-            setDateFilter={setLocalDateFilter}
+            onChange={handleFilterUpdate}
           />
         );
       default:
@@ -84,8 +65,11 @@ const DateFilter = ({ dateFilter, setDateFilter }) => {
 
   return (
     <div className="space-y-3">
-      <DateTypeSelector value={dateFilter.type} onChange={handleTypeChange} />
-      {renderFilter(localDateFilter, setLocalDateFilter)}
+      <DateTypeSelector
+        value={localDateFilter.type}
+        onChange={handleTypeChange}
+      />
+      {renderFilter()}
     </div>
   );
 };

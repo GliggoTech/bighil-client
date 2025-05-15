@@ -89,7 +89,7 @@ const Main_Navbar = () => {
                 User Login
               </Link>
               <Link
-                href="/company/login"
+                href="/client/client-login"
                 className={`px-4 py-2 rounded-full transition-all ${
                   scrolled
                     ? "bg-primary text-white hover:bg-primary/90"
@@ -158,7 +158,7 @@ const Main_Navbar = () => {
                 User Login
               </Link>
               <Link
-                href="/company/login"
+                href="/client/client-login"
                 className={`px-4 py-3 rounded-full text-center ${
                   scrolled ? "bg-primary text-white" : "bg-white text-primary"
                 }`}

@@ -1,26 +1,21 @@
 import { getMonthOptions, getYearOptions } from "@/utils/date_filter";
 import DateSelect from "./DateSelect";
 
-const MonthFilter = ({ dateFilter, setDateFilter }) => {
+const MonthFilter = ({ dateFilter, onChange }) => {
   const handleChange = (field, value) => {
-    const newFilter = { ...dateFilter, [field]: value };
-
-    // Only update parent if both fields are selected
-    if (
-      (field === "month" && dateFilter.year) ||
-      (field === "year" && dateFilter.month)
-    ) {
-      setDateFilter(newFilter);
-    } else {
-      // Update local state without triggering search
-      setDateFilter((prev) => ({ ...prev, [field]: value }));
-    }
+    const newFilter = {
+      ...dateFilter,
+      [field]: value,
+      ...(field === "year" && value === "anyYear" && { month: "anyMonth" }),
+    };
+    onChange(newFilter);
   };
+
   return (
     <div className="grid grid-cols-2 gap-2">
       <DateSelect
         value={dateFilter.month}
-        onChange={(value) => handleChange("month", value)}
+        onChange={(v) => handleChange("month", v)}
         placeholder="Month"
         options={getMonthOptions()}
         anyOption={{ value: "anyMonth", label: "Any" }}
@@ -28,7 +23,7 @@ const MonthFilter = ({ dateFilter, setDateFilter }) => {
 
       <DateSelect
         value={dateFilter.year}
-        onChange={(value) => handleChange("year", value)}
+        onChange={(v) => handleChange("year", v)}
         placeholder="Year"
         options={getYearOptions()}
         anyOption={{ value: "anyYear", label: "Any" }}
