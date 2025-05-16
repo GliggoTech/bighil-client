@@ -4,15 +4,15 @@ import Main_FooterLink from "./Main_FooterLink";
 
 const Main_FooterSection = () => {
   return (
-    <footer className="bg-[#0f172a] text-gray-300 pt-8 pb-4">
+    <footer className="bg-default_bg text-gray-300 pt-8 pb-4">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 mb-6 gap-10">
           {/* Brand and description */}
           <div>
             <div className="flex items-center mb-4">
-              <span className="bg-white text-primary px-3 py-1 font-bold text-xl rounded-full mr-2">
+              {/* <span className="bg-white text-primary px-3 py-1 font-bold text-xl rounded-full mr-2">
                 BH
-              </span>
+              </span> */}
               <span className="text-text_color text-2xl font-semibold">
                 BigHil
               </span>
