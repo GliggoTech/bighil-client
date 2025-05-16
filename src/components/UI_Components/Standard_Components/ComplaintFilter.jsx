@@ -50,7 +50,7 @@ const ComplaintFilter = ({ bighil = false }) => {
   const [activeFilters, setActiveFilters] = useState([]);
   const [response, setResponse] = useState(null);
 
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { loading, fetchData, error } = useFetch();
   const filterParams = useMemo(
     () => ({

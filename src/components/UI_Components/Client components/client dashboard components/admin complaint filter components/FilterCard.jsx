@@ -9,7 +9,11 @@ const FilterCard = ({ icon, title, titleColor, children, className }) => (
         {icon}
         <h3 className="font-medium">{title}</h3>
       </div>
-      {children}
+      <div className="flex flex-col gap-3">
+        {" "}
+        {/* Added wrapper div with gap */}
+        {children}
+      </div>
     </CardContent>
   </Card>
 );

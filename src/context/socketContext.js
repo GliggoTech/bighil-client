@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { userRole, userId, addNotification } = useNotificationStore();
 
   const connectSocket = () => {

@@ -13,7 +13,7 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
   });
 
   const { loading, error, fetchData } = useFetch();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const noteValue = watch("note"); // Watch textarea value
 
   const onSubmit = async (data) => {

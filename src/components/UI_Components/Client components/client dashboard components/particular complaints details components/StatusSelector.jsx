@@ -16,7 +16,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 
 const StatusSelector = ({ status, complaintId, userRole }) => {
   const { loading, error, fetchData } = useFetch();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const config = statusConfig[status] || statusConfig.default;
 
   const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";

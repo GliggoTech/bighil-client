@@ -31,7 +31,7 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 
 export default function ComplaintsChart() {
   const [data, setData] = useState([]);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const [timeRange, setTimeRange] = useState("7");
   const { loading, success, error, fetchData } = useFetch();
 

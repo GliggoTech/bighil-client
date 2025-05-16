@@ -30,7 +30,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const hasDecrementedRef = useRef(false);
   const { userRole, markAsRead } = useNotificationStore();
   const hasJoinedRoomRef = useRef(false);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
 
   const handleStatusChange = (newEvent) => {
     if (!newEvent) return;

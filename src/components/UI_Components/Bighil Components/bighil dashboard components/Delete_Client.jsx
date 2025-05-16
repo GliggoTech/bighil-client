@@ -21,7 +21,7 @@ import { toast } from "@/hooks/use-toast";
 const Delete_Client = ({ client, clients, setCurrentClients }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { loading, fetchData } = useFetch();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
 
   const handleDelete = async () => {
     const url = getBackendUrl();
