@@ -32,7 +32,7 @@ export function ComplaintForm() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { loading, fetchData } = useFetch();
 
   const fetchCompanies = useCallback(

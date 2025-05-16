@@ -49,7 +49,7 @@ export default function SettingComponent({ data }) {
   });
 
   const { loading, error, success, fetchData } = useFetch();
-  const token = useAccessToken();
+  const {token} = useAccessToken();
 
   const onSubmit = async (values) => {
     const url = getBackendUrl();

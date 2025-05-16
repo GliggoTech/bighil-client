@@ -50,7 +50,7 @@ export default function CompanyRegistrationForm({
     name: "admins",
   });
 
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { loading, error, fetchData } = useFetch();
 
   const admins = form.watch("admins");

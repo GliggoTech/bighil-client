@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react";
 
 const useAccessToken = () => {
-  const [accessToken, setAccessToken] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Create a dedicated API endpoint to get the token
     const fetchToken = async () => {
       try {
         const response = await fetch("/api/auth/token", {
           method: "GET",
-          credentials: "include", // Important for including cookies
+          credentials: "include",
         });
 
         if (!response.ok) {
@@ -19,16 +20,21 @@ const useAccessToken = () => {
         }
 
         const data = await response.json();
-        setAccessToken(data.token);
-      } catch (error) {
-        console.error("Error fetching token:", error);
+        console.log("Token data:", data);
+        setToken(data.token);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching token:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchToken();
   }, []);
 
-  return accessToken;
+  return { token, loading, error };
 };
 
 export default useAccessToken;

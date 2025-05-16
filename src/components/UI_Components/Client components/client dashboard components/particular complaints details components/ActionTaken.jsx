@@ -48,7 +48,7 @@ const ActionTaken = ({
 
   const { loading, error, fetchData } = useFetch();
   const { socket } = useSocket();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { userRole } = useNotificationStore();
 
   const [submittedData, setSubmittedData] = useState(

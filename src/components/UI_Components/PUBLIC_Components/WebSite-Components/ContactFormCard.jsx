@@ -38,7 +38,7 @@ export default function ContactFormCard() {
       message: "",
     },
   });
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { loading, fetchData, error, success } = useFetch();
 
   const onSubmit = async (data) => {

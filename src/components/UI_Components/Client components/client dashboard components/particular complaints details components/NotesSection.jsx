@@ -51,7 +51,7 @@ const NoteCard = ({ note }) => (
 
 const NotesSection = ({ notes, complaintId }) => {
   const [currentNotes, setCurrentNotes] = useState(notes);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { socket } = useSocket();
   const { userRole, userId } = useNotificationStore();
 

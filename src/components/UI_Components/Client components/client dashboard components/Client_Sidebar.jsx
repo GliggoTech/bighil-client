@@ -22,7 +22,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
   const { notificationCount, setTotalUnreadCount } = useNotificationStore();
   const { fetchData } = useFetch();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const isTouchDevice = useIsTouchDevice();
 
   const hasFetchedRef = useRef(false);

@@ -28,7 +28,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   const [unreadedMessages, setUnreadedMessages] = useState(unseenMessageCount);
 
   const { loading, error, fetchData } = useFetch();
-  const accessToken = useAccessToken();
+  const { token: accessToken } = useAccessToken();
   const { socket } = useSocket();
 
   // Track token readiness

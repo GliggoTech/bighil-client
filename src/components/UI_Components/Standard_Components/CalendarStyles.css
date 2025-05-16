@@ -1,22 +1,33 @@
-/* Month picker - hide day grid */
-.month-picker .rdp-day {
-  display: none;
+CalendarStyles.css */
+
+/* Style the container holding the year grid */
+.year-grid-container {
+  /* Add specific padding, border, background if needed */
+  background-color: #f9fafb; /* Example light background */
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem; /* Space below the grid */
 }
 
-.month-picker .rdp-caption {
-  display: flex;
-  justify-content: center;
+/* Style the container holding the month grid */
+.month-grid-container {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Year picker - hide month/day */
-.year-picker .rdp-month {
-  display: none;
+/* Style the buttons specifically within the year grid container */
+.year-grid-container .h-9 {
+  /* Target buttons with h-9 inside year grid container */
+  /* Override shadcn button styles here */
+  font-size: 0.875rem; /* Slightly smaller text */
 }
 
-.year-picker .rdp-caption {
-  justify-content: center;
+/* Style the buttons specifically within the month grid container */
+.month-grid-container .h-9 {
+  font-size: 0.875rem;
 }
 
-.year-picker .rdp-dropdown_year {
-  width: 120px !important;
-}
+/* You can also target the selected state more specifically if needed */
+/* Shadcn's default variant="default" handles the primary selection style */
+/* .year-grid-container .h-9[data-state="active"] { ... } */
+/* .month-grid-container .h-9[data-state="active"] { ... }

@@ -51,7 +51,7 @@ const passwordSchema = z.object({
 export default function PasswordResetPage({ role }) {
   const [currentStep, setCurrentStep] = useState("email");
   const { loading, success, error, fetchData } = useFetch();
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const url = getBackendUrl();
   const [animateDirection, setAnimateDirection] = useState("forward");
 

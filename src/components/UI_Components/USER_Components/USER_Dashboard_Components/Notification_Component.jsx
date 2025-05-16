@@ -26,7 +26,7 @@ const NotificationComponent = ({
   totalPages,
 }) => {
   const [processingIds, setProcessingIds] = useState(new Set());
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const { socket } = useSocket();
   const {
     userId,

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 const DateTypeSelector = ({ value, onChange }) => (
   <Select value={value} onValueChange={onChange}>
-    <SelectTrigger className="h-10 border-success/50">
+    <SelectTrigger className="h-10 border-success/50 bg-white">
       <SelectValue placeholder="Filter by" />
     </SelectTrigger>
     <SelectContent className="z-50 bg-white text-text-light border-none text-text_color">
@@ -16,8 +16,8 @@ const DateTypeSelector = ({ value, onChange }) => (
         className={`
             cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
             flex items-center justify-start gap-2
-          
-            hover:bg-primary-bg-subtle hover:text-text_color transition-all
+          bg-white
+            hover:bg-white hover:text-text_color transition-all
           `}
       >
         Specific Day
@@ -27,8 +27,8 @@ const DateTypeSelector = ({ value, onChange }) => (
         className={`
             cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
             flex items-center justify-start gap-2
-          
-            hover:bg-primary-bg-subtle hover:text-text_color transition-all
+          bg-white
+            hover:bg-white hover:text-text_color transition-all
           `}
       >
         Month
@@ -38,8 +38,8 @@ const DateTypeSelector = ({ value, onChange }) => (
         className={`
             cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
             flex items-center justify-start gap-2
-        
-            hover:bg-primary-bg-subtle hover:text-text_color transition-all
+        bg-white
+            hover:bg-white hover:text-text_color transition-all
           `}
       >
         Year

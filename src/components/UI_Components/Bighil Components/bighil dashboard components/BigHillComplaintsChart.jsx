@@ -32,7 +32,7 @@ const FILTER_OPTIONS = [
 const BigHillComplaintsChart = ({ data, filter }) => {
   const [currentFilter, setCurrentFilter] = useState(filter || "1year");
   const [chartData, setChartData] = useState(data || backendData || []);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
 
   const { loading, fetchData, error, data: backendData } = useFetch();
 

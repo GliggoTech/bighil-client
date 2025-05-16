@@ -1,183 +1,242 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import { DayPicker } from "react-day-picker"; // Import DayPicker
 import { Button } from "@/components/ui/button";
+import { format, parseISO, isValid } from "date-fns";
+import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, parseISO, isValid } from "date-fns"; // Import isValid
-import { CalendarIcon } from "lucide-react";
+import {
+  dateObjectToStringDate,
+  stringDateToDateObject,
+} from "@/utils/dateFilterUtils";
+import { Calendar } from "@/components/ui/calendar";
 
-// Helper to convert state string date (e.g., "2023", "10", "26") to a Date object
-// Helper to convert state string date (e.g., "2023", "10", "26") to a Date object
-const stringDateToDateObject = (dateFilter) => {
-  const { type, day, month, year } = dateFilter;
-  console.log("stringDateToDateObject called with dateFilter:", dateFilter); // Keep for debugging if needed
+// Custom Year Grid Component (Keep your existing component)
+const YearGrid = ({
+  selectedYear,
+  onYearSelect,
+  fromYear = 2020,
+  toYear = new Date().getFullYear() + 10,
+}) => {
+  // Adjusted default years
+  const years = Array.from(
+    { length: toYear - fromYear + 1 },
+    (_, i) => fromYear + i
+  );
 
-  //   Year is the minimum requirement for a valid date object for any type filter
-  if (!year || year === "anyYear") {
-    return undefined; // Cannot create a valid Date object without a year
+  // Arrange years into a grid-friendly format (e.g., rows of 3)
+  const yearRows = [];
+  for (let i = 0; i < years.length; i += 3) {
+    yearRows.push(years.slice(i, i + 3));
   }
 
-  const y = parseInt(year, 10);
-  console.log(y);
-  if (isNaN(y)) {
-    console.warn("stringDateToDateObject: Invalid year parsed:", year);
-    return undefined;
-  }
-
-  let date;
-  try {
-    switch (type) {
-      case "day":
-        // For 'day' type, we need day, month, and year to represent a specific day.
-        // If any are missing, we return undefined as no specific day is selected.
-        if (day && day !== "allDay" && month && month !== "anyMonth") {
-          const m = parseInt(month, 10) - 1; // 0-indexed month for Date constructor
-          const d = parseInt(day, 10);
-
-          // Basic validation for month and day numbers
-          if (isNaN(m) || m < 0 || m > 11 || isNaN(d)) {
-            // console.warn(`stringDateToDateObject: Invalid month (\${month}) or day (\${day}) for day type.`);
-            return undefined;
-          }
-          // Construct date in local time. Mongoose/backend will convert to UTC.
-          date = new Date(y, m, d);
-        } else {
-          // console.log(`stringDateToDateObject: Missing day or month for type 'day'. Returning undefined.`);
-          return undefined; // Not enough info for a specific day
-        }
-        break;
-
-      case "month":
-        // For 'month' type, we need month and year to represent a specific month.
-        if (month && month !== "anyMonth") {
-          const m = parseInt(month, 10) - 1; // 0-indexed month
-
-          if (isNaN(m) || m < 0 || m > 11) {
-            // console.warn(`stringDateToDateObject: Invalid month (\${month}) for month type.`);
-            return undefined;
-          }
-          // Construct date for the 1st day of the month in local time
-          date = new Date(y, m, 1);
-        } else {
-          // If type is 'month' but only year is selected (month is empty),
-          // provide a default date (Jan 1st) so calendar can focus on the year.
-          // console.log(`stringDateToDateObject: Month is empty for type 'month'. Defaulting to Jan 1st of year \${year}.`);
-          date = new Date(y, 0, 1); // Jan 1st in local time
-        }
-        break;
-
-      case "year":
-        // For 'year' type, we only need year.
-        // Provide a default date (Jan 1st) so calendar can focus on the year.
-        // console.log(`stringDateToDateObject: Type is 'year'. Defaulting to Jan 1st of year \${year}.`);
-        date = new Date(y, 0, 1); // Jan 1st in local time
-        break;
-
-      default:
-        // console.log(`stringDateToDateObject: Unknown type '\${type}'. Returning undefined.`);
-        return undefined; // Should not happen if type is controlled
-    }
-
-    // Final check: ensure the created date object is valid
-    // isValid checks if the date components result in a real date (e.g., not Feb 30)
-    return isValid(date) ? date : undefined;
-  } catch (e) {
-    console.error("Error creating date object in stringDateToDateObject:", e);
-    return undefined;
-  }
+  return (
+    <div className="p-2">
+      {yearRows.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid grid-cols-3 gap-2 mb-2">
+          {row.map((year) => (
+            <Button
+              key={year}
+              variant={year === selectedYear ? "default" : "outline"}
+              className="h-9"
+              onClick={() => onYearSelect(year)}
+            >
+              {year}
+            </Button>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 };
 
-// Helper to convert a Date object to the state string date format
-const dateObjectToStringDate = (date, currentType) => {
-  // If date is null/undefined (e.g., clear selection), reset state based on current type
-  if (!date || !isValid(date)) {
-    switch (currentType) {
-      case "day":
-        return { type: currentType, day: "", month: "", year: "" };
-      case "month":
-        return { type: currentType, day: "", month: "", year: "" }; // Day is irrelevant for month/year type state
-      case "year":
-        return { type: currentType, day: "", month: "", year: "" }; // Day/Month irrelevant for year type state
-      default:
-        return { type: "day", day: "", month: "", year: "" }; // Default type if somehow missing
-    }
+// Custom Month Grid Component (Keep your existing component)
+const MonthGrid = ({ selectedMonth, onMonthSelect }) => {
+  const months = Array.from({ length: 12 }, (_, i) => i + 1); // 1-12
+
+  // Arrange months into rows of 3
+  const monthRows = [];
+  for (let i = 0; i < months.length; i += 3) {
+    monthRows.push(months.slice(i, i + 3));
   }
 
-  try {
-    // Extract date parts (month is 0-indexed in JS Date, but format gives 1-12)
-    const year = format(date, "yyyy");
-    const month = format(date, "M"); // Get month as 1-12
-    const day = format(date, "d"); // Get day as 1-31
+  return (
+    <div className="p-2">
+      {monthRows.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid grid-cols-3 gap-2 mb-2">
+          {row.map((month) => {
+            const monthDate = new Date(2023, month - 1); // Arbitrary year for formatting
+            return (
+              <Button
+                key={month}
+                variant={month === selectedMonth ? "default" : "outline"}
+                className="h-9"
+                onClick={() => onMonthSelect(month)}
+              >
+                {format(monthDate, "MMM")}
+              </Button>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};
 
-    // Populate state based on the current filter type
-    switch (currentType) {
-      case "day":
-        return { type: currentType, day: day, month: month, year: year };
-      case "month":
-        return { type: currentType, day: "", month: month, year: year }; // Clear day for month type
-      case "year":
-        return { type: currentType, day: "", month: "", year: year }; // Clear day and month for year type
-      default:
-        return { type: "day", day: "", month: "", year: year }; // Default
+// Custom Caption Component to handle navigation and view switching
+const CustomCaption = ({
+  currentDate,
+  viewMode,
+  setViewMode,
+  setCurrentDate,
+}) => {
+  const displayYear = currentDate?.getFullYear() || new Date().getFullYear();
+  const displayMonthYear = currentDate || new Date(); // Use full date for formatting
+
+  // Navigation handlers for changing the displayed date (year or month)
+  const handlePrev = () => {
+    const newDate = new Date(currentDate || new Date());
+    if (viewMode === "year") {
+      newDate.setFullYear(newDate.getFullYear() - 10); // Navigate by decade in year view? Or single year? Let's do single year for simplicity.
+      newDate.setFullYear(newDate.getFullYear() - 1); // Navigate by year
+    } else {
+      // month or day view
+      newDate.setMonth(newDate.getMonth() - 1); // Navigate by month
     }
-  } catch (e) {
-    console.error("Error formatting date object:", e);
-    // Return empty state on error
-    switch (currentType) {
-      case "day":
-        return { type: currentType, day: "", month: "", year: "" };
-      case "month":
-        return { type: currentType, day: "", month: "", year: "" };
-      case "year":
-        return { type: currentType, day: "", month: "", year: "" };
-      default:
-        return { type: "day", day: "", month: "", year: "" };
+    setCurrentDate(newDate);
+  };
+
+  const handleNext = () => {
+    const newDate = new Date(currentDate || new Date());
+    if (viewMode === "year") {
+      newDate.setFullYear(newDate.getFullYear() + 1); // Navigate by year
+    } else {
+      // month or day view
+      newDate.setMonth(newDate.getMonth() + 1); // Navigate by month
     }
+    setCurrentDate(newDate);
+  };
+
+  // Determine text to display based on viewMode
+  let captionText = "";
+  let showYearButton = false;
+  let showMonthButton = false;
+  let showMonthYearText = false;
+
+  if (viewMode === "year") {
+    captionText = displayYear.toString();
+    // Navigation is by year
+  } else if (viewMode === "month") {
+    captionText = displayYear.toString(); // Show year in month view caption
+    showYearButton = true; // Can click year to go to year view
+    // Navigation is by year
+  } else {
+    // viewMode === 'day'
+    captionText = format(displayMonthYear, "MMMM yyyy");
+    showYearButton = true; // Can click year to go to year view
+    showMonthButton = true; // Can click month to go to month view
+    showMonthYearText = true; // Show the full month/year text
+    // Navigation is by month
   }
+
+  return (
+    <div className="flex items-center justify-between px-2 py-2">
+      {/* Prev Button: Shows for all views, navigates year/month based on viewMode */}
+      <Button variant="default" size="sm" onClick={handlePrev}>
+        <span>
+          <ChevronLeft size={18} className=" text-white" />
+        </span>
+      </Button>
+
+      <div className="space-x-1">
+        {/* Conditional Buttons/Text based on viewMode */}
+        {viewMode === "year" && (
+          <span className="font-semibold text-gray-800">{displayYear}</span> // Just show year text
+        )}
+
+        {viewMode === "month" && (
+          // In month view, show the year, clickable to go to year view
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => setViewMode("year")}
+          >
+            <span className="font-semibold text-white">{displayYear}</span>
+          </Button>
+        )}
+
+        {viewMode === "day" && (
+          <>
+            {/* In day view, show month and year, clickable */}
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => setViewMode("month")}
+            >
+              <span className="font-semibold text-white">
+                {format(displayMonthYear, "MMMM")}
+              </span>
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => setViewMode("year")}
+            >
+              <span className="font-semibold text-white">{displayYear}</span>
+            </Button>
+          </>
+        )}
+      </div>
+
+      {/* Next Button: Shows for all views, navigates year/month based on viewMode */}
+      <Button variant="default" size="sm" onClick={handleNext}>
+        <span>
+          <ChevronRight size={18} className=" text-white" />
+        </span>
+      </Button>
+    </div>
+  );
 };
 
 const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // Internal state for the Calendar component, uses Date object or undefined/null
-  const [selectedDate, setSelectedDate] = useState(() =>
-    stringDateToDateObject(dateFilter)
+  // viewMode controls WHICH grid is currently displayed ('day', 'month', 'year')
+  const [viewMode, setViewMode] = useState(dateFilter.type);
+
+  const [tempDate, setTempDate] = useState(
+    () => stringDateToDateObject(dateFilter) || new Date() // Default to current date if initial filter is invalid/empty
   );
 
+  // Effect to sync internal state (tempDate, viewMode) when parent dateFilter changes
   useEffect(() => {
-    console.log("Parent dateFilter changed:", dateFilter);
-    const newDateObject = stringDateToDateObject(dateFilter);
-    console.log("Converted to selectedDate object:", newDateObject);
-    // Use getTime() for reliable date object comparison, handle undefined/null
-    if (
-      (selectedDate &&
-        newDateObject &&
-        selectedDate.getTime() !== newDateObject.getTime()) ||
-      (!selectedDate && newDateObject) ||
-      (selectedDate && !newDateObject)
-    ) {
-      console.log("Updating internal selectedDate state from parent prop.");
-      setSelectedDate(newDateObject);
-    } else {
-      console.log(
-        "Internal selectedDate state is already in sync or no relevant change."
-      );
-    }
-  }, [dateFilter, selectedDate]); // Depend on the dateFilter object and selectedDate for comparison
+    const newDate = stringDateToDateObject(dateFilter);
+    // Update tempDate only if the date object is valid
+    setTempDate(newDate || new Date()); // Default to current date if newDate is invalid
 
-  const handleCalendarSelect = useCallback(
-    (date) => {
-      console.log("onSelect triggered. Raw date object from calendar:", date); // <-- LOG 1: What did react-day-picker return?
-      setSelectedDate(date); // Update internal state immediately
-      // Convert the Date object to the parent's string format based on the current filter type
+    // Always update viewMode to match the parent filter type when dateFilter changes
+    setViewMode(dateFilter.type);
+  }, [dateFilter]); // Depend on the entire dateFilter object
+
+  // Function to finalize the selection and update parent state
+  const handleFinalizeSelection = useCallback(
+    (date, selectedUnitType) => {
+      console.log(
+        `Finalizing ${selectedUnitType} selection:`,
+        date,
+        "for parent type:",
+        dateFilter.type
+      );
+
+      // Convert the selected date object to the state format *based on the parent's type*
       const newDateFilterState = dateObjectToStringDate(date, dateFilter.type);
-      console.log("Converted to newDateFilterState:", newDateFilterState); // <-- LOG 2: What state will be sent to parent?
-      // Only update parent state if the date filter values relevant to the type actually changed.
-      // This prevents unnecessary renders/searches if the user clicks the same date/month/year again.
+
+      // Check if the relevant part of the date filter state actually changed
+      // This prevents unnecessary updates if the user re-selects the same value
       let hasRelevantChange = false;
       switch (dateFilter.type) {
         case "day":
@@ -194,27 +253,21 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
         case "year":
           hasRelevantChange = newDateFilterState.year !== dateFilter.year;
           break;
+        default:
+          hasRelevantChange = false; // No known type
+          break;
       }
-      console.log("Has relevant change?", hasRelevantChange); // <-- LOG 3: Will parent state be updated?
+
+      console.log("Finalize has relevant change?", hasRelevantChange);
+
       if (hasRelevantChange) {
-        console.log("Updating parent dateFilter state.");
-        setDateFilter(newDateFilterState);
-      }
-      // Close popover after a selection is made that updates the parent state
-      // Only close if a date was selected AND it caused a state change
-      if (date !== undefined && hasRelevantChange) {
-        console.log(`Closing popover for type: \${dateFilter.type}`);
-        setIsOpen(false);
-      } else if (date === undefined) {
-        console.log("Date selection cleared.");
-        // If date is undefined (cleared), handleClearDate is called separately.
-        // The popover should close in handleClearDate.
+        setDateFilter(newDateFilterState); // Update the parent state
+        setIsOpen(false); // Close the popover
       } else {
+        // If no relevant change, popover stays open, allowing user to clear or change again
         console.log(
-          "Date selected, but no relevant change in parent state. Popover stays open."
+          "No relevant change in parent state. Popover remains open."
         );
-        // If date selected but no relevant change (e.g., clicking the same month again),
-        // the popover stays open, allowing further interaction or clearing.
       }
     },
     [
@@ -223,22 +276,76 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
       dateFilter.day,
       dateFilter.month,
       dateFilter.year,
-    ]
-  ); // Depend on relevant state parts
+    ] // Include relevant parts of dateFilter in dependencies
+  );
 
-  // In handleClearDate:
-  const handleClearDate = useCallback(() => {
-    console.log("Clearing date filter."); // <-- Log clear action
-    setSelectedDate(undefined); // Clear internal state
-    // Reset the date parts in the parent state
-    setDateFilter({
-      type: dateFilter.type, // Keep the current type
-      day: "",
-      month: "",
-      year: "",
-    });
-    setIsOpen(false); // Close the popover
-  }, [setDateFilter, dateFilter.type]);
+  // Selection handler for YearGrid
+  const handleYearSelect = useCallback(
+    (year) => {
+      console.log("Year selected in grid:", year);
+      // Create a date object for Jan 1st of the selected year, keeping current month/day if possible for potential later views
+      const newDate = new Date(
+        year,
+        tempDate?.getMonth() || 0,
+        tempDate?.getDate() || 1
+      );
+      setTempDate(newDate); // Update the displayed date/focus
+
+      if (dateFilter.type === "year") {
+        // If parent filter type is 'year', finalize the selection
+        handleFinalizeSelection(newDate, "year");
+      } else {
+        // If parent type is month or day, transition to month view
+        setViewMode("month");
+      }
+    },
+    [tempDate, dateFilter.type, handleFinalizeSelection]
+  ); // Add handleFinalizeSelection to dependencies
+
+  // Selection handler for MonthGrid
+  const handleMonthSelect = useCallback(
+    (month) => {
+      console.log("Month selected in grid:", month);
+      // Create a date object for the 1st of the selected month, keeping current year/day if possible
+      const currentYear = tempDate?.getFullYear() || new Date().getFullYear();
+      const newDate = new Date(
+        currentYear,
+        month - 1,
+        tempDate?.getDate() || 1
+      ); // month is 1-indexed, convert to 0-indexed
+      setTempDate(newDate); // Update the displayed date/focus
+
+      if (dateFilter.type === "month") {
+        // If parent filter type is 'month', finalize the selection
+        handleFinalizeSelection(newDate, "month");
+      } else {
+        // If parent type is day, transition to day view
+        setViewMode("day");
+      }
+    },
+    [tempDate, dateFilter.type, handleFinalizeSelection]
+  ); // Add handleFinalizeSelection to dependencies
+
+  // Selection handler for DayPicker (only used when viewMode is 'day')
+  const handleDaySelect = useCallback(
+    (date) => {
+      console.log("Day selected in DayPicker:", date);
+      if (!date) {
+        console.log(
+          "Day selection cleared in DayPicker - handled by Clear button."
+        );
+        return;
+      }
+
+      setTempDate(date); // Update the displayed date/focus
+
+      if (dateFilter.type === "day") {
+        // If parent filter type is 'day', finalize the selection
+        handleFinalizeSelection(date, "day");
+      }
+    },
+    [dateFilter.type, handleFinalizeSelection]
+  ); // Add handleFinalizeSelection to dependencies
 
   // Helper to format the display text on the trigger button
   const getDisplayText = useMemo(() => {
@@ -258,7 +365,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
     const dateObj = stringDateToDateObject(dateFilter);
 
     if (!dateObj) {
-      // This case should ideally not happen if isDateSelected is true, but as a fallback
+      // Fallback for invalid date in state
       return "Invalid Date";
     }
 
@@ -266,13 +373,10 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
       switch (type) {
         case "day":
           return format(dateObj, "PPP"); // e.g., October 26th, 2023
-
         case "month":
           return format(dateObj, "MMMM yyyy"); // e.g., October 2023
-
         case "year":
           return format(dateObj, "yyyy"); // e.g., 2023
-
         default:
           return "Pick a date";
       }
@@ -282,46 +386,19 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
     }
   }, [dateFilter]); // Depend on dateFilter state
 
-  // Determine the view and options for the Calendar based on the filter type
-  const calendarProps = useMemo(() => {
-    const baseProps = {
-      mode: "single",
-      selected: selectedDate,
-      onSelect: handleCalendarSelect,
-      initialFocus: true,
-      // Restrict year navigation if needed (optional)
-      // fromYear={1900}
-      // toYear={new Date().getFullYear()}
-    };
-
-    switch (dateFilter.type) {
-      case "year":
-        return {
-          ...baseProps,
-          views: ["year"], // Only show year view
-          captionLayout: "dropdown-buttons", // Helps navigate years
-          // Set initial focus month/year if a date is selected
-          defaultMonth: selectedDate || new Date(),
-        };
-      case "month":
-        return {
-          ...baseProps,
-          views: ["month", "year"], // Show month and year views
-          captionLayout: "dropdown-buttons", // Helps navigate months/years
-          // Set initial focus month/year if a date is selected
-          defaultMonth: selectedDate || new Date(),
-        };
-      case "day":
-      default: // Default to day view
-        return {
-          ...baseProps,
-          views: ["day", "month", "year"], // Standard calendar views
-          captionLayout: "buttons", // Standard month/year navigation buttons
-          // Set initial focus month/year if a date is selected
-          defaultMonth: selectedDate || new Date(),
-        };
-    }
-  }, [dateFilter.type, selectedDate, handleCalendarSelect]);
+  // Handle clearing the date filter
+  const handleClearDate = useCallback(() => {
+    // Reset tempDate and parent dateFilter state
+    setTempDate(new Date()); // Reset internal display to current date
+    setDateFilter({
+      type: dateFilter.type, // Keep the current type
+      day: "",
+      month: "",
+      year: "", // Clear values
+    });
+    setViewMode(dateFilter.type); // Reset view mode to the parent's filter type
+    setIsOpen(false); // Close the popover
+  }, [setDateFilter, dateFilter.type]);
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -329,26 +406,69 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
         {/* Use a Button as the trigger */}
         <Button
           variant={"outline"}
-          className={`w-full justify-start text-left font-normal rounded-xl border-success/50
-               ${!selectedDate ? "text-muted-foreground" : ""}
+          className={`w-full justify-start text-left font-normal rounded-md border-success/50
+               ${
+                 !getDisplayText ||
+                 getDisplayText === "Pick a date" ||
+                 getDisplayText === "Invalid Date"
+                   ? "text-muted-foreground"
+                   : ""
+               }
                transition-shadow duration-200
                bg-white/90 focus:bg-white ring-1 ring-success-border-subtle focus:ring-2 focus:ring-success
-               flex items-center gap-2 {/* Add flex and gap for icon and text */}
+               flex items-center gap-2
            `}
         >
-          <CalendarIcon className="h-4 w-4" />
+          <CalendarIcon className="h-4 w-4 text-primary" />
           {getDisplayText}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 z-[1000] bg-white" align="start">
-        {/* Render the Calendar with dynamically determined props */}
-        <Calendar {...calendarProps} />
+      <PopoverContent
+        className="w-[280px] p-0 flex flex-col z-[1000] bg-white"
+        align="start"
+      >
+        {/* Custom Caption for Navigation and View Switching */}
+        <CustomCaption
+          currentDate={tempDate}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          setCurrentDate={setTempDate}
+        />
+
+        {/* Conditionally Render Grids based on viewMode */}
+        {viewMode === "day" && (
+          <Calendar
+            mode="single" // Allow single date selection
+            selected={tempDate} // Highlight the tempDate
+            onSelect={handleDaySelect} // Handle day selection
+            month={tempDate || new Date()} // Control the displayed month
+          />
+        )}
+
+        {viewMode === "month" && (
+          <MonthGrid
+            selectedMonth={tempDate?.getMonth() + 1} // Pass 1-indexed month
+            onMonthSelect={handleMonthSelect} // Handle month selection
+          />
+        )}
+
+        {viewMode === "year" && (
+          <YearGrid
+            selectedYear={tempDate?.getFullYear()} // Pass selected year
+            onYearSelect={handleYearSelect} // Handle year selection
+          />
+        )}
 
         {/* Add a clear button */}
-        {dateFilter.day || dateFilter.month || dateFilter.year ? ( // Show clear button if any date part is set in parent state
-          <div className="p-2">
+        {/* Show clear button if any date part relevant to the type is set in parent state */}
+        {(dateFilter.type === "day" && dateFilter.day) ||
+        (dateFilter.type === "month" && dateFilter.month) ||
+        (dateFilter.type === "year" && dateFilter.year) ? (
+          <div className="p-2 pt-0">
+            {" "}
+            {/* pt-0 to reduce space if grids have padding */}
             <Button
-              variant="outline" // Use outline variant
+              variant="outline"
               className="w-full"
               onClick={handleClearDate}
             >

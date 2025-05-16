@@ -49,7 +49,7 @@ const ComplaintsTable = ({
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
-  const token = useAccessToken();
+  const { token } = useAccessToken();
   const [downloadLoading, setDownloadLoading] = useState(false);
 
   // Loading skeleton component
