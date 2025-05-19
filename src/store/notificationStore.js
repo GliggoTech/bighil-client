@@ -18,7 +18,7 @@ const useNotificationStore = create(
       // Update this method to accept the total unread count from API
       setNotifications: (notifications, totalUnread = null) => {
         set({ notifications });
-        console.log("Notifications set in store:", totalUnread);
+      
       },
 
       addNotification: (notification) => {

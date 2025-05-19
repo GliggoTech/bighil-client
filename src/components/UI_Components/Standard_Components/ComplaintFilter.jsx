@@ -141,7 +141,7 @@ const ComplaintFilter = ({ bighil = false }) => {
   const debouncedSearch = useCallback(
     // Use filterParams from the latest render within the debounce closure
     debounce(async (params) => {
-      console.log(params);
+   
       if (!token) return;
       try {
         const queryParams = new URLSearchParams();
@@ -165,7 +165,7 @@ const ComplaintFilter = ({ bighil = false }) => {
         } = params.dateFilter;
         if (isDateValid) {
           if (dateYear && dateYear !== "anyYear") {
-            console.log(" only");
+       
             // Year is required for all valid types
             queryParams.append("year", dateYear);
           }
@@ -177,13 +177,13 @@ const ComplaintFilter = ({ bighil = false }) => {
             dateMonth &&
             dateMonth !== "anyMonth"
           ) {
-            console.log("day and month");
+           
             queryParams.append("day", dateDay);
             queryParams.append("month", dateMonth); // Month is also needed for day filter
           }
           // Append month only if the type is 'month' and it is selected
           if (dateType === "month" && dateMonth && dateMonth !== "anyMonth") {
-            console.log("month only");
+         
             queryParams.append("month", dateMonth);
           }
           // If type is year, only year is appended (handled above)
@@ -192,11 +192,13 @@ const ComplaintFilter = ({ bighil = false }) => {
         queryParams.append("page", params.page.toString());
         // Build URL
         const url = getBackendUrl();
+        
         const finalUrl = bighil
           ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`
           : `${url}/api/client/get-filtered-complaints?${queryParams.toString()}`;
         // Fetch data
         const res = await fetchData(finalUrl, "GET", null, token);
+       
         if (res?.data) {
           setComplaints(res.data.complaints);
           // Use totalCount from response if available, otherwise fallback
