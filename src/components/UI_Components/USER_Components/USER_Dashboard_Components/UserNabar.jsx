@@ -23,6 +23,13 @@ const UserNavbar = () => {
       setLoading(true);
       const res = await userSignout();
       if (res.success) {
+          useNotificationStore.setState({
+      userId: null,
+      userRole: null,
+      notificationCount: 0,
+      notifications: [],
+      lastSync: null
+    });
         setLoading(false);
         router.push("/");
       } else {

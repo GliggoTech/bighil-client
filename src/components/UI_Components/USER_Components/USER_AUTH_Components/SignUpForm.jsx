@@ -74,6 +74,13 @@ const SignupSigninForm = ({ mode = "signup" }) => {
       setIsLoading(true);
       setFormError(null);
       setFormSuccess(null);
+       useNotificationStore.setState({
+      userId: null,
+      userRole: null,
+      notificationCount: 0,
+      notifications: [],
+      lastSync: null
+    });
 
       // Select the correct server action based on mode
       const authAction = mode === "signup" ? userSignup : userLogin;
