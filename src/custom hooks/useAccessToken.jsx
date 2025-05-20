@@ -20,7 +20,7 @@ const useAccessToken = () => {
         }
 
         const data = await response.json();
-        console.log("Token data:", data);
+       
         setToken(data.token);
         setError(null);
       } catch (err) {

@@ -225,12 +225,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Function to finalize the selection and update parent state
   const handleFinalizeSelection = useCallback(
     (date, selectedUnitType) => {
-      console.log(
-        `Finalizing ${selectedUnitType} selection:`,
-        date,
-        "for parent type:",
-        dateFilter.type
-      );
+     
 
       // Convert the selected date object to the state format *based on the parent's type*
       const newDateFilterState = dateObjectToStringDate(date, dateFilter.type);
@@ -258,17 +253,12 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
           break;
       }
 
-      console.log("Finalize has relevant change?", hasRelevantChange);
+     
 
       if (hasRelevantChange) {
         setDateFilter(newDateFilterState); // Update the parent state
         setIsOpen(false); // Close the popover
-      } else {
-        // If no relevant change, popover stays open, allowing user to clear or change again
-        console.log(
-          "No relevant change in parent state. Popover remains open."
-        );
-      }
+      } 
     },
     [
       setDateFilter,
@@ -282,7 +272,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for YearGrid
   const handleYearSelect = useCallback(
     (year) => {
-      console.log("Year selected in grid:", year);
+   
       // Create a date object for Jan 1st of the selected year, keeping current month/day if possible for potential later views
       const newDate = new Date(
         year,
@@ -305,7 +295,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for MonthGrid
   const handleMonthSelect = useCallback(
     (month) => {
-      console.log("Month selected in grid:", month);
+      
       // Create a date object for the 1st of the selected month, keeping current year/day if possible
       const currentYear = tempDate?.getFullYear() || new Date().getFullYear();
       const newDate = new Date(
@@ -329,11 +319,9 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for DayPicker (only used when viewMode is 'day')
   const handleDaySelect = useCallback(
     (date) => {
-      console.log("Day selected in DayPicker:", date);
+   
       if (!date) {
-        console.log(
-          "Day selection cleared in DayPicker - handled by Clear button."
-        );
+       
         return;
       }
 

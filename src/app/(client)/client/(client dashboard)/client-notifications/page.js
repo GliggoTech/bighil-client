@@ -14,7 +14,7 @@ export default async function Client_Notification_Page({ searchParams }) {
     { method: "GET", cache: "no-cache" } // Always fetch fresh data
   );
   notifications = res.notifications;
-  console.log(res);
+ 
 
   return (
     <div className="min-h-screen bg-bighil_dashboard_bg p-3 space-y-6">

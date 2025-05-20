@@ -43,7 +43,7 @@ export default function ContactFormCard() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("Submitted Data:", data);
+    
       // handle form submission logic (e.g. API call)
       const url = getBackendUrl();
 

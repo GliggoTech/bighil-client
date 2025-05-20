@@ -15,6 +15,7 @@ import { ComplaintFields } from "./form-components/ComplaintFields";
 import { TagSelector } from "./form-components/TagSelector";
 import { FileUploader } from "./form-components/FileUploader";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { toast } from "@/hooks/use-toast";
 
 export function ComplaintForm() {
   const form = useForm({
@@ -106,7 +107,14 @@ export function ComplaintForm() {
     );
 
     if (res.success) {
+      toast({
+        title: "Complaint Submitted",
+        variant:"success",
+        description: "Your complaint has been submitted successfully.",
+      });
       form.reset();
+      
+
       setLocalFiles([]);
     }
   };
