@@ -107,14 +107,13 @@ export function ComplaintForm() {
     );
 
     if (res.success) {
+      
       toast({
         title: "Complaint Submitted",
         variant:"success",
         description: "Your complaint has been submitted successfully.",
       });
       form.reset();
-      
-
       setLocalFiles([]);
     }
   };
