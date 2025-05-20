@@ -20,6 +20,13 @@ const Client_Navbar = ({ isOpen }) => {
       setLoading(true);
       const res = await clientLogout();
       if (res.success) {
+          useNotificationStore.setState({
+      userId: null,
+      userRole: null,
+      notificationCount: 0,
+      notifications: [],
+      lastSync: null
+    });
         setError(null);
         setLoading(false);
         router.push("/");
