@@ -1,4 +1,4 @@
-const { z } = require("zod");
+import { z } from "zod";
 
 export const formSchema = z.object({
   companyName: z.string().min(1, "Company selection required"),
