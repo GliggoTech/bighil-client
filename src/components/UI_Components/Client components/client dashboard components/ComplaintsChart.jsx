@@ -48,6 +48,7 @@ export default function ComplaintsChart() {
       );
 
       if (res?.success) {
+        console.log("Complaints Timeline Data:", res?.data?.timeline);
         setData(res?.data?.timeline);
       }
     }
@@ -189,18 +190,34 @@ export default function ComplaintsChart() {
                 </defs>
 
                 <CartesianGrid strokeDasharray="4 4" />
-                <XAxis dataKey="name" stroke="#198754" />
+                <XAxis dataKey="date" stroke="#198754" />
                 <YAxis allowDecimals={false} stroke="#198754" />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#ffffff",
-                    borderColor: "#d1d5db",
-                    borderRadius: 10,
-                    fontSize: 14,
+                  content={({ label, payload }) => {
+                    if (!payload || !payload.length) return null;
+
+                    const formattedDate = new Date(label).toLocaleDateString(
+                      undefined,
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    );
+
+                    return (
+                      <div className="rounded-md border border-gray-200 bg-white p-2 shadow-sm">
+                        <p className="text-sm font-semibold text-gray-700">
+                          {formattedDate}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Complaints: {payload[0].value}
+                        </p>
+                      </div>
+                    );
                   }}
-                  labelStyle={{ color: "#1f2937", fontWeight: 600 }}
-                  cursor={{ fill: "#eff6ff" }}
                 />
+
                 <Area
                   type="monotone"
                   dataKey="totalComplaints"
