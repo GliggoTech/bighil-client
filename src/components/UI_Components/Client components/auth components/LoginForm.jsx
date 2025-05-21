@@ -269,6 +269,17 @@ export default function LoginForm() {
                 </div>
               </form>
             </Form>
+            <div className="mt-6">
+              <p className="text-sm text-text_color dark:text-text-light">
+                Don’t have a client account?{" "}
+                <Link
+                  href="/client/request-access"
+                  className="text-primary hover:text-primary hover:underline transition-colors"
+                >
+                  Request Access
+                </Link>
+              </p>
+            </div>
 
             {/* Demo credentials toggle */}
             <div className="mt-8">

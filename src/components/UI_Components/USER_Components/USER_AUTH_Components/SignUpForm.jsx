@@ -233,14 +233,6 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         <FormLabel className="text-text_color font-medium">
                           Password
                         </FormLabel>
-                        {mode === "signin" && (
-                          <Link
-                            href="/user/forgot-password"
-                            className="text-sm text-primary hover:text-primary/80 transition-colors hover:underline hover:scale-105"
-                          >
-                            Forgot Password?
-                          </Link>
-                        )}
                       </div>
                       <div className="relative mt-1">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
@@ -325,7 +317,16 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                     </div>
                   )}
                 </Button>
-
+                <div className="mt-2 ">
+                  {mode === "signin" && (
+                    <Link
+                      href="/user/forgot-password"
+                      className="text-sm text-primary hover:text-primary/80 transition-colors hover:underline hover:scale-105"
+                    >
+                      Forgot Password?
+                    </Link>
+                  )}
+                </div>
                 {/* Divider */}
                 <div className="relative flex items-center justify-center my-6">
                   <div className="h-px w-full bg-gray-200"></div>
