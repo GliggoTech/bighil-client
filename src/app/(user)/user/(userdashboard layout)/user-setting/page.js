@@ -1,20 +1,17 @@
 import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
-import { Suspense } from "react";
-
-export default async function Bighil_Setting_Page() {
-  const endPoint = "/api/setting/get-setting";
+export default async function UsersSettingsPage() {
+  const endPoint = "/api/user-setting/get-user-setting";
   const data = await fetchServerSideData(`${endPoint}`, {
     method: "GET",
     cache: "no-cache",
   });
+  console.log("Client Setting Page Data: ", data);
 
   return (
     <div>
-      <Suspense>
-        <SettingComponent data={data} />
-      </Suspense>
+      <SettingComponent initialData={data} />
     </div>
   );
 }

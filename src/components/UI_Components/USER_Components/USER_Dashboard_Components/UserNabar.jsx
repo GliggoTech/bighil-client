@@ -9,12 +9,21 @@ import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/dashboard constants/SidebarConstants";
 import { useRouter } from "next/navigation";
 import { userSignout } from "@/app/actions/user.action";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import AdvancedStyledDropdown from "./AdvancedStyledDropdown";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/user/user-add-complaint");
-  const { notificationCount } = useNotificationStore();
+  const { notificationCount, userName } = useNotificationStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -23,13 +32,13 @@ const UserNavbar = () => {
       setLoading(true);
       const res = await userSignout();
       if (res.success) {
-          useNotificationStore.setState({
-      userId: null,
-      userRole: null,
-      notificationCount: 0,
-      notifications: [],
-      lastSync: null
-    });
+        useNotificationStore.setState({
+          userId: null,
+          userRole: null,
+          notificationCount: 0,
+          notifications: [],
+          lastSync: null,
+        });
         setLoading(false);
         router.push("/");
       } else {
@@ -114,28 +123,14 @@ const UserNavbar = () => {
           </div>
 
           {/* Desktop Logout */}
-          <div className="hidden lg:flex">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              {/* Logout Button */}
-              <Button
-                onClick={handleLogOut}
-                disabled={loading}
-                variant="default"
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 h-9 sm:h-10 flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300"
-              >
-                <span className="hidden sm:inline">
-                  {loading ? "Logging Out..." : "Logout"}
-                </span>
-                <span className="sm:hidden">{loading ? "..." : "Logout"}</span>
-                <LogOut
-                  className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
-                />
-              </Button>
-              {error && <p className="text-red text-sm mt-1">{error}</p>}
-            </motion.div>
+          <div className="hidden lg:flex lg:items-center lg:gap-3">
+            <AdvancedStyledDropdown
+              handleLogOut={handleLogOut}
+              loading={loading}
+              error={error}
+              setActiveLink={setActiveLink}
+            />
+            <div className="">Welcome, {userName}</div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -199,6 +194,24 @@ const UserNavbar = () => {
                     </Link>
                   </motion.div>
                 ))}
+                <motion.div variants={itemVariants} className="relative">
+                  <Link
+                    href={"/user/user-myAccount"}
+                    onClick={() => {
+                      setActiveLink("/user/user-myAccount");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={cn(
+                      "flex items-center px-4 py-3 rounded-lg transition-colors",
+                      activeLink === "/user/user-myAccount"
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-gray-600 hover:bg-primary/5"
+                    )}
+                  >
+                    <User className="h-5 w-5" />
+                    <span className="ml-3">My Account</span>
+                  </Link>
+                </motion.div>
                 <motion.div
                   variants={itemVariants}
                   className="border-t border-light-border-subtle pt-2 mt-2"

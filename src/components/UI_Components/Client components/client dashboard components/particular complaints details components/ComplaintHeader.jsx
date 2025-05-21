@@ -69,7 +69,7 @@ const ComplaintHeader = ({ complaint, userRole }) => {
             color="blue"
           />
           <SectionHeading
-            label="Complaint Against"
+            label="Submission Subject"
             title={complaint.complaintAgainst}
             icon={<User className="w-5 h-5" />}
             color="pink"

@@ -91,11 +91,11 @@ export const navLinks = [
     icon: <FiBell className="mr-2 h-5 w-5" />,
     url: "/user/user-notifications",
   },
-  {
-    name: "Settings",
-    icon: <Settings className="mr-2 h-5 w-5" />,
-    url: "/user/user-setting",
-  },
+  // {
+  //   name: "Settings",
+  //   icon: <Settings className="mr-2 h-5 w-5" />,
+  //   url: "/user/user-setting",
+  // },
 ];
 
 export const STEPS = [
@@ -130,14 +130,14 @@ export const main_Navbar_Values = [
   },
   {
     id: 3,
-    title: "File Complaint",
+    title: "File a Complaint",
     url: "#complaint",
   },
-  {
-    id: 4,
-    title: "Client Portals",
-    url: "#portals",
-  },
+  // {
+  //   id: 4,
+  //   title: "Client Portals",
+  //   url: "#portals",
+  // },
   {
     id: 5,
     title: "Contact",

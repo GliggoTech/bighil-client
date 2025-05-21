@@ -3,19 +3,18 @@ import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 import { Suspense } from "react";
 
-export default async function Client_Setting_Page() {
+export default async function Bighil_Setting_Page() {
   const endPoint = "/api/account/my-account";
   const data = await fetchServerSideData(`${endPoint}`, {
     method: "GET",
     cache: "no-cache",
   });
-  console.log("Client Setting Page Data: ", data);
 
   return (
     <div>
-      <MyAccountComponent data={data} />
-      {/* <SettingsContainer data={data} />
-      <ContactComponent /> */}
+      <Suspense>
+        <MyAccountComponent data={data} />
+      </Suspense>
     </div>
   );
 }

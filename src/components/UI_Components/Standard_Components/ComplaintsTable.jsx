@@ -181,7 +181,7 @@ const ComplaintsTable = ({
                   </TableHead>
                 ) : (
                   <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase ">
-                    Complaint Against
+                    Submission Subject
                   </TableHead>
                 )}
 

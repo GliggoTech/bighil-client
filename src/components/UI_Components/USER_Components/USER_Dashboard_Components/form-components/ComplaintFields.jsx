@@ -23,10 +23,12 @@ export function ComplaintFields({ form }) {
         name="complaintAgainst"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-text_color">Complaint Against</FormLabel>
+            <FormLabel className="text-text_color">
+              Submission Subject
+            </FormLabel>
             <Input
               {...field}
-              placeholder="Enter complaint title..."
+              placeholder="Enter complaint subject ..."
               className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none"
               style={noFocusStyle}
             />

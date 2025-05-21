@@ -1,5 +1,6 @@
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/context/theme-provider";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
@@ -15,9 +16,16 @@ export const metadata = {
 
 export default function User_Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={poppins.variable}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
 
         <Toaster position="top-right" richColors />
       </body>
