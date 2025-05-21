@@ -181,7 +181,7 @@ const ComplaintsTable = ({
                   </TableHead>
                 ) : (
                   <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase ">
-                    Complaint Against
+                    Submission Subject
                   </TableHead>
                 )}
 
@@ -238,9 +238,9 @@ const ComplaintsTable = ({
                         <TableCell className="hidden lg:table-cell">
                           <div
                             className="max-w-xs truncate"
-                            title={complaint.complaintAgainst}
+                            title={complaint.submissionType}
                           >
-                            {complaint.complaintAgainst}
+                            {complaint.submissionType}
                           </div>
                         </TableCell>
                       )}

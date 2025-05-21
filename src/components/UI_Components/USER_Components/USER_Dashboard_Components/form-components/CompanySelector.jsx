@@ -31,18 +31,22 @@ export function CompanySelector({
   searchQuery,
   setSearchQuery,
   fetchCompanies,
+  showLable=true,
+  formFieldname="companyName",
 }) {
   const [openCompany, setOpenCompany] = useState(false);
 
   return (
     <FormField
       control={form.control}
-      name="companyName"
+      name={formFieldname}
       render={({ field }) => (
         <FormItem className="space-y-2 sm:space-y-3">
-          <FormLabel className="text-sm font-medium text-text_color hover:text-white">
-            Select Company
-          </FormLabel>
+          {showLable && (
+            <FormLabel className="text-sm font-medium text-text_color hover:text-white">
+              Select Company
+            </FormLabel>
+          )}
           <Popover open={openCompany} onOpenChange={setOpenCompany}>
             <PopoverTrigger asChild className="w-full">
               <Button

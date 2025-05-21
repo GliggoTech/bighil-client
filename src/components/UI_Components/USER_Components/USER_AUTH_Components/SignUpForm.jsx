@@ -62,7 +62,8 @@ const SignupSigninForm = ({ mode = "signup" }) => {
 
   // State management
   const router = useRouter();
-  const { setCurrentUserId, setCurrentUserRole } = useNotificationStore();
+  const { setCurrentUserId, setCurrentUserRole, setCurrentUserName } =
+    useNotificationStore();
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
@@ -74,20 +75,20 @@ const SignupSigninForm = ({ mode = "signup" }) => {
       setIsLoading(true);
       setFormError(null);
       setFormSuccess(null);
-       useNotificationStore.setState({
-      userId: null,
-      userRole: null,
-      notificationCount: 0,
-      notifications: [],
-      lastSync: null
-    });
+      useNotificationStore.setState({
+        userId: null,
+        userRole: null,
+        notificationCount: 0,
+        notifications: [],
+        lastSync: null,
+      });
 
       // Select the correct server action based on mode
       const authAction = mode === "signup" ? userSignup : userLogin;
 
       // Call the authentication action
       const res = await authAction(values);
-
+      console.log("Response from server:", res);
       if (res && res.success) {
         setFormSuccess(
           mode === "signup"
@@ -98,6 +99,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
         // Store user data in state
         setCurrentUserId(res.data._id);
         setCurrentUserRole(res.data.role);
+        setCurrentUserName(res.data.name);
 
         // Reset form
         form.reset();
@@ -234,7 +236,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         {mode === "signin" && (
                           <Link
                             href="/user/forgot-password"
-                            className="text-sm text-primary hover:text-primary/80 transition-colors"
+                            className="text-sm text-primary hover:text-primary/80 transition-colors hover:underline hover:scale-105"
                           >
                             Forgot Password?
                           </Link>
@@ -335,7 +337,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                 {/* Toggle between signup and signin */}
                 <div className="text-center text-text_color">
                   {mode === "signup"
-                    ? "Already have an account?"
+                    ? "Existing User?"
                     : "Don't have an account?"}{" "}
                   <Link
                     href={
@@ -345,7 +347,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                     }
                     className="font-medium text-primary hover:text-primary transition-colors hover:underline"
                   >
-                    {mode === "signup" ? "Sign in" : "Sign up"}
+                    {mode === "signup" ? " Log in here" : "Sign up"}
                   </Link>
                 </div>
 

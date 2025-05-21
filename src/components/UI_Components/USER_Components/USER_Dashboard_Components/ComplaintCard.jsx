@@ -3,7 +3,7 @@ import { FileText, Hash, Building, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import StatusBadge from "../../Standard_Components/StatusBadge";
 import { formatDate } from "@/lib/formatDateFun";
-
+import { FcDepartment } from "react-icons/fc";
 const ComplaintCard = ({ complaint }) => {
   return (
     <div className="group relative p-0 bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border-0 overflow-hidden">
@@ -27,7 +27,7 @@ const ComplaintCard = ({ complaint }) => {
             </div>
             <div className="flex-1">
               <div className="text-xs text-gray-600 dark:text-gray-400">
-                Company
+                Company Name
               </div>
               <div className="text-lg font-semibold text-text_color dark:text-white">
                 {complaint.companyName}
@@ -55,10 +55,23 @@ const ComplaintCard = ({ complaint }) => {
             </div>
             <div className="flex-1">
               <div className="text-xs text-gray-600 dark:text-gray-400">
-                Against
+                Submission Type
               </div>
               <div className="text-gray-700 dark:text-gray-300 font-medium">
-                {complaint.complaintAgainst}
+                {complaint.submissionType}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-cyan/10 rounded-lg">
+              <FcDepartment className="w-5 h-5 text-cyan" />
+            </div>
+            <div className="flex-1">
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                Department
+              </div>
+              <div className="text-gray-700 dark:text-gray-300 font-medium">
+                {complaint.department}
               </div>
             </div>
           </div>

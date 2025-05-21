@@ -27,12 +27,12 @@ export function TagSelector({ form }) {
       name="tags"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-text_color">Complaint Tags</FormLabel>
+          <FormLabel className="text-text_color"> Tags</FormLabel>
           <div className="flex flex-wrap gap-2 sm:gap-3 relative">
             {field.value?.map((tag) => (
               <Badge
                 key={tag}
-                className="bg-primary/20 hover:bg-primary/30 text-primary text-text_color font-normal text-xs sm:text-sm py-1 px-2"
+                className="bg-primary/20 hover:bg-primary/30  text-text_color font-normal text-xs sm:text-sm py-1 px-2"
               >
                 {priorityMapping.find((t) => t.name === tag)?.name || tag}
                 <button
