@@ -165,7 +165,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
   }, [searchParams, router, userRole, token]);
 
   return (
-    <div className=" bg-primary/10 rounded-none transition-colors duration-300  flex flex-col">
+    <div className=" min-h-screen bg-primary/10 rounded-none transition-colors duration-300  flex flex-col">
       {/* Socket Connection Status */}
       {!socketConnected && (
         <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-4 mb-4">

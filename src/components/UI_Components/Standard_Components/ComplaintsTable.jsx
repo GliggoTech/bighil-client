@@ -238,9 +238,9 @@ const ComplaintsTable = ({
                         <TableCell className="hidden lg:table-cell">
                           <div
                             className="max-w-xs truncate"
-                            title={complaint.complaintAgainst}
+                            title={complaint.submissionType}
                           >
-                            {complaint.complaintAgainst}
+                            {complaint.submissionType}
                           </div>
                         </TableCell>
                       )}

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SectionHeading = ({ icon, label, title, color }) => {
+const SectionHeading = ({ icon, label, title, subTitle, color }) => {
   const iconBgClass = `bg-${color}/30`;
   const iconTextClass = `text-${color}`;
 
@@ -16,8 +16,16 @@ const SectionHeading = ({ icon, label, title, color }) => {
           {label}
         </div>
         <h2 className="text-lg font-light text-text_color dark:text-text-light mt-1">
-          {title}
+          {title}{" "}
+          <span className="text-xs text-text_color dark:text-text-light">
+            {subTitle && `(${subTitle})`}
+          </span>
         </h2>
+        {/* {subTitle && (
+          <h2 className="text-sm font-light text-text_color dark:text-text-light mt-1">
+            {subTitle}
+          </h2>
+        )} */}
       </div>
     </div>
   );

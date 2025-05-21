@@ -16,14 +16,17 @@ import { TagSelector } from "./form-components/TagSelector";
 import { FileUploader } from "./form-components/FileUploader";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { toast } from "@/hooks/use-toast";
+import ComplaintTypeSelector from "./form-components/ComplaintTypeSelector";
 
 export function ComplaintForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
-      complaintAgainst: "",
+      submissionType: "",
       complaintMessage: "",
+      department: "",
+      complaintType: undefined,
       tags: [],
       files: [],
     },
@@ -86,12 +89,15 @@ export function ComplaintForm() {
   };
 
   const onSubmit = async (values) => {
+    console.log("Form Values: ", values);
     const formData = new FormData();
 
     formData.append("companyName", values.companyName);
-    formData.append("complaintAgainst", values.complaintAgainst);
+    formData.append("submissionType", values.submissionType);
     formData.append("complaintMessage", values.complaintMessage);
     formData.append("tags", values.tags);
+    formData.append("department", values.department);
+    formData.append("complaintType", values.complaintType);
 
     values.files?.forEach((file) => {
       formData.append("files", file, file.name.replace(/[^a-z0-9_.-]/gi, "_"));
@@ -107,14 +113,25 @@ export function ComplaintForm() {
     );
 
     if (res.success) {
-      
       toast({
         title: "Complaint Submitted",
-        variant:"success",
+        variant: "success",
         description: "Your complaint has been submitted successfully.",
       });
-      form.reset();
+
+      // Clear files first if needed
       setLocalFiles([]);
+
+      // Reset the form with desired values
+      form.reset({
+        companyName: "",
+        submissionType: "",
+        complaintMessage: "",
+        tags: [],
+        department: "",
+        complaintType: undefined,
+        files: [],
+      });
     }
   };
 
@@ -153,6 +170,7 @@ export function ComplaintForm() {
             localFiles={localFiles}
             removeFile={removeFile}
           />
+          <ComplaintTypeSelector form={form} />
 
           <ConfirmationDialog
             open={showConfirmation}
@@ -160,6 +178,7 @@ export function ComplaintForm() {
             onConfirm={handleConfirmationSubmit}
             loading={loading}
           />
+          <FormMessage className="text-red-500" />
 
           <Button
             type="button"

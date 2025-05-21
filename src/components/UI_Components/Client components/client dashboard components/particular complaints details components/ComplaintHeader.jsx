@@ -3,6 +3,7 @@ import { getPriorityBadge } from "@/utils/complaintBadges";
 import { ArrowLeft, Building, Calendar, Hash, User } from "lucide-react";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
+import { FcDepartment } from "react-icons/fc";
 
 const ComplaintHeader = ({ complaint, userRole }) => {
   const priorityBadge = getPriorityBadge(complaint.priority);
@@ -23,7 +24,7 @@ const ComplaintHeader = ({ complaint, userRole }) => {
 
   return (
     <div
-      className=" overflow-hidden  dark:bg-surface-dark -2xl p-3 
+      className=" overflow-hidden   dark:bg-surface-dark -2xl p-3 
                      dark:border-border-dark
                     transition-all duration-300 ease-in-out group"
     >
@@ -63,23 +64,55 @@ const ComplaintHeader = ({ complaint, userRole }) => {
 
         <div className="mt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
           <SectionHeading
+            label="Complaint ID"
+            title={complaint.complaintId}
+            icon={<Hash className="w-5 h-5" />}
+            color="green"
+          />
+          <SectionHeading
             label="Company Name"
             title={complaint.companyName}
             icon={<Building className="w-5 h-5" />}
             color="blue"
           />
           <SectionHeading
+            label="Department"
+            title={complaint.department}
+            icon={<FcDepartment className="w-5 h-5" />}
+            color="purple"
+          />
+          <SectionHeading
             label="Submission Subject"
-            title={complaint.complaintAgainst}
+            title={complaint.submissionType}
             icon={<User className="w-5 h-5" />}
             color="pink"
           />
-          <SectionHeading
-            label="Complaint ID"
-            title={complaint.complaintId}
-            icon={<Hash className="w-5 h-5" />}
-            color="green"
-          />
+          {(userRole === "ADMIN" ||
+            userRole === "SUPER ADMIN" ||
+            userRole === "SUB ADMIN" ||
+            userRole === "BIGHIL") &&
+            complaint.complaintType === "Non-Anonymous" && (
+              <SectionHeading
+                label="Complaint Type"
+                title={complaint.complaintType}
+                icon={<FcDepartment className="w-5 h-5" />}
+                color="red"
+              />
+            )}
+          {(userRole === "ADMIN" ||
+            userRole === "SUPER ADMIN" ||
+            userRole === "SUB ADMIN" ||
+            userRole === "BIGHIL") &&
+            complaint.complaintType === "Non-Anonymous" && (
+              <SectionHeading
+                label="User Details"
+                title={complaint.complaintUser}
+                subTitle={complaint.complaintUserEmail}
+                icon={<User className="w-5 h-5" />}
+                color="yellow"
+              />
+            )}
+
           <SectionHeading
             label="Complaint Filled On"
             title={new Date(complaint.createdAt).toLocaleDateString("en-US", {

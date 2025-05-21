@@ -6,7 +6,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { officeDepartments, submissionTypes } from "@/lib/complaintSchema";
 
 export function ComplaintFields({ form }) {
   // Style to completely remove focus styling
@@ -20,23 +28,56 @@ export function ComplaintFields({ form }) {
       {/* Complaint Title */}
       <FormField
         control={form.control}
-        name="complaintAgainst"
+        name="submissionType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-text_color">
-              Submission Subject
-            </FormLabel>
-            <Input
-              {...field}
-              placeholder="Enter complaint subject ..."
-              className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none"
-              style={noFocusStyle}
-            />
+            <FormLabel className="text-text_color">Submission Type</FormLabel>
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
+                <SelectValue placeholder="Select a submission type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-none shadow-lg">
+                {submissionTypes.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    value={item.value}
+                    className="hover:bg-primary/10"
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FormMessage className="text-xs text-red" />
           </FormItem>
         )}
       />
-
+      <FormField
+        control={form.control}
+        name="department"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-text_color">Department</FormLabel>
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
+                <SelectValue placeholder="Select a Department" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-none shadow-lg">
+                {officeDepartments.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    value={item.value}
+                    className="hover:bg-primary/10"
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FormMessage className="text-xs text-red" />
+          </FormItem>
+        )}
+      />
       {/* Complaint Details */}
       <FormField
         control={form.control}

@@ -50,7 +50,7 @@ const FormSchema = z.object({
   defaultCompanyName: z.string().min(1, {
     message: "Please select a default company.",
   }),
-  complaintSubmissionType: z.enum(["Anonymous", "Non-Anonymous"], {
+  complaintsubmissionType: z.enum(["Anonymous", "Non-Anonymous"], {
     required_error: "Please select a complaint submission type.",
   }),
 
@@ -76,7 +76,7 @@ const SettingComponent = ({ initialData }) => {
     defaultValues: {
       theme: initialData?.theme || "light",
       defaultCompanyName: initialData?.defaultCompany || "",
-      complaintSubmissionType: initialData?.defaultComplaintType || "Anonymous",
+      complaintsubmissionType: initialData?.defaultComplaintType || "Anonymous",
       notificationHidden: initialData?.notificationHidden || false,
     },
   });
@@ -153,7 +153,7 @@ const SettingComponent = ({ initialData }) => {
       const settingsToSave = {
         theme: formData.theme,
         defaultCompany: defaultCompanyIdToSave, // Use the found ID
-        defaultComplaintType: formData.complaintSubmissionType,
+        defaultComplaintType: formData.complaintsubmissionType,
         notificationHidden: formData.notificationHidden, // Send the boolean value
       };
       console.log("Saving settings payload:", settingsToSave);
@@ -176,7 +176,7 @@ const SettingComponent = ({ initialData }) => {
         useNotificationStore.setState({
           setCurrentUserDefaultCompany: formData.defaultCompanyName,
           setShowNotifications: formData.notificationHidden,
-          setDefaultComplaintType: formData.complaintSubmissionType,
+          setDefaultComplaintType: formData.complaintsubmissionType,
           setCurrentTheme: formData.theme,
         });
       } else {
@@ -271,7 +271,7 @@ const SettingComponent = ({ initialData }) => {
 
                 <FormField
                   control={form.control}
-                  name="complaintSubmissionType"
+                  name="complaintsubmissionType"
                   render={({ field }) => (
                     <FormItem className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <FormLabel className="text-sm font-medium text-text_color dark:text-gray-300 flex-shrink-0 w-40">
