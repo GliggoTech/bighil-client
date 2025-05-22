@@ -6,7 +6,7 @@ import { createRenderActiveShape } from "@/utils/createRenderActiveShape";
 import { useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
-export function MaximumComplaintsAgainst({ data }) {
+export function MaximumComplaintsDepartment({ data }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const coloredData = data.map((item, index) => ({
     ...item,
