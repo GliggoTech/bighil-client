@@ -33,7 +33,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useNotificationStore from "@/store/notificationStore";
 import Link from "next/link";
-import { clientLogin } from "@/app/actions/client.actions";
+import { clientLogin, twoFactorVerification } from "@/app/actions/client.actions";
+import VerifyTwoFACode from "../../Standard_Components/VerifytwoFACode";
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email format"),
@@ -64,6 +65,7 @@ export default function LoginForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showCredentials, setShowCredentials] = useState(false);
+  const [showTwoFaDialog, setShowTwoFaDialog] = useState(false);
 
   const onSubmit = async (data) => {
     try {
@@ -71,6 +73,10 @@ export default function LoginForm() {
       setErrorMessage("");
 
       const res = await clientLogin(data);
+      if (res.requiresTwoFactor) {
+        setShowTwoFaDialog(true);
+        return;
+      }
 
       if (res.success) {
         setIsSuccess(true);
@@ -303,6 +309,20 @@ export default function LoginForm() {
                     : "View demo credentials"}
                 </span>
               </button>
+              {showTwoFaDialog && (
+                <VerifyTwoFACode
+                  open={showTwoFaDialog}
+                  onClose={(success) => {
+                    setShowTwoFaDialog(false);
+                    if (success) {
+                      // router.push happens inside component now
+                    }
+                  }}
+                  redirectOnSuccess={true}
+                  verifyFunction={twoFactorVerification}
+                  email={form.getValues("email")}
+                />
+              )}
 
               {showCredentials && (
                 <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 overflow-hidden animate-fadeIn">

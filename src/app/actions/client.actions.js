@@ -14,7 +14,8 @@ export async function clientLogin(loginData) {
       credentials: "include",
     });
 
-    const { success, user, message, token } = await res.json();
+    const { success, user, message, token, requiresTwoFactor } =
+      await res.json();
 
     if (success && token) {
       const cookieStore = await cookies();
@@ -29,7 +30,7 @@ export async function clientLogin(loginData) {
       });
     }
 
-    return { success, user, message }; // plain object only
+    return { success, user, message, requiresTwoFactor }; // plain object only
   } catch (error) {
     console.error(error);
     return { success: false, message: "Login error." };
@@ -48,5 +49,41 @@ export async function clientLogout() {
   } catch (error) {
     console.error("Signout Error:", error);
     return { success: false, message: "Failed to sign out." };
+  }
+}
+
+export async function twoFactorVerification(verificationData) {
+  console.log("Verification Data:", verificationData);
+  try {
+    const url = getBackendUrl();
+    const res = await fetch(
+      `${url}/api/client-setting/login-2fa-verification`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(verificationData),
+        credentials: "include",
+      }
+    );
+    const { success, user, message, token } = await res.json();
+
+    if (success && token) {
+      const cookieStore = await cookies();
+
+      cookieStore.set("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NEXT_PUBLIC_NODE_DEV === "production",
+        sameSite:
+          process.env.NEXT_PUBLIC_NODE_DEV === "production" ? "none" : "lax",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60,
+      });
+    }
+    return { success, user, message }; // plain object only
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Verification error." };
   }
 }
