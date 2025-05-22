@@ -79,7 +79,7 @@ export default function AdminDashboardLayout({
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
                   <h2 className="text-xl font-medium text-text_color dark:text-emerald-200">
-                    Top 5 Individuals with Most Complaints
+                    Top 5 Departments with Most Complaints
                   </h2>
                 </div>
                 <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />

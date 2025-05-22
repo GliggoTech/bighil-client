@@ -8,7 +8,13 @@ import React, {
   useRef,
 } from "react";
 
-import { Search, HashIcon, FilterIcon, Calendar1 } from "lucide-react";
+import {
+  Search,
+  HashIcon,
+  FilterIcon,
+  Calendar1,
+  HomeIcon,
+} from "lucide-react";
 import { debounce } from "lodash";
 import ComplaintsTable from "./ComplaintsTable";
 import useFetch from "@/custom hooks/useFetch";
@@ -30,6 +36,7 @@ import DateTypeSelector from "../Client components/client dashboard components/a
 import CalendarDateFilter from "./CalendarDateFilter";
 import { isValid, parseISO } from "date-fns";
 import { format } from "date-fns";
+import DepartmentFilter from "./DepartmentFilter";
 
 const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
@@ -41,6 +48,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     month: "",
     year: "",
   });
+  const [department, setDepartment] = useState("");
   const [clientName, setClientName] = useState("");
   const searchParams = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
@@ -56,6 +64,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     () => ({
       complaintNumber,
       status,
+      department,
       dateFilter: {
         ...dateFilter,
         // Recalculate validity based on current dateFilter state
@@ -90,7 +99,7 @@ const ComplaintFilter = ({ bighil = false }) => {
       clientName,
       page, // Include page in filterParams
     }),
-    [complaintNumber, status, dateFilter, clientName, page, bighil] // Dependencies for memoization
+    [complaintNumber, status, dateFilter, clientName, page, bighil, department] // Dependencies for memoization
   );
 
   // Active filters calculation
@@ -98,6 +107,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     const filters = [];
     if (complaintNumber) filters.push("complaintNumber");
     if (status) filters.push("Status");
+    if (department) filters.push("Department");
     // Check validity from filterParams directly
     if (filterParams.dateFilter.valid) {
       let dateLabel = "Date";
@@ -141,7 +151,6 @@ const ComplaintFilter = ({ bighil = false }) => {
   const debouncedSearch = useCallback(
     // Use filterParams from the latest render within the debounce closure
     debounce(async (params) => {
-   
       if (!token) return;
       try {
         const queryParams = new URLSearchParams();
@@ -155,6 +164,9 @@ const ComplaintFilter = ({ bighil = false }) => {
         if (params.clientName) {
           queryParams.append("companyName", params.clientName);
         }
+        if (params.department) {
+          queryParams.append("department", params.department);
+        }
         // Date filter handling - append parameters only if the selection is valid for the current type
         const {
           type: dateType,
@@ -165,7 +177,6 @@ const ComplaintFilter = ({ bighil = false }) => {
         } = params.dateFilter;
         if (isDateValid) {
           if (dateYear && dateYear !== "anyYear") {
-       
             // Year is required for all valid types
             queryParams.append("year", dateYear);
           }
@@ -177,28 +188,26 @@ const ComplaintFilter = ({ bighil = false }) => {
             dateMonth &&
             dateMonth !== "anyMonth"
           ) {
-           
             queryParams.append("day", dateDay);
             queryParams.append("month", dateMonth); // Month is also needed for day filter
           }
-          // Append month only if the type is 'month' and it is selected
+
           if (dateType === "month" && dateMonth && dateMonth !== "anyMonth") {
-         
             queryParams.append("month", dateMonth);
           }
-          // If type is year, only year is appended (handled above)
         }
         // Always append the current page from state
         queryParams.append("page", params.page.toString());
         // Build URL
         const url = getBackendUrl();
-        
+        console.log("URL:", queryParams.toString());
+
         const finalUrl = bighil
           ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`
           : `${url}/api/client/get-filtered-complaints?${queryParams.toString()}`;
         // Fetch data
         const res = await fetchData(finalUrl, "GET", null, token);
-       
+
         if (res?.data) {
           setComplaints(res.data.complaints);
           // Use totalCount from response if available, otherwise fallback
@@ -209,13 +218,11 @@ const ComplaintFilter = ({ bighil = false }) => {
           );
           setResponse(res.data); // Store the full response for pagination info
         } else {
-          // Handle case where res or res.data is null/undefined
           setComplaints([]);
           setTotalComplaints(0);
           setResponse(null);
         }
-        // Update URL search params based on the *actual parameters sent to the API*
-        // This ensures the URL reflects the state that produced the current results.
+
         window.history.replaceState(
           {},
           "",
@@ -228,63 +235,43 @@ const ComplaintFilter = ({ bighil = false }) => {
         setTotalComplaints(0);
         setResponse(null);
       }
-    }, 300), // Debounce delay (300ms after last filter change)
-    [token, bighil] // Dependencies for useCallback - only re-create if token or bighil changes
-    // DO NOT include filterParams here, as that would recreate the debounced function
-    // every time filters change, defeating the debounce. The latest filterParams
-    // will be captured when the debounced function actually runs.
+    }, 300),
+    [token, bighil]
   );
-  // Search effect with initial load handling
-  // Effect to trigger search when filterParams or page changes
+
   useEffect(() => {
     if (!token) return;
-    // Determine if any filter is active (excluding page)
+
     const isAnyFilterActiveExcludingPage =
       filterParams.complaintNumber !== "" ||
       (filterParams.status !== "" && filterParams.status !== "all") ||
       filterParams.clientName !== "" ||
+      filterParams.department !== "" ||
       filterParams.dateFilter.valid;
-    // If filters are active, and the current page is greater than 1, reset the page state to 1.
-    // This ensures that applying a filter always takes the user back to the first page of the filtered results.
+
     if (isAnyFilterActiveExcludingPage && page !== 1) {
-      // Set the page state to 1. This will cause `filterParams` to update,
-      // which in turn will re-trigger this useEffect. The next run of the
-      // effect will then proceed to call `debouncedSearch` with `page` set to 1.
       setPage(1);
-      // IMPORTANT: Return early in this effect run. We don't want to trigger
-      // the search with the old page number while a filter is active.
+
       return;
     }
-    // If no filters are active OR filters are active and page is already 1,
-    // or if it's the very initial load (before any user interaction changes state from defaults),
-    // trigger the search with the current filterParams (which includes the current page state).
-    // The debouncedSearch function will handle the delay and use the latest filterParams
-    // available when it eventually executes.
-    // Debounced search is triggered whenever filterParams changes (which includes page and all filters)
-    // The `debouncedSearch` function itself captures the *latest* `filterParams` from the closure
-    // when it finally runs after the debounce period.
+
     debouncedSearch(filterParams);
-    // Cleanup the debounce on component unmount or effect re-run
+
     return () => {
       debouncedSearch.cancel();
     };
-    // Dependencies for useEffect: filterParams. When any value in filterParams changes,
-    // this effect runs. The logic inside determines if a page reset is needed first,
-    // otherwise it calls the debounced search.
   }, [filterParams, debouncedSearch, token]);
 
   // Clear filters
   const handleClearFilters = useCallback(() => {
     setComplaintNumber("");
     setStatus("");
-    // Reset date filter to initial state (type 'day' with empty values)
+    setDepartment("");
+
     setDateFilter({ type: "day", day: "", month: "", year: "" });
     setClientName("");
-    // Reset page to 1 when filters are cleared
+
     setPage(1);
-    // Clearing filters will update complaintNumber, status, dateFilter, clientName, and page states.
-    // These state changes will cause `filterParams` to update, which triggers the useEffect,
-    // and the debounced search will run with all filters cleared and page=1.
   }, []);
 
   const handleExport = async () => {
@@ -292,30 +279,22 @@ const ComplaintFilter = ({ bighil = false }) => {
       await handleServerExport(token, filterParams, bighil);
     } catch (error) {
       console.error("Export error:", error);
-      // Handle error state
     }
   };
-  // Handle page changes from pagination controls
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  // Handle change in date filter type (Day, Month, Year)
-  // This handler is likely used by the DateTypeSelector component
+
   const handleDateTypeChange = useCallback(
     (type) => {
-      // When the type changes, reset the date parts to empty strings.
-      // This ensures that switching from "Day" to "Year" doesn't keep old day/month values.
       setDateFilter({
-        type, // Set the new type
+        type,
         day: "",
         month: "",
         year: "",
       });
-      // Setting the type and clearing date parts updates the `dateFilter` state.
-      // This state change causes `filterParams` to update, triggering the useEffect.
-      // If filters were active on page > 1 before this change, the useEffect will
-      // first reset the page to 1 before triggering the search.
     },
     [setDateFilter]
   );
@@ -370,6 +349,24 @@ const ComplaintFilter = ({ bighil = false }) => {
           <StatusFilter
             value={status}
             onChange={setStatus}
+            className="bg-white/90 focus:bg-white
+              
+               transition-shadow duration-200"
+          />
+        </FilterCard>
+        <FilterCard
+          icon={<HomeIcon className="h-5 w-5 mr-2 text-text_color" />}
+          title="Department"
+          titleColor="text-text_color"
+          className="bg-gray/10 hover:bg-gray-bg-subtle/80
+             border-2 border-gray/50
+             shadow-sm hover:shadow-gray/20
+             backdrop-blur-lg transition-all
+             hover:translate-y-[-2px]"
+        >
+          <DepartmentFilter
+            value={department}
+            onChange={setDepartment}
             className="bg-white/90 focus:bg-white
               
                transition-shadow duration-200"

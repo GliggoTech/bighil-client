@@ -113,6 +113,12 @@ export default function ComplaintsChart() {
             <SelectItem value="365" className="rounded-lg">
               Last 1 year
             </SelectItem>
+            <SelectItem value="730" className="rounded-lg">
+              Last 2 year
+            </SelectItem>
+            <SelectItem value="1825" className="rounded-lg">
+              Last 5 year
+            </SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>

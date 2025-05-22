@@ -184,7 +184,9 @@ const ComplaintsTable = ({
                     Submission Subject
                   </TableHead>
                 )}
-
+                <TableHead className="hidden lg:table-cell text-text_color dark:text-text-light font-medium lg:uppercase  ">
+                  Department
+                </TableHead>
                 <TableHead className="text-text_color dark:text-text-light font-medium lg:uppercase  ">
                   Status
                 </TableHead>
@@ -244,6 +246,11 @@ const ComplaintsTable = ({
                           </div>
                         </TableCell>
                       )}
+                      <TableCell className="hidden lg:table-cell">
+                        <span className="text-primary">
+                          {complaint.department}
+                        </span>
+                      </TableCell>
 
                       <TableCell>
                         <div
