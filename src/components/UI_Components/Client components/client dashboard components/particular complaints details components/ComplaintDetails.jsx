@@ -31,7 +31,7 @@ const SectionCard = ({ icon: Icon, title, children }) => (
 );
 
 const ComplaintDetails = ({ complaint }) => {
-  console.log(complaint.tags);
+  
   return (
     <SectionCard icon={FiInfo} title="Case Details">
       <div className="space-y-3">

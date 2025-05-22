@@ -40,6 +40,11 @@ export default function CompanyRegistrationForm({
     defaultValues: selectedClient || {
       companyName: "",
       contactNumber: "+",
+      companyEmail: "",
+      companyAddress: "",
+   
+      companySize: 0,
+      companyType: "",
       admins: [{ name: "", email: "", role: "SUPER ADMIN" }],
     },
     mode: "onChange",

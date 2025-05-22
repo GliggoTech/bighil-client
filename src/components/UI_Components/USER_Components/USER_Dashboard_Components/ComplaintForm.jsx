@@ -89,7 +89,7 @@ export function ComplaintForm() {
   };
 
   const onSubmit = async (values) => {
-    console.log("Form Values: ", values);
+ 
     const formData = new FormData();
 
     formData.append("companyName", values.companyName);

@@ -7,7 +7,7 @@ export default async function UsersSettingsPage() {
     method: "GET",
     cache: "no-cache",
   });
-  console.log("Client Setting Page Data: ", data);
+ 
 
   return (
     <div>

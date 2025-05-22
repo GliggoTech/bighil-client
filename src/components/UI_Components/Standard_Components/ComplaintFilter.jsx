@@ -200,7 +200,7 @@ const ComplaintFilter = ({ bighil = false }) => {
         queryParams.append("page", params.page.toString());
         // Build URL
         const url = getBackendUrl();
-        console.log("URL:", queryParams.toString());
+      
 
         const finalUrl = bighil
           ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`

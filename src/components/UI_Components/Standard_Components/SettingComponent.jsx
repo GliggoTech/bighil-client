@@ -42,150 +42,53 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import useNotificationStore from "@/store/notificationStore";
+import VerifyTwoFACode from "./VerifytwoFACode";
 
 const FormSchema = z.object({
-  theme: z.enum(["light", "dark"], {
-    required_error: "Please select a theme.",
-  }),
-  defaultCompanyName: z.string().min(1, {
-    message: "Please select a default company.",
-  }),
-  complaintsubmissionType: z.enum(["Anonymous", "Non-Anonymous"], {
-    required_error: "Please select a complaint submission type.",
-  }),
-
-  notificationHidden: z.boolean().default(false),
+  // theme: z.enum(["light", "dark"], {
+  //   required_error: "Please select a theme.",
+  // }),
+  isTwoFactorEnabled: z.boolean().optional(), // Assuming this is a boolean field
 });
 
 const SettingComponent = ({ initialData }) => {
-  // Changed prop name to initialData for clarity
-
   const { token } = useAccessToken();
-  const { loading: fetchLoading, fetchData } = useFetch(); // Renamed loading to fetchLoading to avoid conflict
+  const { loading: isSaving, fetchData } = useFetch();
 
-  // --- State for Data and UI State ---
-  const [companies, setCompanies] = useState([]); // List of companies from API
-  const [isSaving, setIsSaving] = useState(false); // Saving state for save button
-  const [loadingCompanies, setLoadingCompanies] = useState(true); // Loading state for companies fetch
-  const [searchQuery, setSearchQuery] = useState(""); // Search query for companies
+  const [showPopup, setShowPopup] = useState(false);
 
-  // --- React Hook Form Initialization ---
-  // Update your useForm initialization to include default values
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      theme: initialData?.theme || "light",
-      defaultCompanyName: initialData?.defaultCompany || "",
-      complaintsubmissionType: initialData?.defaultComplaintType || "Anonymous",
-      notificationHidden: initialData?.notificationHidden || false,
+      // theme: initialData?.theme || "light",
+      isTwoFactorEnabled: initialData?.isTwoFactorEnabled || false,
     },
   });
 
-  // --- Fetch Companies Function ---
-  const fetchCompanies = useCallback(
-    async (query = "") => {
-      if (!token) return; // Ensure token is available before fetching
-      setLoadingCompanies(true);
-      try {
-        const url = getBackendUrl();
-        const res = await fetchData(
-          `${url}/api/companies?search=${encodeURIComponent(query)}`,
-          "GET",
-          {},
-          token,
-          false // assuming fetchData has an option to prevent auto-toast/error handling
-        );
-
-        if (res.success) {
-          // Assuming res.data is an array of company objects { _id, companyName, ... }
-          setCompanies(res.data);
-        } else {
-          // Handle API specific errors if res.success is false
-          console.error("API error fetching companies:", res.error);
-          toast({
-            title: "Error fetching companies",
-            description:
-              res.error?.message || "Failed to load companies list from API.",
-            variant: "destructive",
-          });
-          setCompanies([]); // Clear companies on error
-        }
-      } catch (err) {
-        console.error("Fetch error fetching companies:", err);
-        toast({
-          title: "Fetch Error",
-          description: "An error occurred while loading companies.",
-          variant: "destructive",
-        });
-        setCompanies([]); // Ensure companies array is empty on error
-      } finally {
-        setLoadingCompanies(false);
-      }
-    },
-    [fetchData, token, toast] // Added toast to dependencies
-  );
-
-  // --- Effect for Company Search Debouncing ---
-  useEffect(() => {
-    if (!token) return; // Only search after initial load and token exists
-
-    const debounceTimer = setTimeout(() => {
-      fetchCompanies(searchQuery);
-    }, 300); // 300ms debounce delay
-
-    return () => clearTimeout(debounceTimer); // Cleanup function
-  }, [searchQuery, token, fetchCompanies]);
-
-  // --- Save Settings Handler (triggered by form onSubmit) ---
   const handleSaveSettings = async (formData) => {
-    console.log("Form data to save:", formData);
-    setIsSaving(true);
-    let saveError = null; // Use a local variable for error during save
+    let saveError = null;
     try {
-      // Find the company ID based on the selected company name from the form
-      const companyToSave = companies.find(
-        (c) => c.companyName === formData.defaultCompanyName
-      );
-      const defaultCompanyIdToSave = companyToSave
-        ? companyToSave.companyName
-        : null; // Get the ID or null
-
       const settingsToSave = {
-        theme: formData.theme,
-        defaultCompany: defaultCompanyIdToSave, // Use the found ID
-        defaultComplaintType: formData.complaintsubmissionType,
-        notificationHidden: formData.notificationHidden, // Send the boolean value
+        isTwoFactorEnabled: formData.isTwoFactorEnabled,
       };
-      console.log("Saving settings payload:", settingsToSave);
-
       const url = getBackendUrl();
       const response = await fetchData(
-        `${url}/api/user-setting/update-user-setting`,
+        `${url}/api/client-setting/update-client-setting`,
         "PATCH",
         settingsToSave,
         token,
         false
-      ); // Pass payload as third arg
+      );
 
       if (response.success) {
-        toast({
-          title: "Success!",
-          description: "Your settings have been saved.",
-          variant: "success",
-        });
-        useNotificationStore.setState({
-          setCurrentUserDefaultCompany: formData.defaultCompanyName,
-          setShowNotifications: formData.notificationHidden,
-          setDefaultComplaintType: formData.complaintsubmissionType,
-          setCurrentTheme: formData.theme,
-        });
-      } else {
-        saveError = response.error?.message || "Failed to save settings."; // Set local error message
-        toast({
-          title: "Error saving settings",
-          description: saveError, // Use the local error message
-          variant: "destructive",
-        });
+        if (
+          formData.isTwoFactorEnabled &&
+          response.message === "Otp sent successfully."
+        ) {
+          setShowPopup(true);
+        } else {
+          form.setValue("isTwoFactorEnabled", formData.isTwoFactorEnabled);
+        }
       }
     } catch (err) {
       saveError = `An error occurred while saving settings: ${err.message}`; // Set local error message
@@ -194,10 +97,32 @@ const SettingComponent = ({ initialData }) => {
         description: saveError, // Use the local error message
         variant: "destructive",
       });
-    } finally {
-      setIsSaving(false);
     }
   };
+
+  // Function to handle 2FA toggle with proper async handling
+  const handleTwoFAToggle = useCallback(
+    async (value) => {
+      if (value) {
+        // Enable 2FA - this will trigger OTP popup
+        await handleSaveSettings({
+          isTwoFactorEnabled: true,
+        });
+      } else {
+        // Disable 2FA - update form state and save
+        // Use setTimeout to defer the state update outside of the render cycle
+        setTimeout(() => {
+          form.setValue("isTwoFactorEnabled", false);
+          // Use another setTimeout to ensure form state is updated before submission
+          setTimeout(() => {
+            const formData = form.getValues();
+            handleSaveSettings(formData);
+          }, 0);
+        }, 0);
+      }
+    },
+    [form, handleSaveSettings]
+  );
 
   return (
     <div className="min-h-screen bg-bighil_dashboard_bg text-text_color dark:text-gray-200 py-6 px-4 sm:px-6 lg:px-8">
@@ -223,7 +148,7 @@ const SettingComponent = ({ initialData }) => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="theme"
                   render={({ field }) => (
@@ -248,71 +173,24 @@ const SettingComponent = ({ initialData }) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-                <div className="flex justify-between">
-                  <div className="">
-                    <Label className="text-sm font-medium text-text_color dark:text-gray-300 flex-shrink-0 w-40">
-                      Default Company
-                    </Label>
-                  </div>
-
-                  <CompanySelector
-                    form={form} // Pass the form instance
-                    //   field={field} // Pass the field object from FormField render prop
-                    companies={companies}
-                    loading={loadingCompanies} // Pass loading state for companies
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    fetchCompanies={fetchCompanies} // Pass the fetch function
-                    showLable={false} // Hide label since we have a custom label above
-                    formFieldname="defaultCompanyName" // Pass the field name for the company selector
-                  />
-                </div>
+                /> */}
 
                 <FormField
                   control={form.control}
-                  name="complaintsubmissionType"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <FormLabel className="text-sm font-medium text-text_color dark:text-gray-300 flex-shrink-0 w-40">
-                        Complaint Type
-                      </FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-full sm:w-60 rounded-md bg-background dark:bg-gray-700 border-border dark:border-gray-600 text-text_color dark:text-white shadow-sm focus:ring-primary focus:border-primary text-sm">
-                            <SelectValue placeholder="Select type" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background dark:bg-gray-700 text-text_color dark:text-white border-border dark:border-gray-600">
-                            <SelectItem value="Anonymous">Anonymous</SelectItem>
-                            <SelectItem value="Non-Anonymous">
-                              Non-Anonymous
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="notificationHidden" // Correct field name from schema
+                  name="isTwoFactorEnabled"
                   render={({ field }) => (
                     <FormItem className="flex items-center justify-between space-x-2">
                       <div className="grid gap-1.5 leading-none">
                         <FormLabel className="text-sm font-medium text-text_color dark:text-gray-300">
-                          Hide Notifications
+                          Two-Factor Verification
                         </FormLabel>
                       </div>
                       <FormControl>
                         <Switch
-                          checked={field.value} // Switch uses 'checked'
-                          onCheckedChange={field.onChange} // Switch uses 'onCheckedChange'
-                          className="data-[state=checked]:bg-gray-400 bg-yellow data-[state=unchecked]:bg-gray-300"
+                          checked={field.value}
+                          onCheckedChange={handleTwoFAToggle}
+                          disabled={isSaving}
+                          className="data-[state=checked]:bg-primary bg-yellow data-[state=unchecked]:bg-gray-300"
                         />
                       </FormControl>
 
@@ -321,19 +199,23 @@ const SettingComponent = ({ initialData }) => {
                   )}
                 />
               </CardContent>
-
-              <CardFooter className="flex justify-end border-t border-border dark:border-gray-700 pt-4">
-                <Button
-                  type="submit" // Button type submit triggers form.handleSubmit
-                  disabled={isSaving || fetchLoading || loadingCompanies} // Disable button while saving or loading data
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 px-6 py-2"
-                >
-                  {isSaving ? "Saving..." : "Save Changes"}
-                </Button>
-              </CardFooter>
             </Card>
           </form>
         </Form>
+        {showPopup && (
+          <VerifyTwoFACode
+            open={showPopup}
+            onClose={(success) => {
+              setShowPopup(false);
+              if (success) {
+                // Use setTimeout to defer state update
+                setTimeout(() => {
+                  form.setValue("isTwoFactorEnabled", true);
+                }, 0);
+              }
+            }}
+          />
+        )}
       </div>
     </div>
   );

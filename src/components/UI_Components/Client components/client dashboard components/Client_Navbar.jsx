@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDropdown";
 
 const Client_Navbar = ({ isOpen }) => {
   const { userRole } = useNotificationStore();
@@ -20,13 +21,13 @@ const Client_Navbar = ({ isOpen }) => {
       setLoading(true);
       const res = await clientLogout();
       if (res.success) {
-          useNotificationStore.setState({
-      userId: null,
-      userRole: null,
-      notificationCount: 0,
-      notifications: [],
-      lastSync: null
-    });
+        useNotificationStore.setState({
+          userId: null,
+          userRole: null,
+          notificationCount: 0,
+          notifications: [],
+          lastSync: null,
+        });
         setError(null);
         setLoading(false);
         router.push("/");
@@ -68,7 +69,7 @@ const Client_Navbar = ({ isOpen }) => {
               {/* Right Section: User Info & Actions */}
               <div className="flex items-center space-x-4">
                 {/* User Role Badge - Different styles for different roles */}
-                {userRole && (
+                {/* {userRole && (
                   <div className="hidden sm:flex items-center">
                     <Card
                       className={`
@@ -99,10 +100,16 @@ const Client_Navbar = ({ isOpen }) => {
                       </span>
                     </Card>
                   </div>
-                )}
-
+                )} */}
+                {/* Mobile Menu Button */}
+                <AdvancedStyledDropdown
+                  handleLogOut={handleLogOut}
+                  loading={loading}
+                  error={error}
+                  // setActiveLink={setActiveLink}
+                />
                 {/* Logout Button */}
-                <Button
+                {/* <Button
                   onClick={handleLogOut}
                   disabled={loading}
                   variant="default"
@@ -117,7 +124,7 @@ const Client_Navbar = ({ isOpen }) => {
                   <LogOut
                     className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
                   />
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>

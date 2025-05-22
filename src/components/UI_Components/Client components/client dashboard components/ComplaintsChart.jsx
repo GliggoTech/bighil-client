@@ -48,7 +48,7 @@ export default function ComplaintsChart() {
       );
 
       if (res?.success) {
-        console.log("Complaints Timeline Data:", res?.data?.timeline);
+      
         setData(res?.data?.timeline);
       }
     }

@@ -125,9 +125,7 @@ export default function PasswordResetPage({ role }) {
         setCurrentStep("password");
       }
     } catch (err) {
-      // // For demo purposes, continue to password step
-      // setAnimateDirection("forward");
-      // setCurrentStep("password");
+  
       console.log(err);
     }
   };

@@ -50,7 +50,13 @@ export default function LoginForm() {
   });
 
   const router = useRouter();
-  const { setCurrentUserId, setCurrentUserRole } = useNotificationStore();
+  const {
+    setCurrentUserId,
+    setCurrentUserRole,
+    setCurrentTheme,
+    setCurrentUserName,
+    setCurrentUserEmail,
+  } = useNotificationStore();
 
   // State management
   const [isLoading, setIsLoading] = useState(false);
@@ -70,6 +76,9 @@ export default function LoginForm() {
         setIsSuccess(true);
         setCurrentUserId(res.user.id);
         setCurrentUserRole(res.user.role);
+        setCurrentTheme(res.user.theme);
+        setCurrentUserName(res.user.name);
+        setCurrentUserEmail(res.user.email);
 
         // Delay navigation for better UX
         setTimeout(() => {

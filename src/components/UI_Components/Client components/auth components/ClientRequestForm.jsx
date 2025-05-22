@@ -269,7 +269,7 @@ export default function ClientRequestForm() {
                 </FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/30 py-3 px-4 text-text_color">

@@ -50,6 +50,7 @@ const useFetch = () => {
       } catch (error) {
         setLoading(false);
         setError(error.message);
+        
         // toast({
         //   variant: "destructive",
         //   title: "Request failed",

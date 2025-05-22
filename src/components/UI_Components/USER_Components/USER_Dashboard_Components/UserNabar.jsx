@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import AdvancedStyledDropdown from "./AdvancedStyledDropdown";
+import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDropdown";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

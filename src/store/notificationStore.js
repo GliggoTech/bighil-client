@@ -11,18 +11,15 @@ const useNotificationStore = create(
       notifications: [], // Current page of notifications
       lastSync: null,
       userName: null,
-      userDefaultCompany: null,
-      showNotificationsPopUp: true,
+      userEmail: null,
+
       currentTheme: "light", // Default theme
 
       // Actions
       setCurrentUserId: (userId) => set({ userId }),
       setCurrentUserRole: (userRole) => set({ userRole }),
+      setCurrentUserEmail: (userEmail) => set({ userEmail }),
       setCurrentUserName: (userName) => set({ userName }),
-      setCurrentUserDefaultCompany: (userDefaultCompany) =>
-        set({ userDefaultCompany }),
-      setShowNotificationsPopUp: (show) =>
-        set({ showNotificationsPopUp: show }),
       // Update this method to accept the total unread count from API
       setNotifications: (notifications, totalUnread = null) => {
         set({ notifications });
@@ -115,8 +112,7 @@ const useNotificationStore = create(
         userRole: state.userRole,
         notificationCount: state.notificationCount,
         userName: state.userName,
-        userDefaultCompany: state.userDefaultCompany,
-        showNotificationsPopUp: state.showNotificationsPopUp,
+
         currentTheme: state.currentTheme,
 
         // Omitting notifications and lastSync from persistence

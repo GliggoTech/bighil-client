@@ -1,21 +1,16 @@
-import MyAccountComponent from "@/components/UI_Components/Standard_Components/MyAccountComponent";
+import SettingComponent from "@/components/UI_Components/Standard_Components/SettingComponent";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
-import { Suspense } from "react";
-
-export default async function Client_Setting_Page() {
-  const endPoint = "/api/account/my-account";
+export default async function ClientSettingPage() {
+  const endPoint = "/api/client-setting/get-client-setting";
   const data = await fetchServerSideData(`${endPoint}`, {
     method: "GET",
     cache: "no-cache",
   });
-  console.log("Client Setting Page Data: ", data);
-
+ 
   return (
     <div>
-      <MyAccountComponent data={data} />
-      {/* <SettingsContainer data={data} />
-      <ContactComponent /> */}
+      <SettingComponent initialData={data} />
     </div>
   );
 }

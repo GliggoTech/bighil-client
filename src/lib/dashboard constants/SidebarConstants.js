@@ -34,13 +34,13 @@ export const clientSidebarValues = [
     icon: Bell,
     description: "Check your alerts and updates",
   },
-  {
-    id: 4,
-    title: "Settings",
-    path: "/client/client-setting",
-    icon: Settings,
-    description: "Configure your preferences",
-  },
+  // {
+  //   id: 4,
+  //   title: "Settings",
+  //   path: "/client/client-myAccount",
+  //   icon: Settings,
+  //   description: "Configure your preferences",
+  // },
 ];
 export const bighilSidebarValues = [
   {
