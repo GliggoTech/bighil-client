@@ -138,8 +138,9 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
                 </AnimatePresence>
               </Link>
 
+              {/* Tooltip - Only show when sidebar is closed and not on touch devices */}
               {!isOpen && !isTouchDevice && (
-                <span className="absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                   {item.title}
                   {showNotificationBadge && (
                     <span className="ml-1 bg-red text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">

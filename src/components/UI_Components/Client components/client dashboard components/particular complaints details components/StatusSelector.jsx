@@ -99,7 +99,7 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
             <SelectValue placeholder="Select status" />
           )}
         </SelectTrigger>
-     
+
         <SelectContent className="rounded-xl bg-white border-none text-gray-800 shadow-lg">
           {/* Only show Pending if current status is Pending */}
           {status === "Pending" && (
@@ -147,9 +147,9 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
       )}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent className="max-w-sm bg-white">
-          <DialogHeader>
+          <DialogHeader className="flex flex-col space-y-3">
             <DialogTitle>Confirm Status Change</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-sm mt-10">
               You're changing status from <strong>{status}</strong> to{" "}
               <strong>{pendingStatus}</strong>. This action will be recorded in
               the timeline.

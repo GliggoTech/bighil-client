@@ -12,13 +12,14 @@ const sidebarVariants = {
   open: { width: 240 },
   closed: { width: 72 },
 };
+
 const Bighil_Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
   const isTouchDevice = useIsTouchDevice(); // Use the touch detection hook
 
   const toggleSidebar = useCallback(() => {
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [setIsOpen]);
 
   return (
     <motion.aside
@@ -86,8 +87,9 @@ const Bighil_Sidebar = ({ isOpen, setIsOpen }) => {
                 </AnimatePresence>
               </Link>
 
+              {/* Tooltip - Only show when sidebar is closed and not on touch devices */}
               {!isOpen && !isTouchDevice && (
-                <span className="absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-primary text-white text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                   {item.title}
                 </span>
               )}
