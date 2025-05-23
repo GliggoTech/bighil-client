@@ -130,7 +130,7 @@ const UserNavbar = () => {
               error={error}
               setActiveLink={setActiveLink}
             />
-            <div className="">Welcome, {userName}</div>
+        
           </div>
 
           {/* Mobile Menu Button */}

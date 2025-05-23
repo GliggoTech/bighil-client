@@ -1,5 +1,5 @@
 "use client";
-import { z } from "zod";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -30,51 +30,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MdEmail } from "react-icons/md";
-
-const formSchema = z.object({
-  companyName: z.string().min(2, "Company name is required"),
-  numberOfEmployees: z
-    .number({ invalid_type_error: "Must be a number" })
-    .positive("Must be a positive number"),
-  companyEmail: z.string().email("Invalid email address"),
-  subject: z.string().min(3, "Subject is required"),
-  message: z.string().min(10, "Message should be at least 10 characters"),
-  bestContactDate: z.date({ required_error: "Date is required" }),
-  bestContactTime: z.string().min(1, "Please select a time"),
-});
-
-const timeSlots = [
-  "06:00 AM",
-  "07:00 AM",
-  "08:00 AM",
-  "09:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "12:00 PM",
-  "01:00 PM",
-  "02:00 PM",
-  "03:00 PM",
-  "04:00 PM",
-  "05:00 PM",
-  "06:00 PM",
-  "07:00 PM",
-  "08:00 PM",
-  "09:00 PM",
-  "10:00 PM",
-  "11:00 PM",
-  "12:00 AM",
-  "01:00 AM",
-  "02:00 AM",
-  "03:00 AM",
-  "04:00 AM",
-  "05:00 AM",
-
-  "Anytime",
-];
+import { useState } from "react";
+import { clientRequestFormSchema, timeSlots } from "@/utils/clientRequestUtil";
+import useFetch from "@/custom hooks/useFetch";
+import { getBackendUrl } from "@/lib/getBackendUrl";
+import { toast } from "@/hooks/use-toast";
+import ClientRequestFormSuccessPopUp from "./ClientRequestFormSuccessPopUp";
 
 export default function ClientRequestForm() {
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(clientRequestFormSchema),
     defaultValues: {
       companyName: "",
       numberOfEmployees: 1,
@@ -85,13 +50,42 @@ export default function ClientRequestForm() {
       bestContactTime: "",
     },
   });
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const { fetchData, loading, succes, error } = useFetch();
+  const [showPopUp, setShowpopUp] = useState(false);
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log("Form Values:", values);
+    const url = getBackendUrl();
+    const res = await fetchData(
+      `${url}/api/client-request-access`,
+      "POST",
+      values,
+      null,
+      false
+    );
+    console.log(res);
+    if (res.success) {
+      toast({
+        title: "Request Submitted",
+        variant: "success",
+        description: "Your request has been submitted successfully.",
+      });
+      setShowpopUp(true);
+    } else {
+      toast({
+        title: "Request Failed",
+        variant: "destructive",
+        description: res.message,
+      });
+    }
+  };
+  const closepopUp = () => {
+    setShowpopUp(false);
   };
 
   return (
-    <div className="space-y-8 p-8 bg-default_bg rounded-2xl shadow-lg border border-dialog_inside_border_color">
+    <div className="space-y-4 p-5 bg-default_bg rounded-2xl shadow-lg border border-dialog_inside_border_color">
       <h2 className="lg:text-3xl text-xl font-bold text-text_color mb-4 border-b-2 border-primary pb-3">
         Request Access
       </h2>
@@ -154,13 +148,16 @@ export default function ClientRequestForm() {
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
+                    {/* Icon */}
+                    <MdEmail className="h-5 w-5 text-primary absolute left-3 top-1/2 -translate-y-1/2" />
+
+                    {/* Input */}
                     <Input
                       type="email"
                       placeholder="Enter company email"
                       {...field}
-                      className="rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors duration-200 py-3 px-4 pr-10 text-text_color placeholder-text_color/50"
+                      className="pl-10 pr-4 py-3 rounded-lg border-gray-300 text-text_color placeholder-text_color/50 focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors duration-200"
                     />
-                    <MdEmail className="h-5 w-5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2" />
                   </div>
                 </FormControl>
                 <FormMessage className="text-danger text-sm mt-1" />
@@ -211,7 +208,6 @@ export default function ClientRequestForm() {
             )}
           />
 
-          {/* Contact Date */}
           <FormField
             control={form.control}
             name="bestContactDate"
@@ -220,7 +216,9 @@ export default function ClientRequestForm() {
                 <FormLabel className="text-text_color font-medium">
                   Best Date to Contact <span className="text-red">*</span>
                 </FormLabel>
-                <Popover>
+                <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                  {" "}
+                  {/* Bind open state */}
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -230,25 +228,41 @@ export default function ClientRequestForm() {
                           !field.value && "text-gray-400"
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-5 w-5 text-gray-500" />
+                        <CalendarIcon className="mr-2 h-5 w-5 text-primary" />
                         {field.value
                           ? format(field.value, "PPP")
                           : "Pick a date"}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-white border border-gray-200 rounded-xl shadow-xl">
+                  <PopoverContent
+                    className=" p-0 bg-white border border-gray-200 rounded-xl shadow-xl"
+                    side="bottom"
+                    align="start"
+                    sideOffset={5}
+                  >
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setIsCalendarOpen(false);
+                      }}
                       disabled={(date) => date < new Date()}
                       initialFocus
-                      className="rounded-xl"
+                      className="rounded-xl w-fit"
                       classNames={{
                         day_selected:
                           "bg-primary text-white hover:bg-primary/90",
                         day_today: "border border-primary text-primary",
+                        nav_button:
+                          "text-gray-600 hover:text-primary inline-flex",
+                        nav: "flex items-center justify-between  py-2 block",
+                        caption: "text-sm font-medium text-center",
+                        nav_button_previous:
+                          "absolute left-4 bg-primary p-1 rounded-full text-white hover:text-white ",
+                        nav_button_next:
+                          "absolute right-4 bg-primary p-1 rounded-full text-white hover:text-white",
                       }}
                     />
                   </PopoverContent>
@@ -257,7 +271,6 @@ export default function ClientRequestForm() {
               </FormItem>
             )}
           />
-
           {/* Contact Time */}
           <FormField
             control={form.control}
@@ -267,10 +280,7 @@ export default function ClientRequestForm() {
                 <FormLabel className="text-text_color font-medium">
                   Best Time to Contact <span className="text-red">*</span>
                 </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className="rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/30 py-3 px-4 text-text_color">
                       <SelectValue placeholder="Select time" />
@@ -296,12 +306,21 @@ export default function ClientRequestForm() {
           {/* Submit Button */}
           <Button
             type="submit"
+            disabled={loading}
             className="w-full py-4 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
           >
-            Submit Request
+            {loading ? (
+              <Loader className="animate-spin h-4 w-4" />
+            ) : (
+              "Submit Request"
+            )}
           </Button>
         </form>
       </Form>
+      <ClientRequestFormSuccessPopUp
+        showPopUp={showPopUp}
+        onClose={closepopUp}
+      />
     </div>
   );
 }

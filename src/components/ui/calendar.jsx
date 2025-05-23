@@ -10,25 +10,25 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3 w-96", className)}
+      className={cn("p-3 w-48 text-center", className)}
       classNames={{
         months:
           "flex flex-col w-full sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-0 ",
-        caption: "flex justify-center pt-1 relative items-center hidden",
+        month: "space-y-2 ",
+        caption: "flex justify-center pt-1 relative items-center ",
         caption_label: "text-sm font-medium",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
-          buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          // buttonVariants({ variant: "outline" }),
+          "h-7 w-7 bg-transparent p-0 opacity-100 hover:opacity-100"
         ),
-        nav_button_previous: "absolute left-1 hidden",
-        nav_button_next: "absolute right-1 hidden",
-        table: "w-full border-collapse space-y-1 w-96",
-        head_row: "flex",
+        nav_button_previous: "absolute left-4 ",
+        nav_button_next: "absolute right-12 ",
+        table: "w-full border-collapse space-y-1 w-48",
+        head_row: "flex ",
         head_cell:
           "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
-        row: "flex w-96 mt-2",
+        row: "flex w-48 mt-2",
         cell: cn(
           "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
           props.mode === "range"
@@ -49,18 +49,15 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
+        day_: "invisible",
         ...classNames,
       }}
       components={{
         IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("h-4 w-4 hidden", className)} {...props} />
+          <ChevronLeft className={cn("h-4 w-4 ", className)} {...props} />
         ),
         IconRight: ({ className, ...props }) => (
-          <ChevronRight
-            className={cn("h-4 w-4 hidden", className)}
-            {...props}
-          />
+          <ChevronRight className={cn("h-4 w-4 ", className)} {...props} />
         ),
       }}
       {...props}

@@ -225,8 +225,6 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Function to finalize the selection and update parent state
   const handleFinalizeSelection = useCallback(
     (date, selectedUnitType) => {
-     
-
       // Convert the selected date object to the state format *based on the parent's type*
       const newDateFilterState = dateObjectToStringDate(date, dateFilter.type);
 
@@ -253,12 +251,10 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
           break;
       }
 
-     
-
       if (hasRelevantChange) {
         setDateFilter(newDateFilterState); // Update the parent state
         setIsOpen(false); // Close the popover
-      } 
+      }
     },
     [
       setDateFilter,
@@ -272,7 +268,6 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for YearGrid
   const handleYearSelect = useCallback(
     (year) => {
-   
       // Create a date object for Jan 1st of the selected year, keeping current month/day if possible for potential later views
       const newDate = new Date(
         year,
@@ -295,7 +290,6 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for MonthGrid
   const handleMonthSelect = useCallback(
     (month) => {
-      
       // Create a date object for the 1st of the selected month, keeping current year/day if possible
       const currentYear = tempDate?.getFullYear() || new Date().getFullYear();
       const newDate = new Date(
@@ -319,9 +313,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
   // Selection handler for DayPicker (only used when viewMode is 'day')
   const handleDaySelect = useCallback(
     (date) => {
-   
       if (!date) {
-       
         return;
       }
 
@@ -394,7 +386,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
         {/* Use a Button as the trigger */}
         <Button
           variant={"outline"}
-          className={`w-full justify-start text-left font-normal rounded-md border-success/50
+          className={`w-full justify-start text-left  rounded-md border-success/50
                ${
                  !getDisplayText ||
                  getDisplayText === "Pick a date" ||
@@ -412,7 +404,7 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[280px] p-0 flex flex-col z-[1000] bg-white"
+        className="border-none w-[280px] p-0 flex flex-col z-[1000] bg-white"
         align="start"
       >
         {/* Custom Caption for Navigation and View Switching */}
@@ -430,6 +422,15 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
             selected={tempDate} // Highlight the tempDate
             onSelect={handleDaySelect} // Handle day selection
             month={tempDate || new Date()} // Control the displayed month
+            className="text-center"
+            classNames={{
+              nav_button: "text-gray-600 hover:text-primary ", // Adds nav arrow styling
+              // nav: "flex items-center justify-between px-3 py-2 block", // Month nav bar styling
+              day_selected: "bg-primary text-white hover:bg-primary/90",
+              day_today: "border border-primary text-primary",
+              nav_button_previous: "absolute left-0 hidden",
+              nav_button_next: "absolute right-0 hidden",
+            }}
           />
         )}
 

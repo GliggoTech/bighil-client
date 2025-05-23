@@ -61,7 +61,7 @@ export function CompanySelector({
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className="p-0  border-primary/10 border shadow-xl rounded-lg bg-gray-200 w-[calc(100vw-2rem)] sm:w-auto max-w-[500px]"
+              className="p-0  border-primary/10 border shadow-xl rounded-lg bg-gray-200 w-[calc(100vw-5.5rem)] sm:w-auto max-w-[730px]"
               align="start"
               side="bottom"
             >

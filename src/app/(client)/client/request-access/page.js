@@ -2,7 +2,7 @@ import ClientRequestForm from "@/components/UI_Components/Client components/auth
 
 export default function ClientRequestAccess() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 text-text_color space-y-8">
+    <div className="max-w-3xl mx-auto px-4 py-8 text-text_color space-y-4">
       <section className="text-center">
         <h1 className="text-3xl font-bold text-primary mb-4">
           Welcome to Bighil Platform
@@ -14,8 +14,8 @@ export default function ClientRequestAccess() {
         </p>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-text_color">Why Bighil?</h2>
+      <section className="space-y-2">
+        <h2 className="text-xl font-semibold text-primary">Why Bighil?</h2>
         <ul className="list-disc list-inside text-sm leading-6">
           <li>
             <strong>Real-time Complaint Tracking:</strong> Get updates as issues
@@ -41,7 +41,7 @@ export default function ClientRequestAccess() {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold text-text_color mb-2">
+        <h2 className="text-xl font-semibold text-primary mb-2">
           Who is this platform for?
         </h2>
         <p className="text-sm text-muted-foreground">
@@ -53,8 +53,8 @@ export default function ClientRequestAccess() {
       </section>
 
       {/* Placeholder for the future contact/request access form */}
-      <section className="pt-8 border-t mt-8">
-        <p className="text-base font-medium text-text_color">
+      <section className="pt-0 ">
+        <p className="text-xl font-semibold text-primary mb-2">
           Ready to get started?
         </p>
         <p className="text-sm text-muted-foreground">
@@ -63,7 +63,7 @@ export default function ClientRequestAccess() {
         </p>
 
         {/* Replace this with the actual form later */}
-        <div className="mt-4 ">
+        <div className="mt-3 ">
           <ClientRequestForm />
         </div>
       </section>
