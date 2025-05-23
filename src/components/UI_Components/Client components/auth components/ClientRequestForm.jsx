@@ -55,7 +55,6 @@ export default function ClientRequestForm() {
   const [showPopUp, setShowpopUp] = useState(false);
 
   const onSubmit = async (values) => {
-    console.log("Form Values:", values);
     const url = getBackendUrl();
     const res = await fetchData(
       `${url}/api/client-request-access`,
@@ -64,7 +63,7 @@ export default function ClientRequestForm() {
       null,
       false
     );
-    console.log(res);
+
     if (res.success) {
       toast({
         title: "Request Submitted",
@@ -81,6 +80,17 @@ export default function ClientRequestForm() {
     }
   };
   const closepopUp = () => {
+   
+    // Use form.reset with default values
+    form.reset({
+      companyName: "",
+      numberOfEmployees: 1,
+      companyEmail: "",
+      subject: "",
+      message: "",
+      bestContactDate: undefined,
+      bestContactTime: "",
+    });
     setShowpopUp(false);
   };
 

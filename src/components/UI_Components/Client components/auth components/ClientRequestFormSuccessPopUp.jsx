@@ -13,7 +13,12 @@ import { CheckCircle2 } from "lucide-react";
 
 const ClientRequestFormSuccessPopUp = ({ showPopUp, onClose }) => {
   return (
-    <Dialog open={showPopUp} onOpenChange={onClose}>
+    <Dialog
+      open={showPopUp}
+      onOpenChange={(open) => {
+        if (open) onClose(); // Call onClose when dialog is closed
+      }}
+    >
       <DialogContent className="max-w-sm text-center bg-white">
         <DialogHeader>
           <CheckCircle2 className="mx-auto h-12 w-12 text-green" />
