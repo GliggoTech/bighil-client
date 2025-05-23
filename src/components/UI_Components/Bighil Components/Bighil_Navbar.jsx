@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useState, useCallback } from "react";
 import { Loader2, LogOut } from "lucide-react";
 import { bighilLogout } from "@/app/actions/bighil.actions";
+import Link from "next/link";
+import Image from "next/image";
 
 const Bighil_Navbar = ({ isOpen }) => {
   const router = useRouter();
@@ -36,9 +38,23 @@ const Bighil_Navbar = ({ isOpen }) => {
     min-h-20 sm:min-h-20 md:min-h-16 lg:min-h-14 xl:min-h-16
   `}
     >
-      <div className=" text-sm sm:text-lg max-w-48 sm:max-w-96  text-text_color  sm:flex px-2 ">
-        <span>Hi,</span>
-        <span>Welcome to Dashboard</span>
+      <div className="flex-shrink-0 flex items-center h-full">
+        <Link
+          href="/bighil/bighil-dashboard"
+          className="flex items-center h-full py-2"
+        >
+          <div className="relative h-12 ">
+            <Image
+              src="/logosvg.svg"
+              width={160}
+              height={40}
+              alt="logo"
+              quality={100}
+              className="h-full w-auto object-contain"
+              priority
+            />
+          </div>
+        </Link>
       </div>
       {/* Left side: Welcome Text */}
       {/* <h1 className="text-lg  text-text_color ">Hi, Welcome to Dashboard</h1> */}

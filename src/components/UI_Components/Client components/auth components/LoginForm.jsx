@@ -89,7 +89,7 @@ export default function LoginForm() {
         // Delay navigation for better UX
         setTimeout(() => {
           router.push("/client/client-dashboard");
-        }, 1500);
+        }, 100);
       } else {
         setErrorMessage(
           res.message || "Login failed. Please check your credentials."

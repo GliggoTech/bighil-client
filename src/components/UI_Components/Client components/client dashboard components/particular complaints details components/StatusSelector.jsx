@@ -13,23 +13,53 @@ import useAccessToken from "@/custom hooks/useAccessToken";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { statusConfig } from "@/utils/timeLineColors";
 import { FaExchangeAlt } from "react-icons/fa";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const StatusSelector = ({ status, complaintId, userRole }) => {
   const { loading, error, fetchData } = useFetch();
+  const [pendingStatus, setPendingStatus] = useState(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { token } = useAccessToken();
-  const config = statusConfig[status] || statusConfig.default;
 
   const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";
+  const handleChange = (value) => {
+    if (value === status) return; // Prevent same status selection
+    setPendingStatus(value);
+    setShowConfirmDialog(true);
+  };
+  // const handleChange = async (value) => {
+  //   const url = getBackendUrl();
+  //   await fetchData(
+  //     `${url}/api/client/change-status/${complaintId}`,
+  //     "PATCH",
+  //     { status: value },
+  //     token,
+  //     false
+  //   );
+  // };
+  const confirmStatusChange = async () => {
+    if (!pendingStatus) return;
 
-  const handleChange = async (value) => {
     const url = getBackendUrl();
     await fetchData(
       `${url}/api/client/change-status/${complaintId}`,
       "PATCH",
-      { status: value },
+      { status: pendingStatus },
       token,
       false
     );
+
+    setShowConfirmDialog(false);
+    setPendingStatus(null);
   };
 
   if (status === "Resolved" || !isEditable) return null;
@@ -50,9 +80,13 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
       </p>
 
       {/* Status Selector */}
-      <Select value={status} onValueChange={handleChange} disabled={loading}>
+      <Select
+        value={status}
+        onValueChange={handleChange}
+        disabled={loading || showConfirmDialog}
+      >
         <SelectTrigger
-          className={`w-40 bg-white rounded-lg border-primary px-4 py-2 text-sm font-medium shadow-sm transition ${
+          className={`w-48 bg-white rounded-lg border-primary px-4 py-2 text-sm font-medium shadow-sm transition ${
             loading ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >
@@ -65,25 +99,41 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
             <SelectValue placeholder="Select status" />
           )}
         </SelectTrigger>
-
+     
         <SelectContent className="rounded-xl bg-white border-none text-gray-800 shadow-lg">
-          <SelectItem
-            value="Pending"
-            className="hover:bg-primary/10 cursor-pointer text-sm"
-          >
-            Pending
-          </SelectItem>
+          {/* Only show Pending if current status is Pending */}
+          {status === "Pending" && (
+            <SelectItem
+              value="Pending"
+              className="hover:bg-primary/10 cursor-pointer text-sm"
+              disabled
+            >
+              Pending
+            </SelectItem>
+          )}
+
+          {/* Always show In Progress but disable if already selected */}
           <SelectItem
             value="In Progress"
             className="hover:bg-primary/10 cursor-pointer text-sm"
+            disabled={status === "In Progress"}
           >
             In Progress
+            {status === "In Progress" && (
+              <span className="ml-2 text-xs text-green-500">(Current)</span>
+            )}
           </SelectItem>
+
+          {/* Show Unwanted unless already in progress */}
           <SelectItem
             value="Unwanted"
             className="hover:bg-primary/10 cursor-pointer text-sm"
+            disabled={status === "Unwanted" || status === "In Progress"}
           >
             Unwanted
+            {status === "Unwanted" && (
+              <span className="ml-2 text-xs text-red-500">(Current)</span>
+            )}
           </SelectItem>
         </SelectContent>
       </Select>
@@ -95,6 +145,38 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
           <span>Something went wrong!</span>
         </div>
       )}
+      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <DialogContent className="max-w-sm bg-white">
+          <DialogHeader>
+            <DialogTitle>Confirm Status Change</DialogTitle>
+            <DialogDescription>
+              You're changing status from <strong>{status}</strong> to{" "}
+              <strong>{pendingStatus}</strong>. This action will be recorded in
+              the timeline.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmDialog(false)}
+              className="text-white bg-red"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="default"
+              onClick={confirmStatusChange}
+              disabled={loading}
+              className="text-white"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin h-4 w-4 mr-2" />
+              ) : null}
+              Confirm Change
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

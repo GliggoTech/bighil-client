@@ -115,7 +115,7 @@ const VerifyTwoFACode = ({
             variant: "success",
           });
 
-          setTimeout(() => router.push("/client/client-dashboard"), 1500);
+          setTimeout(() => router.push("/client/client-dashboard"), 100);
           return;
         } else {
           toast({

@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDropdown";
+import Image from "next/image";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -27,6 +28,7 @@ const UserNavbar = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+
   const handleLogOut = async () => {
     try {
       setLoading(true);
@@ -50,6 +52,7 @@ const UserNavbar = () => {
       setError("An unexpected error occurred. Please try again.");
     }
   };
+
   const menuVariants = {
     open: {
       opacity: 1,
@@ -65,22 +68,36 @@ const UserNavbar = () => {
   };
 
   return (
-    <nav className="bg-light-bg-subtle border-b border-light-border-subtle">
+    <nav className="bg-white border-b border-light-border-subtle sticky top-0 z-50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Enhanced Logo Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0"
+            className="flex-shrink-0 flex items-center h-full"
           >
-            <span className="text-xl lg:text-2xl font-bold bg-primary bg-clip-text text-transparent">
-              BIGHIL
-            </span>
+            <Link
+              href="/user/user-add-complaint"
+              className="flex items-center h-full py-2"
+              onClick={() => setActiveLink("/user/user-add-complaint")}
+            >
+              <div className="relative h-12 ">
+                <Image
+                  src="/logo.png"
+                  width={160}
+                  height={40}
+                  alt="logo"
+                  quality={100}
+                  className="h-full w-auto object-cover"
+                  priority
+                />
+              </div>
+            </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center">
+          {/* Desktop Navigation - Adjusted spacing */}
+          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center px-8">
             <motion.ul
               initial="closed"
               animate="open"
@@ -97,7 +114,7 @@ const UserNavbar = () => {
                     href={link.url}
                     onClick={() => setActiveLink(link.url)}
                     className={cn(
-                      "flex items-center text-base px-2 py-2 rounded-lg transition-colors",
+                      "flex items-center text-base px-3 py-2 rounded-lg transition-colors whitespace-nowrap",
                       activeLink === link.url
                         ? "bg-primary/10 text-primary font-light"
                         : "text-text_color hover:bg-primary/5 hover:text-primary"
@@ -122,19 +139,18 @@ const UserNavbar = () => {
             </motion.ul>
           </div>
 
-          {/* Desktop Logout */}
-          <div className="hidden lg:flex lg:items-center lg:gap-3">
+          {/* Desktop User Actions */}
+          <div className="hidden lg:flex lg:items-center lg:gap-3 flex-shrink-0">
             <AdvancedStyledDropdown
               handleLogOut={handleLogOut}
               loading={loading}
               error={error}
               setActiveLink={setActiveLink}
             />
-        
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex-shrink-0">
             <Button
               variant="ghost"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -156,13 +172,13 @@ const UserNavbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden border-t border-light-border-subtle/50"
             >
               <motion.div
                 variants={menuVariants}
                 initial="closed"
                 animate="open"
-                className="px-2 pt-2 pb-4 space-y-1"
+                className="px-2 pt-4 pb-4 space-y-1 bg-light-bg-subtle/95"
               >
                 {navLinks.map((link) => (
                   <motion.div
@@ -214,25 +230,25 @@ const UserNavbar = () => {
                 </motion.div>
                 <motion.div
                   variants={itemVariants}
-                  className="border-t border-light-border-subtle pt-2 mt-2"
+                  className="border-t border-light-border-subtle pt-4 mt-4"
                 >
                   <Button
                     onClick={handleLogOut}
                     disabled={loading}
                     variant="default"
-                    className="w-full justify-start text-white  hover:text-primary hover:bg-white"
+                    className="w-full justify-start text-white hover:text-primary hover:bg-white"
                   >
+                    <LogOut
+                      className={`mr-3 h-4 w-4 ${
+                        loading ? "animate-spin" : ""
+                      }`}
+                    />
                     <span className="hidden sm:inline">
                       {loading ? "Logging Out..." : "Logout"}
                     </span>
                     <span className="sm:hidden">
                       {loading ? "..." : "Logout"}
                     </span>
-                    <LogOut
-                      className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
-                    />
-                    {/* <FiLogOut className="mr-3 h-5 w-5 text-white" />
-                    Logout */}
                   </Button>
                 </motion.div>
               </motion.div>
