@@ -44,10 +44,10 @@ export default function ClientRequestForm() {
       companyName: "",
       numberOfEmployees: 1,
       companyEmail: "",
-      subject: "",
+      // subject: "",
       message: "",
-      bestContactDate: undefined,
-      bestContactTime: "",
+      // bestContactDate: undefined,
+      // bestContactTime: "",
     },
   });
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -80,16 +80,15 @@ export default function ClientRequestForm() {
     }
   };
   const closepopUp = () => {
-   
     // Use form.reset with default values
     form.reset({
       companyName: "",
       numberOfEmployees: 1,
       companyEmail: "",
-      subject: "",
+      // subject: "",
       message: "",
-      bestContactDate: undefined,
-      bestContactTime: "",
+      // bestContactDate: undefined,
+      // bestContactTime: "",
     });
     setShowpopUp(false);
   };
@@ -175,7 +174,7 @@ export default function ClientRequestForm() {
             )}
           />
 
-          {/* Subject */}
+          {/*        
           <FormField
             control={form.control}
             name="subject"
@@ -194,7 +193,7 @@ export default function ClientRequestForm() {
                 <FormMessage className="text-danger text-sm mt-1" />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Message */}
           <FormField
@@ -203,7 +202,7 @@ export default function ClientRequestForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-text_color font-medium">
-                  Contact Message <span className="text-red">*</span>
+                  Send us a message 
                 </FormLabel>
                 <FormControl>
                   <Textarea
@@ -217,7 +216,7 @@ export default function ClientRequestForm() {
               </FormItem>
             )}
           />
-
+          {/* 
           <FormField
             control={form.control}
             name="bestContactDate"
@@ -227,8 +226,8 @@ export default function ClientRequestForm() {
                   Best Date to Contact <span className="text-red">*</span>
                 </FormLabel>
                 <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-                  {" "}
-                  {/* Bind open state */}
+          
+                 
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -280,9 +279,9 @@ export default function ClientRequestForm() {
                 <FormMessage className="text-danger text-sm mt-1" />
               </FormItem>
             )}
-          />
+          /> */}
           {/* Contact Time */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="bestContactTime"
             render={({ field }) => (
@@ -311,7 +310,7 @@ export default function ClientRequestForm() {
                 <FormMessage className="text-danger text-sm mt-1" />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Submit Button */}
           <Button

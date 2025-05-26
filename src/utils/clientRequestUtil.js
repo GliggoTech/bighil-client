@@ -35,8 +35,12 @@ export const clientRequestFormSchema = z.object({
     .number({ invalid_type_error: "Must be a number" })
     .positive("Must be a positive number"),
   companyEmail: z.string().email("Invalid email address"),
-  subject: z.string().min(3, "Subject is required"),
-  message: z.string().min(10, "Message should be at least 10 characters"),
-  bestContactDate: z.date({ required_error: "Date is required" }),
-  bestContactTime: z.string().min(1, "Please select a time"),
+  // subject: z.string().min(3, "Subject is required"),
+  message: z
+
+    .string()
+    // .min(10, "Message should be at least 10 characters")
+    .optional(),
+  // bestContactDate: z.date({ required_error: "Date is required" }),
+  // bestContactTime: z.string().min(1, "Please select a time"),
 });
