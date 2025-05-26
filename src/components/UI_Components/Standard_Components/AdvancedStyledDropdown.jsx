@@ -16,7 +16,8 @@ import useNotificationStore from "@/store/notificationStore";
 const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
   const [open, setOpen] = useState(false);
   const { userName, userRole, userEmail } = useNotificationStore();
-
+  console.log("userName", userName);
+  console.log("userRole", userRole);
 
   const closeDropdown = () => {
     setOpen(false);
@@ -38,10 +39,12 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
       <div className="hidden md:block">
         Welcome , <span className="text-primary">{userName}</span>
       </div>
-      <DropdownMenuContent className="w-60 flex flex-col space-y-3 bg-white text-text_color shadow-xl border border-dialog_inside_border_color rounded-lg overflow-hidden p-1  animate-slideDownAndFade">
+      <DropdownMenuContent className="w-72 flex flex-col space-y-3 bg-white text-text_color shadow-xl border border-dialog_inside_border_color rounded-lg overflow-hidden p-1  animate-slideDownAndFade">
         <div className="flex flex-col px-5 space-y-3">
           <div className="text-text_color  text-sm">
-            <div className="text-sm font-medium text-text_color">{userName}</div>
+            <div className="text-sm font-medium text-text_color">
+              {userName}
+            </div>
             {/* <div className="text-sm text-text_color">{userRole}</div> */}
             <div className="text-sm text-text_color">{userEmail}</div>
           </div>
@@ -49,23 +52,31 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
         <DropdownMenuSeparator className="bg-primary/10" />
         <DropdownMenuItem asChild>
           <Link
-            href={"/client/client-myAccount"}
+            href={
+              userRole == "user"
+                ? "/user/user-myAccount"
+                : "/client/client-setting"
+            }
             className="cursor-pointer hover:bg-primary/10 hover:text-text_color transition-all duration-200 py-2 px-3 rounded-md flex items-center gap-2 group"
           >
             <User className="h-4 w-4 text-text_color group-hover:text-text_color transition-colors duration-200" />
             My Account
           </Link>
         </DropdownMenuItem>
+        {(userRole === "ADMIN" ||
+          userRole === "SUB ADMIN" ||
+          userRole === "SUPER ADMIN") && (
+          <DropdownMenuItem asChild>
+            <Link
+              href="/client/client-setting"
+              className="cursor-pointer hover:bg-primary/10 hover:text-text_color transition-all duration-200 py-2 px-3 rounded-md flex items-center gap-2 group"
+            >
+              <Settings className="h-4 w-4 text-text_color group-hover:text-text_color transition-colors duration-200" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+        )}
 
-        <DropdownMenuItem asChild>
-          <Link
-            href={"/client/client-setting"}
-            className="cursor-pointer hover:bg-primary/10 hover:text-text_color transition-all duration-200 py-2 px-3 rounded-md flex items-center gap-2 group"
-          >
-            <Settings className="h-4 w-4 text-text_color group-hover:text-text_color transition-colors duration-200" />
-            Settings
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-dialog_inside_border_color" />
 
         <div className="px-1 py-1">
