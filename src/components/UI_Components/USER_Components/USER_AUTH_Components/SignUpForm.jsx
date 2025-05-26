@@ -88,7 +88,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
 
       // Call the authentication action
       const res = await authAction(values);
-      
+
       if (res && res.success) {
         setFormSuccess(
           mode === "signup"
