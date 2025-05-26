@@ -61,8 +61,7 @@ export default async function MyComplaintsPage() {
             </div>
           </div>
         )}
-        {/* <ContactComponent /> */}
-        {/* Error Boundary (Handled via Next.js error.js) */}
+    
       </div>
     </div>
   );
