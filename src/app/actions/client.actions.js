@@ -53,7 +53,7 @@ export async function clientLogout() {
 }
 
 export async function twoFactorVerification(verificationData) {
-  console.log("Verification Data:", verificationData);
+ 
   try {
     const url = getBackendUrl();
     const res = await fetch(

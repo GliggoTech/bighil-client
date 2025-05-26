@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import "../globals.css";
 import { Poppins } from "next/font/google";
+import { QueryProvider } from "@/provider/QueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        {children}
-        <Toaster position="top-right" richColors />
+        <QueryProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </QueryProvider>
       </body>
     </html>
   );

@@ -57,7 +57,9 @@ export function ComplaintFields({ form }) {
         name="department"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-text_color">Department</FormLabel>
+            <FormLabel className="text-text_color">
+              Department to Raise Complaint Against
+            </FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
                 <SelectValue placeholder="Select a Department" />

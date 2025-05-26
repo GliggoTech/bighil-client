@@ -16,8 +16,7 @@ import useNotificationStore from "@/store/notificationStore";
 const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
   const [open, setOpen] = useState(false);
   const { userName, userRole, userEmail } = useNotificationStore();
-  console.log("userName", userName);
-  console.log("userRole", userRole);
+
 
   const closeDropdown = () => {
     setOpen(false);

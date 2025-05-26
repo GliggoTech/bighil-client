@@ -18,14 +18,9 @@ export default function User_Layout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.variable}>
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        > */}
+       
         {children}
-        {/* </ThemeProvider> */}
+       
 
         <Toaster position="top-right" richColors />
       </body>

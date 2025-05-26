@@ -3,8 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useState, useCallback, useEffect } from "react";
-import useFetch from "@/custom hooks/useFetch";
+import { useState } from "react";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { formSchema } from "@/lib/complaintSchema";
@@ -17,6 +16,8 @@ import { FileUploader } from "./form-components/FileUploader";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { toast } from "@/hooks/use-toast";
 import ComplaintTypeSelector from "./form-components/ComplaintTypeSelector";
+import { useGenericQuery } from "@/provider/useGenericQuery";
+import { useGenericMutation } from "@/provider/useGenericMutation";
 
 export function ComplaintForm() {
   const form = useForm({
@@ -34,47 +35,60 @@ export function ComplaintForm() {
 
   const [localFiles, setLocalFiles] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { token } = useAccessToken();
-  const { loading, fetchData } = useFetch();
+  const url = getBackendUrl();
 
-  const fetchCompanies = useCallback(
-    async (query = "") => {
-      try {
-        const url = getBackendUrl();
-        const res = await fetchData(
-          `${url}/api/companies?search=${encodeURIComponent(query)}`,
-          "GET",
-          {},
-          token,
-          false
-        );
+  // Companies query
+  const searchCompaniesUrl = `${url}/api/companies?search=${encodeURIComponent(
+    searchQuery
+  )}`;
+  const {
+    data: companiesData,
+    isLoading: companiesLoading,
+    error: companiesError,
+  } = useGenericQuery("companies", searchCompaniesUrl, token, {
+    enabled: !!token,
+  });
 
-        if (res.success) {
-          setCompanies(res.data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch companies:", err);
-      }
+  // Extract companies from the response
+  const companies = companiesData?.data || [];
+
+  // Complaint submission mutation
+  const complaintMutation = useGenericMutation("POST", {
+    onSuccess: (data, variables) => {
+      toast({
+        title: "Complaint Submitted",
+        variant: "success",
+        description: "Your complaint has been submitted successfully.",
+      });
+
+      // Clear files and reset form
+      setLocalFiles([]);
+      form.reset({
+        companyName: "",
+        submissionType: "",
+        complaintMessage: "",
+        tags: [],
+        department: "",
+        complaintType: undefined,
+        files: [],
+      });
+
+      // Close confirmation dialog
+      setShowConfirmation(false);
     },
-    [fetchData, token]
-  );
-
-  useEffect(() => {
-    if (token) {
-      const debounceTimer = setTimeout(() => {
-        fetchCompanies(searchQuery);
-      }, 300);
-      return () => clearTimeout(debounceTimer);
-    }
-  }, [searchQuery, token, fetchCompanies]);
-
-  useEffect(() => {
-    if (token) {
-      fetchCompanies();
-    }
-  }, [token, fetchCompanies]);
+    onError: (error, variables) => {
+      toast({
+        title: "Error",
+        variant: "destructive",
+        description: error.message,
+      });
+      setShowConfirmation(false);
+    },
+   
+    invalidateQueries: [["user-complaints"], ["companies"]],
+  });
 
   const removeFile = (index) => {
     const newFiles = localFiles.filter((_, i) => i !== index);
@@ -89,7 +103,6 @@ export function ComplaintForm() {
   };
 
   const onSubmit = async (values) => {
- 
     const formData = new FormData();
 
     formData.append("companyName", values.companyName);
@@ -103,42 +116,26 @@ export function ComplaintForm() {
       formData.append("files", file, file.name.replace(/[^a-z0-9_.-]/gi, "_"));
     });
 
-    const url = getBackendUrl();
-    const res = await fetchData(
-      `${url}/api/user-complaints/user-add-complaint`,
-      "POST",
-      formData,
-      token,
-      true
-    );
-
-    if (res.success) {
-      toast({
-        title: "Complaint Submitted",
-        variant: "success",
-        description: "Your complaint has been submitted successfully.",
-      });
-
-      // Clear files first if needed
-      setLocalFiles([]);
-
-      // Reset the form with desired values
-      form.reset({
-        companyName: "",
-        submissionType: "",
-        complaintMessage: "",
-        tags: [],
-        department: "",
-        complaintType: undefined,
-        files: [],
-      });
-    }
+    // Use the mutation instead of fetchData
+    complaintMutation.mutate({
+      url: `${url}/api/user-complaints/user-add-complaint`,
+      body: formData,
+      token: token,
+      isMedia: true, // Important for FormData
+    });
   };
 
   const handleConfirmationSubmit = async () => {
-    await form.handleSubmit(onSubmit)();
-    setShowConfirmation(false);
+    // Validate form before submitting
+    const isValid = await form.trigger();
+    if (isValid) {
+      const values = form.getValues();
+      onSubmit(values);
+    }
   };
+
+  // Combine loading states
+  const isLoading = complaintMutation.isPending || companiesLoading;
 
   return (
     <div className="max-w-3xl mx-auto p-3 sm:p-5 bg-white text-black rounded-lg sm:rounded-3xl shadow-lg sm:shadow-2xl overflow-auto">
@@ -147,15 +144,20 @@ export function ComplaintForm() {
       </h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.trigger().then((valid) => valid && setShowConfirmation(true));
+          }}
+          className="space-y-4"
+        >
           {/* Component 1: Company Selector */}
           <CompanySelector
             form={form}
             companies={companies}
-            loading={loading}
+            loading={companiesLoading}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            fetchCompanies={fetchCompanies}
           />
 
           {/* Component 2: Basic Complaint Fields */}
@@ -170,24 +172,32 @@ export function ComplaintForm() {
             localFiles={localFiles}
             removeFile={removeFile}
           />
+
           <ComplaintTypeSelector form={form} />
 
           <ConfirmationDialog
             open={showConfirmation}
             onOpenChange={setShowConfirmation}
             onConfirm={handleConfirmationSubmit}
-            loading={loading}
+            loading={isLoading}
           />
+
+          {/* Display form-level errors */}
           <FormMessage className="text-red-500" />
 
           <Button
-            type="button"
-            className="w-full bg-primary hover:bg-primary/90 py-2.5 sm:py-3 text-white"
-            onClick={() =>
-              form.trigger().then((valid) => valid && setShowConfirmation(true))
-            }
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-primary hover:bg-primary/90 py-2.5 sm:py-3 text-white disabled:opacity-50"
           >
-            Submit Complaint
+            {isLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Submitting...
+              </div>
+            ) : (
+              "Submit Complaint"
+            )}
           </Button>
         </form>
       </Form>

@@ -30,9 +30,9 @@ export function CompanySelector({
   loading,
   searchQuery,
   setSearchQuery,
-  fetchCompanies,
-  showLable=true,
-  formFieldname="companyName",
+
+  showLable = true,
+  formFieldname = "companyName",
 }) {
   const [openCompany, setOpenCompany] = useState(false);
 
@@ -71,20 +71,19 @@ export function CompanySelector({
                   value={searchQuery}
                   onValueChange={(value) => {
                     setSearchQuery(value);
-                    if (!value) fetchCompanies();
                   }}
                   className="w-screen px-3 text-sm sm:text-base rounded-none h-8 text-text_color placeholder:text-sm bg-white focus:outline-none focus:ring-0 focus:border-0 border-0 focus:shadow-none"
                   style={{ outline: "none", boxShadow: "none" }}
                 />
-                <CommandList className="w-full max-h-[40vh] sm:max-h-[400px] overflow-y-auto">
-                  <CommandEmpty className="py-4 sm:py-6 text-center text-text_color w-full">
+                <CommandList className="w-full  max-h-[40vh] sm:max-h-[400px] overflow-y-auto">
+                  <CommandEmpty className="py-4 sm:py-6 text-center bg-red text-text_color w-full">
                     {loading ? (
                       <span className="flex items-center justify-center gap-2">
                         <Loader className="animate-spin h-4 w-4" />
                         Searching...
                       </span>
                     ) : (
-                      `No companies found "\${searchQuery}"`
+                      `No companies found "${searchQuery}"`
                     )}
                   </CommandEmpty>
 
