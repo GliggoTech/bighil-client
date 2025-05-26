@@ -1,34 +1,67 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMenu, FiX, FiLogOut, FiBell } from "react-icons/fi";
+import { FiMenu, FiX, FiBell } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import useNotificationStore from "@/store/notificationStore";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/dashboard constants/SidebarConstants";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { userSignout } from "@/app/actions/user.action";
 import { LogOut, User } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDropdown";
 import Image from "next/image";
+import useAccessToken from "@/custom hooks/useAccessToken";
+import useFetch from "@/custom hooks/useFetch";
+import { getBackendUrl } from "@/lib/getBackendUrl";
 
 const UserNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("/user/user-add-complaint");
-  const { notificationCount, userName } = useNotificationStore();
+  const pathname = usePathname(); // get current URL path
+  const [activeLink, setActiveLink] = useState(
+    pathname || "/user/user-add-complaint"
+  );
+  const { notificationCount, setTotalUnreadCount } = useNotificationStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const hasFetchedRef = useRef(false);
+  const { token } = useAccessToken();
+  const { fetchData } = useFetch();
 
+  useEffect(() => {
+    const fetchNotificationCount = async () => {
+      if (!token || hasFetchedRef.current) return;
+
+      try {
+        const url = getBackendUrl();
+        const res = await fetchData(
+          `${url}/api/user-notifications/unread-count`,
+          "GET",
+          {},
+          token,
+          false
+        );
+
+        if (res?.success) {
+          hasFetchedRef.current = true;
+          if (notificationCount !== res.data.count) {
+            setTotalUnreadCount(res.data.count);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching notification count:", error);
+      }
+    };
+
+    fetchNotificationCount();
+  }, [token, fetchData, setTotalUnreadCount, notificationCount]);
+
+  useEffect(() => {
+    setActiveLink(pathname);
+  }, [pathname]);
   const handleLogOut = async () => {
     try {
       setLoading(true);
