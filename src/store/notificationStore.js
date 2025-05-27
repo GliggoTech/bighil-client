@@ -112,6 +112,7 @@ const useNotificationStore = create(
         userRole: state.userRole,
         notificationCount: state.notificationCount,
         userName: state.userName,
+        userEmail: state.userEmail,
 
         currentTheme: state.currentTheme,
 

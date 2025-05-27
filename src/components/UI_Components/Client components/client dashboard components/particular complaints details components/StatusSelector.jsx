@@ -23,60 +23,93 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const StatusSelector = ({ status, complaintId, userRole }) => {
   const { loading, error, fetchData } = useFetch();
   const [pendingStatus, setPendingStatus] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [unwantedReason, setUnwantedReason] = useState("");
   const { token } = useAccessToken();
 
-  const isEditable = userRole === "ADMIN" || userRole === "SUPER ADMIN";
+  const isEditable = userRole === "SUB ADMIN" || userRole === "SUPER ADMIN";
+
   const handleChange = (value) => {
     if (value === status) return; // Prevent same status selection
     setPendingStatus(value);
     setShowConfirmDialog(true);
+    // Reset unwanted reason when dialog opens
+    if (value === "Unwanted") {
+      setUnwantedReason("");
+    }
   };
-  // const handleChange = async (value) => {
-  //   const url = getBackendUrl();
-  //   await fetchData(
-  //     `${url}/api/client/change-status/${complaintId}`,
-  //     "PATCH",
-  //     { status: value },
-  //     token,
-  //     false
-  //   );
-  // };
+
   const confirmStatusChange = async () => {
     if (!pendingStatus) return;
 
+    // Validate unwanted reason if status is "Unwanted"
+    if (
+      pendingStatus === "Unwanted" &&
+      userRole === "SUB ADMIN" &&
+      !unwantedReason.trim()
+    ) {
+      return; // Don't proceed if reason is empty
+    }
+
     const url = getBackendUrl();
+
+    // Prepare request body
+    const requestBody = { status: pendingStatus };
+
+    // Add unwanted reason if status is "Unwanted" and user is SUB ADMIN
+    if (pendingStatus === "Unwanted" && userRole === "SUB ADMIN") {
+      requestBody.resolutionNote = unwantedReason.trim();
+    }
+
     await fetchData(
       `${url}/api/client/change-status/${complaintId}`,
       "PATCH",
-      { status: pendingStatus },
+      requestBody,
       token,
       false
     );
 
+    // Reset states
     setShowConfirmDialog(false);
     setPendingStatus(null);
+    setUnwantedReason("");
+  };
+
+  const handleDialogClose = () => {
+    setShowConfirmDialog(false);
+    setPendingStatus(null);
+    setUnwantedReason("");
   };
 
   if (status === "Resolved" || !isEditable) return null;
 
+  const isUnwantedSelected =
+    pendingStatus === "Unwanted" && userRole === "SUB ADMIN";
+  const isConfirmDisabled =
+    loading || (isUnwantedSelected && !unwantedReason.trim());
+
   return (
-    <div className="relative bg-white dark:bg-surface-dark rounded-xl p-3 shadow-sm">
+    <div className="w-full relative bg-white dark:bg-surface-dark rounded-xl p-3 shadow-sm">
       {/* Title and Description */}
       <div className="flex items-center gap-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 transition-all duration-300">
           <FaExchangeAlt className="h-5 w-5 text-primary" aria-hidden="true" />
         </div>
         <h3 className="text-lg font-semibold text-text_color dark:text-text-light">
-          Update Case Status
+          {userRole === "SUPER ADMIN"
+            ? "Current Case Status"
+            : "Change Case Status"}
         </h3>
       </div>
       <p className="text-sm text-text_color dark:text-text_color mt-2 mb-4">
-        Change and track the current status of this case.
+        {userRole === "SUPER ADMIN"
+          ? "Track the current status of this case."
+          : "Change and track the current status of this case."}
       </p>
 
       {/* Status Selector */}
@@ -86,7 +119,7 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
         disabled={loading || showConfirmDialog}
       >
         <SelectTrigger
-          className={`w-48 bg-white rounded-lg border-primary px-4 py-2 text-sm font-medium shadow-sm transition ${
+          className={` bg-white rounded-lg border-primary px-4 py-2 text-sm font-medium shadow-sm transition ${
             loading ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >
@@ -116,7 +149,9 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
           <SelectItem
             value="In Progress"
             className="hover:bg-primary/10 cursor-pointer text-sm"
-            disabled={status === "In Progress"}
+            disabled={
+              status === "In Progress" || status == "Pending Authorization"
+            }
           >
             In Progress
             {status === "In Progress" && (
@@ -128,10 +163,24 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
           <SelectItem
             value="Unwanted"
             className="hover:bg-primary/10 cursor-pointer text-sm"
-            disabled={status === "Unwanted" || status === "In Progress"}
+            disabled={
+              status === "Unwanted" ||
+              status === "In Progress" ||
+              status == "Pending Authorization"
+            }
           >
             Unwanted
             {status === "Unwanted" && (
+              <span className="ml-2 text-xs text-red-500">(Current)</span>
+            )}
+          </SelectItem>
+          <SelectItem
+            value="Pending Authorization"
+            className="hover:bg-primary/10 cursor-pointer text-sm"
+            disabled={true}
+          >
+            Pending Authorization
+            {status === "Pending Authorization" && (
               <span className="ml-2 text-xs text-red-500">(Current)</span>
             )}
           </SelectItem>
@@ -145,8 +194,9 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
           <span>Something went wrong!</span>
         </div>
       )}
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="max-w-sm bg-white">
+
+      <Dialog open={showConfirmDialog} onOpenChange={handleDialogClose}>
+        <DialogContent className="max-w-xl bg-white">
           <DialogHeader className="flex flex-col space-y-3">
             <DialogTitle>Confirm Status Change</DialogTitle>
             <DialogDescription className="text-sm mt-10">
@@ -155,18 +205,44 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
               the timeline.
             </DialogDescription>
           </DialogHeader>
+
+          {/* Show textarea only when SUB ADMIN selects "Unwanted" */}
+          {isUnwantedSelected && (
+            <div className="space-y-2">
+              <label
+                htmlFor="unwanted-reason"
+                className="text-sm font-medium text-text_color"
+              >
+                Reason for marking as unwanted{" "}
+                <span className="text-red">*</span>
+              </label>
+              <Textarea
+                id="unwanted-reason"
+                placeholder="Please provide a reason for marking this case as unwanted..."
+                value={unwantedReason}
+                onChange={(e) => setUnwantedReason(e.target.value)}
+                className="min-h-[80px] border-none"
+                disabled={loading}
+              />
+              {!unwantedReason.trim() && (
+                <p className="text-xs text-red">This field is required</p>
+              )}
+            </div>
+          )}
+
           <DialogFooter>
             <Button
               variant="outline"
-              onClick={() => setShowConfirmDialog(false)}
+              onClick={handleDialogClose}
               className="text-white bg-red"
+              disabled={loading}
             >
               Cancel
             </Button>
             <Button
               variant="default"
               onClick={confirmStatusChange}
-              disabled={loading}
+              disabled={isConfirmDisabled}
               className="text-white"
             >
               {loading ? (

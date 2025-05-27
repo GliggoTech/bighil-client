@@ -62,18 +62,21 @@ export const TimelineEvent = ({ event, isLast }) => {
   );
 };
 
-export default function Timeline({ events }) {
-  if (!events?.length) {
+export default function Timeline({ events, userRole }) {
+  const filteredEvents =
+    events?.filter((event) => {
+      if (userRole === "BIGHIL" || userRole === "user") {
+        return event.visibleToUser === true;
+      }
+      // For other roles (like admin etc.), show all events
+      return true;
+    }) || [];
+
+  if (!filteredEvents.length) {
     return (
-      <div
-        className="p-3 text-center rounded-xl
-                      bg-light dark:bg-dark
-                      "
-      >
-        <AlertCircle className="w-6 h-6 mx-auto mb-3 text-text_color dark:text-text_color" />
-        <p className="text-text-secondary dark:text-text_color">
-          No timeline entries found
-        </p>
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <AlertCircle className="h-12 w-12 text-gray-400 mb-4" />
+        <p className="text-gray-500">No timeline entries found</p>
       </div>
     );
   }
@@ -97,11 +100,11 @@ export default function Timeline({ events }) {
       </p>
 
       <ul className="-mb-8 relative z-10">
-        {events.map((event, index) => (
+        {filteredEvents.map((event, index) => (
           <TimelineEvent
             key={index}
             event={event}
-            isLast={index === events.length - 1}
+            isLast={index === filteredEvents.length - 1}
           />
         ))}
       </ul>

@@ -402,7 +402,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
           {<MessageList />}
           <div ref={messagesEndRef} />
         </div>
-        {userRole != "SUB ADMIN" && userRole != "BIGHIL" && (
+        {userRole != "ADMIN" && userRole != "BIGHIL" && (
           <div className="sticky bottom-0 p-4 border-t bg-white/95 backdrop-blur-sm z-10">
             <div className="flex gap-3">
               <input

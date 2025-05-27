@@ -69,7 +69,7 @@ const NotesSection = ({ notes, complaintId }) => {
 
     if (
       userRole == "SUB ADMIN" ||
-      userRole == "ADMIN" ||
+      // userRole == "ADMIN" ||
       userRole == "SUPER ADMIN"
     ) {
       socket.emit("joinComplaintRoom", `complaint_${complaintId}`);

@@ -15,11 +15,18 @@ import { useSocket } from "@/context/socketContext";
 import { AlertCircle } from "lucide-react";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
 import useAccessToken from "@/custom hooks/useAccessToken";
+import SuperAdminStatusSelector from "./SuperAdminStatusSelector";
 
 const ParticularComplaint = ({ complaint, unread }) => {
   const [timeline, setTimeline] = useState(complaint?.timeline || []);
   const [status, setStatus] = useState(
     complaint?.status_of_client || "Pending"
+  );
+  const [superAdminStatus, setSuperAdminStatus] = useState(
+    complaint?.authorizationStatus || "Pending"
+  );
+  const [actionMessage, setActionMessage] = useState(
+    complaint?.actionMessage[0] || ""
   );
   const [unseenMessageCount, setUnseenMessageCount] = useState(unread || 0);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -27,7 +34,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const hasDecrementedRef = useRef(false);
   const { userRole, markAsRead } = useNotificationStore();
   const hasJoinedRoomRef = useRef(false);
   const { token } = useAccessToken();
@@ -108,6 +114,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
           console.warn("Received empty status update");
           return;
         }
+        console.log("Status update received:", update);
 
         // Update status
         if (update.status_of_client) {
@@ -120,6 +127,9 @@ const ParticularComplaint = ({ complaint, unread }) => {
             update.timelineEvent,
             ...(Array.isArray(prev) ? prev : []),
           ]);
+        }
+        if (update.actionMessage) {
+          setActionMessage(update?.actionMessage);
         }
       } catch (error) {
         console.error("Error handling status change:", error);
@@ -216,14 +226,24 @@ const ParticularComplaint = ({ complaint, unread }) => {
                     />
                   </div>
                 )}
-                <div className="  rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color hover:rounded-xl">
-                  <StatusSelector
-                    status={status}
-                    setStatus={setStatus}
-                    complaintId={complaint?._id}
-                    onStatusChange={handleStatusChange}
-                    userRole={userRole}
-                  />
+                <div className="flex gap-6 justify-between  rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color hover:rounded-xl">
+                  {userRole == "SUB ADMIN" && (
+                    <StatusSelector
+                      status={status}
+                      setStatus={setStatus}
+                      complaintId={complaint?._id}
+                      onStatusChange={handleStatusChange}
+                      userRole={userRole}
+                    />
+                  )}
+                  {userRole == "SUPER ADMIN" && (
+                    <SuperAdminStatusSelector
+                      complaintId={complaint?._id}
+                      superAdminStatus={superAdminStatus}
+                      setSuperAdminStatus={setSuperAdminStatus}
+                      token={token}
+                    />
+                  )}
                 </div>
                 {/* Action Taken Section */}
                 <div className="  rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
@@ -232,7 +252,8 @@ const ParticularComplaint = ({ complaint, unread }) => {
                     onStatusChange={handleStatusChange}
                     status={status}
                     setStatus={setStatus}
-                    actionMessage={complaint?.actionMessage || ""}
+                    actionMessage={actionMessage}
+                    rejectionReason={complaint?.authoriseRejectionReason}
                   />
                 </div>
               </div>
@@ -241,7 +262,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
               <div className="space-y-3">
                 {/* Timeline Card */}
                 <div className="  rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color">
-                  <Timeline events={timeline} />
+                  <Timeline events={timeline} userRole={userRole} />
                 </div>
               </div>
             </div>

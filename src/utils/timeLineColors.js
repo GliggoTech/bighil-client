@@ -5,6 +5,7 @@ import {
   HelpCircle,
   ThumbsDown,
 } from "lucide-react";
+import { MdOutlinePendingActions } from "react-icons/md";
 
 export const statusConfig = {
   Pending: {
@@ -37,6 +38,14 @@ export const statusConfig = {
       icon: "text-success dark:text-success-light",
       bg: "bg-success/10 dark:bg-success/20",
       border: "border-success/20 dark:border-success/30",
+    },
+  },
+  "Pending Authorization": {
+    icon: MdOutlinePendingActions ,
+    style: {
+      icon: "text-warning dark:text-warning-light",
+      bg: "bg-warning/10 dark:bg-warning/20",
+      border: "border-warning/20 dark:border-warning/30",
     },
   },
   default: {

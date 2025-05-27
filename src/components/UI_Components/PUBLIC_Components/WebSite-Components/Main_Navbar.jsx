@@ -152,7 +152,7 @@ const Main_Navbar = () => {
               <Link
                 href="/user/user-login"
                 className={`px-4 py-3 rounded-full text-center ${
-                  scrolled ? " text-primary" : " text-white"
+                  scrolled ? "bg-primary text-white" : "bg-white text-primary"
                 }`}
               >
                 User Login

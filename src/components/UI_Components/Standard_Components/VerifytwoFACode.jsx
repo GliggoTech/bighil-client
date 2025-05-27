@@ -64,6 +64,7 @@ const VerifyTwoFACode = ({
     setCurrentUserRole,
     setCurrentUserName,
     setCurrentUserEmail,
+    userEmail,
   } = useNotificationStore();
 
   const otpForm = useForm({
@@ -85,12 +86,34 @@ const VerifyTwoFACode = ({
   const handleResendCode = async () => {
     setCanResend(false);
     setCountdown(60);
-    // Add your resend logic here
-    toast({
-      title: "Code Resent",
-      description: "A new verification code has been sent to your email.",
-      variant: "success",
-    });
+
+    try {
+      const backendUrl = `${getBackendUrl()}/api/forgot-password/client/resendOtp`;
+      const res = await fetchData(
+        backendUrl,
+        "POST",
+        { email: userEmail },
+        token
+      );
+
+      if (res.success) {
+        toast({
+          title: "Code Resent",
+          description: "A new verification code has been sent to your email.",
+          variant: "success",
+        });
+      } else {
+        throw new Error(res.message || "Failed to resend code");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to resend verification code.",
+        variant: "destructive",
+      });
+      setCanResend(true);
+      setCountdown(0);
+    }
   };
 
   const onSubmit = async (data) => {

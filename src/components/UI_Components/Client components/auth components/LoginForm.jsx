@@ -33,7 +33,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useNotificationStore from "@/store/notificationStore";
 import Link from "next/link";
-import { clientLogin, twoFactorVerification } from "@/app/actions/client.actions";
+import {
+  clientLogin,
+  twoFactorVerification,
+} from "@/app/actions/client.actions";
 import VerifyTwoFACode from "../../Standard_Components/VerifytwoFACode";
 
 const formSchema = z.object({
@@ -79,6 +82,7 @@ export default function LoginForm() {
       }
 
       if (res.success) {
+      
         setIsSuccess(true);
         setCurrentUserId(res.user.id);
         setCurrentUserRole(res.user.role);
