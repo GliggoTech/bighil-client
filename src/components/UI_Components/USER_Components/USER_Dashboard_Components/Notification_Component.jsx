@@ -26,6 +26,11 @@ const NotificationComponent = ({
   totalPages,
 }) => {
   const [processingIds, setProcessingIds] = useState(new Set());
+  const [isBulkProcessing, setIsBulkProcessing] = useState({
+    markAll: false,
+    deleteAll: false,
+  });
+
   const { token } = useAccessToken();
   const { socket } = useSocket();
   const {
@@ -37,6 +42,8 @@ const NotificationComponent = ({
     setTotalUnreadCount,
     notifications,
     deleteNotification,
+    markAllAsRead: markAllNotificationsInStore,
+    clearAllNotifications,
   } = useNotificationStore();
   const { loading, fetchData } = useFetch();
   const searchParams = useSearchParams();
@@ -79,7 +86,6 @@ const NotificationComponent = ({
     };
   }, [socket, userId, userRole, addNotification]);
 
-  // Rest of your component remains the same...
   const getComplaintLink = (notification) => {
     return userRole === "user"
       ? `/user/my-complaints/${notification.complaintId}?notificationId=${notification._id}`
@@ -113,6 +119,30 @@ const NotificationComponent = ({
     }
   };
 
+  const handleBulkAction = async (action) => {
+    if (!token) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to perform this action.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const actionKey = action === "markAll" ? "markAll" : "deleteAll";
+    setIsBulkProcessing((prev) => ({ ...prev, [actionKey]: true }));
+
+    try {
+      if (action === "markAll") {
+        await markAllAsRead();
+      } else {
+        await deleteAllNotifications();
+      }
+    } finally {
+      setIsBulkProcessing((prev) => ({ ...prev, [actionKey]: false }));
+    }
+  };
+
   const markAsRead = async (id) => {
     const endpoint =
       userRole === "user"
@@ -130,6 +160,77 @@ const NotificationComponent = ({
         description: "Notification marked as read",
         variant: "success",
       });
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const endpoint =
+        userRole === "user"
+          ? "/api/user-notifications/mark-all-as-read"
+          : "/api/client-notifications/client-mark-all-as-read";
+
+      const url = `${getBackendUrl()}${endpoint}`;
+      const res = await fetchData(url, "PATCH", {}, token);
+
+      if (res.success) {
+        // Update store to mark all notifications as read
+        markAllNotificationsInStore();
+
+        toast({
+          title: "Success!",
+          description: res.message || "All notifications marked as read",
+          variant: "success",
+        });
+
+        // Refresh the page to reflect changes
+        router.refresh();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to mark all notifications as read",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  const deleteAllNotifications = async () => {
+    try {
+      const endpoint =
+        userRole === "user"
+          ? "/api/user-notifications/delete-all-notifications"
+          : "/api/client-notifications/client-delete-all-notifications";
+
+      const url = `${getBackendUrl()}${endpoint}`;
+      const res = await fetchData(url, "DELETE", {}, token);
+
+      if (res.success) {
+        // Clear all notifications from store
+        clearAllNotifications();
+
+        toast({
+          title: "Success!",
+          description: res.message || "All notifications deleted",
+          variant: "success",
+        });
+
+        // Redirect to page 1 since all notifications are deleted
+        const redirectUrl =
+          userRole === "user"
+            ? "/user/user-notifications?page=1"
+            : "/client/client-notifications?page=1";
+
+        router.push(redirectUrl);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete all notifications",
+        variant: "destructive",
+      });
+      throw error;
     }
   };
 
@@ -186,11 +287,55 @@ const NotificationComponent = ({
     return notification.recipients.find((r) => r.user === userId);
   };
 
+  // Check if there are any unread notifications
+  const hasUnreadNotifications = notifications.some((notification) => {
+    const recipient = getCurrentRecipient(notification);
+    return !recipient?.read;
+  });
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 p-2 sm:p-4">
-        Notifications
-      </h2>
+      <div className="flex justify-between sm:flex-row flex-col">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 p-2 sm:p-4">
+          Notifications
+        </h2>
+        {notifications.length > 0 && (
+          <div className=" p-2 sm:p-4 flex gap-2 justify-end">
+            {hasUnreadNotifications && (
+              <Button
+                className="bg-primary/50 text-text_color hover:bg-primary/60 text-xs sm:text-sm"
+                onClick={() => handleBulkAction("markAll")}
+                disabled={
+                  isBulkProcessing.markAll || isBulkProcessing.deleteAll
+                }
+              >
+                {isBulkProcessing.markAll ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin mr-2" />
+                    Processing...
+                  </>
+                ) : (
+                  "Mark All as Read"
+                )}
+              </Button>
+            )}
+            <Button
+              className="bg-red text-white hover:bg-red/90 text-xs sm:text-sm"
+              onClick={() => handleBulkAction("deleteAll")}
+              disabled={isBulkProcessing.markAll || isBulkProcessing.deleteAll}
+            >
+              {isBulkProcessing.deleteAll ? (
+                <>
+                  <Loader className="w-4 h-4 animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete All"
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
 
       {notifications.length === 0 ? (
         <p className="p-6 text-gray-500">No notifications available</p>
@@ -238,7 +383,11 @@ const NotificationComponent = ({
                       <Button
                         size="sm"
                         onClick={() => handleAction(notification._id, "read")}
-                        disabled={isProcessing}
+                        disabled={
+                          isProcessing ||
+                          isBulkProcessing.markAll ||
+                          isBulkProcessing.deleteAll
+                        }
                         className="bg-green/10 text-green hover:bg-green/70 hover:text-white focus:outline-none"
                       >
                         {isProcessing ? (
@@ -254,7 +403,11 @@ const NotificationComponent = ({
                     <Button
                       size="sm"
                       onClick={() => handleAction(notification._id, "delete")}
-                      disabled={isProcessing}
+                      disabled={
+                        isProcessing ||
+                        isBulkProcessing.markAll ||
+                        isBulkProcessing.deleteAll
+                      }
                       className="bg-red/10 text-red hover:bg-red/70 hover:text-white focus:outline-none"
                     >
                       {isProcessing ? (

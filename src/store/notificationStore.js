@@ -103,6 +103,25 @@ const useNotificationStore = create(
       setTotalUnreadCount: (count) => {
         set({ notificationCount: count });
       },
+      markAllAsRead: () => {
+        set((state) => ({
+          notifications: state.notifications.map((notification) => ({
+            ...notification,
+            recipients: notification.recipients.map((recipient) =>
+              recipient.user === state.userId
+                ? { ...recipient, read: true, readAt: new Date() }
+                : recipient
+            ),
+          })),
+          totalUnreadCount: 0,
+        }));
+      },
+      clearAllNotifications: () => {
+        set(() => ({
+          notifications: [],
+          totalUnreadCount: 0,
+        }));
+      },
     }),
     {
       name: "notification-storage",
