@@ -17,6 +17,7 @@ import { AlertCircle } from "lucide-react";
 import { markNotificationAsRead } from "@/lib/markNotificationAsRead";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import SuperAdminStatusSelector from "./SuperAdminStatusSelector";
+import ParticularComplaintSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ParticularComplaintSkeleton";
 
 const ParticularComplaint = ({ complaint, unread }) => {
   const [timeline, setTimeline] = useState(complaint?.timeline || []);
@@ -140,6 +141,14 @@ const ParticularComplaint = ({ complaint, unread }) => {
         if (update.status_of_client) {
           setStatus(update.status_of_client);
         }
+        // IMPORTANT: Add this condition to handle Super Admin status reset
+        if (update.changeSuperAdminStatus !== undefined) {
+          console.log(
+            "Updating Super Admin Status to:",
+            update.changeSuperAdminStatus
+          );
+          setSuperAdminStatus(update.changeSuperAdminStatus);
+        }
 
         // Add to timeline if there's a timeline event
         if (update.timelineEvent) {
@@ -197,9 +206,9 @@ const ParticularComplaint = ({ complaint, unread }) => {
           setResetForm(true);
         }
 
-        if (update.changeSuperAdminStatus) {
-          setSuperAdminStatus(update.changeSuperAdminStatus);
-        }
+        // if (update.changeSuperAdminStatus == "Pending") {
+        //   setSuperAdminStatus(update.changeSuperAdminStatus);
+        // }
       } catch (error) {
         console.error("Error handling status change:", error);
       }
@@ -220,14 +229,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
         hasJoinedRoomRef.current = false;
       }
     };
-  }, [
-    socket,
-    complaint?._id,
-    userRole,
-    isConnected,
-    // Removed actionMessage, rejectReason, resetForm from dependencies
-    // to prevent unnecessary re-renders and potential duplicate handling
-  ]);
+  }, [socket, complaint?._id, userRole, isConnected]);
 
   // Handle notification decrement from URL params
   useEffect(() => {
@@ -249,6 +251,9 @@ const ParticularComplaint = ({ complaint, unread }) => {
       router.replace(`?${newParams.toString()}`, { scroll: false });
     }
   }, [searchParams, router, userRole, token]);
+  if (token == null) {
+    return <ParticularComplaintSkeleton />;
+  }
 
   return (
     <div className=" min-h-screen bg-primary/10 rounded-none transition-colors duration-300  flex flex-col">

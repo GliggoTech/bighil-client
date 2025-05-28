@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -32,7 +33,7 @@ import { toast } from "@/hooks/use-toast";
 import { FaExchangeAlt } from "react-icons/fa";
 
 const SuperAdminStatusSelector = ({
-  superAdminStatus = "Pending",
+  superAdminStatus,
   setSuperAdminStatus,
   complaintId,
   token,
@@ -41,7 +42,10 @@ const SuperAdminStatusSelector = ({
   const [isRejectionDialogOpen, setIsRejectionDialogOpen] = useState(false);
   const [pendingStatus, setPendingStatus] = useState("");
   const [rejectionReason, setRejectionReason] = useState("");
+  const [localStatus, setLocalStatus] = useState(superAdminStatus);
+  const [isApproving, setIsApproving] = useState(false); // New state for approval loading
   const { fetchData, loading, success, error } = useFetch();
+  console.log("SuperAdminStatusSelector: localStatus:", localStatus);
 
   const statusOptions = ["Pending", "Approved", "Rejected"];
 
@@ -57,13 +61,15 @@ const SuperAdminStatusSelector = ({
         return "text-gray ";
     }
   };
-  
 
   const handleStatusChange = (newStatus) => {
-    if (newStatus === superAdminStatus) return;
+    if (newStatus === localStatus) return;
+
+    // Prevent changes if already approved
+    if (localStatus === "Approved") return;
 
     setPendingStatus(newStatus);
-    
+
     // If user selects "Rejected", show the rejection reason dialog
     if (newStatus === "Rejected") {
       setIsRejectionDialogOpen(true);
@@ -75,11 +81,16 @@ const SuperAdminStatusSelector = ({
 
   const confirmStatusChange = async (reason = "") => {
     try {
+      // Set approval loading state if status is "Approved"
+      if (pendingStatus === "Approved") {
+        setIsApproving(true);
+      }
+
       const url = getBackendUrl();
-      
+
       // Prepare the payload
       const payload = { status: pendingStatus };
-      
+
       // Add rejection reason if status is "Rejected"
       if (pendingStatus === "Rejected" && reason) {
         payload.rejectionReason = reason;
@@ -94,7 +105,15 @@ const SuperAdminStatusSelector = ({
       );
 
       if (res.success) {
+        console.log("res ", res);
+        // Update both local state and parent state
+        if (res.data.resetStatus) {
+          setLocalStatus("Pending");
+        } else {
+          setLocalStatus(pendingStatus);
+        }
         setSuperAdminStatus(pendingStatus);
+
         setIsDialogOpen(false);
         setIsRejectionDialogOpen(false);
         setPendingStatus("");
@@ -111,6 +130,9 @@ const SuperAdminStatusSelector = ({
         variant: "destructive",
         description: error.message,
       });
+    } finally {
+      // Reset approval loading state
+      setIsApproving(false);
     }
   };
 
@@ -137,6 +159,9 @@ const SuperAdminStatusSelector = ({
     setRejectionReason("");
   };
 
+  // Check if the component should be read-only
+  const isReadOnly = localStatus === "Approved";
+
   return (
     <>
       <div className="w-full bg-white p-2 rounded-xl">
@@ -152,12 +177,25 @@ const SuperAdminStatusSelector = ({
           </h3>
         </div>
         <p className="text-sm text-text_color dark:text-text_color mt-2 mb-4">
-          Change the authorization status of this case.
+          {isReadOnly
+            ? "This case has been approved and cannot be changed."
+            : "Change the authorization status of this case."}
         </p>
 
-        <Select value={superAdminStatus} onValueChange={handleStatusChange}>
-          <SelectTrigger className={`w-72 bg-white border-none`}>
+        <Select
+          value={localStatus}
+          onValueChange={handleStatusChange}
+          disabled={isReadOnly || isApproving}
+        >
+          <SelectTrigger
+            className={`w-72 bg-white border-none ${
+              isReadOnly ? "opacity-100 cursor-not-allowed" : ""
+            }`}
+          >
             <SelectValue placeholder="Select status" />
+            {isApproving && (
+              <div className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+            )}
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto bg-white border-none">
             {statusOptions.map((status) => (
@@ -199,10 +237,10 @@ const SuperAdminStatusSelector = ({
               <span className="text-sm text-gray-600">From:</span>
               <span
                 className={`px-2 py-1 rounded text-sm font-medium ${getStatusColor(
-                  superAdminStatus
+                  localStatus
                 )}`}
               >
-                {superAdminStatus}
+                {localStatus}
               </span>
             </div>
             <div className="flex items-center justify-center text-gray-400">
@@ -224,22 +262,29 @@ const SuperAdminStatusSelector = ({
             affect their access permissions.
           </p>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={cancelStatusChange} className="text-gray-500 hover:text-gray-700 border-none hover:bg-none">
+            <AlertDialogCancel
+              onClick={cancelStatusChange}
+              className="text-gray-500 hover:text-gray-700 border-none hover:bg-none"
+              disabled={loading || isApproving}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => confirmStatusChange()}
               className="bg-primary text-white hover:bg-primary/80"
-              disabled={loading}
+              disabled={loading || isApproving}
             >
-              {loading ? "Updating..." : "Confirm Change"}
+              {loading || isApproving ? "Updating..." : "Confirm Change"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       {/* Rejection Reason Dialog */}
-      <Dialog open={isRejectionDialogOpen} onOpenChange={setIsRejectionDialogOpen}>
+      <Dialog
+        open={isRejectionDialogOpen}
+        onOpenChange={setIsRejectionDialogOpen}
+      >
         <DialogContent className="max-w-md bg-white">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -252,10 +297,13 @@ const SuperAdminStatusSelector = ({
               Please provide a reason for rejecting this authorization request.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="rejectionReason" className="text-sm font-medium text-text_color">
+              <label
+                htmlFor="rejectionReason"
+                className="text-sm font-medium text-text_color"
+              >
                 Reason for Rejection <span className="text-red">*</span>
               </label>
               <Textarea

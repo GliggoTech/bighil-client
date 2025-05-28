@@ -81,12 +81,12 @@ const ActionTaken = ({
     );
   };
   useEffect(() => {
-    
+    console.log("resetForm", resetForm);
     reset({
       resolutionNote: "",
       acknowledgements: "",
     });
-  }, [resetForm, resetForm]);
+  }, [resetForm, reset]);
 
   // Join socket room and listen to close events
   useEffect(() => {
