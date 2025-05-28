@@ -14,24 +14,7 @@ import useNotificationStore from "@/store/notificationStore";
 import { useSocket } from "@/context/socketContext";
 import { AiOutlineSolution } from "react-icons/ai";
 import RejectionReasonDisplay from "./RejectionReasonDisplay";
-
-// Acknowledgement options
-const acknowledgements = [
-  {
-    value: "Consulted And Closed",
-    label: "I have consulted with the user and closed the complaint.",
-  },
-  {
-    value: "No User Response",
-    label:
-      "I haven't received any message from the user, but I believe I have taken all necessary actions for this complaint.",
-  },
-  {
-    value: "Marked As Unwanted",
-    label:
-      "This complaint is irrelevant, invalid, or submitted without genuine intent.",
-  },
-];
+import { acknowledgements } from "@/utils/acknowledgements";
 
 const ActionTaken = ({
   complaintId,
@@ -40,19 +23,20 @@ const ActionTaken = ({
   setStatus,
   actionMessage,
   rejectionReason,
+  resetForm,
 }) => {
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       resolutionNote: "",
       acknowledgements: "",
     },
   });
-
 
   const { loading, error, fetchData } = useFetch();
   const { socket } = useSocket();
@@ -63,7 +47,7 @@ const ActionTaken = ({
     status === "Pending Authorization" ||
       status === "Resolved" ||
       status === "Unwanted"
-      ? actionMessage
+      ? actionMessage[0]
       : null
   );
 
@@ -96,6 +80,13 @@ const ActionTaken = ({
       (submittedData && canViewActionData())
     );
   };
+  useEffect(() => {
+    
+    reset({
+      resolutionNote: "",
+      acknowledgements: "",
+    });
+  }, [resetForm, resetForm]);
 
   // Join socket room and listen to close events
   useEffect(() => {
@@ -105,10 +96,11 @@ const ActionTaken = ({
     socket.on("close_complaint", (data) => {
       onStatusChange(data.timelineEvent);
       setStatus(data.timelineEvent.status_of_client);
-      setSubmittedData({
-        resolutionNote: data.resolutionNote,
-        acknowledgements: data.acknowledgements,
-      });
+      if (!resetForm)
+        setSubmittedData({
+          resolutionNote: data.resolutionNote,
+          acknowledgements: data.acknowledgements,
+        });
     });
 
     return () => socket.off("close_complaint");
@@ -150,8 +142,6 @@ const ActionTaken = ({
     }
     return null;
   };
-
-
 
   return (
     <div className="bg-white rounded-xl shadow-md p-3">
@@ -289,7 +279,10 @@ const ActionTaken = ({
           )}
 
           {/* Enhanced Rejection Reason Display */}
-          <RejectionReasonDisplay reasons={rejectionReason} />
+          <RejectionReasonDisplay
+            reasons={rejectionReason}
+            resolutionData={actionMessage}
+          />
         </form>
       ) : null}
     </div>

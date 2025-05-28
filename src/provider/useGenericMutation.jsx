@@ -11,7 +11,7 @@ export const useGenericMutation = (method = "POST", options = {}) => {
       return await apiClient.request(url, method, body, token, isMedia);
     },
     onSuccess: (data, variables) => {
-      console.log("Mutation successful:", data, variables, options);
+  
       // Show success toast if not disabled
       if (!options.skipSuccessToast) {
         toast({

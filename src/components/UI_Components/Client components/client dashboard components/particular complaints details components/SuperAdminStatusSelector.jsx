@@ -57,6 +57,7 @@ const SuperAdminStatusSelector = ({
         return "text-gray ";
     }
   };
+  
 
   const handleStatusChange = (newStatus) => {
     if (newStatus === superAdminStatus) return;

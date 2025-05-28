@@ -12,11 +12,56 @@ import Link from "next/link";
 import { User, LogOut, Settings } from "lucide-react";
 import { useState } from "react";
 import useNotificationStore from "@/store/notificationStore";
+import { getRoleTitle } from "@/utils/roleTitleHelper";
 
 const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
   const [open, setOpen] = useState(false);
   const { userName, userRole, userEmail } = useNotificationStore();
+  const title = getRoleTitle(userRole);
+  const RoleTitle = ({ role, title }) => {
+    const getRoleStyle = (role) => {
+      switch (role) {
+        case "SUPER ADMIN":
+          return "bg-primary text-white";
+        case "SUB ADMIN":
+          return "bg-blue text-white";
+        case "ADMIN":
+          return "bg-yellow text-white";
+        case "user":
+          return "bg-gray text-white";
+        default:
+          return "bg-gray-200 text-gray-800";
+      }
+    };
 
+    const getRoleIcon = (role) => {
+      switch (role) {
+        case "SUPER ADMIN":
+          return "👑"; // Crown
+        case "SUB ADMIN":
+          return "🛡️"; // Shield
+        case "ADMIN":
+          return "⚙️"; // Gear
+        case "user":
+          return "👤"; // User
+        default:
+          return "❓"; // Question mark
+      }
+    };
+
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-lg">{getRoleIcon(role)}</span>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${getRoleStyle(
+            role
+          )} shadow-sm`}
+        >
+          {title}
+        </span>
+      </div>
+    );
+  };
 
   const closeDropdown = () => {
     setOpen(false);
@@ -40,13 +85,9 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
       </div>
       <DropdownMenuContent className="w-72 flex flex-col space-y-3 bg-white text-text_color shadow-xl border border-dialog_inside_border_color rounded-lg overflow-hidden p-1  animate-slideDownAndFade">
         <div className="flex flex-col px-5 space-y-3">
-          <div className="text-text_color  text-sm">
-            <div className="text-sm font-medium text-text_color">
-              {userName}
-            </div>
-            {/* <div className="text-sm text-text_color">{userRole}</div> */}
-            <div className="text-sm text-text_color">{userEmail}</div>
-          </div>
+          <div className="text-sm font-medium text-text_color">{userName}</div>
+
+          <RoleTitle role={userRole} title={title} />
         </div>
         <DropdownMenuSeparator className="bg-primary/10" />
         <DropdownMenuItem asChild>

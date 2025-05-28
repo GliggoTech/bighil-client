@@ -230,11 +230,11 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="flex flex-col gap-3 md:flex-row">
             <Button
               variant="outline"
               onClick={handleDialogClose}
-              className="text-white bg-red"
+              className="text-white bg-red order-2 sm:order-1"
               disabled={loading}
             >
               Cancel
@@ -243,7 +243,7 @@ const StatusSelector = ({ status, complaintId, userRole }) => {
               variant="default"
               onClick={confirmStatusChange}
               disabled={isConfirmDisabled}
-              className="text-white"
+              className="text-white order-1 sm:order-2"
             >
               {loading ? (
                 <Loader2 className="animate-spin h-4 w-4 mr-2" />

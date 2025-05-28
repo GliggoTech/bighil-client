@@ -1,3 +1,4 @@
+// Fixed version of your ParticularComplaint component
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -26,8 +27,12 @@ const ParticularComplaint = ({ complaint, unread }) => {
     complaint?.authorizationStatus || "Pending"
   );
   const [actionMessage, setActionMessage] = useState(
-    complaint?.actionMessage[0] || ""
+    complaint?.actionMessage || []
   );
+  const [rejectReason, setRejectionReason] = useState(
+    complaint?.authoriseRejectionReason || []
+  );
+  const [resetForm, setResetForm] = useState(false);
   const [unseenMessageCount, setUnseenMessageCount] = useState(unread || 0);
   const [socketConnected, setSocketConnected] = useState(false);
   const { socket, isConnected, connectionError, reconnect } = useSocket();
@@ -38,18 +43,33 @@ const ParticularComplaint = ({ complaint, unread }) => {
   const hasJoinedRoomRef = useRef(false);
   const { token } = useAccessToken();
 
+  // Helper function to check if an item with the same ID already exists
+  const isDuplicate = (array, newItem, idField = "_id") => {
+    if (!newItem || !newItem[idField]) return false;
+    return array.some((item) => item[idField] === newItem[idField]);
+  };
+
   const handleStatusChange = (newEvent) => {
     if (!newEvent) return;
 
     // Ensure we're adding a valid timeline event
     if (typeof newEvent === "object" && newEvent.status_of_client) {
-      setTimeline((prev) => [newEvent, ...(Array.isArray(prev) ? prev : [])]);
+      setTimeline((prev) => {
+        const prevArray = Array.isArray(prev) ? prev : [];
+        // Check for duplicate timeline events
+        if (newEvent._id && isDuplicate(prevArray, newEvent)) {
+          console.log("Duplicate timeline event prevented:", newEvent._id);
+          return prev;
+        }
+        return [newEvent, ...prevArray];
+      });
     } else if (typeof newEvent === "string") {
       // If newEvent is just a status string, create a full event object
       const timelineEvent = {
         status_of_client: newEvent,
         timestamp: new Date().toISOString(),
         message: `Status changed to ${newEvent}`,
+        _id: `temp_${Date.now()}`, // Add temporary ID to prevent duplicates
       };
       setTimeline((prev) => [
         timelineEvent,
@@ -123,13 +143,62 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
         // Add to timeline if there's a timeline event
         if (update.timelineEvent) {
-          setTimeline((prev) => [
-            update.timelineEvent,
-            ...(Array.isArray(prev) ? prev : []),
-          ]);
+          setTimeline((prev) => {
+            const prevArray = Array.isArray(prev) ? prev : [];
+            // Check for duplicate timeline events
+            if (isDuplicate(prevArray, update.timelineEvent)) {
+              console.log(
+                "Duplicate timeline event prevented:",
+                update.timelineEvent._id
+              );
+              return prev;
+            }
+            return [update.timelineEvent, ...prevArray];
+          });
         }
+
+        // Handle actionMessage updates with duplicate prevention
         if (update.actionMessage) {
-          setActionMessage(update?.actionMessage);
+          setActionMessage((prev) => {
+            // Ensure prev is an array
+            const prevArray = Array.isArray(prev) ? prev : [];
+
+            // Check if this actionMessage already exists
+            if (isDuplicate(prevArray, update.actionMessage)) {
+              console.log(
+                "Duplicate actionMessage prevented:",
+                update.actionMessage._id
+              );
+              return prev;
+            }
+
+            // Add the new actionMessage to the beginning of the array
+            return [update.actionMessage, ...prevArray];
+          });
+        }
+
+        // Handle rejection reason updates
+        if (update.rejectionReason) {
+          setRejectionReason((prev) => {
+            const prevArray = Array.isArray(prev) ? prev : [];
+            // For rejection reasons, we might not have IDs, so check content
+            if (prevArray.includes(update.rejectionReason)) {
+              console.log(
+                "Duplicate rejection reason prevented:",
+                update.rejectionReason
+              );
+              return prev;
+            }
+            return [...prevArray, update.rejectionReason];
+          });
+        }
+
+        if (update.resetActionTakenForm) {
+          setResetForm(true);
+        }
+
+        if (update.changeSuperAdminStatus) {
+          setSuperAdminStatus(update.changeSuperAdminStatus);
         }
       } catch (error) {
         console.error("Error handling status change:", error);
@@ -151,7 +220,14 @@ const ParticularComplaint = ({ complaint, unread }) => {
         hasJoinedRoomRef.current = false;
       }
     };
-  }, [socket, complaint?._id, userRole, isConnected]);
+  }, [
+    socket,
+    complaint?._id,
+    userRole,
+    isConnected,
+    // Removed actionMessage, rejectReason, resetForm from dependencies
+    // to prevent unnecessary re-renders and potential duplicate handling
+  ]);
 
   // Handle notification decrement from URL params
   useEffect(() => {
@@ -253,7 +329,8 @@ const ParticularComplaint = ({ complaint, unread }) => {
                     status={status}
                     setStatus={setStatus}
                     actionMessage={actionMessage}
-                    rejectionReason={complaint?.authoriseRejectionReason}
+                    rejectionReason={rejectReason}
+                    resetForm={resetForm}
                   />
                 </div>
               </div>
