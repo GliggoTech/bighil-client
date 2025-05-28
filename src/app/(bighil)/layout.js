@@ -18,7 +18,7 @@ export default async function Bighil_Layout({ children }) {
     <html lang="en">
       <body className={poppins.variable}>
         {children}
-        {/* <ContactComponent /> */}
+   
       </body>
     </html>
   );

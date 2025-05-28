@@ -1,5 +1,4 @@
 export const dynamic = "force-dynamic";
-import ContactComponent from "@/components/UI_Components/PUBLIC_Components/ContactComponent";
 import ComplaintCard from "@/components/UI_Components/USER_Components/USER_Dashboard_Components/ComplaintCard";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
