@@ -232,9 +232,9 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
     () => (
       <button
         onClick={handleToggleChat}
-        className={`bg-gradient-to-br from-blue to-purple text-white p-4 rounded-full shadow-2xl transition-all
+        className={`bg-gradient-to-br from-primary to-primary/95 text-white p-4 rounded-full shadow-2xl transition-all
           ${isOpen ? "scale-0" : "scale-100"}
-          hover:from-blue/90 hover:to-purple/90 fixed bottom-6 right-6 z-50 group`}
+          hover:from-primary/90 hover:to-primary/90 fixed bottom-6 right-6 z-50 group`}
         disabled={!isTokenReady}
       >
         {!isTokenReady ? (
@@ -256,10 +256,12 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   const MessageList = () => {
     const messageList = useMemo(() => {
       const isPrivilegedViewer =
-        userRole === "BIGHIL" || userRole === "SUB ADMIN";
+        userRole === "BIGHIL" || userRole === "SUB ADMIN" || userRole=="SUPER ADMIN";
 
       return messages.map((msg, index) => {
-        const isAdminMessage = ["ADMIN", "SUPER ADMIN"].includes(msg.sender);
+        const isAdminMessage = ["SUB ADMIN", "SUPER ADMIN"].includes(
+          msg.sender
+        );
         const isOwnMessage = isPrivilegedViewer
           ? isAdminMessage
           : msg.sender === userRole;
@@ -292,7 +294,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
                   "relative flex flex-col space-y-1 rounded-2xl p-4 shadow-sm transform transition-all",
                   "duration-200 hover:scale-[1.015] hover:shadow-lg",
                   {
-                    "bg-gradient-to-br from-blue/80 to-indigo/80 text-white":
+                    "bg-primary/90 text-white":
                       isOwnMessage,
                     "bg-white border border-gray-100 shadow-md": !isOwnMessage,
                     "ml-0": !isOwnMessage && !isConsecutive,
@@ -303,14 +305,14 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
               >
                 {/* Sender Label - Always show for admin messages in privileged view */}
                 {!isConsecutive && isAdminMessage && isPrivilegedViewer && (
-                  <span className="text-xs font-medium text-black mb-1">
+                  <span className="text-xs font-medium text-gray-800 opacity-80  mb-1">
                     {msg.sender}
                   </span>
                 )}
 
                 {/* Show sender label for non-admin messages in normal view */}
                 {!isConsecutive && !isPrivilegedViewer && !isOwnMessage && (
-                  <span className="text-xs font-medium text-gray-500 mb-1">
+                  <span className="text-xs font-medium text-primary mb-1">
                     {msg.sender}
                   </span>
                 )}
@@ -322,7 +324,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
 
                 {/* Message Metadata */}
                 <div
-                  className={cn("flex items-center gap-2 mt-2", {
+                  className={cn("flex items-center justify-end gap-2 mt-2", {
                     "justify-end": isOwnMessage,
                     "justify-start": !isOwnMessage,
                   })}
@@ -378,11 +380,11 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
           ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}
           fixed bottom-20 right-6 w-[400px] h-[70vh] flex flex-col`}
       >
-        <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue to-purple z-50">
+        <div className="flex items-center justify-between p-4  bg-primary z-50">
           <h3 className="text-lg font-medium text-white">Chat Support</h3>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors bg-red rounded-full"
           >
             <IoClose className="w-6 h-6" />
           </button>
@@ -402,32 +404,34 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
           {<MessageList />}
           <div ref={messagesEndRef} />
         </div>
-        {userRole != "ADMIN" && userRole != "BIGHIL" && (
-          <div className="sticky bottom-0 p-4 border-t bg-white/95 backdrop-blur-sm z-10">
-            <div className="flex gap-3">
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                placeholder="Type your message..."
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none
-          focus:border-purple/50  focus:ring-purple-200 transition-all
+        {userRole != "ADMIN" &&
+          userRole != "BIGHIL" &&
+          userRole != "SUPER ADMIN" && (
+            <div className="sticky bottom-0 p-4 border-t bg-white/95 backdrop-blur-sm z-10">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                  placeholder="Type your message..."
+                  className="flex-1 px-4 py-3 rounded-xl border border-primary focus:outline-none
+          focus:border-primary/50  focus:ring-primary transition-all
           placeholder:text-text_color text-sm"
-              />
+                />
 
-              <button
-                onClick={sendMessage}
-                disabled={!message.trim()}
-                className="p-3 rounded-xl bg-gradient-to-br from-blue to-purple text-white
-          hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed
+                <button
+                  onClick={sendMessage}
+                  disabled={!message.trim()}
+                  className="p-3 rounded-xl bg-primary text-white
+          disabled:opacity-50 disabled:cursor-not-allowed
           transition-all transform hover:scale-105 active:scale-95 shadow-sm"
-              >
-                <IoSend className="w-5 h-5" />
-              </button>
+                >
+                  <IoSend className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );
