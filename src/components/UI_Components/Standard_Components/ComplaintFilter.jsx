@@ -37,6 +37,7 @@ import CalendarDateFilter from "./CalendarDateFilter";
 import { isValid, parseISO } from "date-fns";
 import { format } from "date-fns";
 import DepartmentFilter from "./DepartmentFilter";
+import useNotificationStore from "@/store/notificationStore";
 
 const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
@@ -49,6 +50,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     year: "",
   });
   const [department, setDepartment] = useState("");
+  const { userRole } = useNotificationStore();
   const [clientName, setClientName] = useState("");
   const searchParams = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
@@ -200,7 +202,6 @@ const ComplaintFilter = ({ bighil = false }) => {
         queryParams.append("page", params.page.toString());
         // Build URL
         const url = getBackendUrl();
-      
 
         const finalUrl = bighil
           ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`
@@ -349,6 +350,7 @@ const ComplaintFilter = ({ bighil = false }) => {
           <StatusFilter
             value={status}
             onChange={setStatus}
+            userRole={userRole}
             className="bg-white/90 focus:bg-white
               
                transition-shadow duration-200"

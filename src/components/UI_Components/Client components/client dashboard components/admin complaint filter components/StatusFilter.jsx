@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Circle } from "lucide-react";
 
-const statuses = [
+const baseStatuses = [
   { label: "All", value: "all", color: "text-text_color", icon: Circle },
   { label: "Pending", value: "Pending", color: "text-yellow", icon: Circle },
   {
@@ -20,7 +20,21 @@ const statuses = [
   { label: "Resolved", value: "Resolved", color: "text-success", icon: Circle },
 ];
 
-const StatusFilter = ({ value, onChange }) => {
+const StatusFilter = ({ value, onChange, userRole }) => {
+  // Dynamically extend the list if userRole is SUPER ADMIN
+  const statuses =
+    userRole === "SUPER ADMIN"
+      ? [
+          ...baseStatuses,
+          {
+            label: "Pending Authorization",
+            value: "Pending Authorization",
+            color: "text-blue", // You can customize this
+            icon: Circle,
+          },
+        ]
+      : baseStatuses;
+
   const selectedStatus = statuses.find((status) => status.value === value);
 
   return (
