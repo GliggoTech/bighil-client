@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { User, LogOut, Settings } from "lucide-react";
+import { User, LogOut, Settings, List } from "lucide-react";
 import { useState } from "react";
 import useNotificationStore from "@/store/notificationStore";
 import { getRoleTitle } from "@/utils/roleTitleHelper";
@@ -116,6 +116,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
             </Link>
           </DropdownMenuItem>
         )}
+      
 
         <DropdownMenuSeparator className="bg-dialog_inside_border_color" />
 

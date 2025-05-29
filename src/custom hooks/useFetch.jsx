@@ -31,6 +31,7 @@ const useFetch = () => {
           : JSON.stringify(body),
         credentials: "include", // Add credentials here
       };
+    
 
       try {
         setLoading(true);
@@ -50,7 +51,7 @@ const useFetch = () => {
       } catch (error) {
         setLoading(false);
         setError(error.message);
-      
+
         throw error;
       }
     },
