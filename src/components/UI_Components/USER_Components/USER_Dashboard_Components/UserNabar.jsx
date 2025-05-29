@@ -117,7 +117,7 @@ const UserNavbar = () => {
             >
               <div className="relative h-12 ">
                 <Image
-                  src="/logo.png"
+                  src="/bighilLogo.png"
                   width={160}
                   height={40}
                   alt="logo"

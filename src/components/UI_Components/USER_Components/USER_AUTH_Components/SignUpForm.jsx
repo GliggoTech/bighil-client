@@ -28,6 +28,7 @@ import { useState } from "react";
 import useNotificationStore from "@/store/notificationStore";
 import { userLogin, userSignup } from "@/app/actions/user.action";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Image from "next/image";
 
 const SignupSigninForm = ({ mode = "signup" }) => {
   // Form validation schema
@@ -118,7 +119,6 @@ const SignupSigninForm = ({ mode = "signup" }) => {
         );
       }
     } catch (error) {
-      console.error("Auth error:", error);
       setFormError(
         error?.message || "An unexpected error occurred. Please try again."
       );
@@ -134,6 +134,14 @@ const SignupSigninForm = ({ mode = "signup" }) => {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden ">
           {/* Form header */}
           <div className="p-6 bg-primary text-white">
+            {/* <div className=" flex justify-center mb-2">
+              <Image
+                src="/bighilLogo.png"
+                alt="logo"
+                width={100}
+                height={100}
+              />
+            </div> */}
             <h2 className="text-2xl font-bold">
               {mode === "signup" ? "Create Account" : "Welcome Back"}
             </h2>
