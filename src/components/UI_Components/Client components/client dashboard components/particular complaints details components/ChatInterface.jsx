@@ -105,7 +105,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
               // Add default message only if no messages exist
               const defaultMessage = {
                 _id: "default-msg",
-                sender: "ADMIN",
+                sender: "SUB ADMIN",
                 content: "How can I help you?",
                 createdAt: new Date().toISOString(),
               };
@@ -256,7 +256,10 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
   const MessageList = () => {
     const messageList = useMemo(() => {
       const isPrivilegedViewer =
-        userRole === "BIGHIL" || userRole === "SUB ADMIN" || userRole=="SUPER ADMIN";
+        userRole === "BIGHIL" ||
+        userRole === "SUB ADMIN" ||
+        userRole == "SUPER ADMIN" ||
+        userRole == "ADMIN";
 
       return messages.map((msg, index) => {
         const isAdminMessage = ["SUB ADMIN", "SUPER ADMIN"].includes(
@@ -294,8 +297,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
                   "relative flex flex-col space-y-1 rounded-2xl p-4 shadow-sm transform transition-all",
                   "duration-200 hover:scale-[1.015] hover:shadow-lg",
                   {
-                    "bg-primary/90 text-white":
-                      isOwnMessage,
+                    "bg-primary/90 text-white": isOwnMessage,
                     "bg-white border border-gray-100 shadow-md": !isOwnMessage,
                     "ml-0": !isOwnMessage && !isConsecutive,
                     "mr-0": isOwnMessage && !isConsecutive,
@@ -305,7 +307,7 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
               >
                 {/* Sender Label - Always show for admin messages in privileged view */}
                 {!isConsecutive && isAdminMessage && isPrivilegedViewer && (
-                  <span className="text-xs font-medium text-gray-800 opacity-80  mb-1">
+                  <span className="text-xs font-medium text-sky-100  mb-1">
                     {msg.sender}
                   </span>
                 )}

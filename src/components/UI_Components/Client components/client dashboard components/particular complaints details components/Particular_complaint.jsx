@@ -299,14 +299,16 @@ const ParticularComplaint = ({ complaint, unread }) => {
                 </div>
 
                 {/* Notes Section */}
-                {userRole !== "user" && userRole !== "BIGHIL" && (
-                  <div className="rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 ">
-                    <NotesSection
-                      notes={complaint?.notes || []}
-                      complaintId={complaint?._id}
-                    />
-                  </div>
-                )}
+                {userRole !== "user" &&
+                  userRole !== "BIGHIL" &&
+                  userRole !== "ADMIN" && (
+                    <div className="rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 ">
+                      <NotesSection
+                        notes={complaint?.notes || []}
+                        complaintId={complaint?._id}
+                      />
+                    </div>
+                  )}
                 <div className="flex gap-6 justify-between  rounded-xl shadow-sm  dark:border-secondary-dark transition-colors duration-200 hover:border-dialog_inside_border_color hover:rounded-xl">
                   {userRole == "SUB ADMIN" && (
                     <StatusSelector
