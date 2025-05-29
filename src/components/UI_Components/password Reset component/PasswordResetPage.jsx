@@ -37,15 +37,15 @@ import { cn } from "@/lib/utils";
 
 // Form schemas
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().trim().email("Please enter a valid email address"),
 });
 
 const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
+  otp: z.string().trim().length(6, "OTP must be 6 digits"),
 });
 
 const passwordSchema = z.object({
-  password: z.string().min(1, "Password must be at least 8 characters"),
+  password: z.string().trim().min(1, "Password must be at least 8 characters"),
 });
 
 export default function PasswordResetPage({ role }) {
@@ -125,7 +125,6 @@ export default function PasswordResetPage({ role }) {
         setCurrentStep("password");
       }
     } catch (err) {
-  
       console.log(err);
     }
   };

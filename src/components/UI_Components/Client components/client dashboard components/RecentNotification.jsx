@@ -82,66 +82,73 @@ const RecentNotification = ({ recentNotifications }) => {
           </Button>
         </div>
       </CardHeader>
+      {recentNotifications.length > 0 ? (
+        <CardContent className="p-0">
+          <Table className="w-full border border-dialog_inside_border_color rounded-b-3xl">
+            <TableHeader className="!border-b-2 !border-dialog_inside_border_color dark:!border-b-gray-700">
+              <TableRow className="bg-white dark:bg-surface-dark">
+                <TableHead />
+                <TableHead className="xl:w-[250px] font-semibold text-text_color dark:text-text-light">
+                  Notification
+                </TableHead>
+                <TableHead className=" hidden md:table-cell font-semibold text-text_color dark:text-text-light">
+                  Type
+                </TableHead>
+                <TableHead className="font-semibold text-text_color dark:text-text-light">
+                  Action
+                </TableHead>
+              </TableRow>
+            </TableHeader>
 
-      <CardContent className="p-0">
-        <Table className="w-full border border-dialog_inside_border_color rounded-b-3xl">
-          <TableHeader className="!border-b-2 !border-dialog_inside_border_color dark:!border-b-gray-700">
-            <TableRow className="bg-white dark:bg-surface-dark">
-              <TableHead />
-              <TableHead className="xl:w-[250px] font-semibold text-text_color dark:text-text-light">
-                Notification
-              </TableHead>
-              <TableHead className=" hidden md:table-cell font-semibold text-text_color dark:text-text-light">
-                Type
-              </TableHead>
-              <TableHead className="font-semibold text-text_color dark:text-text-light">
-                Action
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+            <TableBody className="bg-white dark:bg-surface-dark rounded-full">
+              {recentNotifications.map((notification) => {
+                const typeStyles = getTypeStyles(notification.type);
+                return (
+                  <TableRow
+                    key={notification._id}
+                    className="hover:bg-gray-100 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark transition-colors duration-200"
+                  >
+                    <TableCell className="pl-4 ">
+                      {getNotificationIcon(notification.type)}
+                    </TableCell>
 
-          <TableBody className="bg-white dark:bg-surface-dark rounded-full">
-            {recentNotifications.map((notification) => {
-              const typeStyles = getTypeStyles(notification.type);
-              return (
-                <TableRow
-                  key={notification._id}
-                  className="hover:bg-gray-100 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark transition-colors duration-200"
-                >
-                  <TableCell className="pl-4 ">
-                    {getNotificationIcon(notification.type)}
-                  </TableCell>
+                    <TableCell className="text-sm">
+                      {notification.message}
+                    </TableCell>
 
-                  <TableCell className="text-sm">
-                    {notification.message}
-                  </TableCell>
-
-                  <TableCell className="hidden md:table-cell">
-                    <Badge
-                      className={`text-xs font-normal border transition-colors duration-200 ${typeStyles.badge} ${typeStyles.hover}`}
-                    >
-                      {notification.type.replace(/_/g, " ")}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell>
-                    <Link
-                      href={`/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`}
-                    >
-                      <Button
-                        variant="outline"
-                        className="text-xs text-white border-none bg-primary hover:bg-primary/80 transition-all duration-200"
+                    <TableCell className="hidden md:table-cell">
+                      <Badge
+                        className={`text-xs font-normal border transition-colors duration-200 ${typeStyles.badge} ${typeStyles.hover}`}
                       >
-                        View
-                      </Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </CardContent>
+                        {notification.type.replace(/_/g, " ")}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell>
+                      <Link
+                        href={`/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`}
+                      >
+                        <Button
+                          variant="outline"
+                          className="text-xs text-white border-none bg-primary hover:bg-primary/80 transition-all duration-200"
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      ) : (
+        <div className="bg-white py-6">
+          <h1 className="text-center text-xl  text-text_color dark:text-text-light">
+            No recent notifications
+          </h1>
+        </div>
+      )}
     </Card>
   );
 };

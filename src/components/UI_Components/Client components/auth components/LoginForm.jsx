@@ -40,8 +40,12 @@ import {
 import VerifyTwoFACode from "../../Standard_Components/VerifytwoFACode";
 
 const formSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email format"),
-  password: z.string().min(1, "Password is required"),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .email("Invalid email format"),
+  password: z.string().trim().min(1, "Password is required"),
 });
 
 export default function LoginForm() {
@@ -82,7 +86,6 @@ export default function LoginForm() {
       }
 
       if (res.success) {
-      
         setIsSuccess(true);
         setCurrentUserId(res.user.id);
         setCurrentUserRole(res.user.role);

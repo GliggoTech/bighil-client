@@ -9,12 +9,12 @@ export const submissionTypesForFormSchema = [
 ];
 export const complaintTypes = ["Anonymous", "Non-Anonymous"];
 export const formSchema = z.object({
-  companyName: z.string().min(1, "Company selection required"),
+  companyName: z.string().trim().min(1, "Company selection required"),
   submissionType: z.enum(submissionTypesForFormSchema, {
     required_error: "Submission type is required",
   }),
   complaintMessage: z
-    .string()
+    .string().trim()
     .min(20, "Description must be at least 20 characters"),
   tags: z.array(z.string()).optional(),
   files: z.array(z.instanceof(File)).optional(),

@@ -34,8 +34,8 @@ import { BighilLogin } from "@/app/actions/bighil.actions";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(1, "Password is required"),
+  email: z.string().trim().email("Please enter a valid email"),
+  password: z.string().trim().min(1, "Password is required"),
 });
 
 function BighilLoginForm() {

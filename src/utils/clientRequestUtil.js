@@ -30,7 +30,7 @@ export const timeSlots = [
 ];
 
 export const clientRequestFormSchema = z.object({
-  companyName: z.string().min(2, "Company name is required"),
+  companyName: z.string().trim().min(2, "Company name is required"),
   numberOfEmployees: z
     .number({ invalid_type_error: "Must be a number" })
     .positive("Must be a positive number"),
@@ -39,6 +39,7 @@ export const clientRequestFormSchema = z.object({
   message: z
 
     .string()
+    .trim()
     // .min(10, "Message should be at least 10 characters")
     .optional(),
   // bestContactDate: z.date({ required_error: "Date is required" }),

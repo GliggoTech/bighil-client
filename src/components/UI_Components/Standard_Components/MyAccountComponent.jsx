@@ -27,10 +27,13 @@ import { toast } from "@/hooks/use-toast";
 
 const formSchema = z
   .object({
-    newPassword: z.string().min(1, "Password must be at least 8 characters"),
+    newPassword: z
+      .string()
+      .trim()
+      .min(1, "Password must be at least 8 characters"),
     // .regex(/[A-Z]/, "Must contain at least one uppercase letter")
     // .regex(/[0-9]/, "Must contain at least one number"),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().trim(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",

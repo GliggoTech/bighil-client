@@ -39,7 +39,7 @@ import useNotificationStore from "@/store/notificationStore";
 // Schema for 6-digit numeric OTP
 const otpSchema = z.object({
   code: z
-    .string()
+    .string().trim()
     .min(6, "Code must be 6 digits")
     .max(6, "Code must be 6 digits")
     .regex(/^\d{6}$/, "Only digits allowed"),

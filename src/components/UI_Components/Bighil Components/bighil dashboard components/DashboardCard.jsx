@@ -18,8 +18,8 @@ const getTrendStyles = (trend) => {
       };
     case "new":
       return {
-        color: "text-gray",
-        bgColor: "bg-gray/10",
+        color: "text-primary",
+        bgColor: "bg-primary/10",
         icon: <Plus className="h-4 w-4" />,
         label: "New",
       };
@@ -37,6 +37,7 @@ export default function DashboardCard({ cards }) {
     <div className="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-0">
       {cards.map((card, index) => {
         const trendStyles = getTrendStyles(card.trend);
+
         return (
           <Card
             key={index}
