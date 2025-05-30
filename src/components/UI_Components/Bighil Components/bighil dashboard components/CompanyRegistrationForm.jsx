@@ -37,15 +37,17 @@ export default function CompanyRegistrationForm({
 
   const form = useForm({
     resolver: zodResolver(clientAdminSchema),
-    defaultValues: selectedClient || {
-      companyName: "",
-      contactNumber: "+",
-      companyEmail: "",
-      companyAddress: "",
-   
-      companySize: 0,
-      companyType: "",
-      admins: [{ name: "", email: "", role: "SUPER ADMIN" }],
+    defaultValues: {
+      companyName: selectedClient?.companyName || "",
+      contactNumber: selectedClient?.contactNumber || "+",
+      companyEmail: selectedClient?.companyEmail || "",
+      companyAddress: selectedClient?.companyAddress || "",
+      companySize: selectedClient?.companySize || 0,
+      companyType: selectedClient?.companyType || "",
+      visibleToIT: selectedClient?.visibleToIT ?? false, // ✅ Use nullish coalescing
+      admins: selectedClient?.admins || [
+        { name: "", email: "", role: "SUPER ADMIN" },
+      ],
     },
     mode: "onChange",
   });
@@ -101,6 +103,7 @@ export default function CompanyRegistrationForm({
   };
 
   async function onSubmit(values) {
+    console.log(values);
     const url = getBackendUrl();
     let res;
     if (selectedClient && viewMode == true) {

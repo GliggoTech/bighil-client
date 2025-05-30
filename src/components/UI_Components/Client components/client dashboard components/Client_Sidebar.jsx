@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -19,14 +19,18 @@ const sidebarVariants = {
 };
 
 const Client_Sidebar = ({ isOpen, setIsOpen }) => {
+  const [visibleToIT, setVisibleToIT] = useState(null);
+  const [filteredSidebarItems, setFilteredSidebarItems] =
+    useState(clientSidebarValues);
   const pathname = usePathname();
-  const { notificationCount, setTotalUnreadCount } = useNotificationStore();
+  const { notificationCount, setTotalUnreadCount, userRole } =
+    useNotificationStore();
   const { fetchData } = useFetch();
   const { token } = useAccessToken();
   const isTouchDevice = useIsTouchDevice();
 
   const hasFetchedRef = useRef(false);
-
+  const hasUserDataFetchedRef = useRef(false);
   useEffect(() => {
     const fetchNotificationCount = async () => {
       if (!token || hasFetchedRef.current) return;
@@ -54,7 +58,49 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
 
     fetchNotificationCount();
   }, [token, fetchData, setTotalUnreadCount, notificationCount]);
+  // Fetch user data to get role and visibleToIT
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!token || hasUserDataFetchedRef.current) return;
 
+      try {
+        const url = getBackendUrl();
+        const res = await fetchData(
+          `${url}/api/client/visible-to-it`, // Adjust this endpoint based on your API
+          "GET",
+          {},
+          token,
+          false
+        );
+        console.log("res", res);
+
+        if (res?.success) {
+          hasUserDataFetchedRef.current = true;
+
+          setVisibleToIT(res.data); // Adjust based on your data structure
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [token, fetchData]);
+  // Filter sidebar items based on user role and visibleToIT
+  useEffect(() => {
+    if (userRole === null || visibleToIT === null) return;
+
+    let filteredItems = [...clientSidebarValues];
+
+    // If user is ADMIN and visibleToIT is false, remove complaints route
+    if (userRole === "ADMIN" && !visibleToIT) {
+      filteredItems = filteredItems.filter(
+        (item) => item.title !== "Complaints"
+      );
+    }
+
+    setFilteredSidebarItems(filteredItems);
+  }, [userRole, visibleToIT]);
   const toggleSidebar = useCallback(
     () => setIsOpen((prev) => !prev),
     [setIsOpen]
@@ -86,7 +132,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar Navigation */}
       <nav className="flex flex-col gap-2">
-        {clientSidebarValues.map((item) => {
+        {filteredSidebarItems.map((item) => {
           const isActive = pathname === item.path;
           const showNotificationBadge =
             item.title === "Notifications" && notificationCount > 0;

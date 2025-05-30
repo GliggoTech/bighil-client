@@ -2,7 +2,10 @@ import { Shield, User } from "lucide-react";
 import { z } from "zod";
 
 export const clientAdminSchema = z.object({
-  companyName: z.string().trim().min(2, "Company name must be at least 2 characters"),
+  companyName: z
+    .string()
+    .trim()
+    .min(2, "Company name must be at least 2 characters"),
   contactNumber: z
     .string()
     .regex(/^\+\d{1,15}$/, "Invalid phone number format"),
@@ -16,12 +19,14 @@ export const clientAdminSchema = z.object({
     )
     .nonempty("At least one admin required"),
   companyAddress: z
-    .string().trim()
+    .string()
+    .trim()
     .min(2, "Company address must be at least 2 characters"),
 
   companySize: z.coerce.number().min(1, "Company size must be at least 1"),
   companyType: z.string().min(2, "Company type must be at least 2 characters"),
   companyEmail: z.string().trim().email("Invalid email address"),
+  visibleToIT: z.boolean().default(false),
 });
 export const roleColors = {
   "SUPER ADMIN": "bg-gradient-to-r from-indigo to-indigo/50",

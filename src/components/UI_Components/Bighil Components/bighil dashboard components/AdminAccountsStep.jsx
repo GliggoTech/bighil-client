@@ -29,6 +29,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { roleBadgeColors, roleIcons } from "@/utils/adminsConstants";
+import VisibilityToggle from "./VisibilityToggle";
 
 const AdminAccountsStep = ({
   form,
@@ -84,8 +85,6 @@ const AdminAccountsStep = ({
           </TooltipProvider>
         )}
       </div>
-
-      {/* <Separator className="bg-dialog_inside_border_color dark:bg-gray-700" /> */}
 
       <div className="space-y-6">
         {fields.map((field, index) => (
@@ -275,6 +274,10 @@ const AdminAccountsStep = ({
             </div>
           </div>
         ))}
+      </div>
+      <div className="">
+      
+        <VisibilityToggle form={form} viewMode={viewMode} />
       </div>
     </div>
   );

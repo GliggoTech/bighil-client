@@ -1,6 +1,6 @@
 import Particular_complaint from "@/components/UI_Components/Client components/client dashboard components/particular complaints details components/Particular_complaint";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function ParticularComplaintPage({ params }) {
   try {
@@ -8,7 +8,7 @@ export default async function ParticularComplaintPage({ params }) {
     const { id } = complaintIdParams;
 
     if (!id) {
-      redirect("/"); // Malformed URL, redirect to home or 404
+      notFound();
     }
 
     const res = await fetchServerSideData(
@@ -20,14 +20,13 @@ export default async function ParticularComplaintPage({ params }) {
     );
 
     if (!res?.complaint) {
-      redirect("/"); // Or optionally return a 404 component
+      notFound();
     }
 
     return (
       <Particular_complaint complaint={res.complaint} unread={res.unread} />
     );
   } catch (error) {
-    console.error("Failed to fetch complaint:", error);
-    redirect("/"); // fallback if something crashes
+    notFound();
   }
 }

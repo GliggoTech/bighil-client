@@ -31,7 +31,6 @@ const useFetch = () => {
           : JSON.stringify(body),
         credentials: "include", // Add credentials here
       };
-    
 
       try {
         setLoading(true);

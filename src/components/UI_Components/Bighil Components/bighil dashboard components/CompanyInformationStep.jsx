@@ -20,10 +20,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { companyType } from "@/lib/complaintSchema";
 import { Building, Phone } from "lucide-react";
 import React from "react";
-import { MdEmail } from "react-icons/md";
+import { FaBuilding, FaUsers } from "react-icons/fa";
+import { MdBuild, MdBusinessCenter, MdEmail, MdPhone } from "react-icons/md";
+import { FaLocationDot } from "react-icons/fa6";
 
 const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
-
   return (
     <div className="space-y-2 ">
       <div className="flex items-center space-x-1">
@@ -43,7 +44,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <Building className="h-4 w-4 text-primary" />
+                <FaBuilding className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Company Name</span>
               </FormLabel>
               <FormControl>
@@ -68,7 +69,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <Phone className="h-4 w-4 text-primary" />
+                <MdPhone className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Contact Number</span>
               </FormLabel>
               <FormControl>
@@ -123,7 +124,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <MdEmail className="h-4 w-4 text-primary" />
+                <FaLocationDot className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Company Address</span>
               </FormLabel>
               <FormControl>
@@ -147,7 +148,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <MdEmail className="h-4 w-4 text-primary" />
+                <FaUsers  className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Number of Employees</span>
               </FormLabel>
               <FormControl>
@@ -172,7 +173,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <MdEmail className="h-4 w-4 text-primary" />
+                <MdBusinessCenter  className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Company Type</span>
               </FormLabel>
               <FormControl>
