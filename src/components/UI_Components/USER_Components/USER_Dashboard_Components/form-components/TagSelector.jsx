@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/command";
 import { X } from "lucide-react";
 import priorityMapping from "@/lib/tags";
+import { FaQuestion } from "react-icons/fa";
+import { InfoTooltip } from "../InfoTooltip";
 
 export function TagSelector({ form }) {
   const [openTags, setOpenTags] = useState(false);
@@ -27,7 +29,11 @@ export function TagSelector({ form }) {
       name="tags"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-text_color"> Tags</FormLabel>
+          <FormLabel className="text-text_color flex items-center gap-1 relative">
+            {" "}
+            Tags{" "}
+            <InfoTooltip content="Tags help identify the nature and urgency of your complaint. Choose tags carefully, as they influence how your complaint is prioritized and handled." />
+          </FormLabel>
           <div className="flex flex-wrap gap-2 sm:gap-3 relative">
             {field.value?.map((tag) => (
               <Badge

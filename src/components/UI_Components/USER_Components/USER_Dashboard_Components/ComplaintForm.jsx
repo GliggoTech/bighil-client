@@ -183,7 +183,7 @@ export function ComplaintForm() {
           />
 
           {/* Display form-level errors */}
-          <FormMessage className="text-red-500" />
+          <FormMessage className="text-red/50" />
 
           <Button
             type="submit"

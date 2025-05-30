@@ -17,6 +17,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { InfoTooltip } from "../InfoTooltip";
 
 const ComplaintTypeSelector = ({ form }) => {
   const [showDialog, setShowDialog] = useState(false);
@@ -28,7 +29,28 @@ const ComplaintTypeSelector = ({ form }) => {
       name="complaintType"
       render={({ field }) => (
         <FormItem className="space-y-2 mt-6">
-          <p className="text-sm font-medium text-text_color">Complaint Type</p>
+          <p className="text-sm flex items-center gap-2 font-medium text-text_color">
+            Complaint Type{" "}
+            <InfoTooltip
+              content={
+                <>
+                  <p className="mb-1 font-medium text-sm text-gray-800">
+                    Complaint Types:
+                  </p>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1">
+                    <li>
+                      <strong>Anonymous:</strong> Your identity will not be
+                      shared. Choose this if you prefer confidentiality.
+                    </li>
+                    <li>
+                      <strong>Non-Anonymous:</strong> Your identity will be
+                      shared with the appropriate authorities for transparency.
+                    </li>
+                  </ul>
+                </>
+              }
+            />
+          </p>
           <div className="grid grid-cols-2 mt-2">
             {complaintTypes.map((type) => (
               <div key={type} className="flex items-center space-x-2">
