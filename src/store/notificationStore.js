@@ -12,7 +12,6 @@ const useNotificationStore = create(
       lastSync: null,
       userName: null,
       userEmail: null,
-      deviceId: null,
 
       currentTheme: "light", // Default theme
 
@@ -27,9 +26,6 @@ const useNotificationStore = create(
       },
       setCurrentTheme: (theme) => {
         set({ currentTheme: theme });
-      },
-      setCurrentDeviceId: (deviceId) => {
-        set({ deviceId });
       },
 
       addNotification: (notification) => {
