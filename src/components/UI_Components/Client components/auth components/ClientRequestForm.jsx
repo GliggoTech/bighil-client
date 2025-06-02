@@ -36,6 +36,7 @@ import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { toast } from "@/hooks/use-toast";
 import ClientRequestFormSuccessPopUp from "./ClientRequestFormSuccessPopUp";
+import { useRouter } from "next/navigation";
 
 export default function ClientRequestForm() {
   const form = useForm({
@@ -50,6 +51,7 @@ export default function ClientRequestForm() {
       // bestContactTime: "",
     },
   });
+  const router = useRouter();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const { fetchData, loading, succes, error } = useFetch();
   const [showPopUp, setShowpopUp] = useState(false);
@@ -91,6 +93,7 @@ export default function ClientRequestForm() {
       // bestContactTime: "",
     });
     setShowpopUp(false);
+    router.push("/");
   };
 
   return (
@@ -202,7 +205,7 @@ export default function ClientRequestForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-text_color font-medium">
-                  Send us a message 
+                  Send us a message
                 </FormLabel>
                 <FormControl>
                   <Textarea

@@ -15,12 +15,12 @@ import { useRouter } from "next/navigation";
 
 const ClientRequestFormSuccessPopUp = ({ showPopUp, onClose }) => {
   const [showRedirectMessage, setShowRedirectMessage] = useState(false);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(5);
   const router = useRouter();
 
   useEffect(() => {
     if (showPopUp) {
-      setCountdown(10); // Reset countdown when popup opens
+      setCountdown(5); // Reset countdown when popup opens
 
       const redirectMessageTimer = setTimeout(() => {
         setShowRedirectMessage(true);
