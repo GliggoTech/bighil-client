@@ -12,6 +12,7 @@ import useNotificationStore from "@/store/notificationStore";
 
 import { useSocket } from "@/context/socketContext";
 import { cn } from "@/lib/utils";
+import { getRoleTitle } from "@/utils/roleTitleHelper";
 
 const PAGE_LIMIT = 15;
 
@@ -308,14 +309,14 @@ const ChatInterface = ({ complaintId, unseenMessageCount }) => {
                 {/* Sender Label - Always show for admin messages in privileged view */}
                 {!isConsecutive && isAdminMessage && isPrivilegedViewer && (
                   <span className="text-xs font-medium text-sky-100  mb-1">
-                    {msg.sender}
+                    {getRoleTitle(msg.sender)}
                   </span>
                 )}
 
                 {/* Show sender label for non-admin messages in normal view */}
                 {!isConsecutive && !isPrivilegedViewer && !isOwnMessage && (
                   <span className="text-xs font-medium text-primary mb-1">
-                    {msg.sender}
+                    {getRoleTitle(msg.sender)}
                   </span>
                 )}
 

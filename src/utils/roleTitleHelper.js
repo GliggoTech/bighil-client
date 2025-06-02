@@ -7,7 +7,7 @@ export function getRoleTitle(role) {
     case "ADMIN":
       return "Tech Support";
     case "user":
-      return "General User";
+      return "User";
     default:
       return "Unknown Role";
   }
