@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Client_Navbar = ({ isOpen }) => {
-  const { userRole } = useNotificationStore();
+  const { userRole, deviceId } = useNotificationStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ const Client_Navbar = ({ isOpen }) => {
   const handleLogOut = async () => {
     try {
       setLoading(true);
-      const res = await clientLogout();
+      const res = await clientLogout(deviceId);
       if (res.success) {
         useNotificationStore.setState({
           userId: null,

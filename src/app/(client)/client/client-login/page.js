@@ -1,9 +1,9 @@
-import LoginForm from "@/components/UI_Components/Client components/auth components/LoginForm";
+import EnhancedLoginForm from "@/components/UI_Components/Client components/auth components/clienLoginFormComponents/EnhancedLoginForm";
 
 export default function Client_Login_Page() {
   return (
     <div>
-      <LoginForm />
+      <EnhancedLoginForm />
     </div>
   );
 }

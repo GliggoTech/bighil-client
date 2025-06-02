@@ -81,6 +81,7 @@ export default function EnhancedLoginForm() {
     setCurrentTheme,
     setCurrentUserName,
     setCurrentUserEmail,
+    setCurrentDeviceId: setDeviceId,
   } = useNotificationStore();
 
   // State management
@@ -135,7 +136,7 @@ export default function EnhancedLoginForm() {
         setCurrentTheme(res.user.theme);
         setCurrentUserName(res.user.name);
         setCurrentUserEmail(res.user.email);
-
+        setDeviceId(res.deviceId);
         setTimeout(() => {
           router.push("/client/client-dashboard");
         }, 100);
