@@ -1,14 +1,21 @@
 "use server";
 
 import { getBackendUrl } from "@/lib/getBackendUrl";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+
 const url = getBackendUrl();
+
 export async function clientLogin(loginData) {
   try {
+    // Get user-agent from Next.js headers
+    const headersList = await headers();
+    const userAgent = headersList.get("user-agent") || "Unknown";
+
     const res = await fetch(`${url}/api/client-auth/client-login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": userAgent, // Forward the user-agent
       },
       body: JSON.stringify(loginData),
       credentials: "include",
@@ -30,7 +37,7 @@ export async function clientLogin(loginData) {
       });
     }
 
-    return { success, user, message, requiresTwoFactor }; // plain object only
+    return { success, user, message, requiresTwoFactor };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Login error." };
@@ -39,24 +46,26 @@ export async function clientLogin(loginData) {
 
 export async function clientLogout() {
   try {
-
-    // First await cookies() to get the cookie store
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token")?.value;
-   
+
+    // Get user-agent for device tracking
+    const headersList = await headers();
+    const userAgent = headersList.get("user-agent") || "Unknown";
+
     const res = await fetch(`${url}/api/client-auth/client-logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": userAgent,
         Authorization: `Bearer ${accessToken}`,
       },
       body: null,
       credentials: "include",
     });
-   
+
     const { success, message } = await res.json();
     if (success) {
-      // Then use the cookie store
       cookieStore.delete("access_token");
       return { success: true, message: "Signed out successfully." };
     } else {
@@ -69,18 +78,23 @@ export async function clientLogout() {
 
 export async function twoFactorVerification(verificationData) {
   try {
-    const url = getBackendUrl();
+    // Get user-agent for device tracking
+    const headersList = await headers();
+    const userAgent = headersList.get("user-agent") || "Unknown";
+
     const res = await fetch(
       `${url}/api/client-setting/login-2fa-verification`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "User-Agent": userAgent, // Forward the user-agent
         },
         body: JSON.stringify(verificationData),
         credentials: "include",
       }
     );
+
     const { success, user, message, token } = await res.json();
 
     if (success && token) {
