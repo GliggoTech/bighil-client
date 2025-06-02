@@ -72,7 +72,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
           token,
           false
         );
-        console.log("res", res);
+      
 
         if (res?.success) {
           hasUserDataFetchedRef.current = true;

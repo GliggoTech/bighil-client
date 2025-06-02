@@ -76,7 +76,7 @@ const AdminsManagement = () => {
   // Handle edit admin
   const handleEditAdmin = async (adminId, updatedData) => {
     try {
-      console.log("Edit admin:", adminId, updatedData);
+
       const response = await fetchData(
         `${getBackendUrl()}/api/client-setting/update-admin/${adminId}`,
         "PATCH",
@@ -92,7 +92,7 @@ const AdminsManagement = () => {
             admin._id === adminId ? { ...admin, ...updatedData } : admin
           )
         );
-        console.log("Updated admin:", admins);
+       
       } else {
         throw new Error(response.message || "Failed to update admin");
       }
@@ -129,9 +129,7 @@ const AdminsManagement = () => {
 
   // Handle add new admin
   const handleAddAdmin = () => {
-    // TODO: Implement add admin functionality
-    // This could open a modal/dialog for adding new admin
-    console.log("Add new admin");
+
     toast({
       title: "Info",
       description: "Add admin functionality will be implemented soon.",

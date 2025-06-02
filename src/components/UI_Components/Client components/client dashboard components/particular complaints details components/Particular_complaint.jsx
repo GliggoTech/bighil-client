@@ -59,7 +59,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
         const prevArray = Array.isArray(prev) ? prev : [];
         // Check for duplicate timeline events
         if (newEvent._id && isDuplicate(prevArray, newEvent)) {
-          console.log("Duplicate timeline event prevented:", newEvent._id);
+         
           return prev;
         }
         return [newEvent, ...prevArray];
@@ -135,7 +135,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
           console.warn("Received empty status update");
           return;
         }
-        console.log("Status update received:", update);
+     
 
         // Update status
         if (update.status_of_client) {
@@ -143,10 +143,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
         }
         // IMPORTANT: Add this condition to handle Super Admin status reset
         if (update.changeSuperAdminStatus !== undefined) {
-          console.log(
-            "Updating Super Admin Status to:",
-            update.changeSuperAdminStatus
-          );
+         
           setSuperAdminStatus(update.changeSuperAdminStatus);
         }
 
@@ -156,10 +153,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
             const prevArray = Array.isArray(prev) ? prev : [];
             // Check for duplicate timeline events
             if (isDuplicate(prevArray, update.timelineEvent)) {
-              console.log(
-                "Duplicate timeline event prevented:",
-                update.timelineEvent._id
-              );
+            
               return prev;
             }
             return [update.timelineEvent, ...prevArray];
@@ -174,10 +168,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
             // Check if this actionMessage already exists
             if (isDuplicate(prevArray, update.actionMessage)) {
-              console.log(
-                "Duplicate actionMessage prevented:",
-                update.actionMessage._id
-              );
+              
               return prev;
             }
 
@@ -192,10 +183,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
             const prevArray = Array.isArray(prev) ? prev : [];
             // For rejection reasons, we might not have IDs, so check content
             if (prevArray.includes(update.rejectionReason)) {
-              console.log(
-                "Duplicate rejection reason prevented:",
-                update.rejectionReason
-              );
+              
               return prev;
             }
             return [...prevArray, update.rejectionReason];

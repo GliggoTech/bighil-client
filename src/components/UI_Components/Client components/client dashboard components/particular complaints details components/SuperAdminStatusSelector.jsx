@@ -45,7 +45,7 @@ const SuperAdminStatusSelector = ({
   const [localStatus, setLocalStatus] = useState(superAdminStatus);
   const [isApproving, setIsApproving] = useState(false); // New state for approval loading
   const { fetchData, loading, success, error } = useFetch();
-  console.log("SuperAdminStatusSelector: localStatus:", localStatus);
+
 
   const statusOptions = ["Pending", "Approved", "Rejected"];
 
@@ -105,7 +105,7 @@ const SuperAdminStatusSelector = ({
       );
 
       if (res.success) {
-        console.log("res ", res);
+     
         // Update both local state and parent state
         if (res.data.resetStatus) {
           setLocalStatus("Pending");

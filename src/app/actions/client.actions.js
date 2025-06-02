@@ -2,9 +2,9 @@
 
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { cookies } from "next/headers";
+const url = getBackendUrl();
 export async function clientLogin(loginData) {
   try {
-    const url = getBackendUrl();
     const res = await fetch(`${url}/api/client-auth/client-login`, {
       method: "POST",
       headers: {
@@ -39,21 +39,35 @@ export async function clientLogin(loginData) {
 
 export async function clientLogout() {
   try {
+
     // First await cookies() to get the cookie store
     const cookieStore = await cookies();
-
-    // Then use the cookie store
-    cookieStore.delete("access_token");
-
-    return { success: true, message: "Signed out successfully." };
+    const accessToken = cookieStore.get("access_token")?.value;
+   
+    const res = await fetch(`${url}/api/client-auth/client-logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: null,
+      credentials: "include",
+    });
+   
+    const { success, message } = await res.json();
+    if (success) {
+      // Then use the cookie store
+      cookieStore.delete("access_token");
+      return { success: true, message: "Signed out successfully." };
+    } else {
+      return { success: false, message: "Failed to sign out." };
+    }
   } catch (error) {
-    console.error("Signout Error:", error);
     return { success: false, message: "Failed to sign out." };
   }
 }
 
 export async function twoFactorVerification(verificationData) {
- 
   try {
     const url = getBackendUrl();
     const res = await fetch(
@@ -81,7 +95,7 @@ export async function twoFactorVerification(verificationData) {
         maxAge: 7 * 24 * 60 * 60,
       });
     }
-    return { success, user, message }; // plain object only
+    return { success, user, message };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Verification error." };

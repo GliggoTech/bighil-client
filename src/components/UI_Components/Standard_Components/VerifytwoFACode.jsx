@@ -27,6 +27,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -39,10 +40,12 @@ import useNotificationStore from "@/store/notificationStore";
 // Schema for 6-digit numeric OTP
 const otpSchema = z.object({
   code: z
-    .string().trim()
+    .string()
+    .trim()
     .min(6, "Code must be 6 digits")
     .max(6, "Code must be 6 digits")
     .regex(/^\d{6}$/, "Only digits allowed"),
+  rememberMe: z.boolean().default(false),
 });
 
 const VerifyTwoFACode = ({
@@ -69,7 +72,7 @@ const VerifyTwoFACode = ({
 
   const otpForm = useForm({
     resolver: zodResolver(otpSchema),
-    defaultValues: { code: "" },
+    defaultValues: { code: "", rememberMe: false },
   });
 
   // Countdown timer for resend functionality
@@ -92,7 +95,7 @@ const VerifyTwoFACode = ({
       const res = await fetchData(
         backendUrl,
         "POST",
-        { email: userEmail },
+        { email: userEmail, rememberMe: otpForm.watch("rememberMe") },
         token
       );
 
@@ -123,6 +126,7 @@ const VerifyTwoFACode = ({
         const sentToBackend = {
           code: data.code,
           email: email,
+          rememberMe: data.rememberMe,
         };
         const res = await verifyFunction(sentToBackend);
 
@@ -280,6 +284,27 @@ const VerifyTwoFACode = ({
                     }`}
                   />
                 ))}
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-4 bg-gray-50/50 border border-gray-200/50 rounded-xl">
+              <Checkbox
+                id="rememberMe"
+                checked={otpForm.watch("rememberMe")}
+                onCheckedChange={(checked) =>
+                  otpForm.setValue("rememberMe", checked)
+                }
+                className="w-5 h-5 border-2 border-primary data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+              />
+              <div className="flex flex-col">
+                <label
+                  htmlFor="rememberMe"
+                  className="text-sm font-medium text-gray-900 cursor-pointer leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Remember this device
+                </label>
+                <p className="text-xs text-gray-500 mt-1">
+                  Skip 2FA on this device for 7 days
+                </p>
               </div>
             </div>
 

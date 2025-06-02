@@ -3,8 +3,7 @@ import React from "react";
 
 const RejectionReasonDisplay = ({ reasons, resolutionData }) => {
 
-  console.log(reasons);
-  console.log(resolutionData);
+ 
 
   // Handle empty or invalid data
   if (!resolutionData || resolutionData.length === 0) {

@@ -12,8 +12,8 @@ import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDrop
 import Image from "next/image";
 import Link from "next/link";
 
-const Client_Navbar = ({ isOpen }) => {
-  const { userRole, deviceId } = useNotificationStore();
+const  Client_Navbar = ({ isOpen }) => {
+  const { userRole } = useNotificationStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ const Client_Navbar = ({ isOpen }) => {
   const handleLogOut = async () => {
     try {
       setLoading(true);
-      const res = await clientLogout(deviceId);
+      const res = await clientLogout();
       if (res.success) {
         useNotificationStore.setState({
           userId: null,

@@ -81,7 +81,7 @@ const ActionTaken = ({
     );
   };
   useEffect(() => {
-    console.log("resetForm", resetForm);
+
     reset({
       resolutionNote: "",
       acknowledgements: "",

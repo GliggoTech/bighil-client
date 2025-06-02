@@ -103,7 +103,7 @@ export default function CompanyRegistrationForm({
   };
 
   async function onSubmit(values) {
-    console.log(values);
+
     const url = getBackendUrl();
     let res;
     if (selectedClient && viewMode == true) {
