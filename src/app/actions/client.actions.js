@@ -14,8 +14,16 @@ export async function clientLogin(loginData) {
       credentials: "include",
     });
 
-    const { success, user, message, token, requiresTwoFactor } =
-      await res.json();
+    const {
+      success,
+      user,
+      message,
+      token,
+      requiresTwoFactor,
+      deviceId,
+      hasActiveSessionsOnOtherDevices,
+      activeSessions,
+    } = await res.json();
 
     if (success && token) {
       const cookieStore = await cookies();
@@ -30,7 +38,15 @@ export async function clientLogin(loginData) {
       });
     }
 
-    return { success, user, message, requiresTwoFactor }; // plain object only
+    return {
+      success,
+      user,
+      message,
+      requiresTwoFactor,
+      deviceId,
+      hasActiveSessionsOnOtherDevices,
+      activeSessions,
+    }; // plain object only
   } catch (error) {
     console.error(error);
     return { success: false, message: "Login error." };
@@ -53,7 +69,7 @@ export async function clientLogout() {
 }
 
 export async function twoFactorVerification(verificationData) {
- 
+  console.log(verificationData);
   try {
     const url = getBackendUrl();
     const res = await fetch(
