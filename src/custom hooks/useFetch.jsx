@@ -1,11 +1,14 @@
 "use client";
 
+import { deleteToken } from "@/app/actions/deleteToken";
+import { useRouter } from "next/navigation";
 import React, { useState, useCallback } from "react";
 
 const useFetch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const router = useRouter();
 
   const fetchData = useCallback(
     async (url, method, body, token, media = false) => {
@@ -50,6 +53,16 @@ const useFetch = () => {
       } catch (error) {
         setLoading(false);
         setError(error.message);
+        if (error.message == "Session expired or invalid") {
+          const deleteTokenResponse = await deleteToken();
+          if (deleteTokenResponse.success) {
+            router.push("/client/invalid-session");
+            return;
+          } else {
+            toast.error(deleteTokenResponse.message);
+            return;
+          }
+        }
 
         throw error;
       }

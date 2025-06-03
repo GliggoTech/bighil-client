@@ -1,6 +1,8 @@
+import { deleteToken } from "@/app/actions/deleteToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
+import { getFrontEndURL } from "./getFrontEndUrl";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +14,6 @@ export async function fetchServerSideData(endpoint, options = {}) {
 
   // ✅ If no valid token after retry, redirect or throw
   if (!token) {
-    console.error("Invalid token format:", token);
     redirect("/"); // Or throw new Error("Invalid token format")
   }
 
@@ -33,21 +34,28 @@ export async function fetchServerSideData(endpoint, options = {}) {
     const url = getBackendUrl();
     const response = await fetch(`${url}${endpoint}`, config);
 
-    if (!response.ok) {
-      console.error("Fetch failed:", response.statusText);
-      // redirect("/");
-    }
-
     const res = await response.json();
-
-    if (!res.data) {
+    if (res.success) {
+      return res.data;
+    } else {
       throw new Error(res.message || "No data returned from API");
     }
-
-    return res.data;
   } catch (error) {
-    console.error("API fetch error:", error);
-    throw error;
+    if (error.message == "Session expired or invalid") {
+    
+      const deleteTokenResponse = await fetch(
+        `${getFrontEndURL()}/api/delete-token`,
+        {
+          method: "POST",
+        }
+      );
+      const deleteTokenjson = await deleteTokenResponse.json();
+      
+      if (deleteTokenjson.success) {
+        
+        redirect("/client/invalid-session");
+      }
+    }
   }
 }
 
