@@ -1,15 +1,76 @@
-import { FileText, FileImage, Download, XCircle } from "lucide-react";
+import {
+  FileText,
+  FileImage,
+  Download,
+  XCircle,
+  File,
+  Video,
+  FileSpreadsheet,
+} from "lucide-react";
 import { IoIosAttach } from "react-icons/io";
-const FilePreview = ({ file }) => {
-  const getFileIcon = (fileName) => {
-    const ext = fileName?.split(".").pop().toLowerCase();
-    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp", "pdf"];
 
-    return imageExtensions.includes(ext) ? (
-      <FileImage className="w-6 h-6 text-text-muted dark:text-text-muted" />
-    ) : (
-      <FileText className="w-6 h-6 text-text-muted dark:text-text-muted" />
-    );
+const FilePreview = ({ file }) => {
+  const getFileIcon = (fileName, resourceType) => {
+    const ext = fileName?.split(".").pop()?.toLowerCase();
+
+    // If it's an image resource type, return image icon
+    if (resourceType === "image") {
+      return <FileImage className="w-8 h-8 text-blue-500" />;
+    }
+
+    // If it's a video resource type, return video icon
+    if (resourceType === "video") {
+      return <Video className="w-8 h-8 text-purple-500" />;
+    }
+
+    // For raw files, determine icon based on extension
+    switch (ext) {
+      case "pdf":
+        return <FileText className="w-8 h-8 text-red-500" />;
+      case "doc":
+      case "docx":
+        return <FileText className="w-8 h-8 text-blue-600" />;
+      case "xls":
+      case "xlsx":
+        return <FileSpreadsheet className="w-8 h-8 text-green-600" />;
+      case "txt":
+        return <FileText className="w-8 h-8 text-gray-600" />;
+      default:
+        return <File className="w-8 h-8 text-gray-500" />;
+    }
+  };
+
+  const getFileTypeColor = (fileName, resourceType) => {
+    const ext = fileName?.split(".").pop()?.toLowerCase();
+
+    if (resourceType === "image") return "bg-blue-50 dark:bg-blue-900/20";
+    if (resourceType === "video") return "bg-purple-50 dark:bg-purple-900/20";
+
+    switch (ext) {
+      case "pdf":
+        return "bg-red-50 dark:bg-red-900/20";
+      case "doc":
+      case "docx":
+        return "bg-blue-50 dark:bg-blue-900/20";
+      case "xls":
+      case "xlsx":
+        return "bg-green-50 dark:bg-green-900/20";
+      case "txt":
+        return "bg-gray-50 dark:bg-gray-900/20";
+      default:
+        return "bg-gray-50 dark:bg-gray-900/20";
+    }
+  };
+
+  const isImage = (resourceType) => {
+    return resourceType === "image";
+  };
+
+  const formatFileSize = (bytes) => {
+    if (!bytes) return "";
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i];
   };
 
   return (
@@ -22,34 +83,61 @@ const FilePreview = ({ file }) => {
                     hover:shadow-md"
     >
       <div
-        className="absolute inset-0 flex items-center justify-center 
-                      bg-background-secondary dark:bg-surface-dark"
+        className={`absolute inset-0 flex items-center justify-center 
+                    ${getFileTypeColor(file.fileName, file.resourceType)}`}
       >
-        {file.path?.startsWith("http") ? (
+        {isImage(file.resourceType) && file.path ? (
           <img
             src={file.path}
             alt={file.fileName}
             className="object-cover w-full h-full 
                        transition-all duration-300
                        group-hover:scale-105 group-hover:opacity-90"
+            onError={(e) => {
+              // Fallback to file icon if image fails to load
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "flex";
+            }}
           />
-        ) : (
-          <div className="flex flex-col items-center p-4">
-            {getFileIcon(file.fileName)}
-            <span
-              className="text-xs text-text-secondary dark:text-text-muted 
-                           mt-2 text-center line-clamp-2"
-            >
-              {file.fileName}
+        ) : null}
+
+        {/* File icon display for non-images or image fallback */}
+        <div
+          className={`flex flex-col items-center justify-center p-4 w-full h-full
+                      ${isImage(file.resourceType) ? "hidden" : "flex"}`}
+        >
+          {getFileIcon(file.fileName, file.resourceType)}
+          <span
+            className="text-xs text-text-secondary dark:text-text-muted 
+                       mt-2 text-center line-clamp-2 font-medium"
+          >
+            {file.fileName}
+          </span>
+          {file.bytes && (
+            <span className="text-xs text-text-muted mt-1">
+              {formatFileSize(file.bytes)}
             </span>
-          </div>
-        )}
+          )}
+        </div>
+      </div>
+
+      {/* File type badge */}
+      <div
+        className="absolute top-2 left-2 
+                     px-2 py-1 rounded-md text-xs font-medium
+                     bg-black/50 text-white
+                     opacity-0 group-hover:opacity-100 
+                     transition-opacity duration-300"
+      >
+        {file.resourceType === "raw"
+          ? file.fileName?.split(".").pop()?.toUpperCase()
+          : file.resourceType?.toUpperCase()}
       </div>
 
       {/* Download Button */}
       <a
         href={file.path}
-        download
+        download={file.fileName}
         target="_blank"
         rel="noopener noreferrer"
         className="absolute bottom-2 right-2 
@@ -58,9 +146,10 @@ const FilePreview = ({ file }) => {
                    opacity-0 group-hover:opacity-100 
                    transform translate-y-2 group-hover:translate-y-0
                    transition-all duration-300 ease-in-out
-                   hover:bg-primary dark:hover:bg-primary-dark group"
+                   hover:bg-primary-dark dark:hover:bg-primary-dark"
+        title={`Download ${file.fileName}`}
       >
-        <Download className="w-4 h-4 text-white  dark:text-primary-light" />
+        <Download className="w-4 h-4 text-white dark:text-primary-light" />
       </a>
     </div>
   );
@@ -69,15 +158,17 @@ const FilePreview = ({ file }) => {
 const EmptyState = () => (
   <div
     className="w-full bg-surface-light dark:bg-surface-dark 
-                  rounded-xl p-3 shadow-sm
-                  "
+                  rounded-xl p-6 shadow-sm"
   >
     <div className="flex flex-col items-center justify-center">
-      <div className="p-3 rounded-full bg-background-secondary dark:bg-background-dark">
-        <XCircle className="w-8 h-8 text-text_color dark:text-text-muted" />
+      <div className="p-4 rounded-full bg-background-secondary dark:bg-background-dark">
+        <XCircle className="w-8 h-8 text-red dark:text-text-muted" />
       </div>
-      <p className="mt-2 text-sm text-text_color dark:text-text-muted">
+      <p className="mt-3 text-sm text-red dark:text-text-muted font-medium">
         No evidence available for this case
+      </p>
+      <p className="mt-1 text-xs text-red">
+        Files attached to this complaint will appear here
       </p>
     </div>
   </div>
@@ -88,15 +179,32 @@ export default function EvidenceGallery({ evidence }) {
     return <EmptyState />;
   }
 
+  // Group files by type for better organization
+  const groupedFiles = evidence.reduce((acc, file) => {
+    const type = file.resourceType || "raw";
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(file);
+    return acc;
+  }, {});
+
+  const getTypeLabel = (type) => {
+    switch (type) {
+      case "image":
+        return "Images";
+      case "video":
+        return "Videos";
+      case "raw":
+        return "Documents";
+      default:
+        return "Files";
+    }
+  };
+
   return (
-    <div
-      className=" dark:bg-surface-dark 
-                    rounded-xl p-3 shadow-sm
-                    "
-    >
-      {/* Optional: Section Header */}
+    <div className="dark:bg-surface-dark rounded-xl p-4 shadow-sm">
+      {/* Section Header */}
       <div className="mb-6">
-        <div className="flex items-center gap-3  mb-2">
+        <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary-dark/10">
             <IoIosAttach className="w-5 h-5 text-primary dark:text-primary-light" />
           </div>
@@ -105,15 +213,39 @@ export default function EvidenceGallery({ evidence }) {
           </h2>
         </div>
 
-        <p className="text-sm text-text_color dark:text-text-muted">
-          {evidence.length} file{evidence.length !== 1 ? "s" : ""} attached
-        </p>
+        <div className="flex items-center gap-4 text-sm text-text_color dark:text-text-muted">
+          <span>
+            {evidence.length} file{evidence.length !== 1 ? "s" : ""} attached
+          </span>
+          {Object.keys(groupedFiles).length > 1 && (
+            <span className="text-text-muted">
+              •{" "}
+              {Object.entries(groupedFiles)
+                .map(
+                  ([type, files]) =>
+                    `${files.length} ${getTypeLabel(type).toLowerCase()}`
+                )
+                .join(", ")}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {evidence.map((file, index) => (
-          <FilePreview key={index} file={file} />
+      <div className="space-y-6">
+        {Object.entries(groupedFiles).map(([type, files]) => (
+          <div key={type}>
+            {Object.keys(groupedFiles).length > 1 && (
+              <h3 className="text-sm font-medium text-text_color dark:text-text-light mb-3">
+                {getTypeLabel(type)} ({files.length})
+              </h3>
+            )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {files.map((file, index) => (
+                <FilePreview key={`${type}-${index}`} file={file} />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>

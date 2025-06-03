@@ -6,48 +6,8 @@ import dateFormat from "dateformat";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
 import { useSocket } from "@/context/socketContext";
-
-const NoteCard = ({ note }) => (
-  <div
-    className="relative p-5 bg-white/10 dark:bg-surface-dark 
-                  rounded-xl shadow-lg 
-                  transition-all duration-300 hover:shadow-md mt-10 sm:mt-0"
-  >
-    {/* Timestamp Badge */}
-    <span
-      className="absolute sm:-top-3 -top-6 right-4 px-3 py-1 text-xs
-                    bg-warning/50 dark:bg-warning/20
-                    text-text_color font-semibold dark:text-text-muted
-                    rounded-full border border-warning/20"
-    >
-      {note.createdAt
-        ? !isNaN(new Date(note.createdAt).getTime())
-          ? dateFormat(
-              new Date(note.createdAt),
-              "dddd, mmmm dS, yyyy, h:MM:ss TT"
-            )
-          : "Invalid Date"
-        : "Date not available"}
-    </span>
-
-    {/* Author and Content */}
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <div className="h-2 w-2 rounded-full bg-info"></div>
-        <span className="text-sm font-semibold text-text_color dark:text-text-light">
-          {note.addedBy}
-        </span>
-      </div>
-
-      <p
-        className="text-text_color dark:text-text-muted leading-relaxed
-                    pl-5 border-l-2 border-primary dark:border-border-dark"
-      >
-        {note.complaintNote}
-      </p>
-    </div>
-  </div>
-);
+import { FiDownload, FiFile, FiImage } from "react-icons/fi";
+import NoteCard from "./NoteCard";
 
 const NotesSection = ({ notes, complaintId }) => {
   const [currentNotes, setCurrentNotes] = useState(notes);

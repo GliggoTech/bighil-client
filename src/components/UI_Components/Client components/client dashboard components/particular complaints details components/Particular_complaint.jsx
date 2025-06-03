@@ -20,6 +20,7 @@ import SuperAdminStatusSelector from "./SuperAdminStatusSelector";
 import ParticularComplaintSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ParticularComplaintSkeleton";
 
 const ParticularComplaint = ({ complaint, unread }) => {
+  
   const [timeline, setTimeline] = useState(complaint?.timeline || []);
   const [status, setStatus] = useState(
     complaint?.status_of_client || "Pending"
@@ -59,7 +60,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
         const prevArray = Array.isArray(prev) ? prev : [];
         // Check for duplicate timeline events
         if (newEvent._id && isDuplicate(prevArray, newEvent)) {
-         
           return prev;
         }
         return [newEvent, ...prevArray];
@@ -135,7 +135,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
           console.warn("Received empty status update");
           return;
         }
-     
 
         // Update status
         if (update.status_of_client) {
@@ -143,7 +142,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
         }
         // IMPORTANT: Add this condition to handle Super Admin status reset
         if (update.changeSuperAdminStatus !== undefined) {
-         
           setSuperAdminStatus(update.changeSuperAdminStatus);
         }
 
@@ -153,7 +151,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
             const prevArray = Array.isArray(prev) ? prev : [];
             // Check for duplicate timeline events
             if (isDuplicate(prevArray, update.timelineEvent)) {
-            
               return prev;
             }
             return [update.timelineEvent, ...prevArray];
@@ -168,7 +165,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
 
             // Check if this actionMessage already exists
             if (isDuplicate(prevArray, update.actionMessage)) {
-              
               return prev;
             }
 
@@ -183,7 +179,6 @@ const ParticularComplaint = ({ complaint, unread }) => {
             const prevArray = Array.isArray(prev) ? prev : [];
             // For rejection reasons, we might not have IDs, so check content
             if (prevArray.includes(update.rejectionReason)) {
-              
               return prev;
             }
             return [...prevArray, update.rejectionReason];
