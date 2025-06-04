@@ -16,13 +16,17 @@ import Bighil_Client_Dialog from "./Bighil_Client_Dialog";
 import Edit_Client from "./Edit_Client";
 import { formatDate } from "@/lib/formatDateFun";
 import ViewClient from "./ViewClient";
+import { Input } from "@/components/ui/input";
+import SearchClients from "./SearchClients";
 
 const Clients_Table = ({ clients }) => {
   const [currentClients, setCurrentClients] = useState(clients);
   const [selectedClient, setSelectedClient] = useState(null);
   const [open, setOpen] = useState(false);
   const [viewMode, setViewMode] = useState(false);
-
+  const handleClientsUpdate = (updatedClients) => {
+    setCurrentClients(updatedClients);
+  };
   return (
     <Card className="border-none shadow-none">
       <CardHeader>
@@ -37,28 +41,33 @@ const Clients_Table = ({ clients }) => {
               </CardTitle>
             </div>
           </div>
-
-          <Bighil_Client_Dialog
-            currentClients={currentClients}
-            setOpen={setOpen}
-            open={open}
-            selectedClient={selectedClient}
-            setSelectedClient={setSelectedClient}
-            setCurrentClients={setCurrentClients}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-          />
+          <div className="flex items-center gap-6">
+            <SearchClients
+              initialClients={clients}
+              onClientsUpdate={handleClientsUpdate}
+            />
+            <Bighil_Client_Dialog
+              currentClients={currentClients}
+              setOpen={setOpen}
+              open={open}
+              selectedClient={selectedClient}
+              setSelectedClient={setSelectedClient}
+              setCurrentClients={setCurrentClients}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+            />
+          </div>
         </div>
       </CardHeader>
 
       <CardContent>
-        {currentClients.length === 0 ? (
-          <div className="text-center py-12 bg-background-tertiary dark:bg-surface-dark rounded-lg border border-dashed border-border-medium dark:border-border-dark">
-            <Building className="h-12 w-12 mx-auto text-text-text_color dark:text-text-text_color/70 mb-3 opacity-50" />
-            <p className="text-text-secondary dark:text-text-text_color text-lg">
+        {currentClients && currentClients.length === 0 ? (
+          <div className="text-center py-12  dark:bg-surface-dark rounded-lg  dark:border-border-dark">
+            <Building className="h-12 w-12 mx-auto text-text_color dark:text-text-text_color/70 mb-3 " />
+            <p className="text-text_color dark:text-text-text_color text-lg">
               No clients available
             </p>
-            <p className="text-text-text_color dark:text-text-text_color/70 mt-1">
+            <p className="text-text_color dark:text-text-text_color/70 mt-1">
               Please add a new client to get started
             </p>
           </div>
@@ -85,43 +94,44 @@ const Clients_Table = ({ clients }) => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentClients.map((client, index) => (
-                    <TableRow
-                      key={client._id}
-                      className=" p-20 hover:bg-gray-200 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
-                    >
-                      <TableCell className="text-text_color dark:text-text-light">
-                        {client.companyName}
-                      </TableCell>
-                      <TableCell className="text-text-secondary dark:text-text-text_color">
-                        {client.contactNumber}
-                      </TableCell>
-                      <TableCell className="text-text-secondary dark:text-text-text_color">
-                        {formatDate(client.createdAt)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex gap-2 justify-center">
-                          <ViewClient
-                            client={client}
-                            setSelectedClient={setSelectedClient}
-                            setOpen={setOpen}
-                            viewMode={viewMode}
-                            setViewMode={setViewMode}
-                          />
-                          <Edit_Client
-                            client={client}
-                            setSelectedClient={setSelectedClient}
-                            setOpen={setOpen}
-                          />
-                          <Delete_Client
-                            client={client}
-                            clients={clients}
-                            setCurrentClients={setCurrentClients}
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {currentClients &&
+                    currentClients.map((client, index) => (
+                      <TableRow
+                        key={client._id}
+                        className=" p-20 hover:bg-gray-200 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark animate-fade-in"
+                      >
+                        <TableCell className="text-text_color dark:text-text-light">
+                          {client.companyName}
+                        </TableCell>
+                        <TableCell className="text-text-secondary dark:text-text-text_color">
+                          {client.contactNumber}
+                        </TableCell>
+                        <TableCell className="text-text-secondary dark:text-text-text_color">
+                          {formatDate(client.createdAt)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <div className="flex gap-2 justify-center">
+                            <ViewClient
+                              client={client}
+                              setSelectedClient={setSelectedClient}
+                              setOpen={setOpen}
+                              viewMode={viewMode}
+                              setViewMode={setViewMode}
+                            />
+                            <Edit_Client
+                              client={client}
+                              setSelectedClient={setSelectedClient}
+                              setOpen={setOpen}
+                            />
+                            <Delete_Client
+                              client={client}
+                              clients={clients}
+                              setCurrentClients={setCurrentClients}
+                            />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </div>

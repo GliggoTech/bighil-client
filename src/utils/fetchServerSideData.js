@@ -42,7 +42,6 @@ export async function fetchServerSideData(endpoint, options = {}) {
     }
   } catch (error) {
     if (error.message == "Session expired or invalid") {
-    
       const deleteTokenResponse = await fetch(
         `${getFrontEndURL()}/api/delete-token`,
         {
@@ -50,9 +49,8 @@ export async function fetchServerSideData(endpoint, options = {}) {
         }
       );
       const deleteTokenjson = await deleteTokenResponse.json();
-      
+
       if (deleteTokenjson.success) {
-        
         redirect("/client/invalid-session");
       }
     }
