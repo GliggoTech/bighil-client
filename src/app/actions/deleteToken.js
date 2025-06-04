@@ -9,7 +9,6 @@ export async function deleteToken() {
 
     return { success: true, message: "Token deleted successfully" };
   } catch (error) {
-    
     return { success: false, message: "Failed to delete token", error };
   }
 }

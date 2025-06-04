@@ -66,7 +66,7 @@ export async function clientLogout() {
 
     const { success, message } = await res.json();
     if (success) {
-     
+      cookieStore.delete("access_token");
       return { success: true, message: "Signed out successfully." };
     } else {
       return { success: false, message: "Failed to sign out." };
