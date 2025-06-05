@@ -12,7 +12,7 @@ export default async function Monthly_Trends({ params }) {
       cache: "no-cache",
     }
   );
-  console.log("res", res);
+
 
   return (
     <div>
