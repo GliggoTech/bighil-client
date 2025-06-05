@@ -18,6 +18,8 @@ import { formatDate } from "@/lib/formatDateFun";
 import ViewClient from "./ViewClient";
 import { Input } from "@/components/ui/input";
 import SearchClients from "./SearchClients";
+import Link from "next/link";
+import { MdReport } from "react-icons/md";
 
 const Clients_Table = ({ clients }) => {
   const [currentClients, setCurrentClients] = useState(clients);
@@ -91,6 +93,9 @@ const Clients_Table = ({ clients }) => {
                     <TableHead className="text-center text-text_color dark:text-text-light font-medium uppercase">
                       Actions
                     </TableHead>
+                    <TableHead className=" text-text_color dark:text-text-light font-medium uppercase">
+                      Statistics
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -103,10 +108,10 @@ const Clients_Table = ({ clients }) => {
                         <TableCell className="text-text_color dark:text-text-light">
                           {client.companyName}
                         </TableCell>
-                        <TableCell className="text-text-secondary dark:text-text-text_color">
+                        <TableCell className="text-secondary dark:text-text-text_color">
                           {client.contactNumber}
                         </TableCell>
-                        <TableCell className="text-text-secondary dark:text-text-text_color">
+                        <TableCell className="text-secondary dark:text-text-text_color">
                           {formatDate(client.createdAt)}
                         </TableCell>
                         <TableCell className="text-center">
@@ -128,6 +133,15 @@ const Clients_Table = ({ clients }) => {
                               clients={clients}
                               setCurrentClients={setCurrentClients}
                             />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="text-right">
+                            <Link
+                              href={`/bighil/bighil-clients/client-statistics/${client._id}`}
+                            >
+                              <MdReport className="h-5 w-5 text-text_color dark:text-text-light" />
+                            </Link>
                           </div>
                         </TableCell>
                       </TableRow>

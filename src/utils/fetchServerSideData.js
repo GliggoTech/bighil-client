@@ -35,6 +35,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
     const response = await fetch(`${url}${endpoint}`, config);
 
     const res = await response.json();
+
     if (res.success) {
       return res.data;
     } else {
