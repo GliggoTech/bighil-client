@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Route from "@/components/UI_Components/Client components/Route";
-import { TrendingUp, Users } from "lucide-react";
+import { House, Menu, Pause, TrendingUp, Users } from "lucide-react";
 
 export default function ClientStatisticsLayout({
   children,
@@ -29,19 +29,19 @@ export default function ClientStatisticsLayout({
             <span className="hidden sm:inline">Trends</span>
           </TabsTrigger>
           <TabsTrigger value="category" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <Menu className="h-4 w-4" />
             <span className="hidden sm:inline">Category</span>
           </TabsTrigger>
           <TabsTrigger value="department" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <House  className="h-4 w-4" />
             <span className="hidden sm:inline">Department</span>
           </TabsTrigger>
           <TabsTrigger value="stalled" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <Pause className="h-4 w-4" />
             <span className="hidden sm:inline">Stalled</span>
           </TabsTrigger>
           <TabsTrigger value="pattern" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <Pause className="h-4 w-4" />
             <span className="hidden sm:inline">Pattern & Escalation</span>
           </TabsTrigger>
         </TabsList>
