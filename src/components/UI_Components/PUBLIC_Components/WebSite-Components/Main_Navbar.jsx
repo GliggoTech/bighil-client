@@ -58,14 +58,21 @@ const Main_Navbar = () => {
               <motion.a
                 key={item.title}
                 href={item.url}
-                whileHover={{ y: -2 }}
-                className={`relative font-medium transition-colors ${
+                whileHover={{ y: -1 }}
+                className={`relative inline-block group font-medium transition-colors ${
                   scrolled
                     ? "text-gray-700 hover:text-primary"
                     : "text-white hover:text-white/90"
                 }`}
               >
-                {item.title}
+                <span className="relative z-10">{item.title}</span>
+                <span
+                  className={`absolute left-0 bottom-0 h-[2px] w-0 ${
+                    scrolled ? "bg-primary" : "bg-white"
+                  } transition-all duration-300 group-hover:w-full group-focus:w-full`}
+                ></span>
+
+                {/* {item.title} */}
                 {/* {!scrolled && (
                   <motion.div
                     className="absolute bottom-0 left-0 w-full h-px bg-white/30"
