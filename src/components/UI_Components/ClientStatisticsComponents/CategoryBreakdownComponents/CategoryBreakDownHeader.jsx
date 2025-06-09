@@ -38,7 +38,7 @@ const CategoryBreakDownHeader = ({data}) => {
 
           <div className="bg-green/5 rounded-lg p-4 text-center">
             <div className="text-2xl lg:text-3xl font-bold text-green/90">
-              {data.tags[0].percentage.toFixed(1)}%
+              {data.tags[0]?.percentage.toFixed(1)}%
             </div>
             <div className="text-sm text-green/80 font-medium">
               Top Category

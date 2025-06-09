@@ -47,8 +47,8 @@ const DepartmentBreakDownHeader = ({ data }) => {
   ).toFixed(1);
 
   const resolutionGap = Math.abs(
-    parseInt(bestPerforming.resolvedPercentage) -
-      parseInt(worstPerforming.resolvedPercentage)
+    parseInt(bestPerforming?.resolvedPercentage) -
+      parseInt(worstPerforming?.resolvedPercentage)
   );
 
   const currentDate = new Date().toLocaleDateString("en-US", {
@@ -126,10 +126,10 @@ const DepartmentBreakDownHeader = ({ data }) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-2xl font-bold text-orange-600">
-              {topDepartment.complaints}
+              {topDepartment?.complaints}
             </div>
             <p className="text-xs text-gray-800">
-              {topDepartment.department.replace(" Department", "")}
+              {topDepartment?.department.replace(" Department", "")}
             </p>
           </CardContent>
         </Card>
@@ -142,10 +142,10 @@ const DepartmentBreakDownHeader = ({ data }) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-2xl font-bold text-purple-600">
-              {bestPerforming.resolvedPercentage}
+              {bestPerforming?.resolvedPercentage}
             </div>
             <p className="text-xs text-gray-800">
-              {bestPerforming.department.replace(" Department", "")}
+              {bestPerforming?.department.replace(" Department", "")}
             </p>
           </CardContent>
         </Card>
@@ -167,19 +167,19 @@ const DepartmentBreakDownHeader = ({ data }) => {
             </div>
             <div>
               <strong>Resolution Efficiency:</strong>{" "}
-              {bestPerforming.department.replace(" Department", "")} has the
-              highest resolution rate at {bestPerforming.resolvedPercentage}.
+              {bestPerforming?.department.replace(" Department", "")} has the
+              highest resolution rate at {bestPerforming?.resolvedPercentage}.
             </div>
             <div>
               <strong>Performance Gap:</strong> There's a gap of {resolutionGap}
               % in resolution rate between{" "}
-              {bestPerforming.department.replace(" Department", "")} and{" "}
-              {worstPerforming.department.replace(" Department", "")}.
+              {bestPerforming?.department.replace(" Department", "")} and{" "}
+              {worstPerforming?.department.replace(" Department", "")}.
             </div>
             <div>
               <strong>Action Needed:</strong> Focus on{" "}
-              {worstPerforming.department.replace(" Department", "")} to improve
-              overall company efficiency.
+              {worstPerforming?.department.replace(" Department", "")} to
+              improve overall company efficiency.
             </div>
           </div>
         </CardContent>
