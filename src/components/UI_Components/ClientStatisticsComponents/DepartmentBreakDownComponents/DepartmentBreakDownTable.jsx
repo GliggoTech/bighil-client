@@ -51,8 +51,43 @@ const DepartmentBreakDownTable = ({ data }) => {
   return (
     <Card className="p-0 border-none">
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-gray-900">
+        <CardTitle className="text-xl font-bold text-gray-900 flex  justify-between items-center md:flex-row flex-col">
           Department Performance Details
+          {/* Summary Footer */}
+          <div className=" bg-gray/0 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="text-center">
+                <div className="text-lg font-bold text-green">
+                  {
+                    data.filter((d) => parseInt(d.resolvedPercentage) >= 75)
+                      .length
+                  }
+                </div>
+                <div className="text-gray-700">Excellent Performers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-yellow">
+                  {
+                    data.filter(
+                      (d) =>
+                        parseInt(d.resolvedPercentage) >= 50 &&
+                        parseInt(d.resolvedPercentage) < 75
+                    ).length
+                  }
+                </div>
+                <div className="text-gray-700">Good Performers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-red">
+                  {
+                    data.filter((d) => parseInt(d.resolvedPercentage) < 50)
+                      .length
+                  }
+                </div>
+                <div className="text-gray-700">Need Improvement</div>
+              </div>
+            </div>
+          </div>
         </CardTitle>
         <p className="text-sm text-gray-700">
           Detailed breakdown of complaint handling metrics by department
@@ -124,39 +159,6 @@ const DepartmentBreakDownTable = ({ data }) => {
                   ))}
               </TableBody>
             </Table>
-          </div>
-        </div>
-
-        {/* Summary Footer */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="text-center">
-              <div className="text-lg font-bold text-green">
-                {
-                  data.filter((d) => parseInt(d.resolvedPercentage) >= 75)
-                    .length
-                }
-              </div>
-              <div className="text-gray-700">Excellent Performers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-lg font-bold text-yellow">
-                {
-                  data.filter(
-                    (d) =>
-                      parseInt(d.resolvedPercentage) >= 50 &&
-                      parseInt(d.resolvedPercentage) < 75
-                  ).length
-                }
-              </div>
-              <div className="text-gray-700">Good Performers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-lg font-bold text-red">
-                {data.filter((d) => parseInt(d.resolvedPercentage) < 50).length}
-              </div>
-              <div className="text-gray-700">Need Improvement</div>
-            </div>
           </div>
         </div>
       </CardContent>

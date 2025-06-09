@@ -12,7 +12,7 @@ export default async function DepartmentBreakdown({ params }) {
       cache: "no-cache",
     }
   );
-  console.log("res", res);
+
   return (
     <div>
       <DepartmentBreakDownHeader data={res} />

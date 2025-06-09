@@ -9,6 +9,7 @@ export default function ClientStatisticsLayout({
   monthly_trends,
   category_breakdown,
   department_breakdown,
+  stalled_breakdown,
 }) {
   return (
     <div className="min-h-screen text-black bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 m-5">
@@ -34,6 +35,10 @@ export default function ClientStatisticsLayout({
             <TrendingUp className="h-4 w-4" />
             <span className="hidden sm:inline">Department</span>
           </TabsTrigger>
+          <TabsTrigger value="stalled" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            <span className="hidden sm:inline">Stalled</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="summary" className="space-y-4">
@@ -57,6 +62,11 @@ export default function ClientStatisticsLayout({
         <TabsContent value="department" className="space-y-4">
           <Card className="p-0 border-none">
             <CardContent className="p-1">{department_breakdown}</CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="stalled" className="space-y-4">
+          <Card className="p-0 border-none">
+            <CardContent className="p-1">{stalled_breakdown}</CardContent>
           </Card>
         </TabsContent>
       </Tabs>
