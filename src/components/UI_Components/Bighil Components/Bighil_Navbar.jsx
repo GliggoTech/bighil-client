@@ -43,9 +43,9 @@ const Bighil_Navbar = ({ isOpen }) => {
           href="/bighil/bighil-dashboard"
           className="flex items-center h-full py-2"
         >
-          <div className="relative h-12 ">
+          <div className="relative h-28 ">
             <Image
-              src="/bighilLogo.png"
+              src="/logo_modified.svg"
               width={160}
               height={40}
               alt="logo"

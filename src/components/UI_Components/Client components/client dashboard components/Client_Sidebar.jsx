@@ -161,11 +161,11 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
 
                 {showNotificationBadge && (
                   <span
-                    className={`absolute top-2 left-8 ${
+                    className={`absolute top-1 left-8 ${
                       isOpen ? "ml-36" : "group-hover:hidden"
-                    } bg-red text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full z-10`}
+                    } bg-red text-white text-[10px] font-semibold px-1 py-0.1 rounded-md z-10 w-2 h-2 `}
                   >
-                    {notificationCount > 99 ? "99+" : notificationCount}
+                    {/* {notificationCount > 99 ? "99+" : notificationCount} */}
                   </span>
                 )}
 

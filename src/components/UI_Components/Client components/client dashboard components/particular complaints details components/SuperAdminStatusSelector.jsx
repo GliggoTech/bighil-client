@@ -46,7 +46,6 @@ const SuperAdminStatusSelector = ({
   const [isApproving, setIsApproving] = useState(false); // New state for approval loading
   const { fetchData, loading, success, error } = useFetch();
 
-
   const statusOptions = ["Pending", "Approved", "Rejected"];
 
   const getStatusColor = (status) => {
@@ -105,7 +104,6 @@ const SuperAdminStatusSelector = ({
       );
 
       if (res.success) {
-     
         // Update both local state and parent state
         if (res.data.resetStatus) {
           setLocalStatus("Pending");
@@ -199,8 +197,18 @@ const SuperAdminStatusSelector = ({
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto bg-white border-none">
             {statusOptions.map((status) => (
-              <SelectItem key={status} value={status}>
-                <div className="flex items-center gap-2">
+              <SelectItem
+                key={status}
+                value={status}
+                className={`flex items-center gap-2 w-full ${
+                  status === "Pending"
+                    ? "hover:bg-yellow/10"
+                    : status === "Approved"
+                    ? "hover:bg-green/10"
+                    : "hover:bg-red/10"
+                }   `}
+              >
+                <div className="flex items-center gap-2 w-full ">
                   <div
                     className={`w-2 h-2 rounded-full ${
                       status === "Pending"
@@ -264,7 +272,7 @@ const SuperAdminStatusSelector = ({
           <AlertDialogFooter>
             <AlertDialogCancel
               onClick={cancelStatusChange}
-              className="text-gray-500 hover:text-gray-700 border-none hover:bg-none"
+              className="text-white  border-none bg-red/80 hover:bg-red/90"
               disabled={loading || isApproving}
             >
               Cancel

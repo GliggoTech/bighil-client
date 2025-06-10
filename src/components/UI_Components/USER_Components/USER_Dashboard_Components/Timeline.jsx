@@ -20,8 +20,8 @@ export const TimelineEvent = ({ event, isLast }) => {
         />
       )}
 
-      <div className="relative flex items-start space-x-4 p-4 bg-default_bg dark:bg-surface-dark rounded-xl  transition-all duration-300 hover:shadow-md">
-        <div className="relative flex-shrink-0">
+      <div className="relative flex items-start space-x-4 p-3 bg-default_bg dark:bg-surface-dark rounded-xl  transition-all duration-300 hover:shadow-md">
+        <div className="relative ">
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full border ${config.style.border} ${config.style.bg} transition-all duration-300`}
           >
@@ -32,8 +32,8 @@ export const TimelineEvent = ({ event, isLast }) => {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1 pt-1">
-          <div className="flex justify-between items-start gap-4">
+        <div className=" flex-1 pt-1">
+          <div className="flex justify-between items-start gap-2">
             <div className="space-y-1">
               <p className="text-sm font-medium text-text_color dark:text-text-light">
                 {status === "default" ? "Unknown Status" : status}
@@ -46,13 +46,16 @@ export const TimelineEvent = ({ event, isLast }) => {
             </div>
 
             <time
-              className=" text-sm text-text_color dark:text-text_color px-2 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark "
+              className=" text-xs lg:flex-shrink-0 text-text_color text-center dark:text-text_color px-1 py-1 rounded-full bg-background-tertiary dark:bg-surface-dark "
               dateTime={event.timestamp}
             >
               {new Date(event.timestamp).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
                 day: "numeric",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true, // use false for 24-hour format
               })}
             </time>
           </div>

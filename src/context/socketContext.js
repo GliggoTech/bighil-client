@@ -1,6 +1,11 @@
-// socketContext.jsx
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { io } from "socket.io-client";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import useNotificationStore from "@/store/notificationStore";
@@ -15,7 +20,7 @@ export const SocketProvider = ({ children }) => {
   const { token } = useAccessToken();
   const { userRole, userId, addNotification } = useNotificationStore();
 
-  const connectSocket = () => {
+  const connectSocket = useCallback(() => {
     const newSocket = io(
       process.env.NEXT_PUBLIC_NODE_DEV == "production"
         ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
@@ -72,7 +77,7 @@ export const SocketProvider = ({ children }) => {
 
     setSocket(newSocket);
     return newSocket;
-  };
+  }, [token, userId, userRole, addNotification]); // Dependencies for useCallback
 
   useEffect(() => {
     if (!token || !userId || !userRole) return;
@@ -87,14 +92,14 @@ export const SocketProvider = ({ children }) => {
         setIsConnected(false);
       }
     };
-  }, [token, userId, userRole]);
+  }, [token, userId, userRole, connectSocket]); // Now connectSocket is stable
 
-  const reconnect = () => {
+  const reconnect = useCallback(() => {
     if (socket) {
       socket.disconnect();
       connectSocket();
     }
-  };
+  }, [socket, connectSocket]); // Also wrap reconnect for consistency
 
   return (
     <SocketContext.Provider

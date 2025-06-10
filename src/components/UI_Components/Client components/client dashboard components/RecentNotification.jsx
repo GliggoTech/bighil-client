@@ -15,25 +15,54 @@ import {
   FileTextIcon,
   MessageSquareIcon,
   FileWarningIcon,
+  AlertCircleIcon,
+  CheckCircle2Icon,
+  XCircleIcon,
+  ShieldAlertIcon,
+  ShieldCheckIcon,
+  ThumbsDownIcon,
+  RefreshCcwIcon,
+  ArchiveIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const getNotificationIcon = (type) => {
   const iconClasses = "h-4 w-4";
+
   const icons = {
     NEW_COMPLAINT: <FileTextIcon className={`${iconClasses} text-primary`} />,
-    STATUS_CHANGE: (
-      <FileWarningIcon className={`${iconClasses} text-warning`} />
-    ),
+    STATUS_CHANGE: <RefreshCcwIcon className={`${iconClasses} text-warning`} />,
     NOTE_ADDED: (
       <MessageSquareIcon className={`${iconClasses} text-secondary`} />
     ),
-    PRIORITY_CHANGE: <BellIcon className={`${iconClasses} text-danger`} />,
+    PRIORITY_CHANGE: (
+      <AlertCircleIcon className={`${iconClasses} text-danger`} />
+    ),
     RESOLUTION_ADDED: (
-      <FileTextIcon className={`${iconClasses} text-success`} />
+      <CheckCircle2Icon className={`${iconClasses} text-success`} />
+    ),
+    NEW_MESSAGE: <MessageSquareIcon className={`${iconClasses} text-danger`} />,
+    AUTHORIZATION_REQUIRED: (
+      <ShieldAlertIcon className={`${iconClasses} text-yellow-500`} />
+    ),
+    AUTHORIZATION_RESOLVED: (
+      <ShieldCheckIcon className={`${iconClasses} text-green-500`} />
+    ),
+    AUTHORIZATION_REJECTED: (
+      <XCircleIcon className={`${iconClasses} text-red-500`} />
+    ),
+    UNWANTED_COMPLAINT: (
+      <ThumbsDownIcon className={`${iconClasses} text-muted-foreground`} />
+    ),
+    AUTHORIZATION_STATUS_CHANGE: (
+      <ClockIcon className={`${iconClasses} text-blue-500`} />
+    ),
+    COMPLAINT_RESOLVED: (
+      <ArchiveIcon className={`${iconClasses} text-emerald-600`} />
     ),
   };
+
   return icons[type] || <BellIcon className={`${iconClasses} text-light`} />;
 };
 
@@ -48,8 +77,8 @@ const getTypeStyles = (type) => {
       hover: "hover:bg-warning hover:text-light",
     },
     NOTE_ADDED: {
-      badge: "bg-muted/10 text-muted-foreground border-muted/20",
-      hover: "hover:bg-muted hover:text-light",
+      badge: "bg-orange/10 text-orange border-orange/20",
+      hover: "hover:bg-orange hover:text-white",
     },
     NEW_MESSAGE: {
       badge: "bg-danger/10 text-danger border-danger/20",
@@ -59,7 +88,32 @@ const getTypeStyles = (type) => {
       badge: "bg-success/10 text-success border-success/20",
       hover: "hover:bg-success hover:text-light",
     },
+    AUTHORIZATION_REQUIRED: {
+      badge: "bg-yellow/10 text-yellow border-yellow/30",
+      hover: "hover:bg-yellow hover:text-white",
+    },
+    AUTHORIZATION_RESOLVED: {
+      badge: "bg-green/10 text-green border-green/30",
+      hover: "hover:bg-green hover:text-white",
+    },
+    AUTHORIZATION_REJECTED: {
+      badge: "bg-red/10 text-red border-red/30",
+      hover: "hover:bg-red hover:text-white",
+    },
+    UNWANTED_COMPLAINT: {
+      badge: "bg-muted/10 text-muted-foreground border-muted/20",
+      hover: "hover:bg-muted hover:text-white",
+    },
+    AUTHORIZATION_STATUS_CHANGE: {
+      badge: "bg-blue/10 text-blue border-blue/30",
+      hover: "hover:bg-blue hover:text-white",
+    },
+    COMPLAINT_RESOLVED: {
+      badge: "bg-green/10 text-green border-green/30",
+      hover: "hover:bg-green hover:text-white",
+    },
   };
+
   return styles[type] || styles.NEW_COMPLAINT;
 };
 

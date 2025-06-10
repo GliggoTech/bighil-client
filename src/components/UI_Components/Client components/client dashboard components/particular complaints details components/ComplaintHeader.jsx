@@ -6,6 +6,7 @@ import SectionHeading from "./SectionHeading";
 import { FcDepartment } from "react-icons/fc";
 
 const ComplaintHeader = ({ complaint, userRole }) => {
+  console.log(complaint);
   const priorityBadge = getPriorityBadge(complaint.priority);
   let redirectLink;
   switch (userRole) {
@@ -115,10 +116,13 @@ const ComplaintHeader = ({ complaint, userRole }) => {
 
           <SectionHeading
             label="Complaint Filled On"
-            title={new Date(complaint.createdAt).toLocaleDateString("en-US", {
+            title={new Date(complaint.createdAt).toLocaleString("en-US", {
               day: "numeric",
               month: "short",
               year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true, // use false for 24-hour format
             })}
             icon={<Calendar className="w-5 h-5" />}
             color="red"

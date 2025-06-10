@@ -12,7 +12,7 @@ import AdvancedStyledDropdown from "../../Standard_Components/AdvancedStyledDrop
 import Image from "next/image";
 import Link from "next/link";
 
-const  Client_Navbar = ({ isOpen }) => {
+const Client_Navbar = ({ isOpen }) => {
   const { userRole } = useNotificationStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -65,11 +65,11 @@ const  Client_Navbar = ({ isOpen }) => {
                   href="/client/client-dashboard"
                   className="flex items-center h-full py-2"
                 >
-                  <div className="relative h-12 ">
+                  <div className="relative h-28 ">
                     <Image
-                      src="/bighilLogo.png"
-                      width={160}
-                      height={40}
+                      src="/logo_modified.svg"
+                      width={240}
+                      height={100}
                       alt="logo"
                       quality={100}
                       className="h-full w-auto object-cover  "
