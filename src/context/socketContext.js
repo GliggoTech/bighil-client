@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from "react";
 import { io } from "socket.io-client";
 import useAccessToken from "@/custom hooks/useAccessToken";
@@ -20,9 +21,50 @@ export const SocketProvider = ({ children }) => {
   const { token } = useAccessToken();
   const { userRole, userId, addNotification } = useNotificationStore();
 
+  // Use refs for stable references
+  const tokenRef = useRef(token);
+  const userRoleRef = useRef(userRole);
+  const userIdRef = useRef(userId);
+
+  // Update refs when values change
+  useEffect(() => {
+    tokenRef.current = token;
+    userRoleRef.current = userRole;
+    userIdRef.current = userId;
+  }, [token, userRole, userId]);
+
+  // Stable notification handler
+  const handleNotification = useCallback(
+    (data) => {
+  
+      try {
+        // Use the store's addNotification directly
+        addNotification(data);
+
+        // Show toast notification
+        toast({
+          variant: "success",
+          title: "New Notification",
+          description: data.message,
+          duration: 3000, // Increased duration for better visibility
+        });
+      } catch (error) {
+        console.error("Error handling notification:", error);
+      }
+    },
+    [addNotification]
+  ); // Only depend on addNotification
+
   const connectSocket = useCallback(() => {
+    if (!tokenRef.current || !userIdRef.current || !userRoleRef.current) {
+      
+      return null;
+    }
+
+   
+
     const newSocket = io(
-      process.env.NEXT_PUBLIC_NODE_DEV == "production"
+      process.env.NEXT_PUBLIC_NODE_DEV === "production"
         ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
         : process.env.NEXT_PUBLIC_BACKEND_URL,
       {
@@ -30,76 +72,85 @@ export const SocketProvider = ({ children }) => {
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 3000,
-        auth: { token },
+        timeout: 20000,
+        auth: { token: tokenRef.current },
       }
     );
 
     newSocket.on("connect", () => {
+    
       setIsConnected(true);
       setConnectionError(null);
       const userRoom =
-        userRole === "user" ? `user_${userId}` : `admin_${userId}`;
+        userRoleRef.current === "user"
+          ? `user_${userIdRef.current}`
+          : `admin_${userIdRef.current}`;
+     
       newSocket.emit("joinRoom", userRoom);
     });
 
     newSocket.on("disconnect", (reason) => {
+      
       setIsConnected(false);
       if (reason === "io server disconnect") {
-        setTimeout(connectSocket, 1000);
+        setTimeout(() => {
+          if (tokenRef.current && userIdRef.current && userRoleRef.current) {
+            connectSocket();
+          }
+        }, 1000);
       }
     });
 
     newSocket.on("connect_error", (err) => {
+     
       setConnectionError(err.message);
       setIsConnected(false);
     });
 
     newSocket.on("error", (err) => {
-      console.error("Socket error:", err);
+      
       setConnectionError(err.message);
     });
 
-    const handleNotification = (data) => {
-      addNotification(data);
-      toast({
-        variant: "success",
-        title: "New Notification",
-        description: data.message,
-        duration: 2000,
-      });
-    };
-
     const eventName =
-      userRole === "user"
+      userRoleRef.current === "user"
         ? "fetch_user_notifications"
         : "fetch_admin_notifications";
+
+   
     newSocket.on(eventName, handleNotification);
 
     setSocket(newSocket);
     return newSocket;
-  }, [token, userId, userRole, addNotification]); // Dependencies for useCallback
+  }, [handleNotification]); // Remove token dependency to avoid recreation
 
+  // Separate effect for socket management
   useEffect(() => {
-    if (!token || !userId || !userRole) return;
+    let socketInstance = null;
 
-    const newSocket = connectSocket();
+    if (token && userId && userRole) {
+   
+      socketInstance = connectSocket();
+    }
 
     return () => {
-      if (newSocket) {
-        newSocket.offAny();
-        newSocket.disconnect();
+      if (socketInstance) {
+       
+        socketInstance.removeAllListeners();
+        socketInstance.disconnect();
         setSocket(null);
         setIsConnected(false);
       }
     };
-  }, [token, userId, userRole, connectSocket]); // Now connectSocket is stable
+  }, [token, userId, userRole, connectSocket]); // Don't include connectSocket here
 
   const reconnect = useCallback(() => {
+   
     if (socket) {
       socket.disconnect();
-      connectSocket();
     }
-  }, [socket, connectSocket]); // Also wrap reconnect for consistency
+    setTimeout(() => connectSocket(), 100);
+  }, [socket, connectSocket]);
 
   return (
     <SocketContext.Provider

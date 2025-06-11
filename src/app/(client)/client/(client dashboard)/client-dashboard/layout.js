@@ -2,6 +2,7 @@
 
 import React from "react";
 import "../../../../globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function AdminDashboardLayout({
   children,
@@ -14,9 +15,12 @@ export default function AdminDashboardLayout({
 }) {
   return (
     <div className="min-h-screen bg-primary/5 dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 relative overflow-hidden">
-      <div className="relative z-10 py-4 px-4 sm:px-6 lg:px-8">
+      <div className="relative  py-4 px-4 sm:px-6 lg:px-8">
         {/* Main Content Area */}
-        <div className="p-1">{children}</div>
+        <div className="p-1">
+      
+          {children}
+        </div>
 
         {/* Stats Section */}
         <div className="mb-4 space-y-6">
@@ -27,7 +31,7 @@ export default function AdminDashboardLayout({
             </h2>
           </div>
           <div className="relative">
-            <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+            <div />
             {stats}
           </div>
         </div>
@@ -40,7 +44,7 @@ export default function AdminDashboardLayout({
             </h2>
           </div>
           <div className="relative">
-            <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+            <div  />
             {complaint_chart}
           </div>
         </div>
@@ -53,11 +57,11 @@ export default function AdminDashboardLayout({
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
             <div className="relative">
-              <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+              <div  />
               {recent_complaints}
             </div>
             <div className="relative">
-              <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+              <div  />
               {recent_notifications}
             </div>
           </div>
@@ -71,7 +75,7 @@ export default function AdminDashboardLayout({
                     Complaint Categories Overview
                   </h2>
                 </div>
-                <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+                <div  />
 
                 {keywords_chart}
               </div>
@@ -82,7 +86,7 @@ export default function AdminDashboardLayout({
                     Top 5 Departments with Most Complaints
                   </h2>
                 </div>
-                <div className="absolute inset-0 rounded-2xl -rotate-1 -translate-y-1" />
+                <div  />
 
                 {moreNumber_of_complaints}
               </div>

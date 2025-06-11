@@ -67,9 +67,9 @@ const Client_Navbar = ({ isOpen }) => {
                 >
                   <div className="relative h-28 ">
                     <Image
-                      src="/logo_modified.svg"
+                      src="/Bighil_Logo.svg"
                       width={240}
-                      height={100}
+                      height={50}
                       alt="logo"
                       quality={100}
                       className="h-full w-auto object-cover  "
@@ -95,7 +95,7 @@ const Client_Navbar = ({ isOpen }) => {
 
       {/* Error Alert */}
       {error && (
-        <div className="absolute top-full left-0 right-0 px-4 pt-3 z-50">
+        <div className="absolute top-full left-0 right-0 px-4 pt-3 ">
           <Alert
             variant="destructive"
             className="max-w-md mx-auto animate-slide-down"

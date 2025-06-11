@@ -42,7 +42,7 @@ class SocketManager {
   }
 
   handleReconnect(attempt) {
-    console.log(`Reconnected after ${attempt} attempts`);
+  
   }
 
   joinRoom(room) {

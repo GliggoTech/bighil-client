@@ -37,7 +37,9 @@ const SuperAdminStatusSelector = ({
   setSuperAdminStatus,
   complaintId,
   token,
+  status,
 }) => {
+  console.log(status);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isRejectionDialogOpen, setIsRejectionDialogOpen] = useState(false);
   const [pendingStatus, setPendingStatus] = useState("");
@@ -183,7 +185,12 @@ const SuperAdminStatusSelector = ({
         <Select
           value={localStatus}
           onValueChange={handleStatusChange}
-          disabled={isReadOnly || isApproving}
+          disabled={
+            isReadOnly ||
+            isApproving ||
+            status === "In Progress" ||
+            status === "Pending"
+          }
         >
           <SelectTrigger
             className={`w-72 bg-white border-none ${

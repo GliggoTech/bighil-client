@@ -6,7 +6,7 @@ import SectionHeading from "./SectionHeading";
 import { FcDepartment } from "react-icons/fc";
 
 const ComplaintHeader = ({ complaint, userRole }) => {
-  console.log(complaint);
+
   const priorityBadge = getPriorityBadge(complaint.priority);
   let redirectLink;
   switch (userRole) {

@@ -89,20 +89,16 @@ export default function PasswordResetPage({ role }) {
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
 
   const handleSendOtp = async (data) => {
-    try {
-      const res = await fetchData(
-        `${url}${otpSentEndPoint}`,
-        "POST",
-        data,
-        token,
-        false
-      );
-      if (res.success) {
-        setAnimateDirection("forward");
-        setCurrentStep("otp");
-      }
-    } catch (err) {
-      console.log(err);
+    const res = await fetchData(
+      `${url}${otpSentEndPoint}`,
+      "POST",
+      data,
+      token,
+      false
+    );
+    if (res.success) {
+      setAnimateDirection("forward");
+      setCurrentStep("otp");
     }
   };
 
@@ -112,20 +108,16 @@ export default function PasswordResetPage({ role }) {
       email: emailForm.getValues("email"),
     };
 
-    try {
-      const res = await fetchData(
-        `${url}${otpVerifyEndPoint}`,
-        "POST",
-        sendToBackend,
-        token,
-        false
-      );
-      if (res.success) {
-        setAnimateDirection("forward");
-        setCurrentStep("password");
-      }
-    } catch (err) {
-      console.log(err);
+    const res = await fetchData(
+      `${url}${otpVerifyEndPoint}`,
+      "POST",
+      sendToBackend,
+      token,
+      false
+    );
+    if (res.success) {
+      setAnimateDirection("forward");
+      setCurrentStep("password");
     }
   };
 
@@ -135,20 +127,16 @@ export default function PasswordResetPage({ role }) {
       email: emailForm.getValues("email"),
     };
 
-    try {
-      const res = await fetchData(
-        `${url}${resetpasswordEndPoint}`,
-        "POST",
-        dataSendToBackend,
-        token,
-        false
-      );
-      if (res.success) {
-        setAnimateDirection("forward");
-        setCurrentStep("success");
-      }
-    } catch (err) {
-      console.log(err);
+    const res = await fetchData(
+      `${url}${resetpasswordEndPoint}`,
+      "POST",
+      dataSendToBackend,
+      token,
+      false
+    );
+    if (res.success) {
+      setAnimateDirection("forward");
+      setCurrentStep("success");
     }
   };
 

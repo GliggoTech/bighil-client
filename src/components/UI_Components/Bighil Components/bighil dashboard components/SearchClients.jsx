@@ -40,7 +40,7 @@ const SearchClients = ({ initialClients, onClientsUpdate }) => {
       setIsSearching(true);
 
       try {
-        console.log("Searching for:", term);
+      
         const res = await fetchData(
           `${url}/api/bighil-clients/clients/search?q=${encodeURIComponent(
             term.trim()

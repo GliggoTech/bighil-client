@@ -308,6 +308,7 @@ const ParticularComplaint = ({ complaint, unread }) => {
                       superAdminStatus={superAdminStatus}
                       setSuperAdminStatus={setSuperAdminStatus}
                       token={token}
+                      status={status}
                     />
                   )}
                 </div>

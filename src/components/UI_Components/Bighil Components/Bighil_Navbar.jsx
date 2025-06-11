@@ -45,7 +45,7 @@ const Bighil_Navbar = ({ isOpen }) => {
         >
           <div className="relative h-28 ">
             <Image
-              src="/logo_modified.svg"
+              src="/Bighil_Logo.svg"
               width={160}
               height={40}
               alt="logo"

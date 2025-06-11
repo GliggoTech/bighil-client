@@ -11,7 +11,7 @@ export default async function PatternAndEscalationPage({ params }) {
       cache: "no-cache",
     }
   );
-  console.log(res);
+
   return (
     <div>
       <PatternAndEscalation data={res} />
