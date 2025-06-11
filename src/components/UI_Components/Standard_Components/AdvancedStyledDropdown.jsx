@@ -95,7 +95,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
             href={
               userRole == "user"
                 ? "/user/user-myAccount"
-                : "/client/client-setting"
+                : "/client/client-myAccount"
             }
             className="cursor-pointer hover:bg-primary/10 hover:text-text_color transition-all duration-200 py-2 px-3 rounded-md flex items-center gap-2 group"
           >
@@ -116,7 +116,6 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
             </Link>
           </DropdownMenuItem>
         )}
-      
 
         <DropdownMenuSeparator className="bg-dialog_inside_border_color" />
 
