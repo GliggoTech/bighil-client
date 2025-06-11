@@ -10,7 +10,7 @@ export function TagAnalyticsDashboard({ tagData, totalComplaints }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = useIsMobile();
   const renderShape = createRenderActiveShape(isMobile); // ✅ pass isMobile safely
-  const coloredData = tagData.map((item, index) => ({
+  const coloredData = tagData?.map((item, index) => ({
     ...item,
     fill: COLORS[index % COLORS.length],
   }));

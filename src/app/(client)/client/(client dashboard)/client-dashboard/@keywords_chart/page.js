@@ -21,7 +21,7 @@ export default async function KeyWordChartPage() {
     <div className="space-y-4">
       <Suspense fallback={<ChartsSkeletonLoader />}>
         <TagAnalyticsDashboard
-          tagData={res.tagStats}
+          tagData={res?.tagStats}
           totalComplaints={res.totalComplaints}
         />
       </Suspense>
