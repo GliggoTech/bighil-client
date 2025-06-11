@@ -65,9 +65,9 @@ const Client_Navbar = ({ isOpen }) => {
                   href="/client/client-dashboard"
                   className="flex items-center h-full py-2"
                 >
-                  <div className="relative h-28 ">
+                  <div className="relative h-24 ">
                     <Image
-                      src="/Bighil_Logo.svg"
+                      src="/b4.svg"
                       width={240}
                       height={50}
                       alt="logo"
