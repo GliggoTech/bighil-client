@@ -65,7 +65,7 @@ const Client_Navbar = ({ isOpen }) => {
                   href="/client/client-dashboard"
                   className="flex items-center h-full py-2"
                 >
-                  <div className="relative h-24 ">
+                  <div className="relative h-20 ">
                     <Image
                       src="/b4.svg"
                       width={240}
