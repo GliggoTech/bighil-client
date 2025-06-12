@@ -31,7 +31,7 @@ export function ComplaintFields({ form }) {
         name="submissionType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-text_color">Submission Type</FormLabel>
+            <FormLabel className="text-text_color">Submission Type <span className="text-red">*</span></FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
                 <SelectValue placeholder="Select a submission type" />
@@ -58,7 +58,7 @@ export function ComplaintFields({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-text_color">
-              Department to Raise Complaint Against
+              Department to Raise Complaint Against <span className="text-red">*</span>
             </FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
@@ -87,7 +87,7 @@ export function ComplaintFields({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-text_color">
-              Detailed Description
+              Detailed Description <span className="text-red">*</span>
             </FormLabel>
             <Textarea
               {...field}

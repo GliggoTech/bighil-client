@@ -30,7 +30,7 @@ const ComplaintTypeSelector = ({ form }) => {
       render={({ field }) => (
         <FormItem className="space-y-2 mt-6">
           <p className="text-sm flex items-center gap-2 font-medium text-text_color">
-            Complaint Type{" "}
+            Complaint Type<span className="text-red">*</span>
             <InfoTooltip
               content={
                 <>

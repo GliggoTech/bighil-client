@@ -20,7 +20,7 @@ export default async function ClientDashboard_Layout({ children }) {
   return (
     <SocketProvider>
       <ClientLayoutWrapper>
-        <TabCloseLogout /> {/* Add the client component here */}
+        <TabCloseLogout />
         {children}
       </ClientLayoutWrapper>
     </SocketProvider>

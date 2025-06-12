@@ -1,5 +1,7 @@
+import ReusableSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ReusableSkeleton";
+
 export default function PageLoading() {
   <div>
-    <h1>Loading...</h1>
+    <ReusableSkeleton  />
   </div>;
 }
