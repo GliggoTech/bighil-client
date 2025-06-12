@@ -31,7 +31,6 @@ const SectionCard = ({ icon: Icon, title, children }) => (
 );
 
 const ComplaintDetails = ({ complaint }) => {
-  
   return (
     <SectionCard icon={FiInfo} title="Case Details">
       <div className="space-y-3">
@@ -39,7 +38,7 @@ const ComplaintDetails = ({ complaint }) => {
         <DetailField label="Complaint Message">
           <div
             className="mt-1 text-sm text-text_color font-light bg-default_bg shadow-md dark:text-text-light 
-                  
+                  text-wrap
                         p-2 rounded-sm 
                         leading-relaxed"
           >
