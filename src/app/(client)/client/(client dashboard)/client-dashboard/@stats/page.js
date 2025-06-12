@@ -42,7 +42,7 @@ export default async function AdminStats() {
     {
       title: "Total Complaints",
       value: stats.total.count,
-      icon: <ClipboardList className="h-5 w-5 text-blue-600" />,
+      icon: <ClipboardList className="h-5 w-5 text-blue" />,
       // description: "New complaints",
       color: "bg-white",
       hoverBorderColor: "hover:border-blue",
@@ -55,7 +55,7 @@ export default async function AdminStats() {
     {
       title: "Pending Complaints",
       value: stats.pending.count,
-      icon: <Calendar className="h-5 w-5 text-purple-600" />,
+      icon: <Calendar className="h-5 w-5 text-purple" />,
       // description: "New complaints this week",
       color: "bg-white",
       hoverBorderColor: "hover:border-purple",
@@ -68,7 +68,7 @@ export default async function AdminStats() {
     {
       title: "In Progress Complaints",
       value: stats.inProgress.count,
-      icon: <Clock className="h-5 w-5 text-pink-600" />,
+      icon: <Clock className="h-5 w-5 text-pink" />,
       // description: "New complaints today",
       color: "bg-white",
       hoverBorderColor: "hover:border-pink",
@@ -81,7 +81,7 @@ export default async function AdminStats() {
     {
       title: "Unwanted Complaints",
       value: stats.unwanted.count,
-      icon: <Activity className="h-5 w-5 text-orange-600" />,
+      icon: <Activity className="h-5 w-5 text-orange" />,
       // description: "Currently being processed",
       color: "bg-white",
       hoverBorderColor: "hover:border-orange",

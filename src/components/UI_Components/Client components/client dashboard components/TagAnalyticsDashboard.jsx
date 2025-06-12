@@ -6,10 +6,10 @@ import { createRenderActiveShape } from "@/utils/createRenderActiveShape";
 import { useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
-export function TagAnalyticsDashboard({ tagData, totalComplaints }) {
+export function TagAnalyticsDashboard({ tagData }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = useIsMobile();
-  const renderShape = createRenderActiveShape(isMobile); // ✅ pass isMobile safely
+  const renderShape = createRenderActiveShape(isMobile); 
   const coloredData = tagData?.map((item, index) => ({
     ...item,
     fill: COLORS[index % COLORS.length],

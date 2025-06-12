@@ -77,13 +77,16 @@ const Main_ComplaintSection = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="text-center mt-6"
         >
-          <Button asChild>
+          <Button
+            asChild
+            className="bg-primary text-white rounded-full font-medium transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+          >
             <Link
               href="/user/user-register"
-              className="bg-primary text-white hover:bg-opacity-90 rounded-md font-medium transition-colors"
+              className="flex items-center gap-1 px-4 py-2"
             >
-              File a Complaint Now
-              <ChevronRightIcon className="ml-2" />
+              Submit Complaint
+              <ChevronRightIcon className="w-4 h-4" />
             </Link>
           </Button>
         </motion.div>

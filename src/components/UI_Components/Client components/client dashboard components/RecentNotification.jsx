@@ -44,19 +44,19 @@ const getNotificationIcon = (type) => {
     ),
     NEW_MESSAGE: <MessageSquareIcon className={`${iconClasses} text-danger`} />,
     AUTHORIZATION_REQUIRED: (
-      <ShieldAlertIcon className={`${iconClasses} text-yellow-500`} />
+      <ShieldAlertIcon className={`${iconClasses} text-yellow`} />
     ),
     AUTHORIZATION_RESOLVED: (
-      <ShieldCheckIcon className={`${iconClasses} text-green-500`} />
+      <ShieldCheckIcon className={`${iconClasses} text-green`} />
     ),
     AUTHORIZATION_REJECTED: (
-      <XCircleIcon className={`${iconClasses} text-red-500`} />
+      <XCircleIcon className={`${iconClasses} text-red`} />
     ),
     UNWANTED_COMPLAINT: (
-      <ThumbsDownIcon className={`${iconClasses} text-muted-foreground`} />
+      <ThumbsDownIcon className={`${iconClasses} text-red`} />
     ),
     AUTHORIZATION_STATUS_CHANGE: (
-      <ClockIcon className={`${iconClasses} text-blue-500`} />
+      <ClockIcon className={`${iconClasses} text-blue`} />
     ),
     COMPLAINT_RESOLVED: (
       <ArchiveIcon className={`${iconClasses} text-emerald-600`} />
@@ -101,8 +101,8 @@ const getTypeStyles = (type) => {
       hover: "hover:bg-red hover:text-white",
     },
     UNWANTED_COMPLAINT: {
-      badge: "bg-muted/10 text-muted-foreground border-muted/20",
-      hover: "hover:bg-muted hover:text-white",
+      badge: "bg-muted/10 text-black border-muted/20",
+      hover: "hover:bg-white hover:text-black",
     },
     AUTHORIZATION_STATUS_CHANGE: {
       badge: "bg-blue/10 text-blue border-blue/30",
