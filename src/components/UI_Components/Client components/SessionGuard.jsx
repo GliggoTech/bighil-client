@@ -132,6 +132,7 @@ export default function SessionGuard({ children }) {
         const response = await fetch("/api/validate-session", {
           credentials: "include",
         });
+        console.log("response", response);
 
         if (!response.ok) {
           clearCurrentUser();

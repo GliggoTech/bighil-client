@@ -12,6 +12,7 @@ export async function GET() {
     const headersList = await headers();
 
     const accessToken = cookieStore.get("access_token")?.value;
+    console.log("accessToken", accessToken);
     const userAgent = headersList.get("user-agent") || "Unknown";
 
     if (!accessToken) {
@@ -21,17 +22,17 @@ export async function GET() {
       );
     }
 
-    // Verify JWT token first
-    try {
-      jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    } catch (jwtError) {
-      // Token is invalid or expired
-      cookieStore.delete("access_token");
-      return NextResponse.json(
-        { success: false, message: "Invalid token", requiresLogin: true },
-        { status: 401 }
-      );
-    }
+    // // Verify JWT token first
+    // try {
+    //   jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    // } catch (jwtError) {
+    //   // Token is invalid or expired
+    //   cookieStore.delete("access_token");
+    //   return NextResponse.json(
+    //     { success: false, message: "Invalid token", requiresLogin: true },
+    //     { status: 401 }
+    //   );
+    // }
 
     // Call backend to validate active session
     const response = await fetch(
@@ -47,6 +48,7 @@ export async function GET() {
     );
 
     const result = await response.json();
+    console.log("result", result);
 
     if (!result.success) {
       // Session is invalid on backend, clear cookie
