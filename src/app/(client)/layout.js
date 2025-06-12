@@ -1,6 +1,5 @@
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import TabCloseProvider from "@/context/TabCloseProvider";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
@@ -18,11 +17,11 @@ export default function Client_Layout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <TabCloseProvider>
+    
           {children}
 
           <Toaster position="top-right" richColors />
-        </TabCloseProvider>
+       
       </body>
     </html>
   );

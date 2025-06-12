@@ -13,15 +13,37 @@ const useNotificationStore = create(
       userName: null,
       userEmail: null,
       currentTheme: "light", // Default theme
-
+      // Session state
+      sessionId: null,
+      lastActivity: null,
+      isSessionActive: false,
       // Actions
       setCurrentUserId: (userId) => set({ userId }),
       setCurrentUserRole: (userRole) => set({ userRole }),
       setCurrentUserEmail: (userEmail) => set({ userEmail }),
       setCurrentUserName: (userName) => set({ userName }),
-
+      setSessionActive: (active) => set({ isSessionActive: active }),
+      updateLastActivity: () => set({ lastActivity: new Date().toISOString() }),
+      clearCurrentUser: () => {
+        set({
+          userId: null,
+          userRole: null,
+          notifications: [],
+          lastActivity: null,
+          sessionId: null,
+          isSessionActive: false,
+          currentTheme: "light",
+          userName: null,
+          userEmail: null,
+          notificationCount: 0,
+          lastSync: null,
+        });
+      },
+      isAuthenticated: () => {
+        const state = get();
+        return !!(state.userId && state.isSessionActive);
+      },
       setNotifications: (notifications, totalUnread = null) => {
-     
         const updates = { notifications };
         if (totalUnread !== null) {
           updates.notificationCount = totalUnread;
@@ -47,11 +69,8 @@ const useNotificationStore = create(
         );
 
         if (existing) {
-         
           return; // Don't add duplicate
         }
-
-   
 
         // Check if this notification is unread for current user
         const isUnreadForCurrentUser = notification.recipients
@@ -69,8 +88,6 @@ const useNotificationStore = create(
           const newCount = isUnreadForCurrentUser
             ? prevState.notificationCount + 1
             : prevState.notificationCount;
-
-         
 
           return {
             notifications: updatedNotifications,
@@ -115,8 +132,6 @@ const useNotificationStore = create(
             ? Math.max(0, prevState.notificationCount - 1)
             : prevState.notificationCount,
         }));
-
-       
       },
 
       deleteNotification: (id) => {
@@ -124,7 +139,6 @@ const useNotificationStore = create(
         const notification = state.notifications.find((n) => n._id === id);
 
         if (!notification) {
-          
           return;
         }
 
@@ -144,15 +158,12 @@ const useNotificationStore = create(
             ? Math.max(0, prevState.notificationCount - 1)
             : prevState.notificationCount,
         }));
-
-       
       },
 
       // Set the total unread count directly from API
       setTotalUnreadCount: (count) => {
         const currentCount = get().notificationCount;
         if (currentCount !== count) {
-          
           set({ notificationCount: Math.max(0, count) });
         }
       },
@@ -199,7 +210,6 @@ const useNotificationStore = create(
         const state = get();
         const calculatedCount = state.getUnreadCountFromNotifications();
         if (calculatedCount !== state.notificationCount) {
-         
           set({ notificationCount: calculatedCount });
           return true;
         }
