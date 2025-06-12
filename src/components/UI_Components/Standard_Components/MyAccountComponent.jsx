@@ -85,7 +85,7 @@ export default function MyAccountComponent({ data }) {
 
   return (
     <div className="min-h-screen bg-bighil_dashboard_bg  dark:from-texttext-text_color dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-4">
           <h1 className="text-xl font-bold text-text_color dark:text-white mb-2">
             My Account Information
@@ -95,9 +95,9 @@ export default function MyAccountComponent({ data }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Profile Information Card */}
-          <Card className="lg:col-span-1 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-dialog_inside_border_color dark:border-gray-700">
+          <Card className="lg:col-span-2 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-dialog_inside_border_color dark:border-gray-700">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl text-center">
                 Profile Information
@@ -140,13 +140,13 @@ export default function MyAccountComponent({ data }) {
                     <span className="text-sm text-primary">Role</span>
                   </div>
                   <div className="font-light text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
-                    {role}
+                    {role.toUpperCase()}
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="lg:col-span-2 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-gray-200 dark:border-gray-700">
+          <Card className="lg:col-span-3 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-gray-200 dark:border-gray-700">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl">Change Password</CardTitle>
               <CardDescription>
