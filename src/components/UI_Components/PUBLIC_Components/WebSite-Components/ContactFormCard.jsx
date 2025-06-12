@@ -43,7 +43,6 @@ export default function ContactFormCard() {
 
   const onSubmit = async (data) => {
     try {
-    
       // handle form submission logic (e.g. API call)
       const url = getBackendUrl();
 
@@ -59,7 +58,7 @@ export default function ContactFormCard() {
         form.reset();
         toast({
           variant: "success",
-          title: "Message sent successfully",
+          title: "Thanks! Support will reach out shortly.",
         });
       } else {
         toast({
@@ -95,7 +94,9 @@ export default function ContactFormCard() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Name</FormLabel>
+                  <FormLabel>
+                    Your Name <span className="text-red">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="John Doe"
@@ -113,7 +114,9 @@ export default function ContactFormCard() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>
+                    Email Address <span className="text-red">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -149,7 +152,9 @@ export default function ContactFormCard() {
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Message</FormLabel>
+                  <FormLabel>
+                    Your Message <span className="text-red">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Type your message here..."
