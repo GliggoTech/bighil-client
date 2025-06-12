@@ -5,24 +5,21 @@ import Main_FooterLink from "./Main_FooterLink";
 const Main_FooterSection = () => {
   return (
     <footer className="bg-default_bg text-gray-300 pt-8 pb-4">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 mb-6 gap-10">
+      <div className="container mx-auto px-6">
+        <div className="grid md:grid-cols-2 mb-6 gap-10 md:justify-items-center">
           {/* Brand and description */}
-          <div>
-            <div className="flex items-center mb-4">
-              {/* <span className="bg-white text-primary px-3 py-1 font-bold text-xl rounded-full mr-2">
-                BH
-              </span> */}
-              <span className="text-text_color text-2xl font-semibold">
+          <div className="flex flex-col items-start justify-center space-y-3">
+            <div className="text-left">
+              <span className="text-primary text-left text-2xl font-bold">
                 BigHil
               </span>
             </div>
-            <p className="text-text_color mb-6 max-w-md leading-relaxed">
+            <p className=" text-text_color max-w-md leading-relaxed">
               Simplifying business management and customer service for
               enterprises of all sizes.
             </p>
 
-            {/* <div className="flex space-x-4 mt-4">
+            <div className="flex space-x-4 mt-4">
               {[
                 { icon: <FaFacebook />, href: "#" },
                 { icon: <FaTwitter />, href: "#" },
@@ -32,12 +29,12 @@ const Main_FooterSection = () => {
                 <a
                   key={idx}
                   href={href}
-                  className="text-text_color hover:text-white transition"
+                  className="text-primary hover:text-white transition"
                 >
-                  {icon}
+                  <span className="text-primary">{icon}</span>
                 </a>
               ))}
-            </div> */}
+            </div>
           </div>
 
           {/* Quick links */}
