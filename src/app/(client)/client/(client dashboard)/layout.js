@@ -1,12 +1,9 @@
 import "../../../globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import Client_Sidebar from "@/components/UI_Components/Client components/client dashboard components/Client_Sidebar";
-import Client_Navbar from "@/components/UI_Components/Client components/client dashboard components/Client_Navbar";
 import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
 import { SocketProvider } from "@/context/socketContext";
 import ClientLayoutWrapper from "@/components/UI_Components/Client components/ClientLayoutWrapper";
-import SessionGuard from "@/components/UI_Components/Client components/SessionGuard";
+import TabCloseLogout from "@/custom hooks/useTabCloseLogout";
 
 export const metadata = {
   title: "Client Dashboard - BIGHIL",
@@ -21,10 +18,11 @@ export default async function ClientDashboard_Layout({ children }) {
   }
 
   return (
-    <SessionGuard>
-      <SocketProvider>
-        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-      </SocketProvider>
-    </SessionGuard>
+    <SocketProvider>
+      <ClientLayoutWrapper>
+        <TabCloseLogout /> {/* Add the client component here */}
+        {children}
+      </ClientLayoutWrapper>
+    </SocketProvider>
   );
 }

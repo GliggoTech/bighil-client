@@ -17,11 +17,9 @@ export default function Client_Layout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.variable}>
-    
-          {children}
+        {children}
 
-          <Toaster position="top-right" richColors />
-       
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
