@@ -47,6 +47,7 @@ export async function clientLogin(loginData) {
 export async function clientLogout() {
   try {
     const cookieStore = await cookies();
+    console.log("logout function called ")
     const accessToken = cookieStore.get("access_token")?.value;
 
     // Get user-agent for device tracking

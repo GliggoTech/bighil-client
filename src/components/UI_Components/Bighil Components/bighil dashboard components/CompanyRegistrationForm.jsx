@@ -28,13 +28,36 @@ export default function CompanyRegistrationForm({
 }) {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
+  const getDefaultAdmins = () => {
+    if (!selectedClient?.admins) {
+      return [{ name: "", email: "", role: "SUPER ADMIN" }];
+    }
 
-  const [assignedRoles, setAssignedRoles] = useState({
-    "SUPER ADMIN": false,
-    ADMIN: false,
-    "SUB ADMIN": false,
-  });
+    return selectedClient.admins.map((admin, index) => {
+      console.log(`Admin ${index}:`, admin); // Debug log
 
+      // Ensure we have a valid role
+      let role = admin.role;
+      if (!role || typeof role !== "string") {
+        // Fallback to sequence-based role assignment
+        role =
+          index === 0
+            ? "SUPER ADMIN"
+            : index === 1
+            ? "SUB ADMIN"
+            : index === 2
+            ? "ADMIN"
+            : "SUPER ADMIN";
+      }
+
+      return {
+        _id: admin._id,
+        name: admin.name || "",
+        email: admin.email || "",
+        role: role,
+      };
+    });
+  };
   const form = useForm({
     resolver: zodResolver(clientAdminSchema),
     defaultValues: {
@@ -45,9 +68,7 @@ export default function CompanyRegistrationForm({
       companySize: selectedClient?.companySize || 0,
       companyType: selectedClient?.companyType || "",
       visibleToIT: selectedClient?.visibleToIT ?? false, // ✅ Use nullish coalescing
-      admins: selectedClient?.admins || [
-        { name: "", email: "", role: "SUPER ADMIN" },
-      ],
+      admins: getDefaultAdmins(),
     },
     mode: "onChange",
   });
@@ -60,23 +81,16 @@ export default function CompanyRegistrationForm({
   const { token } = useAccessToken();
   const { loading, error, fetchData } = useFetch();
 
-  const admins = form.watch("admins");
+  // const admins = form.watch("admins");
 
-  useEffect(() => {
-    const roles = {
-      "SUPER ADMIN": false,
-      ADMIN: false,
-      "SUB ADMIN": false,
-    };
-
-    admins.forEach((admin) => {
-      if (admin.role) {
-        roles[admin.role] = true;
-      }
-    });
-
-    setAssignedRoles(roles);
-  }, [JSON.stringify(admins)]);
+  // const getNextRoleInSequence = () => {
+  //   const currentAdmins = form.watch("admins");
+  //   if (currentAdmins.length === 0) return "SUPER ADMIN";
+  //   if (currentAdmins.length === 1) return "SUB ADMIN";
+  //   if (currentAdmins.length === 2) return "ADMIN";
+  //   // After 3 admins, only SUPER ADMIN can be added
+  //   return "SUPER ADMIN";
+  // };
 
   const goToNextStep = async () => {
     let canProceed = true;
@@ -103,7 +117,6 @@ export default function CompanyRegistrationForm({
   };
 
   async function onSubmit(values) {
-
     const url = getBackendUrl();
     let res;
     if (selectedClient && viewMode == true) {
@@ -149,7 +162,7 @@ export default function CompanyRegistrationForm({
         setCurrentClients(updatedClients);
         setSelectedClient(null);
       } else {
-        setCurrentClients([...currentClients, res.data]);
+        setCurrentClients([res.data, ...currentClients]);
         setSelectedClient(null);
       }
     } else {
@@ -223,13 +236,13 @@ export default function CompanyRegistrationForm({
                 {currentStep === 2 && (
                   <AdminAccountsStep
                     form={form}
-                    assignedRoles={assignedRoles}
                     fields={fields}
                     append={append}
                     remove={remove}
                     key="admins"
                     viewMode={viewMode}
                     setViewMode={setViewMode}
+                    selectedClient={selectedClient}
                   />
                 )}
                 {currentStep === 3 && (
@@ -245,7 +258,7 @@ export default function CompanyRegistrationForm({
 
               {error && (
                 <div className="mt-2 mb-2">
-                  <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red rounded-lg p-4 text-center border border-red-200 dark:border-red-800">
+                  <div className="bg-red/5 dark:bg-red-900/20 text-red dark:text-red rounded-lg p-4 text-center border border-red/20 dark:border-red-800">
                     {error}
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
 import { SocketProvider } from "@/context/socketContext";
 import ClientLayoutWrapper from "@/components/UI_Components/Client components/ClientLayoutWrapper";
+import TabCloseProvider from "@/context/TabCloseProvider";
 
 export const metadata = {
   title: "Client Dashboard - BIGHIL",
@@ -20,8 +21,10 @@ export default async function ClientDashboard_Layout({ children }) {
   }
 
   return (
-    <SocketProvider>
-      <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-    </SocketProvider>
+    <TabCloseProvider>
+      <SocketProvider>
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+      </SocketProvider>
+    </TabCloseProvider>
   );
 }
