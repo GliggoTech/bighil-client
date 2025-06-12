@@ -81,7 +81,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
         <User className="text-white h-5 w-5" />
       </DropdownMenuTrigger>
       <div className="hidden md:block">
-        Welcome , <span className="text-primary">{userName}</span>
+        Welcome, <span className="text-primary">{userName}</span>
       </div>
       <DropdownMenuContent className="w-72 flex flex-col space-y-3 bg-white text-text_color shadow-xl border border-dialog_inside_border_color rounded-lg overflow-hidden p-1  animate-slideDownAndFade">
         <div className="flex flex-col px-5 space-y-3">

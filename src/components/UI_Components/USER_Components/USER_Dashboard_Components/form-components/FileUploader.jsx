@@ -5,7 +5,10 @@ import { UploadCloud, FileText, X } from "lucide-react";
 export function FileUploader({ handleFileUpload, localFiles, removeFile }) {
   return (
     <div>
-      <FormLabel className="text-text_color">Upload Evidence</FormLabel>
+      <FormLabel className="text-text_color">
+        Upload Evidence{" "}
+        <span className="text-gray-600 text-xs">(Accepted formats: PDF, JPG, PNG. Max size: 5MB)</span>
+      </FormLabel>
       <input
         type="file"
         multiple
