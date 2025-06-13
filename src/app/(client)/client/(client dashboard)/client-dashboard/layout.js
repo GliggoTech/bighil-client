@@ -1,8 +1,5 @@
-"use client";
-
 import React from "react";
 import "../../../../globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 export default function AdminDashboardLayout({
   children,
@@ -27,10 +24,7 @@ export default function AdminDashboardLayout({
               Dashboard Overview
             </h2>
           </div>
-          <div className="relative">
-            <div />
-            {stats}
-          </div>
+          <div className="relative">{stats}</div>
         </div>
 
         <div className="mb-4 space-y-6">
@@ -40,10 +34,7 @@ export default function AdminDashboardLayout({
               Complaint Analytics
             </h2>
           </div>
-          <div className="relative">
-            <div />
-            {complaint_chart}
-          </div>
+          <div className="relative">{complaint_chart}</div>
         </div>
         <div className="mb-4 space-y-6">
           <div className="flex items-center gap-3">
@@ -53,14 +44,8 @@ export default function AdminDashboardLayout({
             </h2>
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
-            <div className="relative">
-              <div />
-              {recent_complaints}
-            </div>
-            <div className="relative">
-              <div />
-              {recent_notifications}
-            </div>
+            <div className="relative">{recent_notifications}</div>
+            <div className="relative">{recent_complaints}</div>
           </div>
 
           <div className="space-y-6">

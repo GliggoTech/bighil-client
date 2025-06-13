@@ -76,7 +76,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
         if (res?.success) {
           hasUserDataFetchedRef.current = true;
 
-          setVisibleToIT(res.data); // Adjust based on your data structure
+          setVisibleToIT(res.data.visibleToIT); // Adjust based on your data structure
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

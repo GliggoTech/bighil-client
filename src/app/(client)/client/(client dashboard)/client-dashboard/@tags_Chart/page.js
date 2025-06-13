@@ -6,16 +6,13 @@ import { Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 export default async function KeyWordChartPage() {
-  let res;
-  try {
-    res = await fetchServerSideData("/api/client-dashboard/keywords-charts", {
+  const res = await fetchServerSideData(
+    "/api/client-dashboard/keywords-charts",
+    {
       method: "GET",
       cache: "no-cache",
-    });
-  } catch (error) {
-    console.error(error);
-    return <div>Failed to fetch data</div>;
-  }
+    }
+  );
 
   return (
     <div className="space-y-4">
