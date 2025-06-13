@@ -35,7 +35,7 @@ export const createRenderActiveShape = (isMobile) => {
     const nameLines = [];
     let currentLine = "";
 
-    payload.name.split(" ").forEach((word) => {
+    payload?.name.split(" ").forEach((word) => {
       if ((currentLine + word).length > maxCharsPerLine) {
         nameLines.push(currentLine.trim());
         currentLine = "";

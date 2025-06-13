@@ -72,7 +72,6 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
           token,
           false
         );
-      
 
         if (res?.success) {
           hasUserDataFetchedRef.current = true;
@@ -116,7 +115,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
     >
       {/* Sidebar Toggle Button */}
       <button
-        className="absolute top-5 -right-4 bg-active-link hover:bg-green text-white p-1 rounded-full transition-colors"
+        className="absolute top-7 -right-3 bg-active-link hover:bg-green text-white p-1 rounded-full transition-colors"
         onClick={toggleSidebar}
         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
       >
@@ -124,7 +123,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
       </button>
 
       {/* Logo or Short Form */}
-      <div className="flex items-center justify-center mb-10">
+      <div className="flex items-center justify-center mb-5 mt-4">
         <span className="text-active-link font-bold text-xl tracking-wide">
           {isOpen ? "BIGHIL" : "BH"}
         </span>
@@ -148,7 +147,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
                 className={`flex items-center px-1 py-2 rounded-lg text-sm transition-colors relative ${
                   isActive
                     ? "bg-active-link text-white"
-                    : "hover:bg-active-link/80 group-hover:text-white"
+                    : "hover:bg-active-link/60 group-hover:text-white"
                 } ${isOpen ? "justify-start gap-4" : "justify-center"}`}
               >
                 <item.icon
@@ -160,13 +159,19 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
                 />
 
                 {showNotificationBadge && (
-                  <span
-                    className={`absolute top-1 left-8 ${
-                      isOpen ? "ml-36" : "group-hover:hidden"
-                    } bg-red text-white text-[10px] font-semibold px-1 py-0.1 rounded-md z-10 w-2 h-2 `}
-                  >
-                    {/* {notificationCount > 99 ? "99+" : notificationCount} */}
-                  </span>
+                  <>
+                    {/* Dot only when isOpen is false */}
+                    {!isOpen && (
+                      <span className="absolute top-1 left-8 bg-red text-white w-2 h-2 rounded-full z-10" />
+                    )}
+
+                    {/* Dot with count when isOpen is true */}
+                    {isOpen && (
+                      <span className="absolute top-2 left-40 bg-red text-white text-[10px] font-semibold px-1 py-0.5 rounded-md z-10 min-w-[18px] text-center">
+                        {notificationCount > 99 ? "99+" : notificationCount}
+                      </span>
+                    )}
+                  </>
                 )}
 
                 <AnimatePresence>

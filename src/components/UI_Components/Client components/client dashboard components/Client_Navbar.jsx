@@ -80,7 +80,7 @@ const Client_Navbar = ({ isOpen }) => {
               </div>
 
               {/* Right Section: User Info & Actions */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-1">
                 <h1>{userRole}</h1>
                 <AdvancedStyledDropdown
                   handleLogOut={handleLogOut}

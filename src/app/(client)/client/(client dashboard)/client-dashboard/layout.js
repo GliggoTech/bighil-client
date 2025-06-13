@@ -10,7 +10,7 @@ export default function AdminDashboardLayout({
   complaint_chart,
   recent_complaints,
   recent_notifications,
-  keywords_chart,
+  categoryStats,
   moreNumber_of_complaints,
 }) {
   return (
@@ -74,9 +74,9 @@ export default function AdminDashboardLayout({
                 </div>
                 <div />
 
-                {keywords_chart}
+                {categoryStats}
               </div>
-              <div className="relative overflow-hidden">
+              {/* <div className="relative overflow-hidden">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-9 w-1.5 bg-gradient-to-b from-emerald-500 to-emerald-400 rounded-full" />
                   <h2 className="text-xl font-medium text-text_color dark:text-emerald-200">
@@ -86,7 +86,7 @@ export default function AdminDashboardLayout({
                 <div />
 
                 {moreNumber_of_complaints}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
