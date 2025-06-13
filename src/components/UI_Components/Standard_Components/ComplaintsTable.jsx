@@ -248,7 +248,9 @@ const ComplaintsTable = ({
                       )}
                       <TableCell className="hidden lg:table-cell">
                         <span className="text-primary">
-                          {complaint.department}
+                          {complaint?.department?.length > 1
+                            ? complaint.department.join(", ")
+                            : complaint.department}
                         </span>
                       </TableCell>
 

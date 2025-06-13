@@ -433,8 +433,9 @@ const ComplaintFilter = ({ bighil = false }) => {
         <ResultsCount showing={complaints.length} total={totalComplaints} />
         {/* Export Button */}
         <Button
+          size="sm"
           onClick={handleExport}
-          className="w-fit justify-end bg-toast_success_bg hover:bg-toast_success_bg/80 text-text_color font-light py-2 px-4 rounded"
+          className="w-fit justify-end bg-primary hover:bg-primary/80 text-white   rounded-md"
         >
           Export to CSV
         </Button>

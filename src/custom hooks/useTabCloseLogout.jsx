@@ -25,7 +25,7 @@ export default function TabCloseLogout() {
       // Check if user was recently active (less than 5 seconds ago)
       // If not active, it's likely a genuine tab close
       const timeSinceActivity = Date.now() - lastActivity;
-      if (timeSinceActivity < 5000) {
+      if (timeSinceActivity < 500000) {
         isRefreshing = true;
         return;
       }
