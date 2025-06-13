@@ -29,7 +29,6 @@ import Link from "next/link";
 
 const getNotificationIcon = (type) => {
   const iconClasses = "h-4 w-4";
-
   const icons = {
     NEW_COMPLAINT: <FileTextIcon className={`${iconClasses} text-primary`} />,
     STATUS_CHANGE: <RefreshCcwIcon className={`${iconClasses} text-warning`} />,
@@ -62,7 +61,6 @@ const getNotificationIcon = (type) => {
       <ArchiveIcon className={`${iconClasses} text-emerald-600`} />
     ),
   };
-
   return icons[type] || <BellIcon className={`${iconClasses} text-light`} />;
 };
 
@@ -113,13 +111,14 @@ const getTypeStyles = (type) => {
       hover: "hover:bg-green hover:text-white",
     },
   };
-
   return styles[type] || styles.NEW_COMPLAINT;
 };
 
-const RecentNotification = ({ recentNotifications }) => {
+const RecentNotification = ({ recentNotifications = [] }) => {
+  const hasNotifications = recentNotifications.length > 0;
+
   return (
-    <Card className="rounded-3xl hover:shadow-xl transition-all duration-300 border-light dark:border-border-dark">
+    <Card className="shadow-md h-full border-none hover:shadow-lg bg-white transition-shadow duration-300">
       <CardHeader className="bg-white border-b border-dialog_inside_border_color dark:border-border-dark relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -136,7 +135,8 @@ const RecentNotification = ({ recentNotifications }) => {
           </Button>
         </div>
       </CardHeader>
-      {recentNotifications.length > 0 ? (
+
+      {hasNotifications ? (
         <CardContent className="p-0">
           <Table className="w-full border border-dialog_inside_border_color rounded-b-3xl">
             <TableHeader className="!border-b-2 !border-dialog_inside_border_color dark:!border-b-gray-700">
@@ -145,7 +145,7 @@ const RecentNotification = ({ recentNotifications }) => {
                 <TableHead className="xl:w-[250px] font-semibold text-text_color dark:text-text-light">
                   Notification
                 </TableHead>
-                <TableHead className=" hidden md:table-cell font-semibold text-text_color dark:text-text-light">
+                <TableHead className="hidden md:table-cell font-semibold text-text_color dark:text-text-light">
                   Type
                 </TableHead>
                 <TableHead className="font-semibold text-text_color dark:text-text-light">
@@ -154,7 +154,7 @@ const RecentNotification = ({ recentNotifications }) => {
               </TableRow>
             </TableHeader>
 
-            <TableBody className="bg-white dark:bg-surface-dark rounded-full">
+            <TableBody className="bg-white dark:bg-surface-dark">
               {recentNotifications.map((notification) => {
                 const typeStyles = getTypeStyles(notification.type);
                 return (
@@ -162,7 +162,7 @@ const RecentNotification = ({ recentNotifications }) => {
                     key={notification._id}
                     className="hover:bg-gray-100 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark transition-colors duration-200"
                   >
-                    <TableCell className="pl-4 ">
+                    <TableCell className="pl-4">
                       {getNotificationIcon(notification.type)}
                     </TableCell>
 
@@ -197,10 +197,9 @@ const RecentNotification = ({ recentNotifications }) => {
           </Table>
         </CardContent>
       ) : (
-        <div className="bg-white py-6">
-          <h1 className="text-center text-xl  text-text_color dark:text-text-light">
-            No recent notifications
-          </h1>
+        <div className="py-8 flex bg-white flex-col items-center rounded-2xl justify-center text-muted-foreground">
+          <BellIcon className="w-6 h-6 mb-2 text-gray-400" />
+          <p className="text-sm">No recent notifications found</p>
         </div>
       )}
     </Card>
