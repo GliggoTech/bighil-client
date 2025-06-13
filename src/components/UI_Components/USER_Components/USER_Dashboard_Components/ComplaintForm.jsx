@@ -26,7 +26,7 @@ export function ComplaintForm() {
       companyName: "",
       submissionType: "",
       complaintMessage: "",
-      department: "",
+      department: [],
       complaintType: undefined,
       tags: [],
       files: [],
@@ -70,7 +70,7 @@ export function ComplaintForm() {
         submissionType: "",
         complaintMessage: "",
         tags: [],
-        department: "",
+        department: [],
         complaintType: undefined,
         files: [],
       });
@@ -162,6 +162,7 @@ export function ComplaintForm() {
 
           {/* Component 2: Basic Complaint Fields */}
           <ComplaintFields form={form} />
+          
 
           {/* Component 3: Tag Selector */}
           <TagSelector form={form} />

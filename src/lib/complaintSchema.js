@@ -14,11 +14,12 @@ export const formSchema = z.object({
     required_error: "Submission type is required",
   }),
   complaintMessage: z
-    .string().trim()
+    .string()
+    .trim()
     .min(20, "Description must be at least 20 characters"),
   tags: z.array(z.string()).optional(),
   files: z.array(z.instanceof(File)).optional(),
-  department: z.string().min(1, "Department selection required"),
+  department: z.array(z.string()).min(1, { message: "Department is required" }),
   complaintType: z.enum(complaintTypes, {
     required_error: "Complaint type is required",
   }),

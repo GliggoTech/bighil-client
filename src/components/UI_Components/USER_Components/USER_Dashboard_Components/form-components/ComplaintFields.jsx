@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { officeDepartments, submissionTypes } from "@/lib/complaintSchema";
+import { DepartmentSelector } from "./DepartmentSelector";
 
 export function ComplaintFields({ form }) {
   // Style to completely remove focus styling
@@ -31,7 +32,9 @@ export function ComplaintFields({ form }) {
         name="submissionType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-text_color">Submission Type <span className="text-red">*</span></FormLabel>
+            <FormLabel className="text-text_color">
+              Submission Type <span className="text-red">*</span>
+            </FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
                 <SelectValue placeholder="Select a submission type" />
@@ -52,7 +55,7 @@ export function ComplaintFields({ form }) {
           </FormItem>
         )}
       />
-      <FormField
+      {/* <FormField
         control={form.control}
         name="department"
         render={({ field }) => (
@@ -79,7 +82,8 @@ export function ComplaintFields({ form }) {
             <FormMessage className="text-xs text-red" />
           </FormItem>
         )}
-      />
+      /> */}
+      <DepartmentSelector form={form} />
       {/* Complaint Details */}
       <FormField
         control={form.control}

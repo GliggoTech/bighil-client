@@ -16,51 +16,48 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { X } from "lucide-react";
-import priorityMapping from "@/lib/tags";
-import { FaQuestion } from "react-icons/fa";
-import { InfoTooltip } from "../InfoTooltip";
+import { officeDepartments } from "@/lib/complaintSchema";
 
-export function TagSelector({ form }) {
-  const [openTags, setOpenTags] = useState(false);
+export function DepartmentSelector({ form }) {
+  const [open, setOpen] = useState(false);
 
   return (
     <FormField
       control={form.control}
-      name="tags"
+      name="department"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-text_color flex items-center gap-1 relative">
-            {" "}
-            Tags{" "}
-            <InfoTooltip content="Tags help identify the nature and urgency of your complaint. Choose tags carefully, as they influence how your complaint is prioritized and handled." />
+          <FormLabel className="text-text_color">
+            Department to Raise Complaint Against{" "}
+            <span className="text-red">*</span>
           </FormLabel>
           <div className="flex flex-wrap gap-2 sm:gap-3 relative">
-            {field.value?.map((tag) => (
+            {field.value?.map((dep) => (
               <Badge
-                key={tag}
-                className="bg-primary/20 hover:bg-primary/30  text-text_color font-normal text-xs sm:text-sm py-1 px-1"
+                key={dep}
+                className="bg-primary/20 hover:bg-primary/30 text-text_color font-normal text-xs sm:text-sm py-1 px-2"
               >
-                {priorityMapping.find((t) => t.name === tag)?.name || tag}
+                {officeDepartments.find((d) => d.value === dep)?.label || dep}
                 <button
                   type="button"
                   onClick={() =>
-                    field.onChange(field.value.filter((t) => t !== tag))
+                    field.onChange(field.value.filter((d) => d !== dep))
                   }
-                  className="ml-1  hover:text-red"
+                  className="ml-1 sm:ml-2 hover:text-red"
                 >
                   <X className="h-4 w-4 sm:h-5 sm:w-5 text-red rounded-full bg-red/30 p-0.5 sm:p-1" />
                 </button>
               </Badge>
             ))}
 
-            <Popover open={openTags} onOpenChange={setOpenTags}>
+            <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
                   className="text-xs text-primary sm:text-sm h-7 sm:h-8 border-none bg-white"
                 >
-                  + Add Tag
+                  + Add Department
                 </Button>
               </PopoverTrigger>
               <PopoverContent
@@ -69,28 +66,28 @@ export function TagSelector({ form }) {
               >
                 <Command>
                   <CommandInput
-                    placeholder="Search tags..."
+                    placeholder="Search departments..."
                     className="text-sm sm:text-base h-8 w-full pl-4 bg-white text-text_color placeholder:text-text_color/60 focus:ring-0 focus:border-primary/5"
                   />
                   <CommandList className="max-h-[200px] sm:max-h-[300px] overflow-y-auto">
                     <CommandGroup
-                      heading="TAGS"
+                      heading="Departments"
                       className="bg-gray-100 text-text_color divide-y divide-gray-300"
                     >
-                      {priorityMapping
-                        .filter((tag) => !field.value?.includes(tag.name))
-                        .map((tag) => (
+                      {officeDepartments
+                        .filter((d) => !field.value?.includes(d.value))
+                        .map((d) => (
                           <CommandItem
-                            className="text-xs sm:text-sm py-2 px-3 hover:bg-gray-300 text-nowrap text-text_color cursor-pointer"
-                            key={tag.name}
-                            value={tag.name}
+                            key={d.value}
+                            value={d.value}
                             onSelect={() => {
-                              const currentTags = field.value || [];
-                              field.onChange([...currentTags, tag.name]);
-                              setOpenTags(false);
+                              const selected = field.value || [];
+                              field.onChange([...selected, d.value]);
+                              setOpen(false);
                             }}
+                            className="text-xs sm:text-sm py-2 px-3 hover:bg-gray-300 cursor-pointer"
                           >
-                            {tag.name}
+                            {d.label}
                           </CommandItem>
                         ))}
                     </CommandGroup>
