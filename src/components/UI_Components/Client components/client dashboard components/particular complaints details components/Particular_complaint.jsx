@@ -20,7 +20,6 @@ import SuperAdminStatusSelector from "./SuperAdminStatusSelector";
 import ParticularComplaintSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ParticularComplaintSkeleton";
 
 const ParticularComplaint = ({ complaint, unread }) => {
-  
   const [timeline, setTimeline] = useState(complaint?.timeline || []);
   const [status, setStatus] = useState(
     complaint?.status_of_client || "Pending"
