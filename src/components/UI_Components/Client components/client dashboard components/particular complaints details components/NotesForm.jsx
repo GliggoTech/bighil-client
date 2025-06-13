@@ -17,11 +17,11 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
   const { token } = useAccessToken();
   const noteValue = watch("note");
 
-  // File attachment states
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(null);
+  // File attachment states - Changed to arrays for multiple files
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [filePreviews, setFilePreviews] = useState([]);
   const fileInputRef = useRef(null);
-  const[fileError, setFileError] = useState(null);
+  const [fileError, setFileError] = useState(null);
 
   // Allowed file types and size limit (20MB for videos)
   const allowedTypes = [
@@ -57,46 +57,90 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
   };
 
   const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+    const files = Array.from(event.target.files);
+    if (!files.length) return;
 
-    // Validate file type
-    if (!allowedTypes.includes(file.type)) {
-      setFileError(
-        "Please select a valid file type (Images, Videos, PDF, Word, Excel, or Text files)"
-      );
-      return;
+    const validFiles = [];
+    const newPreviews = [];
+    let errorMessage = null;
+
+    for (const file of files) {
+      // Validate file type
+      if (!allowedTypes.includes(file.type)) {
+        errorMessage =
+          "Some files have invalid types. Please select valid file types (Images, Videos, PDF, Word, Excel, or Text files)";
+        continue;
+      }
+
+      // Validate file size based on type
+      const maxSize = getMaxFileSize(file.type);
+      if (file.size > maxSize) {
+        const maxSizeMB = Math.round(maxSize / (1024 * 1024));
+        errorMessage = `Some files exceed the size limit of ${maxSizeMB}MB`;
+        continue;
+      }
+
+      validFiles.push(file);
+
+      // Create preview for images and videos
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setFilePreviews((prev) => [
+            ...prev,
+            {
+              id: file.name + file.size,
+              type: "image",
+              url: e.target.result,
+            },
+          ]);
+        };
+        reader.readAsDataURL(file);
+      } else if (file.type.startsWith("video/")) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setFilePreviews((prev) => [
+            ...prev,
+            {
+              id: file.name + file.size,
+              type: "video",
+              url: e.target.result,
+            },
+          ]);
+        };
+        reader.readAsDataURL(file);
+      }
     }
 
-    // Validate file size based on type
-    const maxSize = getMaxFileSize(file.type);
-    if (file.size > maxSize) {
-      const maxSizeMB = Math.round(maxSize / (1024 * 1024));
-      setFileError(`File size must be less than ${maxSizeMB}MB`);
-      return;
+    if (validFiles.length > 0) {
+      setSelectedFiles((prev) => [...prev, ...validFiles]);
+      setFileError(null);
     }
 
-    setSelectedFile(file);
+    if (errorMessage) {
+      setFileError(errorMessage);
+    }
 
-    // Create preview for images and videos
-    if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) =>
-        setFilePreview({ type: "image", url: e.target.result });
-      reader.readAsDataURL(file);
-    } else if (file.type.startsWith("video/")) {
-      const reader = new FileReader();
-      reader.onload = (e) =>
-        setFilePreview({ type: "video", url: e.target.result });
-      reader.readAsDataURL(file);
-    } else {
-      setFilePreview(null);
+    // Clear the input so the same files can be selected again if needed
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
-  const removeFile = () => {
-    setSelectedFile(null);
-    setFilePreview(null);
+  const removeFile = (indexToRemove) => {
+    setSelectedFiles((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
+    setFilePreviews((prev) => {
+      const fileToRemove = selectedFiles[indexToRemove];
+      const previewId = fileToRemove.name + fileToRemove.size;
+      return prev.filter((preview) => preview.id !== previewId);
+    });
+  };
+
+  const removeAllFiles = () => {
+    setSelectedFiles([]);
+    setFilePreviews([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -130,8 +174,13 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
     return fileType.split("/")[1]?.toUpperCase() || "File";
   };
 
+  const getPreviewForFile = (file) => {
+    const previewId = file.name + file.size;
+    return filePreviews.find((preview) => preview.id === previewId);
+  };
+
   const onSubmit = async (data) => {
-    if (!data.note.trim() && !selectedFile) {
+    if (!data.note.trim() && selectedFiles.length === 0) {
       setFileError("Please add a note or attach a file");
       return;
     }
@@ -142,9 +191,10 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
     const formData = new FormData();
     formData.append("note", data.note.trim());
 
-    if (selectedFile) {
-      formData.append("attachment", selectedFile);
-    }
+    // Append all selected files
+    selectedFiles.forEach((file, index) => {
+      formData.append(`attachment`, file); // Use 'attachments' for multiple files
+    });
 
     try {
       // Use fetch directly for FormData (don't set Content-Type header)
@@ -159,7 +209,7 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
       if (response.success) {
         addNewNote(response.data);
         reset();
-        removeFile();
+        removeAllFiles();
       } else {
         throw new Error(response.message || "Failed to add note");
       }
@@ -196,90 +246,115 @@ const NotesForm = ({ complaintId, currentNotes, addNewNote }) => {
             className="flex items-center gap-2"
           >
             <FiPaperclip className="w-4 h-4" />
-            Attach File
+            Attach Files
           </Button>
           <span className="text-xs text-gray">
             Max 5MB for docs/images, 20MB for videos
           </span>
+          {selectedFiles.length > 0 && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={removeAllFiles}
+              className="text-red hover:text-red-700 text-xs"
+            >
+              Remove All ({selectedFiles.length})
+            </Button>
+          )}
         </div>
 
-        {/* Hidden File Input */}
+        {/* Hidden File Input - Added multiple attribute */}
         <input
           ref={fileInputRef}
           type="file"
+          multiple
           accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.txt,.doc,.docx,.xls,.xlsx,.mp4,.webm,.ogg,.avi,.mov,.wmv,.flv,.mkv"
           onChange={handleFileSelect}
           className="hidden"
         />
 
-        {/* File Preview */}
-        {selectedFile && (
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-gray-50 dark:bg-gray-800">
-            <div className="flex items-start gap-3">
-              {/* Media Preview */}
-              {filePreview ? (
-                <div className="w-16 h-16 rounded-lg overflow-hidden relative">
-                  {filePreview.type === "image" ? (
-                    <img
-                      src={filePreview.url}
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : filePreview.type === "video" ? (
-                    <div className="relative w-full h-full">
-                      <video
-                        src={filePreview.url}
-                        className="w-full h-full object-cover"
-                        muted
-                      />
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <FiPlay className="w-6 h-6 text-white" />
+        {/* File Previews - Updated to handle multiple files */}
+        {selectedFiles.length > 0 && (
+          <div className="space-y-2">
+            {selectedFiles.map((file, index) => {
+              const preview = getPreviewForFile(file);
+              return (
+                <div
+                  key={index}
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-gray-50 dark:bg-gray-800"
+                >
+                  <div className="flex items-start gap-3">
+                    {/* Media Preview */}
+                    {preview ? (
+                      <div className="w-16 h-16 rounded-lg overflow-hidden relative">
+                        {preview.type === "image" ? (
+                          <img
+                            src={preview.url}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : preview.type === "video" ? (
+                          <div className="relative w-full h-full">
+                            <video
+                              src={preview.url}
+                              className="w-full h-full object-cover"
+                              muted
+                            />
+                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                              <FiPlay className="w-6 h-6 text-white" />
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-2xl">
+                        {getFileIcon(file.type)}
+                      </div>
+                    )}
+
+                    {/* File Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                        {file.name}
+                      </p>
+                      <p className="text-xs text-gray dark:text-gray-400">
+                        {formatFileSize(file.size)}
+                      </p>
+                      <p className="text-xs text-gray dark:text-gray-400">
+                        {getFileTypeLabel(file.type)}
+                      </p>
+                      {file.type.startsWith("video/") && (
+                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                          Video file - larger size limit applies
+                        </p>
+                      )}
                     </div>
-                  ) : null}
-                </div>
-              ) : (
-                <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-2xl">
-                  {getFileIcon(selectedFile.type)}
-                </div>
-              )}
 
-              {/* File Info */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                  {selectedFile.name}
-                </p>
-                <p className="text-xs text-gray dark:text-gray-400">
-                  {formatFileSize(selectedFile.size)}
-                </p>
-                <p className="text-xs text-gray dark:text-gray-400">
-                  {getFileTypeLabel(selectedFile.type)}
-                </p>
-                {selectedFile.type.startsWith("video/") && (
-                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                    Video file - larger size limit applies
-                  </p>
-                )}
-              </div>
-
-              {/* Remove Button */}
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={removeFile}
-                className="text-red hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-              >
-                <FiX className="w-4 h-4" />
-              </Button>
-            </div>
+                    {/* Remove Button */}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeFile(index)}
+                      className="text-red hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    >
+                      <FiX className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
 
+      {/* Error Display */}
+      {fileError && <div className="text-red text-sm">{fileError}</div>}
+
       {/* Submit Button */}
       <Button
-        disabled={loading || (!noteValue.trim() && !selectedFile)}
+        disabled={loading || (!noteValue.trim() && selectedFiles.length === 0)}
         type="submit"
         className="bg-primary text-white hover:bg-primary hover:text-text-light"
       >
