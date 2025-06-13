@@ -103,7 +103,7 @@ const UserNavbar = () => {
   return (
     <nav className="bg-white border-b border-light-border-subtle sticky top-0 z-50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Enhanced Logo Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -115,9 +115,9 @@ const UserNavbar = () => {
               className="flex items-center h-full py-2"
               onClick={() => setActiveLink("/user/user-add-complaint")}
             >
-              <div className="relative h-28 ">
+              <div className="relative h-20 ">
                 <Image
-                  src="/b4.svg"
+                  src="/b6.svg"
                   width={160}
                   height={40}
                   alt="logo"
@@ -173,7 +173,7 @@ const UserNavbar = () => {
           </div>
 
           {/* Desktop User Actions */}
-          <div className="hidden lg:flex lg:items-center lg:gap-3 flex-shrink-0">
+          <div className="hidden lg:flex lg:items-center lg:gap-1 flex-shrink-0">
             <AdvancedStyledDropdown
               handleLogOut={handleLogOut}
               loading={loading}

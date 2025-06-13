@@ -67,7 +67,7 @@ const Client_Navbar = ({ isOpen }) => {
                 >
                   <div className="relative h-20 ">
                     <Image
-                      src="/b4.svg"
+                      src="/b6.svg"
                       width={240}
                       height={50}
                       alt="logo"

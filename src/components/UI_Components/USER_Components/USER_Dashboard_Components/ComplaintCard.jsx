@@ -5,6 +5,7 @@ import StatusBadge from "../../Standard_Components/StatusBadge";
 import { formatDate } from "@/lib/formatDateFun";
 import { FcDepartment } from "react-icons/fc";
 const ComplaintCard = ({ complaint }) => {
+  console.log(complaint.department);
   return (
     <div className="group relative p-0 bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border-0 overflow-hidden">
       {/* Header Section with gradient background */}
@@ -70,8 +71,21 @@ const ComplaintCard = ({ complaint }) => {
               <div className="text-xs text-gray-600 dark:text-gray-400">
                 Department
               </div>
-              <div className="text-gray-700 dark:text-gray-300 font-medium">
-                {complaint.department}
+              <div
+                className={`text-gray-700 dark:text-gray-300 font-medium ${
+                  complaint.department?.length > 2 ? "text-xs" : "text-sm"
+                }`}
+              >
+                {/* {complaint.department} */}
+                {complaint.department.length > 0 &&
+                  complaint.department.map((dep, index) => (
+                    <span key={index}>
+                      {index === complaint.department.length || index === 0
+                        ? ""
+                        : ", "}
+                      {dep}
+                    </span>
+                  ))}
               </div>
             </div>
           </div>

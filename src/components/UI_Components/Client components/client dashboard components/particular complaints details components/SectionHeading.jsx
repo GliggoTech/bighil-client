@@ -15,12 +15,23 @@ const SectionHeading = ({ icon, label, title, subTitle, color }) => {
         <div className="text-sm font-light text-text_color/90 dark:text-text-light">
           {label}
         </div>
-        <h2 className="text-lg font-light text-text_color dark:text-text-light mt-1">
-          {title}{" "}
+        <h2
+          className={`${
+            label === "Department" ? "text-sm" : "text-lg"
+          } font-light text-text_color dark:text-text-light mt-1`}
+        >
+          {Array.isArray(title)
+            ? title.map((t, index) => (
+                <span key={index}>
+                  {index === title.length - 1 ? t : t + ", "}
+                </span>
+              ))
+            : title}
           <span className="text-xs text-text_color dark:text-text-light">
             {subTitle && `(${subTitle})`}
           </span>
         </h2>
+
         {/* {subTitle && (
           <h2 className="text-sm font-light text-text_color dark:text-text-light mt-1">
             {subTitle}
