@@ -2,6 +2,6 @@ import ReusableSkeleton from "@/components/UI_Components/Standard_Components/ske
 
 export default function PageLoading() {
   <div>
-    <ReusableSkeleton  />
+    <ReusableSkeleton variant="grid" rows={3}  />
   </div>;
 }

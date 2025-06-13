@@ -28,6 +28,7 @@ import {
 import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
+import ReusableSkeleton from "../../Standard_Components/skeletons/ReusableSkeleton";
 
 export default function ComplaintsChart() {
   const [data, setData] = useState([]);
@@ -46,9 +47,9 @@ export default function ComplaintsChart() {
         token,
         false
       );
+      console.log(res);
 
       if (res?.success) {
-      
         setData(res?.data?.timeline);
       }
     }
@@ -125,7 +126,7 @@ export default function ComplaintsChart() {
       <CardContent className="px-2  sm:px-6 ">
         {loading ? (
           <div className="flex h-[250px] w-full items-center justify-center">
-            <p className="text-muted-foreground">Loading data...</p>
+            <ReusableSkeleton variant="grid" rows={3} />
           </div>
         ) : error ? (
           <div className="flex h-[250px] w-full items-center justify-center">
