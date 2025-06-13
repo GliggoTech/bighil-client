@@ -81,7 +81,6 @@ const ActionTaken = ({
     );
   };
   useEffect(() => {
-
     reset({
       resolutionNote: "",
       acknowledgements: "",
@@ -176,7 +175,12 @@ const ActionTaken = ({
               }
             </div>
           </div>
-
+          {userRole !== "user" && status == "Resolved" && (
+            <RejectionReasonDisplay
+              reasons={rejectionReason}
+              resolutionData={actionMessage}
+            />
+          )}
           {/* Show authorization status for SUPER ADMIN when pending */}
           {status === "Pending Authorization" && userRole === "SUPER ADMIN" && (
             <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">

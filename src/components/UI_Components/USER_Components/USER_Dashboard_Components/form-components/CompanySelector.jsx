@@ -43,7 +43,7 @@ export function CompanySelector({
       render={({ field }) => (
         <FormItem className="space-y-2 sm:space-y-3">
           {showLable && (
-            <FormLabel className="text-sm font-medium text-text_color hover:text-white">
+            <FormLabel className="text-sm font-medium text-text_color ">
               Select Company <span className="text-red">*</span>
             </FormLabel>
           )}
