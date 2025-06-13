@@ -1,3 +1,4 @@
+"use client";
 import {
   FileText,
   FileImage,
@@ -6,8 +7,34 @@ import {
   File,
   Video,
   FileSpreadsheet,
+  DownloadCloud,
 } from "lucide-react";
 import { IoIosAttach } from "react-icons/io";
+const handleDownload = async (attachmentUrl, fileName) => {
+  try {
+    // Fetch the file as blob
+    const response = await fetch(attachmentUrl);
+    const blob = await response.blob();
+
+    // Create blob URL
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    // Create download link
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = fileName || "download";
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error("Download failed:", error);
+    // Fallback to opening in new tab
+    window.open(attachmentUrl, "_blank");
+  }
+};
 
 const FilePreview = ({ file }) => {
   const getFileIcon = (fileName, resourceType) => {
@@ -15,50 +42,50 @@ const FilePreview = ({ file }) => {
 
     // If it's an image resource type, return image icon
     if (resourceType === "image") {
-      return <FileImage className="w-8 h-8 text-blue-500" />;
+      return <FileImage className="w-8 h-8 text-blue" />;
     }
 
     // If it's a video resource type, return video icon
     if (resourceType === "video") {
-      return <Video className="w-8 h-8 text-purple-500" />;
+      return <Video className="w-8 h-8 text-purple/10" />;
     }
 
     // For raw files, determine icon based on extension
     switch (ext) {
       case "pdf":
-        return <FileText className="w-8 h-8 text-red-500" />;
+        return <FileText className="w-8 h-8 text-red" />;
       case "doc":
       case "docx":
-        return <FileText className="w-8 h-8 text-blue-600" />;
+        return <FileText className="w-8 h-8 text-blue" />;
       case "xls":
       case "xlsx":
-        return <FileSpreadsheet className="w-8 h-8 text-green-600" />;
+        return <FileSpreadsheet className="w-8 h-8 text-green" />;
       case "txt":
         return <FileText className="w-8 h-8 text-gray-600" />;
       default:
-        return <File className="w-8 h-8 text-gray-500" />;
+        return <File className="w-8 h-8 text-gray-600" />;
     }
   };
 
   const getFileTypeColor = (fileName, resourceType) => {
     const ext = fileName?.split(".").pop()?.toLowerCase();
 
-    if (resourceType === "image") return "bg-blue-50 dark:bg-blue-900/20";
-    if (resourceType === "video") return "bg-purple-50 dark:bg-purple-900/20";
+    if (resourceType === "image") return "bg-blue/5 dark:bg-blue/80";
+    if (resourceType === "video") return "bg-purple/5 dark:bg-purple/80";
 
     switch (ext) {
       case "pdf":
-        return "bg-red-50 dark:bg-red-900/20";
+        return "bg-red dark:bg-red/80";
       case "doc":
       case "docx":
-        return "bg-blue-50 dark:bg-blue-900/20";
+        return "bg-blue dark:bg-blue/80";
       case "xls":
       case "xlsx":
-        return "bg-green-50 dark:bg-green-900/20";
+        return "bg-green dark:bg-green/80";
       case "txt":
-        return "bg-gray-50 dark:bg-gray-900/20";
+        return "bg-gray-100 dark:bg-gray/80";
       default:
-        return "bg-gray-50 dark:bg-gray-900/20";
+        return "bg-gray-100 dark:bg-gray/80";
     }
   };
 
@@ -75,7 +102,7 @@ const FilePreview = ({ file }) => {
 
   return (
     <div
-      className="relative aspect-square group
+      className="relative w-20 h-20 group
                     border-2 border-light dark:border-dark 
                     rounded-xl overflow-hidden 
                     transition-all duration-300 ease-in-out
@@ -103,7 +130,7 @@ const FilePreview = ({ file }) => {
 
         {/* File icon display for non-images or image fallback */}
         <div
-          className={`flex flex-col items-center justify-center p-4 w-full h-full
+          className={`flex flex-col items-center justify-center p-2 w-full h-full
                       ${isImage(file.resourceType) ? "hidden" : "flex"}`}
         >
           {getFileIcon(file.fileName, file.resourceType)}
@@ -130,16 +157,20 @@ const FilePreview = ({ file }) => {
                      transition-opacity duration-300"
       >
         {file.resourceType === "raw"
-          ? file.fileName?.split(".").pop()?.toUpperCase()
+          ? file.resourceType?.split(".").pop()?.toUpperCase()
           : file.resourceType?.toUpperCase()}
       </div>
 
       {/* Download Button */}
-      <a
-        href={file.path}
-        download={file.fileName}
-        target="_blank"
-        rel="noopener noreferrer"
+      <div
+        onClick={() =>
+          handleDownload(
+            file.path,
+            file.publicId
+              ? file.publicId.split("/").pop()
+              : `attachment_${i + 1}`
+          )
+        }
         className="absolute bottom-2 right-2 
                    p-2 rounded-lg shadow-lg
                    bg-primary dark:bg-dark 
@@ -150,7 +181,7 @@ const FilePreview = ({ file }) => {
         title={`Download ${file.fileName}`}
       >
         <Download className="w-4 h-4 text-white dark:text-primary-light" />
-      </a>
+      </div>
     </div>
   );
 };
@@ -158,13 +189,13 @@ const FilePreview = ({ file }) => {
 const EmptyState = () => (
   <div
     className="w-full bg-surface-light dark:bg-surface-dark 
-                  rounded-xl p-6 shadow-sm"
+                  rounded-xl p-3 shadow-sm"
   >
     <div className="flex flex-col items-center justify-center">
-      <div className="p-4 rounded-full bg-background-secondary dark:bg-background-dark">
+      <div className="p-2 rounded-full bg-background-secondary dark:bg-background-dark">
         <XCircle className="w-8 h-8 text-red dark:text-text-muted" />
       </div>
-      <p className="mt-3 text-sm text-red dark:text-text-muted font-medium">
+      <p className=" text-sm text-red dark:text-text-muted font-medium">
         No evidence available for this case
       </p>
       <p className="mt-1 text-xs text-red">
@@ -175,6 +206,27 @@ const EmptyState = () => (
 );
 
 export default function EvidenceGallery({ evidence }) {
+  console.log(evidence);
+
+  const downloadAllFiles = async () => {
+    if (evidence && evidence.length > 0) {
+      for (let i = 0; i < evidence.length; i++) {
+        const currentEvidence = evidence[i];
+        console.log(currentEvidence);
+        const fileName = currentEvidence.publicId
+          ? currentEvidence.publicId.split("/").pop()
+          : `attachment_${i + 1}`;
+
+        // Add delay between downloads to prevent browser blocking
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        await handleDownload(currentEvidence.path, fileName);
+      }
+    }
+  };
+
   if (!evidence?.length) {
     return <EmptyState />;
   }
@@ -195,6 +247,8 @@ export default function EvidenceGallery({ evidence }) {
         return "Videos";
       case "raw":
         return "Documents";
+      case "pdf":
+        return "PDFs";
       default:
         return "Files";
     }
@@ -204,16 +258,34 @@ export default function EvidenceGallery({ evidence }) {
     <div className="dark:bg-surface-dark rounded-xl p-4 shadow-sm">
       {/* Section Header */}
       <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary-dark/10">
-            <IoIosAttach className="w-5 h-5 text-primary dark:text-primary-light" />
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary-dark/10">
+              <IoIosAttach className="w-5 h-5 text-primary dark:text-primary-light" />
+            </div>
+            <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
+              Evidence Gallery
+            </h2>
           </div>
-          <h2 className="text-xl font-semibold text-text_color dark:text-text-light">
-            Evidence Gallery
-          </h2>
+
+          {/* Download All Button */}
+          <button
+            onClick={downloadAllFiles}
+            className="flex items-center gap-2 px-4 py-2 
+                       bg-primary dark:bg-primary-dark 
+                       text-white dark:text-primary-light
+                       rounded-lg shadow-sm
+                       hover:bg-primary-dark dark:hover:bg-primary
+                       transition-colors duration-200
+                       text-sm font-medium"
+            title="Download all files"
+          >
+            <DownloadCloud className="w-4 h-4" />
+            Download All
+          </button>
         </div>
 
-        <div className="flex items-center gap-4 text-sm text-text_color dark:text-text-muted">
+        <div className="flex flex-col items-start md:flex-row gap-4 text-sm text-text_color dark:text-text-muted">
           <span>
             {evidence.length} file{evidence.length !== 1 ? "s" : ""} attached
           </span>
@@ -232,7 +304,7 @@ export default function EvidenceGallery({ evidence }) {
       </div>
 
       {/* Gallery Grid */}
-      <div className="space-y-6">
+      <div className=" flex md:flex-row flex-col ">
         {Object.entries(groupedFiles).map(([type, files]) => (
           <div key={type}>
             {Object.keys(groupedFiles).length > 1 && (

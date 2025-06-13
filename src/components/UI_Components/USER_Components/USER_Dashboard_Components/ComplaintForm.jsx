@@ -86,7 +86,7 @@ export function ComplaintForm() {
       });
       setShowConfirmation(false);
     },
-   
+
     invalidateQueries: [["user-complaints"], ["companies"]],
   });
 
@@ -113,7 +113,7 @@ export function ComplaintForm() {
     formData.append("complaintType", values.complaintType);
 
     values.files?.forEach((file) => {
-      formData.append("files", file, file.name.replace(/[^a-z0-9_.-]/gi, "_"));
+      formData.append("files", file);
     });
 
     // Use the mutation instead of fetchData
@@ -162,7 +162,6 @@ export function ComplaintForm() {
 
           {/* Component 2: Basic Complaint Fields */}
           <ComplaintFields form={form} />
-          
 
           {/* Component 3: Tag Selector */}
           <TagSelector form={form} />

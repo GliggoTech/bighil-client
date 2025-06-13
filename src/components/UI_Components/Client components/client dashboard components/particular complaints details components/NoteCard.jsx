@@ -3,7 +3,7 @@ import { FiDownload, FiFile, FiImage, FiDownloadCloud } from "react-icons/fi";
 import dateFormat from "dateformat";
 
 const NoteCard = ({ note }) => {
-  console.log(note);
+
 
   const handleDownload = async (attachmentUrl, fileName) => {
     try {
