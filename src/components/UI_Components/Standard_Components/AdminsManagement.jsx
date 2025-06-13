@@ -76,7 +76,6 @@ const AdminsManagement = () => {
   // Handle edit admin
   const handleEditAdmin = async (adminId, updatedData) => {
     try {
-
       const response = await fetchData(
         `${getBackendUrl()}/api/client-setting/update-admin/${adminId}`,
         "PATCH",
@@ -92,7 +91,6 @@ const AdminsManagement = () => {
             admin._id === adminId ? { ...admin, ...updatedData } : admin
           )
         );
-       
       } else {
         throw new Error(response.message || "Failed to update admin");
       }
@@ -129,7 +127,6 @@ const AdminsManagement = () => {
 
   // Handle add new admin
   const handleAddAdmin = () => {
-
     toast({
       title: "Info",
       description: "Add admin functionality will be implemented soon.",
@@ -187,28 +184,32 @@ const AdminsManagement = () => {
           hideAction={true}
         />
       </CardContent>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-2xl font-semibold text-text_color dark:text-white">
-              Admin Management
-            </CardTitle>
-            <CardDescription className="text-gray-900 dark:text-gray-400">
-              Manage admin users and their permissions.
-            </CardDescription>
-          </div>
+      {userRole != "SUB ADMIN" && (
+        <div className="">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl font-semibold text-text_color dark:text-white">
+                  Admin Management
+                </CardTitle>
+                <CardDescription className="text-gray-900 dark:text-gray-400">
+                  Manage admin users and their permissions.
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <AdminsTable
+              admins={otherRoles}
+              onEdit={handleEditAdmin}
+              onDelete={handleDeleteAdmin}
+              loading={loadingAdmins}
+              userRole={userRole}
+              handleDisable={handleDisableAdmin}
+            />
+          </CardContent>
         </div>
-      </CardHeader>
-      <CardContent>
-        <AdminsTable
-          admins={otherRoles}
-          onEdit={handleEditAdmin}
-          onDelete={handleDeleteAdmin}
-          loading={loadingAdmins}
-          userRole={userRole}
-          handleDisable={handleDisableAdmin}
-        />
-      </CardContent>
+      )}
     </Card>
   );
 };
