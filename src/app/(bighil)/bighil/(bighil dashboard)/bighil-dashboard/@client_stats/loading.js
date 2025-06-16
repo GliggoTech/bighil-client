@@ -1,8 +1,8 @@
-import BighilDashboardSkeleton from "@/components/UI_Components/Standard_Components/skeletons/BighilDashboardSkeleton";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 import React from "react";
 
 const loading = () => {
-  return <BighilDashboardSkeleton />;
+  return <GreenLoadingSkeleton />;
 };
 
 export default loading;

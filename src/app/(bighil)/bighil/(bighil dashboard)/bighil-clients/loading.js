@@ -1,10 +1,9 @@
 import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
-import React from "react";
 
-const loading = () => {
+export default function Loading() {
   return (
-   <GreenLoadingSkeleton/>
+    <div>
+      <GreenLoadingSkeleton />
+    </div>
   );
-};
-
-export default loading;
+}
