@@ -20,7 +20,7 @@ export default async function RecentComplaintsPage() {
       cache: "no-cache",
     }
   );
-  console.log(visibilityResponse);
+
 
   const { visibleToIT, role } = visibilityResponse || {};
 

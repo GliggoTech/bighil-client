@@ -47,7 +47,7 @@ export default function ComplaintsChart() {
         token,
         false
       );
-      console.log(res);
+   
 
       if (res?.success) {
         setData(res?.data?.timeline);

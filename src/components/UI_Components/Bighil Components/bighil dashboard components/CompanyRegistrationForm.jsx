@@ -34,7 +34,7 @@ export default function CompanyRegistrationForm({
     }
 
     return selectedClient.admins.map((admin, index) => {
-      console.log(`Admin ${index}:`, admin); // Debug log
+ 
 
       // Ensure we have a valid role
       let role = admin.role;

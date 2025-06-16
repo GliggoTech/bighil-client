@@ -13,6 +13,7 @@ export default async function CategoryBreakdown({ params }) {
     }
   );
 
+
   return (
     <div>
       <CategoryBreakDownHeader data={res} />

@@ -10,7 +10,7 @@ export default function ClientStatisticsLayout({
   category_breakdown,
   department_breakdown,
   stalled_breakdown,
-  pattern_and_escalation,
+  // pattern_and_escalation,
 }) {
   return (
     <div className="min-h-screen text-black bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:via-emerald-950/20 dark:to-neutral-950 m-5">
@@ -33,17 +33,17 @@ export default function ClientStatisticsLayout({
             <span className="hidden sm:inline">Category</span>
           </TabsTrigger>
           <TabsTrigger value="department" className="flex items-center gap-2">
-            <House  className="h-4 w-4" />
+            <House className="h-4 w-4" />
             <span className="hidden sm:inline">Department</span>
           </TabsTrigger>
           <TabsTrigger value="stalled" className="flex items-center gap-2">
             <Pause className="h-4 w-4" />
             <span className="hidden sm:inline">Stalled</span>
           </TabsTrigger>
-          <TabsTrigger value="pattern" className="flex items-center gap-2">
+          {/* <TabsTrigger value="pattern" className="flex items-center gap-2">
             <Pause className="h-4 w-4" />
             <span className="hidden sm:inline">Pattern & Escalation</span>
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="summary" className="space-y-4">
@@ -74,11 +74,11 @@ export default function ClientStatisticsLayout({
             <CardContent className="p-1">{stalled_breakdown}</CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="pattern" className="space-y-4">
+        {/* <TabsContent value="pattern" className="space-y-4">
           <Card className="p-0 border-none">
             <CardContent className="p-1">{pattern_and_escalation}</CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

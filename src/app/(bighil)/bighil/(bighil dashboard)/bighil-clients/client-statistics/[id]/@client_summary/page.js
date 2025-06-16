@@ -12,6 +12,7 @@ export default async function Client_Summary({ params }) {
     }
   );
 
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className=" ">

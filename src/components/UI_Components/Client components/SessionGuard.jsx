@@ -9,7 +9,7 @@ import { useBeforeUnload } from "@/custom hooks/useBeforeUnload";
 export default function SessionGuard({ children }) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname", pathname);
+ 
   const { userId, clearCurrentUser } = useNotificationStore();
   const { LogoutConfirmationDialog, performLogout } = useBeforeUnload();
   const inactivityTimer = useRef(null);
@@ -132,7 +132,7 @@ export default function SessionGuard({ children }) {
         const response = await fetch("/api/validate-session", {
           credentials: "include",
         });
-        console.log("response", response);
+
 
         if (!response.ok) {
           clearCurrentUser();

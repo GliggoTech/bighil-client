@@ -29,6 +29,7 @@ export default async function StalledBreakdown({ params }) {
         cache: "no-cache",
       }
     );
+    console.log("Stalled Breakdown Data:", res);
 
     return (
       <div className=" space-y-6">

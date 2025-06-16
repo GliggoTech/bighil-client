@@ -32,7 +32,7 @@ export default function LogoutConfirmationDialog({
       const result = await clientLogout();
 
       if (result.success) {
-        console.log("Logout successful:", result.message);
+      
         onConfirm?.();
 
         // Redirect to login page

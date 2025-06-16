@@ -1,9 +1,9 @@
-import ReusableSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ReusableSkeleton";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 
 export default function Loading() {
-    return (
-        <div>
-            <ReusableSkeleton variant="stats" />
-        </div>
-    );
+  return (
+    <div>
+      <GreenLoadingSkeleton />
+    </div>
+  );
 }

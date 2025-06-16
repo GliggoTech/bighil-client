@@ -1,21 +1,24 @@
 import React from "react";
 import ClientSummaryCard from "./ClientSummaryCard";
-import {
-  FileText,
-  Clock,
-  Shield,
-  Users,
-  AlertTriangle,
-  Timer,
-} from "lucide-react";
+import { FileText, Timer, Shield, Users, AlertTriangle } from "lucide-react";
 
-const ClientSummaryContainer = ({ data }) => {
-  // Transform the data into card format
+const ClientSummaryContainer = ({ data = {} }) => {
+  console.log("Client Summary Data:", data);
+  // Utility to safely extract values
+  const getSafeValue = (key, fallback = "N/A") => {
+    const value = data?.[key];
+    if (Array.isArray(value)) return value.length ? value.join(", ") : fallback;
+    return value !== undefined && value !== null && value !== ""
+      ? value
+      : fallback;
+  };
+
+  // Prepare cards
   const summaryCards = [
     {
       id: "total-complaints",
       title: "Total Complaints",
-      value: data["Total Complaints Filed"],
+      value: getSafeValue("Total Complaints Filed", 0),
       icon: FileText,
       color: "from-blue/50 to-blue/60",
       bgColor: "bg-blue/10",
@@ -25,7 +28,7 @@ const ClientSummaryContainer = ({ data }) => {
     {
       id: "resolution-time",
       title: "Average Resolution Time",
-      value: data["Avg. Resolution Time"],
+      value: getSafeValue("Avg. Resolution Time", "0 hrs"),
       icon: Timer,
       color: "from-orange/50 to-orange/60",
       bgColor: "bg-orange/10",
@@ -35,9 +38,7 @@ const ClientSummaryContainer = ({ data }) => {
     {
       id: "complaint-category",
       title: "Top Complaint Category",
-      value: Array.isArray(data["Highest Complaint Category"])
-        ? data["Highest Complaint Category"].join(", ")
-        : data["Highest Complaint Category"],
+      value: getSafeValue("Highest Complaint Category"),
       icon: Shield,
       color: "from-red/50 to-red/60",
       bgColor: "bg-red/10",
@@ -47,12 +48,47 @@ const ClientSummaryContainer = ({ data }) => {
     {
       id: "active-departments",
       title: "Active Departments",
-      value: data["Active Departments"],
+      value: getSafeValue("Active Departments", 0),
       icon: Users,
       color: "from-green/50 to-green/60",
       bgColor: "bg-green/10",
       iconColor: "text-green",
-      description: "Departments having most of the  complaints",
+      description: "Departments having most of the complaints",
+    },
+  ];
+
+  // Optional insights data
+  const insights = [
+    {
+      key: "First Complaint Date",
+      color: "bg-blue",
+      message: `Company has been active since ${getSafeValue(
+        "First Complaint Date"
+      )}`,
+    },
+    {
+      key: "Security Insight",
+      color: "bg-red",
+      message: getSafeValue(
+        "Security Insight",
+        "Security breaches are the primary concern"
+      ),
+    },
+    {
+      key: "Department Insight",
+      color: "bg-green",
+      message: getSafeValue(
+        "Department Insight",
+        "Multiple departments are actively involved"
+      ),
+    },
+    {
+      key: "Resolution Insight",
+      color: "bg-orange",
+      message: getSafeValue(
+        "Resolution Insight",
+        "Resolution metrics need improvement"
+      ),
     },
   ];
 
@@ -82,32 +118,31 @@ const ClientSummaryContainer = ({ data }) => {
         ))}
       </div>
 
-      {/* Additional insights section */}
+      {/* Dynamic Insights */}
       <div className="mt-8 bg-white rounded-xl p-6 shadow-md border border-gray-200">
         <div className="flex items-center space-x-2 mb-4">
           <AlertTriangle className="h-6 w-6 text-amber-500" />
           <h3 className="text-xl font-semibold text-gray-800">Key Insights</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-blue rounded-full"></div>
-            <span>
-              Company has been active since {data["First Complaint Date"]}
-            </span>
+        {data["Total Complaints Filed"] != 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+            {insights.map(
+              (insight, index) =>
+                insight.message && (
+                  <div key={index} className="flex items-center space-x-2">
+                    <div
+                      className={`w-2 h-2 rounded-full ${insight.color}`}
+                    ></div>
+                    <span>{insight.message}</span>
+                  </div>
+                )
+            )}
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-red rounded-full"></div>
-            <span>Security breaches are the primary concern</span>
+        ) : (
+          <div className="text-sm text-gray-600">
+            No insights available as there are no complaints filed.
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green rounded-full"></div>
-            <span>Multiple departments are actively involved</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-orange rounded-full"></div>
-            <span>Resolution metrics need improvement</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

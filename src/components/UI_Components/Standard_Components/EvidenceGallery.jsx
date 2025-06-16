@@ -206,13 +206,13 @@ const EmptyState = () => (
 );
 
 export default function EvidenceGallery({ evidence }) {
-  console.log(evidence);
+ 
 
   const downloadAllFiles = async () => {
     if (evidence && evidence.length > 0) {
       for (let i = 0; i < evidence.length; i++) {
         const currentEvidence = evidence[i];
-        console.log(currentEvidence);
+      
         const fileName = currentEvidence.publicId
           ? currentEvidence.publicId.split("/").pop()
           : `attachment_${i + 1}`;

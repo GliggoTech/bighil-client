@@ -1,11 +1,19 @@
 import React from "react";
 
-const CategoryBreakDownHeader = ({data}) => {
+const CategoryBreakDownHeader = ({ data }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
+  const totalComplaints =
+    typeof data?.totalComplaints === "number" ? data.totalComplaints : 0;
+  const tags = Array.isArray(data?.tags) ? data.tags : [];
+  const topCategoryPercentage =
+    typeof tags[0]?.percentage === "number"
+      ? `${tags[0].percentage.toFixed(1)}%`
+      : "N/A";
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -22,7 +30,7 @@ const CategoryBreakDownHeader = ({data}) => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
           <div className="bg-blue/5 rounded-lg p-4 text-center">
             <div className="text-2xl lg:text-3xl font-bold text-blue/90">
-              {data.totalComplaints}
+              {totalComplaints}
             </div>
             <div className="text-sm text-blue/80 font-medium">
               Total Complaints
@@ -31,14 +39,14 @@ const CategoryBreakDownHeader = ({data}) => {
 
           <div className="bg-red/5 rounded-lg p-4 text-center">
             <div className="text-2xl lg:text-3xl font-bold text-red/90">
-              {data.tags.length}
+              {tags.length}
             </div>
             <div className="text-sm text-red/80 font-medium">Categories</div>
           </div>
 
           <div className="bg-green/5 rounded-lg p-4 text-center">
             <div className="text-2xl lg:text-3xl font-bold text-green/90">
-              {data.tags[0]?.percentage.toFixed(1)}%
+              {topCategoryPercentage}
             </div>
             <div className="text-sm text-green/80 font-medium">
               Top Category

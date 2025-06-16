@@ -7,7 +7,7 @@ const ClientSummaryHeader = ({
   totalComplaints,
 }) => {
   return (
-    <div className="bg-primary text-white p-8 rounded-t-2xl shadow-lg">
+    <div className="bg-primary -z-10 text-white p-8 rounded-t-2xl shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="bg-white/20 p-3 rounded-full">

@@ -23,8 +23,7 @@ export default function TabCloseProvider({ children }) {
     // Use the accessToken from your hook instead of checking cookies manually
     const isAuthenticated = !!accessToken; // Convert to boolean
 
-    console.log("accessToken from hook:", accessToken);
-    console.log("isAuthenticated", isAuthenticated);
+
 
     if (isAuthenticated) {
       let cleanup;

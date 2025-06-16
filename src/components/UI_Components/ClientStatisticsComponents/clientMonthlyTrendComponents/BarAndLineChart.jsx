@@ -150,9 +150,9 @@ const BarAndLineChart = ({ data }) => {
                 yAxisId="percentage"
                 type="monotone"
                 dataKey="resolvedPercentage"
-                stroke="#dc2626"
+                stroke="#198754"
                 strokeWidth={1}
-                dot={{ fill: "#dc2626", r: 6 }}
+                dot={{ fill: "#198754", r: 6 }}
                 name="Resolution Rate (%)"
               />
             </ComposedChart>

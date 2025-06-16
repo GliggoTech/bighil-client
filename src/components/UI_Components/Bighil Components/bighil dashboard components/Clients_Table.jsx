@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Building, Users } from "lucide-react";
+import { Building, FileText, Users } from "lucide-react";
 import Delete_Client from "./Delete_Client";
 import Bighil_Client_Dialog from "./Bighil_Client_Dialog";
 import Edit_Client from "./Edit_Client";
@@ -140,7 +140,7 @@ const Clients_Table = ({ clients }) => {
                             <Link
                               href={`/bighil/bighil-clients/client-statistics/${client._id}`}
                             >
-                              <MdReport className="h-5 w-5 text-text_color dark:text-text-light" />
+                              <FileText className="h-5 w-5 text-primary dark:text-text-light" />
                             </Link>
                           </div>
                         </TableCell>

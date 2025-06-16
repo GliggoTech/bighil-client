@@ -45,6 +45,14 @@ const DepartmentBreakDownTable = ({ data }) => {
     }
   };
 
+  if (!Array.isArray(data) || data.length === 0) {
+    return (
+      <Card className="p-6 text-center text-gray-600 border-none">
+        <p>No department data available.</p>
+      </Card>
+    );
+  }
+
   const formatDepartmentName = (name) => {
     return name.replace(" Department", "");
   };
@@ -63,7 +71,9 @@ const DepartmentBreakDownTable = ({ data }) => {
                       .length
                   }
                 </div>
-                <div className="text-gray-700">Excellent Performers</div>
+                <div className="text-gray-700 font-medium">
+                  Excellent Performers
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-yellow">
@@ -75,7 +85,7 @@ const DepartmentBreakDownTable = ({ data }) => {
                     ).length
                   }
                 </div>
-                <div className="text-gray-700">Good Performers</div>
+                <div className="text-gray-700 font-medium">Good Performers</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-red">
@@ -84,7 +94,9 @@ const DepartmentBreakDownTable = ({ data }) => {
                       .length
                   }
                 </div>
-                <div className="text-gray-700">Need Improvement</div>
+                <div className="text-gray-700 font-medium">
+                  Need Improvement
+                </div>
               </div>
             </div>
           </div>

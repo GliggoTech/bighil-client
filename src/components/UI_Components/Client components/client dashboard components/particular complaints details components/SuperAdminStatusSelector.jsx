@@ -39,7 +39,7 @@ const SuperAdminStatusSelector = ({
   token,
   status,
 }) => {
-  console.log(status);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isRejectionDialogOpen, setIsRejectionDialogOpen] = useState(false);
   const [pendingStatus, setPendingStatus] = useState("");
