@@ -136,7 +136,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
           <div className="p-6 bg-primary text-white">
             {/* <div className=" flex justify-center mb-2">
               <Image
-                src="/b6.svg"
+                src="/b10.svg"
                 alt="logo"
                 width={100}
                 height={100}

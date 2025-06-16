@@ -117,7 +117,7 @@ const UserNavbar = () => {
             >
               <div className="relative h-20 ">
                 <Image
-                  src="/b6.svg"
+                  src="/b10.svg"
                   width={160}
                   height={40}
                   alt="logo"
