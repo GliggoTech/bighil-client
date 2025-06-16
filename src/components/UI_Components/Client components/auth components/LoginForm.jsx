@@ -64,6 +64,7 @@ export default function LoginForm() {
     setCurrentTheme,
     setCurrentUserName,
     setCurrentUserEmail,
+    setCompanyId,
   } = useNotificationStore();
 
   // State management
@@ -84,6 +85,7 @@ export default function LoginForm() {
         setShowTwoFaDialog(true);
         return;
       }
+      console.log("Login response:", res);
 
       if (res.success) {
         setIsSuccess(true);
@@ -92,6 +94,7 @@ export default function LoginForm() {
         setCurrentTheme(res.user.theme);
         setCurrentUserName(res.user.name);
         setCurrentUserEmail(res.user.email);
+        setCompanyId(res.user.companyId);
 
         // Delay navigation for better UX
         setTimeout(() => {

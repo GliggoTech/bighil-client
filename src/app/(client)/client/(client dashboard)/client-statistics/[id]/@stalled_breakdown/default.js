@@ -9,8 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-export default async function StalledBreakdown({ params }) {
+export default async function StalledBreakdownDefault({ params }) {
   const { id } = await params;
   if (!id) {
     return (
@@ -29,7 +28,6 @@ export default async function StalledBreakdown({ params }) {
         cache: "no-cache",
       }
     );
-   
 
     return (
       <div className=" space-y-6">

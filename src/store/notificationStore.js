@@ -13,6 +13,7 @@ const useNotificationStore = create(
       userName: null,
       userEmail: null,
       currentTheme: "light", // Default theme
+      companyId: null, // Company ID for multi-tenant support
       // Session state
       sessionId: null,
       lastActivity: null,
@@ -24,6 +25,7 @@ const useNotificationStore = create(
       setCurrentUserName: (userName) => set({ userName }),
       setSessionActive: (active) => set({ isSessionActive: active }),
       updateLastActivity: () => set({ lastActivity: new Date().toISOString() }),
+      setCompanyId: (companyId) => set({ companyId }),
       clearCurrentUser: () => {
         set({
           userId: null,
@@ -237,6 +239,7 @@ const useNotificationStore = create(
         userName: state.userName,
         userEmail: state.userEmail,
         currentTheme: state.currentTheme,
+        companyId: state.companyId,
         // Omitting notifications and lastSync from persistence
       }),
     }

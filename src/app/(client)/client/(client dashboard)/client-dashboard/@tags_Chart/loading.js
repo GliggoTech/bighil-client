@@ -1,8 +1,8 @@
-import ReusableSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ReusableSkeleton";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 import React from "react";
 
 const KeywordLoading = () => {
-  return <ReusableSkeleton variant="grid" rows={3} />;
+  return <GreenLoadingSkeleton />;
 };
 
 export default KeywordLoading;

@@ -1,5 +1,5 @@
-import { SkeletonAdminGreeting } from "@/components/UI_Components/Standard_Components/skeletons/SkeletonAdminGreeting";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 
 export default function Loading() {
-  return <SkeletonAdminGreeting />;
+  return <GreenLoadingSkeleton />;
 }

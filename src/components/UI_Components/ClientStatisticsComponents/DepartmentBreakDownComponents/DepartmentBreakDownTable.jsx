@@ -14,23 +14,11 @@ const DepartmentBreakDownTable = ({ data }) => {
   const getPerformanceBadge = (percentage) => {
     const rate = parseInt(percentage);
     if (rate >= 75) {
-      return (
-        <Badge className="bg-green/5 text-green hover:bg-green/5">
-          Excellent
-        </Badge>
-      );
+      return <Badge className="bg-primary text-white ">Excellent</Badge>;
     } else if (rate >= 50) {
-      return (
-        <Badge className="bg-yellow/5 text-yellow hover:bg-yellow/5">
-          Good
-        </Badge>
-      );
+      return <Badge className="bg-yellow text-white ">Good</Badge>;
     } else {
-      return (
-        <Badge className="bg-red/5 text-red hover:bg-red/5">
-          Needs Improvement
-        </Badge>
-      );
+      return <Badge className="bg-red text-white ">Needs Improvement</Badge>;
     }
   };
 
@@ -47,7 +35,7 @@ const DepartmentBreakDownTable = ({ data }) => {
 
   if (!Array.isArray(data) || data.length === 0) {
     return (
-      <Card className="p-6 text-center text-gray-600 border-none">
+      <Card className="p-6 text-center text-gray-600 bg-white border-none">
         <p>No department data available.</p>
       </Card>
     );
@@ -56,16 +44,17 @@ const DepartmentBreakDownTable = ({ data }) => {
   const formatDepartmentName = (name) => {
     return name.replace(" Department", "");
   };
+
   return (
-    <Card className="p-0 border-none">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold text-gray-900 flex  justify-between items-center md:flex-row flex-col">
+    <Card className="p-0 bg-white border-none shadow-sm">
+      <CardHeader className="bg-white rounded-t-lg">
+        <CardTitle className="text-xl font-bold text-gray-800 flex justify-between items-center md:flex-row flex-col">
           Department Performance Details
           {/* Summary Footer */}
-          <div className=" bg-gray/0 rounded-lg">
+          <div className="bg-white rounded-lg p-4 border-none shadow-sm">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="text-center">
-                <div className="text-lg font-bold text-green">
+                <div className="text-lg font-bold text-primary">
                   {
                     data.filter((d) => parseInt(d.resolvedPercentage) >= 75)
                       .length
@@ -76,7 +65,7 @@ const DepartmentBreakDownTable = ({ data }) => {
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-yellow">
+                <div className="text-lg font-bold text-primary">
                   {
                     data.filter(
                       (d) =>
@@ -105,25 +94,25 @@ const DepartmentBreakDownTable = ({ data }) => {
           Detailed breakdown of complaint handling metrics by department
         </p>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border overflow-hidden">
+      <CardContent className="p-6">
+        <div className="rounded-md border border-green-200 overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-gray-50">
-                  <TableHead className="font-semibold text-gray-900 min-w-[150px]">
+                <TableRow className="bg-green-50 hover:bg-green-50">
+                  <TableHead className="font-semibold text-gray-800 min-w-[150px]">
                     Department
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-900 text-center min-w-[100px]">
+                  <TableHead className="font-semibold text-gray-800 text-center min-w-[100px]">
                     Complaints
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-900 text-center min-w-[120px]">
+                  <TableHead className="font-semibold text-gray-800 text-center min-w-[120px]">
                     Resolved %
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-900 text-center min-w-[140px]">
+                  <TableHead className="font-semibold text-gray-800 text-center min-w-[140px]">
                     Avg. Resolution Time
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-900 text-center min-w-[120px]">
+                  <TableHead className="font-semibold text-gray-800 text-center min-w-[120px]">
                     Performance
                   </TableHead>
                 </TableRow>
@@ -134,27 +123,27 @@ const DepartmentBreakDownTable = ({ data }) => {
                   .map((dept, index) => (
                     <TableRow
                       key={index}
-                      className="hover:bg-gray-50 transition-colors"
+                      className="hover:bg-green-50 transition-colors border-none"
                     >
-                      <TableCell className="font-medium text-gray-900">
+                      <TableCell className="font-medium text-gray-800">
                         {formatDepartmentName(dept.department)}
                       </TableCell>
-                      <TableCell className="text-center font-semibold text-blue-600">
+                      <TableCell className="text-center font-semibold text-green-700">
                         {dept.complaints}
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center space-x-2">
-                          <span className="font-semibold">
+                          <span className="font-semibold text-gray-800">
                             {dept.resolvedPercentage}
                           </span>
                           <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div
                               className={`h-2 rounded-full transition-all duration-300 ${
                                 parseInt(dept.resolvedPercentage) >= 75
-                                  ? "bg-green/50"
+                                  ? "bg-primary"
                                   : parseInt(dept.resolvedPercentage) >= 50
-                                  ? "bg-yellow/50"
-                                  : "bg-red/50"
+                                  ? "bg-yellow"
+                                  : "bg-red"
                               }`}
                               style={{ width: dept.resolvedPercentage }}
                             ></div>

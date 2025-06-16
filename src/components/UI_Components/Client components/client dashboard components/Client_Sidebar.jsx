@@ -23,7 +23,7 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
   const [filteredSidebarItems, setFilteredSidebarItems] =
     useState(clientSidebarValues);
   const pathname = usePathname();
-  const { notificationCount, setTotalUnreadCount, userRole } =
+  const { notificationCount, setTotalUnreadCount, userRole, companyId } =
     useNotificationStore();
   const { fetchData } = useFetch();
   const { token } = useAccessToken();
@@ -98,6 +98,13 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
       );
     }
 
+    // Show Statistics page only for SUPER ADMIN
+    if (userRole !== "SUPER ADMIN") {
+      filteredItems = filteredItems.filter(
+        (item) => item.title !== "Statistics"
+      );
+    }
+
     setFilteredSidebarItems(filteredItems);
   }, [userRole, visibleToIT]);
   const toggleSidebar = useCallback(
@@ -143,7 +150,11 @@ const Client_Sidebar = ({ isOpen, setIsOpen }) => {
               onClick={() => setIsOpen(false)}
             >
               <Link
-                href={item.path}
+                href={
+                  item.path == "/client/client-statistics"
+                    ? `/client/client-statistics/${companyId}`
+                    : item.path
+                }
                 className={`flex items-center px-1 py-2 rounded-lg text-sm transition-colors relative ${
                   isActive
                     ? "bg-active-link text-white"

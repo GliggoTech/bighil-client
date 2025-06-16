@@ -1,8 +1,8 @@
-import { ComplaintsTableSkeleton } from "@/components/UI_Components/Client components/client dashboard components/admin recent complaints table components/ComplaintsTableSkeleton";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 import React from "react";
 
 const loading = () => {
-  return <ComplaintsTableSkeleton />;
+  return  <GreenLoadingSkeleton />
 };
 
 export default loading;

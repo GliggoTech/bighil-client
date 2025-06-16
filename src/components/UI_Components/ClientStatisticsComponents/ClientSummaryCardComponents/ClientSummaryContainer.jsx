@@ -3,7 +3,7 @@ import ClientSummaryCard from "./ClientSummaryCard";
 import { FileText, Timer, Shield, Users, AlertTriangle } from "lucide-react";
 
 const ClientSummaryContainer = ({ data = {} }) => {
-  console.log("Client Summary Data:", data);
+
   // Utility to safely extract values
   const getSafeValue = (key, fallback = "N/A") => {
     const value = data?.[key];

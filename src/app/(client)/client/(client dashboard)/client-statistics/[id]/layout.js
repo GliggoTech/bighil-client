@@ -56,22 +56,30 @@ export default function ClientStatisticsLayout({
 
         <TabsContent value="trends" className="space-y-4">
           <Card className="p-0 border-none">
-            <CardContent className="p-1">{monthly_trends}</CardContent>
+            <CardContent className="p-0 border-none">
+              {monthly_trends}
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="category" className="space-y-4">
           <Card className="p-0 border-none">
-            <CardContent className="p-1">{category_breakdown}</CardContent>
+            <CardContent className="p-0 border-none">
+              {category_breakdown}
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="department" className="space-y-4">
           <Card className="p-0 border-none">
-            <CardContent className="p-1">{department_breakdown}</CardContent>
+            <CardContent className="p-0 border-none">
+              {department_breakdown}
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="stalled" className="space-y-4">
           <Card className="p-0 border-none">
-            <CardContent className="p-1">{stalled_breakdown}</CardContent>
+            <CardContent className="p-0 border-none">
+              {stalled_breakdown}
+            </CardContent>
           </Card>
         </TabsContent>
         {/* <TabsContent value="pattern" className="space-y-4">

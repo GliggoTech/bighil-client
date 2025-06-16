@@ -35,18 +35,18 @@ const StalledBreakdownHeader = ({ data }) => {
   return (
     <div className="w-full space-y-6">
       {/* Header Banner */}
-      <div className="bg-white border border-none rounded-lg p-6">
+      <div className="bg-primary border border-none rounded-lg p-6">
         <div className="flex items-center gap-3 mb-3">
           <div className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">{companyName}</h1>
+            <Building2 className="h-5 w-5 text-white" />
+            <h1 className="text-2xl font-bold text-white">{companyName}</h1>
           </div>
-          <Badge variant="destructive" className="flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3 text-blue" />
+          <Badge variant="destructive" className="flex items-center gap-1 text-white">
+            <AlertTriangle className="h-3 w-3 text-white" />
             Stalled Analysis
           </Badge>
         </div>
-        <p className="text-gray-600 text-lg">
+        <p className="text-white text-lg">
           Complaints stalled for more than {period} with no progress updates
         </p>
       </div>
