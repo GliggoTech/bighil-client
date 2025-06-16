@@ -41,7 +41,7 @@ export function CompanySelector({
       control={form.control}
       name={formFieldname}
       render={({ field }) => (
-        <FormItem className="space-y-2 sm:space-y-3">
+        <FormItem className="space-y-1">
           {showLable && (
             <FormLabel className="text-sm font-medium text-text_color ">
               Select Company <span className="text-red">*</span>
@@ -52,10 +52,14 @@ export function CompanySelector({
               <Button
                 variant="outline"
                 aria-expanded={openCompany}
-                className="w-full justify-between px-3 sm:px-4 py-2 sm:py-3 h-auto text-sm sm:text-base font-light hover:bg-primary/50  border-primary/5 transition-colors"
+                className={`w-full justify-between px-3 sm:px-4 py-2 sm:py-3 h-auto text-sm sm:text-base font-light hover:bg-primary/50  border-primary/5 transition-colors ${
+                  form.formState.errors.companyName
+                    ? "border-red/50 border-2"
+                    : ""
+                }`}
               >
                 <span className="text-text_color truncate">
-                  {field.value || "Select company..."}
+                  {field.value || "Choose a company"}
                 </span>
                 <ChevronsUpDown className="ml-2 h-4 w-4 sm:h-5 sm:w-5 text-primary/80 shrink-0" />
               </Button>
@@ -124,8 +128,8 @@ export function CompanySelector({
                 </CommandList>
               </Command>
             </PopoverContent>
+            <FormMessage className="text-xs text-red" />
           </Popover>
-          <FormMessage className="text-xs text-red" />
         </FormItem>
       )}
     />

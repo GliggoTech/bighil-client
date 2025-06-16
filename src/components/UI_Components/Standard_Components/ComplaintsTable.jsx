@@ -277,51 +277,53 @@ const ComplaintsTable = ({
                           {complaint.priority}
                         </div>
                       </TableCell>
-
-                      <TableCell className="p-2 text-center flex items-center justify-center gap-2">
-                        <Link
-                          href={
-                            bighil
-                              ? `/bighil/bighil-complaints/${complaint._id}`
-                              : `/client/client-complaints/${complaint._id}`
-                          }
-                          className="inline-block"
-                        >
-                          <Button className="w-fit bg-gradient-to-r from-primary to-primary/80 text-white font-light  rounded transition-all duration-300 transform hover:scale-105">
-                            <Eye className="h-4 w-4 mr-1 inline md:hidden" />
-                            <span className="hidden md:inline">View</span>
-                          </Button>
-                        </Link>
-                        {complaint.status_of_client === "Resolved" && (
-                          <div className="">
-                            <Button
-                              onClick={() => handlePdfPreview(complaint._id)}
-                              className="w-fit bg-success/10 text-success text-center py-1 rounded-md hover:bg-white hover:text-primary"
-                              disabled={
-                                previewLoading &&
-                                selectedComplaintId === complaint._id
-                              }
-                            >
-                              {previewLoading &&
-                              selectedComplaintId === complaint._id ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <>
-                                  <IoDocumentSharp className="h-4 w-4 mr-1 inline md:hidden " />
-                                  <span className="hidden md:inline">
-                                    Preview
-                                  </span>
-                                </>
-                              )}
+                      <TableCell className="text-center">
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-2 w-full">
+                          <Link
+                            href={
+                              bighil
+                                ? `/bighil/bighil-complaints/${complaint._id}`
+                                : `/client/client-complaints/${complaint._id}`
+                            }
+                            className="inline-block"
+                          >
+                            <Button className="w-20 bg-gradient-to-r from-primary to-primary/80 text-white font-light rounded transition-all duration-300 transform hover:scale-105">
+                              <Eye className="h-4 w-4 mr-1 inline md:hidden" />
+                              <span className="hidden md:inline">View</span>
                             </Button>
+                          </Link>
 
-                            {previewError === complaint._id && (
-                              <p className="text-xs text-red-500 mt-1">
-                                Failed to load preview
-                              </p>
-                            )}
-                          </div>
-                        )}
+                          {complaint.status_of_client === "Resolved" && (
+                            <div className="flex flex-col items-center">
+                              <Button
+                                onClick={() => handlePdfPreview(complaint._id)}
+                                className="w-20 bg-success/10 text-success text-center py-1 rounded-md hover:bg-white hover:text-primary"
+                                disabled={
+                                  previewLoading &&
+                                  selectedComplaintId === complaint._id
+                                }
+                              >
+                                {previewLoading &&
+                                selectedComplaintId === complaint._id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <>
+                                    <IoDocumentSharp className="h-4 w-4 mr-1 inline md:hidden" />
+                                    <span className="hidden md:inline">
+                                      Preview
+                                    </span>
+                                  </>
+                                )}
+                              </Button>
+
+                              {previewError === complaint._id && (
+                                <p className="text-xs text-red-500 mt-1">
+                                  Failed to load preview
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

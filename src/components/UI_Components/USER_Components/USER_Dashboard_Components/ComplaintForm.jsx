@@ -24,7 +24,7 @@ export function ComplaintForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
-      submissionType: "",
+      submissionType: undefined,
       complaintMessage: "",
       department: [],
       complaintType: undefined,
@@ -67,7 +67,7 @@ export function ComplaintForm() {
       setLocalFiles([]);
       form.reset({
         companyName: "",
-        submissionType: "",
+        submissionType: undefined,
         complaintMessage: "",
         tags: [],
         department: [],

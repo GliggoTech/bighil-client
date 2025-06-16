@@ -18,7 +18,7 @@ export function FileUploader({ handleFileUpload, localFiles, removeFile }) {
       />
       <label
         htmlFor="file-upload"
-        className="block w-full border-2 mt-2 border-primary/5 rounded-lg p-1 sm:p-1 text-center cursor-pointer hover:border-blue-500 transition-colors"
+        className="block w-full border-2 mt-2 border-primary/10 rounded-lg p-1 sm:p-1 text-center cursor-pointer hover:border-primary/20 hover:shadow-md transition-colors"
       >
         <UploadCloud className="mx-auto text-primary h-5 w-5 sm:h-6 sm:w-6 mb-1" />
         <p className="text-sm sm:text-base text-gray-600">

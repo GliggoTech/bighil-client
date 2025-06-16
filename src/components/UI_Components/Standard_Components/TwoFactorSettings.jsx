@@ -48,7 +48,7 @@ const TwoFactorSettings = ({
   );
 
   return (
-    <Card className="bg-white dark:bg-gray-800 rounded-none shadow-lg border-none">
+    <Card className="bg-white  dark:bg-gray-800 rounded-none shadow-lg border-none">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold text-text_color dark:text-white">
           Security Settings
@@ -57,7 +57,7 @@ const TwoFactorSettings = ({
           Manage your account security preferences.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pb-0">
         <FormField
           control={form.control}
           name="isTwoFactorEnabled"

@@ -34,6 +34,8 @@ import { getBackendUrl } from "@/lib/getBackendUrl";
 import Link from "next/link";
 import { endpoints } from "@/utils/endPointsHelper";
 import { cn } from "@/lib/utils";
+import PasswordStrengthIndicator from "../Standard_Components/PasswordStrengthIndicatorComponents/PasswordStrengthIndicator";
+import { passwordRegex } from "@/utils/passwordRegex";
 
 // Form schemas
 const emailSchema = z.object({
@@ -45,7 +47,11 @@ const otpSchema = z.object({
 });
 
 const passwordSchema = z.object({
-  password: z.string().trim().min(1, "Password must be at least 8 characters"),
+  password: z
+    .string()
+    .trim()
+    .min(1, "Password must be at least 8 characters")
+    .regex(passwordRegex, "Password must contain at least 8 characters."),
 });
 
 export default function PasswordResetPage({ role }) {
@@ -308,14 +314,24 @@ export default function PasswordResetPage({ role }) {
                               <Input
                                 {...field}
                                 placeholder="name@example.com"
-                                className="pl-4 pr-4 py-4 h-10 bg-primary/5 border-2 border-primary/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
+                                className={`pl-4 pr-4 py-4 h-10 bg-primary/5 rounded-xl shadow-sm border-2 ${
+                                  emailForm.formState.errors.email
+                                    ? "border-red focus:border-red focus:ring-1 focus:ring-red/30"
+                                    : "border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary/30"
+                                }`}
                               />
                               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text-secondary/50">
-                                <Mail className="h-5 w-5 text-primary" />
+                                <Mail
+                                  className={`h-5 w-5 ${
+                                    emailForm.formState.errors.email
+                                      ? "text-red "
+                                      : "text-primary "
+                                  } `}
+                                />
                               </div>
                             </div>
                           </FormControl>
-                          <FormMessage className="text-accent-danger text-sm mt-1 ml-1" />
+                          <FormMessage className="text-red text-sm mt-1 ml-1" />
                         </FormItem>
                       )}
                     />
@@ -455,18 +471,28 @@ export default function PasswordResetPage({ role }) {
                                 {...field}
                                 type="password"
                                 placeholder="••••••••"
-                                className="pl-4 pr-4 py-6 bg-primary/10 border-2 border-primary/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm"
+                                className={`pl-4 pr-4 py-6 bg-primary/10 border-2 border-primary/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary/30 shadow-sm ${
+                                  passwordForm.formState.errors.password
+                                    ? "border-red focus:border-red focus:ring-1 focus:ring-red/30"
+                                    : "border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary/30"
+                                } `}
                               />
                               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-text_color">
-                                <Lock className="h-5 w-5" />
+                                <Lock
+                                  className={`h-5 w-5 ${
+                                    passwordForm.formState.errors.password
+                                      ? "text-red "
+                                      : "text-primary "
+                                  } `}
+                                />
                               </div>
                             </div>
                           </FormControl>
-                          <div className="text-xs text-text-secondary mt-2 ml-1">
-                            Password should be at least 8 characters with mixed
-                            cases, numbers & symbols
-                          </div>
-                          <FormMessage className="text-accent-danger text-sm mt-1 ml-1" />
+                          <PasswordStrengthIndicator
+                            password={passwordForm.getValues("password")}
+                            className="mt-2"
+                          />
+                          <FormMessage className="text-red text-sm mt-1 ml-1" />
                         </FormItem>
                       )}
                     />
@@ -504,10 +530,10 @@ export default function PasswordResetPage({ role }) {
               )}
 
               {currentStep === "success" && (
-                <div className="text-center space-y-6 py-4">
-                  <div className="inline-flex items-center justify-center p-2 rounded-full bg-accent-success/10 mb-2">
-                    <div className="w-16 h-16 bg-gradient-to-r from-accent-success to-primary rounded-full flex items-center justify-center text-white">
-                      <CheckCircle2 className="h-8 w-8" />
+                <div className="text-center ">
+                  {/* <div className="inline-flex items-center justify-center p-2 rounded-full bg-accent-success/10 mb-2">
+                    <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary rounded-full flex items-center justify-center text-white">
+                      <CheckCircle2 className="h-8 w-8 text-white" />
                     </div>
                   </div>
 
@@ -518,7 +544,7 @@ export default function PasswordResetPage({ role }) {
                   <p className="text-text-secondary max-w-sm mx-auto">
                     Your password has been successfully reset. You can now log
                     in with your new credentials.
-                  </p>
+                  </p> */}
 
                   <Link href={loginLink} className="block">
                     <Button className="w-full py-6 rounded-xl bg-primary  text-white font-medium text-base shadow-lg shadow-primary/20">

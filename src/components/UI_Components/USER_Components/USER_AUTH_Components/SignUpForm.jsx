@@ -29,6 +29,8 @@ import useNotificationStore from "@/store/notificationStore";
 import { userLogin, userSignup } from "@/app/actions/user.action";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Image from "next/image";
+import PasswordStrengthIndicator from "../../Standard_Components/PasswordStrengthIndicatorComponents/PasswordStrengthIndicator";
+import { passwordRegex } from "@/utils/passwordRegex";
 
 const SignupSigninForm = ({ mode = "signup" }) => {
   // Form validation schema
@@ -36,13 +38,14 @@ const SignupSigninForm = ({ mode = "signup" }) => {
     email: z
       .string()
       .trim()
+      .toLowerCase()
       .min(1, "Email is required")
       .email("Invalid email address"),
     password: z
       .string()
       .trim()
       .min(1, "Password is required")
-      .min(1, "Password must be at least 6 characters"),
+      .regex(passwordRegex, "Password must be at least 8 characters long"),
     ...(mode === "signup"
       ? {
           name: z
@@ -126,6 +129,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
       setIsLoading(false);
     }
   };
+  console.log(form);
 
   return (
     <div className=" min-h-screen bg-white flex items-center justify-center p-4">
@@ -191,13 +195,23 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                           Full Name
                         </FormLabel>
                         <div className="relative mt-1">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
+                          <User
+                            className={`  absolute left-3  ${
+                              form.formState.errors.name
+                                ? "top-1/3 text-red"
+                                : "top-1/2 text-primary"
+                            } -translate-y-1/2  h-5 w-5`}
+                          />
                           <FormControl>
                             <Input
                               {...field}
                               type="text"
                               disabled={isLoading}
-                              className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
+                              className={`pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10 ${
+                                form.formState.errors.name
+                                  ? "border-red border-2"
+                                  : ""
+                              } `}
                               placeholder="Jane Doe"
                             />
                           </FormControl>
@@ -218,17 +232,27 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         Email Address
                       </FormLabel>
                       <div className="relative mt-1">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
+                        <Mail
+                          className={`  absolute left-3  ${
+                            form.formState.errors.email
+                              ? "top-1/3 text-red"
+                              : "top-1/2 text-primary"
+                          } -translate-y-1/2  h-5 w-5`}
+                        />
                         <FormControl>
                           <Input
                             {...field}
                             type="email"
                             disabled={isLoading}
-                            className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
+                            className={`pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10 ${
+                              form.formState.errors.email
+                                ? "border-red border-2"
+                                : ""
+                            }`}
                             placeholder="your@email.com"
                           />
                         </FormControl>
-                        <FormMessage className="text-red-500 text-sm mt-1" />
+                        <FormMessage className="text-red text-sm mt-1" />
                       </div>
                     </FormItem>
                   )}
@@ -246,13 +270,23 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         </FormLabel>
                       </div>
                       <div className="relative mt-1">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-5 w-5" />
+                        <Lock
+                          className={`  absolute left-3  ${
+                            form.formState.errors.password
+                              ? "top-1/3 text-red"
+                              : "top-1/2 text-primary"
+                          } -translate-y-1/2  h-5 w-5`}
+                        />
                         <FormControl>
                           <Input
                             {...field}
                             type={showPassword ? "text" : "password"}
                             disabled={isLoading}
-                            className="pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10"
+                            className={`pl-10 h-10 border-gray-300 bg-gray-50 focus:border-primary focus:ring-primary/10 ${
+                              form.formState.errors.password
+                                ? "border-red border-2"
+                                : ""
+                            } `}
                             placeholder="••••••••"
                           />
                         </FormControl>
@@ -260,7 +294,11 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                         {/* Toggle password visibility */}
                         <button
                           type="button"
-                          className="absolute inset-y-0 right-0 flex items-center pr-3"
+                          className={`absolute  flex items-center pr-3 ${
+                            form.formState.errors.password
+                              ? "text-red inset-y-0 right-0 -top-1/3"
+                              : "text-text_color inset-y-0 right-0"
+                          }`}
                           onClick={() => setShowPassword(!showPassword)}
                           tabIndex="-1"
                         >
@@ -302,7 +340,16 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                             </svg>
                           )}
                         </button>
-                        <FormMessage className="text-red-500 text-sm mt-1" />
+                        <FormMessage className="text-red text-sm mt-1" />
+                      </div>
+                      <div className="mt-3">
+                        {mode == "signup" && (
+                          <PasswordStrengthIndicator
+                            password={form.watch("password")}
+                            className="mt-2"
+                            showRequirements={true}
+                          />
+                        )}
                       </div>
                     </FormItem>
                   )}
@@ -376,7 +423,7 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                     <div className="flex items-center gap-1">
                       <span className="font-semibold">Password:</span>
                     </div>
-                    <div>123</div>
+                    <div>Vijay@123</div>
                   </div>
                 </div>
               </form>

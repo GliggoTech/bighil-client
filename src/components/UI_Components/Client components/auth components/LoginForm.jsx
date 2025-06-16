@@ -43,6 +43,7 @@ const formSchema = z.object({
   email: z
     .string()
     .trim()
+    .toLowerCase()
     .min(1, "Email is required")
     .email("Invalid email format"),
   password: z.string().trim().min(1, "Password is required"),

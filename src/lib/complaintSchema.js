@@ -11,7 +11,8 @@ export const complaintTypes = ["Anonymous", "Non-Anonymous"];
 export const formSchema = z.object({
   companyName: z.string().trim().min(1, "Company selection required"),
   submissionType: z.enum(submissionTypesForFormSchema, {
-    required_error: "Submission type is required",
+    required_error: "Please choose a submission type.",
+    invalid_type_error: "Please choose a submission type.",
   }),
   complaintMessage: z
     .string()

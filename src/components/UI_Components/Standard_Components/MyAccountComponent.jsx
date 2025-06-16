@@ -24,15 +24,16 @@ import useFetch from "@/custom hooks/useFetch";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { toast } from "@/hooks/use-toast";
+import PasswordStrengthIndicator from "./PasswordStrengthIndicatorComponents/PasswordStrengthIndicator";
+import { passwordRegex } from "@/utils/passwordRegex";
+import { useState } from "react";
 
 const formSchema = z
   .object({
     newPassword: z
       .string()
       .trim()
-      .min(1, "Password must be at least 8 characters"),
-    // .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-    // .regex(/[0-9]/, "Must contain at least one number"),
+      .regex(passwordRegex, "Password must be at least 8 characters long."),
     confirmPassword: z.string().trim(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -50,6 +51,10 @@ export default function MyAccountComponent({ data }) {
       confirmPassword: "",
     },
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isNewPasswordFocused, setIsNewPasswordFocused] = useState(false);
+  const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
+    useState(false);
 
   const { loading, error, success, fetchData } = useFetch();
   const { token } = useAccessToken();
@@ -95,10 +100,10 @@ export default function MyAccountComponent({ data }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
           {/* Profile Information Card */}
           <Card className="lg:col-span-2 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-dialog_inside_border_color dark:border-gray-700">
-            <CardHeader className="pb-4">
+            <CardHeader className="pb-0">
               <CardTitle className="text-xl text-center">
                 Profile Information
               </CardTitle>
@@ -107,11 +112,11 @@ export default function MyAccountComponent({ data }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-success rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
+              {/* <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-success rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
                 {name?.charAt(0) || data.username.charAt(0)}
-              </div>
+              </div> */}
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {name && (
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
@@ -147,7 +152,7 @@ export default function MyAccountComponent({ data }) {
             </CardContent>
           </Card>
           <Card className="lg:col-span-3 shadow-md hover:shadow-lg transition-shadow duration-300 border bg-white border-gray-200 dark:border-gray-700">
-            <CardHeader className="pb-4">
+            <CardHeader className="pb-6">
               <CardTitle className="text-xl">Change Password</CardTitle>
               <CardDescription>
                 Update your password to keep your account secure
@@ -163,20 +168,98 @@ export default function MyAccountComponent({ data }) {
                     control={form.control}
                     name="newPassword"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-2 relative">
                         <FormLabel className="flex items-center space-x-2">
-                          <Lock className="h-4 w-4 text-primary" />
-                          <span className="text-primary">New Password</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="password"
-                            placeholder="Enter new password"
-                            className="rounded-lg py-5 px-4  border border-dialog_inside_border_color"
+                          <Lock
+                            className={`h-5 w-5 ${
+                              form.formState.errors.newPassword
+                                ? "text-red"
+                                : "text-primary"
+                            }`}
                           />
+                          <span
+                            className={`${
+                              form.formState.errors.newPassword
+                                ? "text-red"
+                                : "text-primary"
+                            }`}
+                          >
+                            New Password
+                          </span>
+                        </FormLabel>
+
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              {...field}
+                              type={showPassword ? "text" : "password"}
+                              onFocus={() => setIsNewPasswordFocused(true)}
+                              onBlur={() => setIsNewPasswordFocused(false)}
+                              placeholder="Enter new password"
+                              className={`rounded-lg py-5 px-4 pr-10 border ${
+                                form.formState.errors.newPassword
+                                  ? "border-red border-2"
+                                  : "border-dialog_inside_border_color"
+                              }`}
+                            />
+
+                            {/* Eye / EyeOff Icon */}
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-text_color focus:outline-none"
+                              tabIndex={-1}
+                            >
+                              {showPassword ? (
+                                // EyeOff
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411L21 21"
+                                  />
+                                </svg>
+                              ) : (
+                                // Eye
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
                         </FormControl>
+
                         <FormMessage />
+                        {isNewPasswordFocused && !isConfirmPasswordFocused && (
+                          <PasswordStrengthIndicator
+                            password={form.getValues("newPassword")}
+                            className="mt-2"
+                          />
+                        )}
                       </FormItem>
                     )}
                   />
@@ -187,13 +270,29 @@ export default function MyAccountComponent({ data }) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="flex items-center space-x-2">
-                          <Lock className="h-4 w-4 text-primary" />
-                          <span className="text-primary">Confirm Password</span>
+                          <Lock
+                            className={`   ${
+                              form.formState.errors.confirmPassword
+                                ? " text-red"
+                                : " text-primary"
+                            }  h-5 w-5`}
+                          />
+                          <span
+                            className={`   ${
+                              form.formState.errors.confirmPassword
+                                ? " text-red"
+                                : " text-primary"
+                            } `}
+                          >
+                            Confirm Password
+                          </span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             type="password"
+                            onFocus={() => setIsConfirmPasswordFocused(true)}
+                            onBlur={() => setIsConfirmPasswordFocused(false)}
                             placeholder="Confirm new password"
                             className="rounded-lg py-5 px-4  border border-dialog_inside_border_color"
                           />
@@ -203,10 +302,11 @@ export default function MyAccountComponent({ data }) {
                     )}
                   />
 
+                  {error && <div className="text-center text-red">{error}</div>}
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-primary to-success hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
+                    className="w-full bg-gradient-to-r from-primary to-success hover:from-primary/90 hover:to-success/90 text-white font-semibold py-5 rounded-lg transition-all transform hover:scale-[1.01] shadow-md"
                   >
                     {loading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -220,9 +320,6 @@ export default function MyAccountComponent({ data }) {
                         Password updated successfully!
                       </div>
                     )} */}
-                  {error && (
-                    <div className="text-center text-red-800">{error}</div>
-                  )}
                 </form>
               </Form>
             </CardContent>

@@ -34,7 +34,7 @@ export const clientRequestFormSchema = z.object({
   numberOfEmployees: z
     .number({ invalid_type_error: "Must be a number" })
     .positive("Must be a positive number"),
-  companyEmail: z.string().email("Invalid email address"),
+  companyEmail: z.string().trim().toLowerCase().email("Invalid email address"),
   // subject: z.string().min(3, "Subject is required"),
   message: z
 

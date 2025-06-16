@@ -51,13 +51,15 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                 <Input
                   placeholder="Acme Corporation"
                   {...field}
-                  className="border-gray-300  dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  className={`border rounded-lg px-4 py-2 ${
+                    form.formState.errors.companyName
+                      ? "border-red focus-visible:ring-red"
+                      : "border-gray-300 dark:border-gray-600"
+                  } dark:bg-gray-800 dark:text-white`}
                   readOnly={viewMode}
                 />
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Enter the official registered name of the company
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}
@@ -76,7 +78,11 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                 <Input
                   placeholder="+1234567890"
                   {...field}
-                  className="border-gray-300  dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  className={`border rounded-lg px-4 py-2 ${
+                    form.formState.errors.companyName
+                      ? "border-red focus-visible:ring-red"
+                      : "border-gray-300 dark:border-gray-600"
+                  } dark:bg-gray-800 dark:text-white`}
                   onChange={(e) => {
                     const value = e.target.value;
                     if (/^\+?[\d]*$/.test(value)) {
@@ -86,9 +92,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                   readOnly={viewMode}
                 />
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Include country code (e.g., +1 for US)
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}
@@ -111,9 +115,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                   readOnly={viewMode}
                 />
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Enter the official registered Email of the company
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}
@@ -135,9 +137,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                   readOnly={viewMode}
                 />
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Enter the official registered Address of the company
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}
@@ -148,7 +148,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <FaUsers  className="h-4 w-4 text-primary" />
+                <FaUsers className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Number of Employees</span>
               </FormLabel>
               <FormControl>
@@ -160,9 +160,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                   readOnly={viewMode}
                 />
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Provide the total count of individuals working at your company
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}
@@ -173,7 +171,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-textbg-text_color dark:text-gray-300">
-                <MdBusinessCenter  className="h-4 w-4 text-primary" />
+                <MdBusinessCenter className="h-4 w-4 text-primary" />
                 <span className=" text-text_color">Company Type</span>
               </FormLabel>
               <FormControl>
@@ -201,9 +199,7 @@ const CompanyInformationStep = React.memo(({ form, viewMode, setViewMode }) => {
                   </Select>
                 </div>
               </FormControl>
-              <FormDescription className="text-text_color/80 dark:text-gray-400">
-                Provide the total count of individuals working at your company
-              </FormDescription>
+
               <FormMessage className="text-red dark:text-red" />
             </FormItem>
           )}

@@ -105,7 +105,9 @@ export default async function CardsStatusPage() {
     },
     {
       title: "Avg. Resolution Time",
-      value: `${res.avgResolutionTime} days`,
+      value: `${res.avgResolutionTime} ${
+        res.avgResolutionTime > 1 ? "days" : "day"
+      }`,
       icon: <Clock className="h-5 w-5 text-indigo" />,
       description: "Average time to resolve",
       color: "bg-white",

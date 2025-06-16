@@ -249,7 +249,7 @@ const AdminAccountsStep = ({
                   return (
                     <FormItem>
                       <FormLabel className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
-                        <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                        <Shield className="h-4 w-4 text-primary dark:text-purple-400" />
                         <span>Role</span>
                       </FormLabel>
                       <Select
@@ -291,9 +291,9 @@ const AdminAccountsStep = ({
                           ))}
                         </SelectContent>
                       </Select>
-                      <FormDescription className="text-gray-500 dark:text-gray-400">
+                      {/* <FormDescription className="text-gray-500 dark:text-gray-400">
                         {getRoleDescription(index)}
-                      </FormDescription>
+                      </FormDescription> */}
                       <FormMessage className="text-red dark:text-red" />
                     </FormItem>
                   );

@@ -1,4 +1,5 @@
 "use client";
+import React, { useState } from "react";
 import {
   FormField,
   FormItem,
@@ -14,11 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { officeDepartments, submissionTypes } from "@/lib/complaintSchema";
+import {  submissionTypes } from "@/lib/complaintSchema";
 import { DepartmentSelector } from "./DepartmentSelector";
 
 export function ComplaintFields({ form }) {
-  // Style to completely remove focus styling
+  const [charCount, setCharCount] = useState(0); // For character count
+  const MAX_LENGTH = 1000; // You can customize this
+
   const noFocusStyle = {
     outline: "none",
     boxShadow: "none",
@@ -26,7 +29,7 @@ export function ComplaintFields({ form }) {
 
   return (
     <>
-      {/* Complaint Title */}
+      {/* Submission Type */}
       <FormField
         control={form.control}
         name="submissionType"
@@ -36,7 +39,13 @@ export function ComplaintFields({ form }) {
               Submission Type <span className="text-red">*</span>
             </FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
+              <SelectTrigger
+                className={`h-10 text-sm focus:outline-none focus:ring-0 focus:shadow-none ${
+                  form.formState.errors.submissionType
+                    ? "border-red/50 border-2"
+                    : "border-primary/10"
+                }`}
+              >
                 <SelectValue placeholder="Select a submission type" />
               </SelectTrigger>
               <SelectContent className="bg-white border-none shadow-lg">
@@ -55,35 +64,10 @@ export function ComplaintFields({ form }) {
           </FormItem>
         )}
       />
-      {/* <FormField
-        control={form.control}
-        name="department"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-text_color">
-              Department to Raise Complaint Against <span className="text-red">*</span>
-            </FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="h-10 text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none">
-                <SelectValue placeholder="Select a Department" />
-              </SelectTrigger>
-              <SelectContent className="bg-white border-none shadow-lg">
-                {officeDepartments.map((item) => (
-                  <SelectItem
-                    key={item.value}
-                    value={item.value}
-                    className="hover:bg-primary/10"
-                  >
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage className="text-xs text-red" />
-          </FormItem>
-        )}
-      /> */}
+
+      {/* Department */}
       <DepartmentSelector form={form} />
+
       {/* Complaint Details */}
       <FormField
         control={form.control}
@@ -96,10 +80,30 @@ export function ComplaintFields({ form }) {
             <Textarea
               {...field}
               placeholder="Describe your complaint in detail..."
-              className="min-h-[80px] md:min-h-[120px] resize-y text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none"
+              className={`min-h-[80px] md:min-h-[120px] resize-y text-sm border-primary/10 focus:outline-none focus:ring-0 focus:border-primary/10 focus:shadow-none ${
+                form.formState.errors.complaintMessage
+                  ? "border-red/50 border-2"
+                  : ""
+              } `}
               style={noFocusStyle}
+              onChange={(e) => {
+                field.onChange(e); // Important to keep react-hook-form state updated
+                setCharCount(e.target.value.length);
+              }}
+              maxLength={MAX_LENGTH}
             />
-            <FormMessage className="text-xs text-red" />
+            <div
+              className={`flex ${
+                form.formState.errors.complaintMessage
+                  ? "justify-between"
+                  : "justify-end"
+              }`}
+            >
+              <FormMessage className="text-xs text-red" />
+              <div className="text-xs text-text_color justify-end flex  text-right mt-1">
+                {charCount}/{MAX_LENGTH} characters
+              </div>
+            </div>
           </FormItem>
         )}
       />

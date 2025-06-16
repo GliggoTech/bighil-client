@@ -75,16 +75,14 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      {" "}
-      {/* Use setOpen directly */}
       <DropdownMenuTrigger className="bg-primary hover:bg-primary/90 active:bg-primary/80 p-2 rounded-full focus:outline-none transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
         <User className="text-white h-5 w-5" />
       </DropdownMenuTrigger>
-      <div className="hidden md:block">
+      <div className="hidden md:block pl-1">
         Welcome, <span className="text-primary">{userName}</span>
       </div>
       <DropdownMenuContent className="w-72 flex flex-col space-y-3 bg-white text-text_color shadow-xl border border-dialog_inside_border_color rounded-lg overflow-hidden p-1  animate-slideDownAndFade">
-        <div className="flex flex-col px-5 space-y-3">
+        <div className="flex flex-col px-5 space-y-1 mt-3">
           <div className="text-sm font-medium text-text_color">{userName}</div>
 
           <RoleTitle role={userRole} title={title} />

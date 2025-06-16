@@ -1,10 +1,9 @@
-import MyAccountSkeleton from "@/components/UI_Components/Standard_Components/skeletons/MyAccountSkeleton";
-import React from "react";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 
 const loading = () => {
   return (
     <div>
-      <MyAccountSkeleton />
+      <GreenLoadingSkeleton />
     </div>
   );
 };

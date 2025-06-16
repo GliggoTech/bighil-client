@@ -14,6 +14,7 @@ import {
   FilterIcon,
   Calendar1,
   HomeIcon,
+  FileText,
 } from "lucide-react";
 import { debounce } from "lodash";
 import ComplaintsTable from "./ComplaintsTable";
@@ -435,9 +436,9 @@ const ComplaintFilter = ({ bighil = false }) => {
         <Button
           size="sm"
           onClick={handleExport}
-          className="w-fit justify-end bg-primary hover:bg-primary/80 text-white   rounded-md"
+          className="w-32 justify-center bg-primary hover:bg-primary/80 text-white   rounded-md"
         >
-          Export to CSV
+          <FileText className="h-3.5 w-3.5" /> Export to CSV
         </Button>
       </div>
       {!error ? (

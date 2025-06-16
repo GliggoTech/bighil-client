@@ -163,15 +163,15 @@ const AdminsManagement = () => {
   };
   return (
     <Card className="bg-white dark:bg-gray-800 rounded-none shadow-lg border-none">
-      <CardHeader>
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-2xl font-semibold text-text_color dark:text-white">
+            <CardTitle className="text-2xl font-semibold text-text_color dark:text-white p-0">
               Your Access
             </CardTitle>
-            <CardDescription className="text-gray-900 dark:text-gray-400">
+            {/* <CardDescription className="text-gray-900 dark:text-gray-400">
               Manage admin users and their permissions.
-            </CardDescription>
+            </CardDescription> */}
           </div>
         </div>
       </CardHeader>

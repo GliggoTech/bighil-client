@@ -5,7 +5,7 @@ export const clientAdminSchema = z.object({
   companyName: z
     .string()
     .trim()
-    .min(2, "Company name must be at least 2 characters"),
+    .min(5, "Company name must be at least 2 characters"),
   contactNumber: z
     .string()
     .regex(/^\+\d{1,15}$/, "Invalid phone number format"),
@@ -13,7 +13,7 @@ export const clientAdminSchema = z.object({
     .array(
       z.object({
         name: z.string().trim().min(2, "Name must be at least 2 characters"),
-        email: z.string().trim().email("Invalid email address"),
+        email: z.string().trim().toLowerCase().email("Invalid email address"),
         role: z.enum(["SUPER ADMIN", "ADMIN", "SUB ADMIN"]),
       })
     )
