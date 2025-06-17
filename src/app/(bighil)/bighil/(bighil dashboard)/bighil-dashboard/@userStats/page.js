@@ -1,27 +1,25 @@
-import ErrorComponent from "@/components/UI_Components/Bighil Components/bighil dashboard components/ErrorComponent";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
-import SignupChart from "@/components/UI_Components/Bighil Components/bighil dashboard components/SignupChart";
+import DynamicChartWrapper from "@/components/UI_Components/Bighil Components/DynamicChartWrapper";
 
 export default async function UserStatsPage() {
-  let res;
-  try {
-    res = await fetchServerSideData("/api/bighil-dashboard/bighil-user-stats", {
+  const res = await fetchServerSideData(
+    "/api/bighil-dashboard/bighil-user-stats",
+    {
       method: "GET",
       cache: "no-cache",
-    });
-
-    if (!res || res.success === false) {
-      return <ErrorComponent />;
     }
-  } catch (error) {
-    return <ErrorComponent />;
-  }
+  );
 
   return (
-    <SignupChart
-      last7DaysSignups={res.last7DaysSignups}
-      totalUsers={res.totalUsers}
-      todayActiveUsers={res.todayActiveUsers}
-    />
+    <div>
+      <DynamicChartWrapper
+        chartKey="SignUpsChart"
+        props={{
+          last7DaysSignups: res.last7DaysSignups,
+          totalUsers: res.totalUsers,
+          todayActiveUsers: res.todayActiveUsers,
+        }}
+      />
+    </div>
   );
 }

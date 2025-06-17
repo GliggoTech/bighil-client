@@ -1,22 +1,24 @@
-// app/dashboard/@chart/[filter]/page.tsx
-import BigHillComplaintsChart from "@/components/UI_Components/Bighil Components/bighil dashboard components/BigHillComplaintsChart";
+// File: src/app/...(your path).../ChartSlot.jsx (or .js)
+
+import DynamicChartWrapper from "@/components/UI_Components/Bighil Components/DynamicChartWrapper";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 
 export default async function ChartSlot({ params }) {
-  const paramsValue = await params;
-  const { filter } = paramsValue || "1year";
+  const { filter = "1year" } = params || {};
 
-  try {
-    const res = await fetchServerSideData(
-      `/api/bighil-dashboard/bighil-complaints-stats?filter=${filter}`
-    );
+  const res = await fetchServerSideData(
+    `/api/bighil-dashboard/bighil-complaints-stats?filter=${filter}`
+  );
 
-    if (!res || res.success === false) {
-      return <div>Error loading chart...</div>;
-    }
-
-    return <BigHillComplaintsChart data={res} filter={filter} />;
-  } catch {
-    return <div>Unexpected error.</div>;
-  }
+  return (
+    <div>
+      <DynamicChartWrapper
+        chartKey="BigHillComplaintsChart"
+        props={{
+          data: res,
+          filter: filter,
+        }}
+      />
+    </div>
+  );
 }

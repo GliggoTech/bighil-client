@@ -9,22 +9,14 @@ import {
   AlertTriangle,
   XCircle,
   Activity,
-  Users,
-  icons,
+  
 } from "lucide-react";
 export default async function CardsStatusPage() {
-  let res;
-  try {
-    res = await fetchServerSideData("/api/bighil-dashboard/bighil-cards", {
-      method: "GET",
-      cache: "no-cache",
-    });
-    if (!res || res.success === false) {
-      return <ErrorComponent />;
-    }
-  } catch (error) {
-    return <ErrorComponent />;
-  }
+  const res = await fetchServerSideData("/api/bighil-dashboard/bighil-cards", {
+    method: "GET",
+    cache: "no-cache",
+  });
+
   const today = new Date();
   const todayHref = `/bighil/bighil-complaints?year=${today.getFullYear()}&day=${today.getDate()}&month=${
     today.getMonth() + 1
@@ -118,6 +110,8 @@ export default async function CardsStatusPage() {
       iconBg: "bg-yellow/30",
       iconOuterBg: "bg-yellow/20",
       iconColor: "text-yellow",
+      href: "/bighil/bighil-complaints?priority=CRITICAL",
+      clickable: true,
     },
     {
       title: "Avg. Resolution Time",
