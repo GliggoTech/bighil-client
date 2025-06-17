@@ -338,7 +338,15 @@ const CalendarDateFilter = ({ dateFilter, setDateFilter }) => {
       (type === "year" && year);
 
     if (!isDateSelected) {
-      return "Pick a date";
+      if (type === "day") {
+        return "Pick a date";
+      }
+      if (type === "month") {
+        return "Pick a month";
+      }
+      if (type === "year") {
+        return "Pick a year";
+      }
     }
 
     // Convert the relevant state parts back to a Date object for formatting

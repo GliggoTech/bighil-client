@@ -186,14 +186,14 @@ const AdminsManagement = () => {
       </CardContent>
       {userRole != "SUB ADMIN" && (
         <div className="">
-          <CardHeader>
+          <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-2xl font-semibold text-text_color dark:text-white">
                   Admin Management
                 </CardTitle>
                 <CardDescription className="text-gray-900 dark:text-gray-400">
-                  Manage admin users and their permissions.
+                  Manage admins and their permissions.
                 </CardDescription>
               </div>
             </div>
@@ -206,6 +206,7 @@ const AdminsManagement = () => {
               loading={loadingAdmins}
               userRole={userRole}
               handleDisable={handleDisableAdmin}
+              
             />
           </CardContent>
         </div>

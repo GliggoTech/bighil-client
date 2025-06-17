@@ -156,7 +156,7 @@ const AdminsTable = ({
               return (
                 <TableRow
                   key={admin._id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                  className="hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
                 >
                   <TableCell className="font-medium text-text_color dark:text-gray-100">
                     {admin.name}
