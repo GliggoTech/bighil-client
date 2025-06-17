@@ -7,7 +7,7 @@ import { BellIcon } from "lucide-react";
 import { useState, useMemo } from "react";
 import { PieChart, Pie, ResponsiveContainer } from "recharts";
 
-export function MaximumComplaintsDepartment({ data = [] }) {
+export default function MaximumComplaintsDepartment({ data = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = useIsMobile();
 

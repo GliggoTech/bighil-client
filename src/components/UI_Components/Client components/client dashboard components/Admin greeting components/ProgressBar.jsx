@@ -1,3 +1,4 @@
+"use client"
 export const DayProgressBar = ({ currentTime }) => {
   const progress =
     ((currentTime.getHours() * 60 + currentTime.getMinutes()) / (24 * 60)) *

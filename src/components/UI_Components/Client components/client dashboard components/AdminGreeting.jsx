@@ -12,36 +12,15 @@ const AdminGreeting = () => {
   const { userRole } = useNotificationStore();
   const [currentTime, setCurrentTime] = useState(null);
   const [greeting, setGreeting] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
-
   const { formatTime, formatDate } = useTimeFormat();
-
-  // Handle client-side initialization
+  const [isClient, setIsClient] = useState(false);
   useEffect(() => {
-    setIsMounted(true);
-    const now = new Date();
-    setCurrentTime(now);
+    setIsClient(true);
 
-    // Set initial greeting immediately
-    const hours = now.getHours();
-    setGreeting(
-      hours >= 5 && hours < 12
-        ? "Good Morning"
-        : hours >= 12 && hours < 18
-        ? "Good Afternoon"
-        : "Good Evening"
-    );
-  }, []);
-
-  // Update time only after component is mounted
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const timer = setInterval(() => {
+    const updateTimeAndGreeting = () => {
       const now = new Date();
       setCurrentTime(now);
 
-      // Update greeting when time changes
       const hours = now.getHours();
       setGreeting(
         hours >= 5 && hours < 12
@@ -50,13 +29,19 @@ const AdminGreeting = () => {
           ? "Good Afternoon"
           : "Good Evening"
       );
-    }, 1000);
+    };
 
-    return () => clearInterval(timer);
-  }, [isMounted]);
+    // Initial call
+    updateTimeAndGreeting();
 
-  // Show skeleton during SSR and initial hydration
-  if (!isMounted || !currentTime) {
+    // Set up interval
+    const interval = setInterval(updateTimeAndGreeting, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Show skeleton while hydrating
+  if (!isClient || !currentTime) {
     return <SkeletonAdminGreeting />;
   }
 

@@ -7,7 +7,8 @@ import { useMemo, useState } from "react";
 import { PieChart, Pie, ResponsiveContainer } from "recharts";
 import { TagIcon } from "lucide-react";
 
-export function TagAnalyticsDashboard({ tagData = [] }) {
+export default function TagAnalyticsDashboard({ tagData = [] }) {
+
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = useIsMobile();
   const renderShape = createRenderActiveShape(isMobile);

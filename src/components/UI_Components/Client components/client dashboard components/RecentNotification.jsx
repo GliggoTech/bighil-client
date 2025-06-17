@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const getNotificationIcon = (type) => {
-  const iconClasses = "h-4 w-4";
+  const iconClasses = "h-4 w-4 flex-shrink-0";
   const icons = {
     NEW_COMPLAINT: <FileTextIcon className={`${iconClasses} text-primary`} />,
     STATUS_CHANGE: <RefreshCcwIcon className={`${iconClasses} text-warning`} />,
@@ -61,54 +61,54 @@ const getNotificationIcon = (type) => {
       <ArchiveIcon className={`${iconClasses} text-emerald-600`} />
     ),
   };
-  return icons[type] || <BellIcon className={`${iconClasses} text-light`} />;
+  return icons[type] || <BellIcon className={`${iconClasses} text-gray-400`} />;
 };
 
 const getTypeStyles = (type) => {
   const styles = {
     NEW_COMPLAINT: {
       badge: "bg-primary/10 text-primary border-primary/20",
-      hover: "hover:bg-primary hover:text-light",
+      hover: "hover:bg-primary hover:text-white",
     },
     STATUS_CHANGE: {
       badge: "bg-warning/10 text-warning border-warning/20",
-      hover: "hover:bg-warning hover:text-light",
+      hover: "hover:bg-warning hover:text-white",
     },
     NOTE_ADDED: {
-      badge: "bg-orange/10 text-orange border-orange/20",
-      hover: "hover:bg-orange hover:text-white",
+      badge: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+      hover: "hover:bg-orange-500 hover:text-white",
     },
     NEW_MESSAGE: {
       badge: "bg-danger/10 text-danger border-danger/20",
-      hover: "hover:bg-danger hover:text-light",
+      hover: "hover:bg-danger hover:text-white",
     },
     RESOLUTION_ADDED: {
       badge: "bg-success/10 text-success border-success/20",
-      hover: "hover:bg-success hover:text-light",
+      hover: "hover:bg-success hover:text-white",
     },
     AUTHORIZATION_REQUIRED: {
-      badge: "bg-yellow/10 text-yellow border-yellow/30",
-      hover: "hover:bg-yellow hover:text-white",
+      badge: "bg-yellow-500/10 text-yellow-600 border-yellow-500/30",
+      hover: "hover:bg-yellow-500 hover:text-white",
     },
     AUTHORIZATION_RESOLVED: {
-      badge: "bg-green/10 text-green border-green/30",
-      hover: "hover:bg-green hover:text-white",
+      badge: "bg-green-500/10 text-green-600 border-green-500/30",
+      hover: "hover:bg-green-500 hover:text-white",
     },
     AUTHORIZATION_REJECTED: {
-      badge: "bg-red/10 text-red border-red/30",
-      hover: "hover:bg-red hover:text-white",
+      badge: "bg-red-500/10 text-red-600 border-red-500/30",
+      hover: "hover:bg-red-500 hover:text-white",
     },
     UNWANTED_COMPLAINT: {
-      badge: "bg-muted/10 text-black border-muted/20",
-      hover: "hover:bg-white hover:text-black",
+      badge: "bg-gray-100 text-gray-700 border-gray-200",
+      hover: "hover:bg-gray-200 hover:text-gray-800",
     },
     AUTHORIZATION_STATUS_CHANGE: {
-      badge: "bg-blue/10 text-blue border-blue/30",
-      hover: "hover:bg-blue hover:text-white",
+      badge: "bg-blue-500/10 text-blue-600 border-blue-500/30",
+      hover: "hover:bg-blue-500 hover:text-white",
     },
     COMPLAINT_RESOLVED: {
-      badge: "bg-green/10 text-green border-green/30",
-      hover: "hover:bg-green hover:text-white",
+      badge: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30",
+      hover: "hover:bg-emerald-500 hover:text-white",
     },
   };
   return styles[type] || styles.NEW_COMPLAINT;
@@ -118,17 +118,19 @@ const RecentNotification = ({ recentNotifications = [] }) => {
   const hasNotifications = recentNotifications.length > 0;
 
   return (
-    <Card className="shadow-md h-full border-none hover:shadow-lg bg-white transition-shadow duration-300">
-      <CardHeader className="bg-white border-b border-dialog_inside_border_color dark:border-border-dark relative z-10">
+    <Card className="shadow-lg h-full border-0 hover:shadow-xl bg-white transition-all duration-300 rounded-xl overflow-hidden">
+      <CardHeader className="bg-gradient-to-r from-white to-gray-50 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BellIcon className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg font-semibold text-text_color dark:text-text-light">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <BellIcon className="h-5 w-5 text-primary" />
+            </div>
+            <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               Recent Notifications
             </CardTitle>
           </div>
           <Button
-            className="text-sm font-medium text-white bg-primary hover:bg-primary/90"
+            className="text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors duration-200 rounded-lg px-4 py-2 shadow-sm"
             asChild
           >
             <Link href="/client/client-notifications">View All</Link>
@@ -138,69 +140,104 @@ const RecentNotification = ({ recentNotifications = [] }) => {
 
       {hasNotifications ? (
         <CardContent className="p-0">
-          <Table className="w-full border border-dialog_inside_border_color rounded-b-3xl">
-            <TableHeader className="!border-b-2 !border-dialog_inside_border_color dark:!border-b-gray-700">
-              <TableRow className="bg-white dark:bg-surface-dark">
-                <TableHead />
-                <TableHead className="xl:w-[250px] font-semibold text-text_color dark:text-text-light">
-                  Notification
-                </TableHead>
-                <TableHead className="hidden md:table-cell font-semibold text-text_color dark:text-text-light">
-                  Type
-                </TableHead>
-                <TableHead className="font-semibold text-text_color dark:text-text-light">
-                  Action
-                </TableHead>
-              </TableRow>
-            </TableHeader>
+          <div className="overflow-x-auto">
+            <Table className="w-full">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                  <TableHead className="w-12 text-center py-2 font-semibold text-gray-700 dark:text-gray-300">
+                    <span className="sr-only">Icon</span>
+                  </TableHead>
+                  <TableHead className="min-w-[280px] sm:min-w-[320px] py-2 font-semibold text-gray-700 dark:text-gray-300">
+                    Notification
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell w-[160px] py-2 font-semibold text-gray-700 dark:text-gray-300">
+                    Type
+                  </TableHead>
+                  <TableHead className="w-[100px] text-center py-2 font-semibold text-gray-700 dark:text-gray-300">
+                    Action
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
 
-            <TableBody className="bg-white dark:bg-surface-dark">
-              {recentNotifications.map((notification) => {
-                const typeStyles = getTypeStyles(notification.type);
-                return (
-                  <TableRow
-                    key={notification._id}
-                    className="hover:bg-gray-100 dark:hover:bg-surface-dark/80 border-b border-dialog_inside_border_color dark:border-border-dark transition-colors duration-200"
-                  >
-                    <TableCell className="pl-4">
-                      {getNotificationIcon(notification.type)}
-                    </TableCell>
+              <TableBody>
+                {recentNotifications.map((notification, index) => {
+                  const typeStyles = getTypeStyles(notification.type);
+                  const isLast = index === recentNotifications.length - 1;
 
-                    <TableCell className="text-sm">
-                      {notification.message}
-                    </TableCell>
+                  return (
+                    <TableRow
+                      key={notification._id}
+                      className={`hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200 ${
+                        !isLast
+                          ? "border-b border-gray-200 dark:border-gray-700"
+                          : ""
+                      }`}
+                    >
+                      <TableCell className="text-center py-4 px-4">
+                        <div className="flex justify-center">
+                          {getNotificationIcon(notification.type)}
+                        </div>
+                      </TableCell>
 
-                    <TableCell className="hidden md:table-cell">
-                      <Badge
-                        className={`text-xs font-normal border transition-colors duration-200 ${typeStyles.badge} ${typeStyles.hover}`}
-                      >
-                        {notification.type.replace(/_/g, " ")}
-                      </Badge>
-                    </TableCell>
+                      <TableCell className="py-2 px-4">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
+                            {notification.message}
+                          </p>
+                          <div className="lg:hidden">
+                            <Badge
+                              className={`text-xs font-medium border transition-colors duration-200 inline-flex items-center gap-1 ${typeStyles.badge} ${typeStyles.hover}`}
+                            >
+                              {notification.type.replace(/_/g, " ")}
+                            </Badge>
+                          </div>
+                        </div>
+                      </TableCell>
 
-                    <TableCell>
-                      <Link
-                        href={`/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`}
-                      >
-                        <Button
-                          variant="outline"
-                          className="text-xs text-white border-none bg-primary hover:bg-primary/80 transition-all duration-200"
+                      <TableCell className="hidden lg:table-cell py-2 px-4">
+                        <Badge
+                          className={`text-xs font-medium border transition-colors duration-200 inline-flex items-center gap-1 ${typeStyles.badge} ${typeStyles.hover}`}
                         >
-                          View
-                        </Button>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                          {notification.type.replace(/_/g, " ")}
+                        </Badge>
+                      </TableCell>
+
+                      <TableCell className="text-center py-2 px-4">
+                        <Link
+                          href={`/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`}
+                        >
+                          <Button
+                            size="sm"
+                            className="text-xs font-medium text-white bg-primary hover:bg-primary/90 transition-all duration-200 rounded-lg shadow-sm min-w-[60px]"
+                          >
+                            View
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       ) : (
-        <div className="py-8 flex bg-white flex-col items-center rounded-2xl justify-center text-muted-foreground">
-          <BellIcon className="w-6 h-6 mb-2 text-gray-400" />
-          <p className="text-sm">No recent notifications found</p>
-        </div>
+        <CardContent className="py-12">
+          <div className="flex flex-col items-center justify-center text-center space-y-4">
+            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full">
+              <BellIcon className="w-8 h-8 text-gray-400" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium text-gray-600 dark:text-gray-400">
+                No notifications yet
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-500 max-w-sm">
+                When you receive notifications, they'll appear here for quick
+                access.
+              </p>
+            </div>
+          </div>
+        </CardContent>
       )}
     </Card>
   );

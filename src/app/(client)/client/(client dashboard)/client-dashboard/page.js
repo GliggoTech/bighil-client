@@ -19,7 +19,7 @@ const AdminGreeting = dynamic(
 export default function Client_dashboard_Page() {
   return (
     <div>
-      {/* Hello ADMIN */}
+   
       <AdminGreeting />
     </div>
   );

@@ -32,6 +32,20 @@ const chartComponents = {
       ),
     { ssr: false, loading: () => <div>Loading...</div> }
   ),
+  MaximumComplaintsDepartment: dynamic(
+    () =>
+      import(
+        "@/components/UI_Components/Client components/client dashboard components/MaximumComplaintsDepartment"
+      ),
+    { ssr: false, loading: () => <div>Loading...</div> }
+  ),
+  TagAnalyticsDashboard: dynamic(
+    () =>
+      import(
+        "@/components/UI_Components/Client components/client dashboard components/TagAnalyticsDashboard"
+      ),
+    { ssr: false, loading: () => <div>Loading...</div> }
+  ),
 };
 
 export default function DynamicChartWrapper({ chartKey, props }) {
