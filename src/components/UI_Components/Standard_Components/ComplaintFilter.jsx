@@ -15,6 +15,7 @@ import {
   Calendar1,
   HomeIcon,
   FileText,
+  TargetIcon,
 } from "lucide-react";
 import { debounce } from "lodash";
 import ComplaintsTable from "./ComplaintsTable";
@@ -39,6 +40,7 @@ import { isValid, parseISO } from "date-fns";
 import { format } from "date-fns";
 import DepartmentFilter from "./DepartmentFilter";
 import useNotificationStore from "@/store/notificationStore";
+import PriorityFilter from "./PriorityFilter";
 
 const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
@@ -48,10 +50,11 @@ const ComplaintFilter = ({ bighil = false }) => {
   const [status, setStatus] = useState(searchParams.get("status") || "");
   const [dateFilter, setDateFilter] = useState({
     type: "day",
-    day: "",
-    month: "",
-    year: "",
+    day: searchParams.get("day") || "",
+    month: searchParams.get("month") || "",
+    year: searchParams.get("year") || "",
   });
+  const [priority, setPriority] = useState(searchParams.get("priority") || "");
   const [department, setDepartment] = useState("");
   const { userRole } = useNotificationStore();
   const [clientName, setClientName] = useState("");
@@ -101,9 +104,19 @@ const ComplaintFilter = ({ bighil = false }) => {
         })(),
       },
       clientName,
+      priority,
       page, // Include page in filterParams
     }),
-    [complaintNumber, status, dateFilter, clientName, page, bighil, department] // Dependencies for memoization
+    [
+      complaintNumber,
+      status,
+      dateFilter,
+      clientName,
+      page,
+      bighil,
+      department,
+      priority,
+    ] // Dependencies for memoization
   );
 
   // Active filters calculation
@@ -112,6 +125,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     if (complaintNumber) filters.push("complaintNumber");
     if (status) filters.push("Status");
     if (department) filters.push("Department");
+    if (priority) filters.push("Priority");
     // Check validity from filterParams directly
     if (filterParams.dateFilter.valid) {
       let dateLabel = "Date";
@@ -170,6 +184,9 @@ const ComplaintFilter = ({ bighil = false }) => {
         }
         if (params.department) {
           queryParams.append("department", params.department);
+        }
+        if (params.priority && params.priority !== "all") {
+          queryParams.append("priority", params.priority);
         }
         // Date filter handling - append parameters only if the selection is valid for the current type
         const {
@@ -250,7 +267,8 @@ const ComplaintFilter = ({ bighil = false }) => {
       (filterParams.status !== "" && filterParams.status !== "all") ||
       filterParams.clientName !== "" ||
       filterParams.department !== "" ||
-      filterParams.dateFilter.valid;
+      filterParams.dateFilter.valid ||
+      filterParams.priority !== "";
 
     if (isAnyFilterActiveExcludingPage && page !== 1) {
       setPage(1);
@@ -270,6 +288,7 @@ const ComplaintFilter = ({ bighil = false }) => {
     setComplaintNumber("");
     setStatus("");
     setDepartment("");
+    setPriority("");
 
     setDateFilter({ type: "day", day: "", month: "", year: "" });
     setClientName("");
@@ -321,7 +340,7 @@ const ComplaintFilter = ({ bighil = false }) => {
           }
           title="Complaint Number"
           titleColor="text-primary"
-          className="bg-primary-bg-subtle hover:bg-primary-bg-subtle/80
+          className="bg-primary-bg-subtle 
              border-2 border-primary-border-subtle
              shadow-sm hover:shadow-primary/20
              backdrop-blur-lg transition-all
@@ -343,7 +362,7 @@ const ComplaintFilter = ({ bighil = false }) => {
           icon={<FilterIcon className="h-5 w-5 mr-2 text-purple" />}
           title="Status"
           titleColor="text-purple"
-          className="bg-purple/10 hover:bg-purple-bg-subtle/80
+          className="bg-purple/10 
              border-2 border-purple/50
              shadow-sm hover:shadow-purple/20
              backdrop-blur-lg transition-all
@@ -359,10 +378,29 @@ const ComplaintFilter = ({ bighil = false }) => {
           />
         </FilterCard>
         <FilterCard
+          icon={<TargetIcon className="h-5 w-5 mr-2 text-cyan" />}
+          title="Priority"
+          titleColor="text-cyan group-hover:text-white"
+          className="bg-cyan/10 
+             border-2 border-cyan/50
+             shadow-sm hover:shadow-cyan/20
+             backdrop-blur-lg transition-all
+             hover:translate-y-[-2px]"
+        >
+          <PriorityFilter
+            value={priority}
+            onChange={setPriority}
+            userRole={userRole}
+            className="bg-white/90 focus:bg-white
+              
+               transition-shadow duration-200"
+          />
+        </FilterCard>
+        <FilterCard
           icon={<HomeIcon className="h-5 w-5 mr-2 text-text_color" />}
           title="Department"
           titleColor="text-text_color"
-          className="bg-gray/10 hover:bg-gray-bg-subtle/80
+          className="bg-gray/10 
              border-2 border-gray/50
              shadow-sm hover:shadow-gray/20
              backdrop-blur-lg transition-all
@@ -382,7 +420,7 @@ const ComplaintFilter = ({ bighil = false }) => {
           icon={<Calendar1 className="h-5 w-5 mr-2 text-success" />}
           title="Date Filter"
           titleColor="text-success"
-          className="bg-success-bg-subtle hover:bg-success-bg-subtle/80
+          className="bg-success-bg-subtle 
              border-2 border-success-border-subtle
              shadow-sm hover:shadow-success/20
              backdrop-blur-lg transition-all
@@ -407,7 +445,7 @@ const ComplaintFilter = ({ bighil = false }) => {
             icon={<RiHomeOfficeFill className="h-5 w-5 mr-2 text-warning" />}
             title="Client Name"
             titleColor="text-warning"
-            className="bg-warning-bg-subtle hover:bg-warning-bg-subtle/80
+            className="bg-warning-bg-subtle 
                border-2 border-warning-border-subtle
                shadow-sm hover:shadow-warning/20
                backdrop-blur-lg transition-all
