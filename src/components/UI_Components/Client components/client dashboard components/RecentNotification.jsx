@@ -179,7 +179,7 @@ const RecentNotification = ({ recentNotifications = [] }) => {
                         </div>
                       </TableCell>
 
-                      <TableCell className="py-2 px-4">
+                      <TableCell className="py-2 ">
                         <div className="flex flex-col gap-1">
                           <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
                             {notification.message}
@@ -194,15 +194,15 @@ const RecentNotification = ({ recentNotifications = [] }) => {
                         </div>
                       </TableCell>
 
-                      <TableCell className="hidden lg:table-cell py-2 px-4">
+                      <TableCell className="hidden lg:table-cell py-2 text-center ">
                         <Badge
-                          className={`text-xs font-medium border transition-colors duration-200 inline-flex items-center gap-1 ${typeStyles.badge} ${typeStyles.hover}`}
+                          className={`text-xs font-medium border transition-colors duration-200 inline-flex items-start gap-1 ${typeStyles.badge} ${typeStyles.hover}`}
                         >
                           {notification.type.replace(/_/g, " ")}
                         </Badge>
                       </TableCell>
 
-                      <TableCell className="text-center py-2 px-4">
+                      <TableCell className="text-center py-2 ">
                         <Link
                           href={`/client/client-complaints/${notification.complaintId}?notificationId=${notification._id}`}
                         >
