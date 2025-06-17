@@ -42,8 +42,10 @@ import useNotificationStore from "@/store/notificationStore";
 
 const ComplaintFilter = ({ bighil = false }) => {
   // Filter states
+  const searchParams = useSearchParams();
+
   const [complaintNumber, setComplaintNumber] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(searchParams.get("status") || "");
   const [dateFilter, setDateFilter] = useState({
     type: "day",
     day: "",
@@ -53,7 +55,6 @@ const ComplaintFilter = ({ bighil = false }) => {
   const [department, setDepartment] = useState("");
   const { userRole } = useNotificationStore();
   const [clientName, setClientName] = useState("");
-  const searchParams = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const initialMount = useRef(true);
   const [complaints, setComplaints] = useState([]);

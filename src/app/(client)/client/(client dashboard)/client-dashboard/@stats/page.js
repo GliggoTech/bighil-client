@@ -1,5 +1,4 @@
 // src/components/dashboard/stats/AdminStats.jsx
-
 import DashboardCard from "@/components/UI_Components/Bighil Components/bighil dashboard components/DashboardCard";
 import { fetchServerSideData } from "@/utils/fetchServerSideData";
 import { ClipboardList, Clock, Calendar, Activity } from "lucide-react";
@@ -10,18 +9,23 @@ const ICON_CONFIG = {
   total: {
     icon: ClipboardList,
     color: "blue",
+    // No status filter for total - shows all complaints
+    href: "/client/client-complaints",
   },
   pending: {
     icon: Calendar,
     color: "purple",
+    href: "/client/client-complaints?status=Pending",
   },
   inProgress: {
     icon: Clock,
     color: "pink",
+    href: "/client/client-complaints?status=In Progress",
   },
   unwanted: {
     icon: Activity,
     color: "orange",
+    href: "/client/client-complaints?status=Unwanted",
   },
 };
 
@@ -33,9 +37,10 @@ export default async function AdminStats() {
       cache: "no-cache",
     }
   );
+ 
 
   const cards = Object.entries(ICON_CONFIG).map(
-    ([key, { icon: Icon, color }]) => ({
+    ([key, { icon: Icon, color, href }]) => ({
       title: `${key.replace(/([A-Z])/g, " $1")} Complaints`.replace(
         /^\w/,
         (c) => c.toUpperCase()
@@ -49,6 +54,9 @@ export default async function AdminStats() {
       iconColor: `text-${color}`,
       percentage: stats[key]?.percentage,
       trend: stats[key]?.trend,
+      // Add clickable and href properties
+      clickable: stats?.clickable !== false, // Default to true unless explicitly false
+      href: href,
     })
   );
 

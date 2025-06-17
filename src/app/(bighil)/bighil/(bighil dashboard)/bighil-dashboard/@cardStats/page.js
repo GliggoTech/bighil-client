@@ -121,7 +121,7 @@ export default async function CardsStatusPage() {
   return (
     <div>
       <DashboardCard cards={cards} />
-      {/* <h1>Hello</h1> */}
+    
     </div>
   );
 }

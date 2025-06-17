@@ -86,7 +86,7 @@ export default function LoginForm() {
         setShowTwoFaDialog(true);
         return;
       }
-      console.log("Login response:", res);
+ 
 
       if (res.success) {
         setIsSuccess(true);
