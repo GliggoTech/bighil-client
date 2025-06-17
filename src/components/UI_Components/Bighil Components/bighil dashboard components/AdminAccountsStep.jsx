@@ -95,13 +95,24 @@ const AdminAccountsStep = ({
     return true;
   };
 
-  // Function to get role description based on position
-  const getRoleDescription = (index) => {
-    if (index === 0) return "The first admin must be Super Admin";
-    if (index === 1) return "The second admin must be Sub Admin";
-    if (index === 2) return "The third admin must be Admin";
-    return "Additional admins can only be Super Admin";
+  // Function to check if an admin can be deleted
+  const canDeleteAdmin = (index) => {
+    // Can't delete if in view mode
+    if (viewMode) return false;
+
+    // Can't delete the first admin (primary admin)
+    if (index === 0) return false;
+
+    // For existing clients, allow deletion of any admin except the first
+    if (selectedClient) return true;
+
+    // For new clients, can delete if:
+    // - More than 1 admin exists AND
+    // - (It's not part of the required sequence OR there are extra admins beyond the sequence)
+    return fields.length > 1 && (index >= 3 || fields.length > 3);
   };
+
+
 
   return (
     <div className="space-y-6 ">
@@ -166,28 +177,27 @@ const AdminAccountsStep = ({
               )}
             </div>
 
-            {/* Only allow removal of admins after the first one, and not the required sequence admins unless there are more */}
-            {index > 0 && (index >= 3 || fields.length > 3) && (
+            {/* Enhanced delete button with better conditions */}
+            {canDeleteAdmin(index) && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    {!viewMode && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className={cn(
-                          "absolute right-2 -top-2 opacity-100 group-hover:opacity-100",
-                          "transition-opacity rounded-full w-8 h-8",
-                          "bg-red hover:bg-red/80 text-white"
-                        )}
-                        onClick={() => remove(index)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className={cn(
+                        "absolute right-2 -top-2 opacity-0 group-hover:opacity-100",
+                        "transition-all duration-200 rounded-full w-8 h-8",
+                        "bg-red hover:bg-red text-white shadow-md hover:shadow-lg",
+                        "transform hover:scale-105"
+                      )}
+                      onClick={() => remove(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </TooltipTrigger>
-                  <TooltipContent className=" bg-black text-white border-gray-700">
+                  <TooltipContent className="bg-black text-white border-gray-700">
                     <p>Remove this admin</p>
                   </TooltipContent>
                 </Tooltip>

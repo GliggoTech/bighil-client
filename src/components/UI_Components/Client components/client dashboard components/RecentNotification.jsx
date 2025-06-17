@@ -75,7 +75,7 @@ const getTypeStyles = (type) => {
       hover: "hover:bg-warning hover:text-white",
     },
     NOTE_ADDED: {
-      badge: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+      badge: "bg-orange/10 text-orange border-orange/20",
       hover: "hover:bg-orange-500 hover:text-white",
     },
     NEW_MESSAGE: {
@@ -87,27 +87,27 @@ const getTypeStyles = (type) => {
       hover: "hover:bg-success hover:text-white",
     },
     AUTHORIZATION_REQUIRED: {
-      badge: "bg-yellow-500/10 text-yellow-600 border-yellow-500/30",
+      badge: "bg-yellow/10 text-yellow border-yellow/30",
       hover: "hover:bg-yellow-500 hover:text-white",
     },
     AUTHORIZATION_RESOLVED: {
-      badge: "bg-green-500/10 text-green-600 border-green-500/30",
+      badge: "bg-green/10 text-green border-green/30",
       hover: "hover:bg-green-500 hover:text-white",
     },
     AUTHORIZATION_REJECTED: {
-      badge: "bg-red-500/10 text-red-600 border-red-500/30",
-      hover: "hover:bg-red-500 hover:text-white",
+      badge: "bg-red/10 text-red border-red/30",
+      hover: "hover:bg-red hover:text-white",
     },
     UNWANTED_COMPLAINT: {
       badge: "bg-gray-100 text-gray-700 border-gray-200",
       hover: "hover:bg-gray-200 hover:text-gray-800",
     },
     AUTHORIZATION_STATUS_CHANGE: {
-      badge: "bg-blue-500/10 text-blue-600 border-blue-500/30",
+      badge: "bg-blue/10 text-blue border-blue/30",
       hover: "hover:bg-blue-500 hover:text-white",
     },
     COMPLAINT_RESOLVED: {
-      badge: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30",
+      badge: "bg-emerald/10 text-emerald border-emerald/30",
       hover: "hover:bg-emerald-500 hover:text-white",
     },
   };
