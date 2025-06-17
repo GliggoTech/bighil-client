@@ -86,7 +86,6 @@ export default function LoginForm() {
         setShowTwoFaDialog(true);
         return;
       }
- 
 
       if (res.success) {
         setIsSuccess(true);
@@ -360,7 +359,7 @@ export default function LoginForm() {
 
                     <div className="px-4 py-3">
                       <div className="text-primary-600 text-xs font-medium mb-1">
-                        Admin
+                        Sub Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                         <span className="text-slate-500">Email:</span>
@@ -368,13 +367,13 @@ export default function LoginForm() {
                           mohammed.shahul@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-text_color">123456</span>
+                        <span className="text-text_color">Password!11</span>
                       </div>
                     </div>
 
                     <div className="px-4 py-3">
                       <div className="text-primary-600 text-xs font-medium mb-1">
-                        Sub Admin
+                        Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                         <span className="text-slate-500">Email:</span>
@@ -382,7 +381,7 @@ export default function LoginForm() {
                           muruganantham.s@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-text_color">123456</span>
+                        <span className="text-text_color">Muruga@123</span>
                       </div>
                     </div>
                   </div>
