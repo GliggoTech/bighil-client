@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 export async function userLogin(loginData) {
   try {
     const url = getBackendUrl();
+
     const res = await fetch(`${url}/api/user-auth/user-login`, {
       method: "POST",
       headers: {

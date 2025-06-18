@@ -39,18 +39,20 @@ const useFetch = () => {
         setLoading(true);
         const response = await fetch(url, config);
         const data = await response.json();
+        console.log("Response Data:", data);
 
         if (!data.success) {
           const error = new Error(data.message || "Request failed");
           setError(data.message);
           setLoading(false);
-          throw error;
+          // throw error;
         }
         setError(null);
         setLoading(false);
 
         return data;
       } catch (error) {
+        console.log("Error:", error);
         setLoading(false);
         setError(error.message);
         if (error.message == "Session expired or invalid") {
