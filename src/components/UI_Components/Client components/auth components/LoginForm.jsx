@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Mail,
-  Lock,
+
   Shield,
   AlertCircle,
   Loader2,
@@ -344,7 +344,7 @@ export default function LoginForm() {
 
                   <div className="divide-y divide-slate-200">
                     <div className="px-4 py-3">
-                      <div className="text-primary-600 text-xs font-medium mb-1">
+                      <div className="text-primary text-xs font-medium mb-1">
                         Super Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
@@ -358,7 +358,7 @@ export default function LoginForm() {
                     </div>
 
                     <div className="px-4 py-3">
-                      <div className="text-primary-600 text-xs font-medium mb-1">
+                      <div className="text-primary text-xs font-medium mb-1">
                         Sub Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
@@ -372,7 +372,7 @@ export default function LoginForm() {
                     </div>
 
                     <div className="px-4 py-3">
-                      <div className="text-primary-600 text-xs font-medium mb-1">
+                      <div className="text-primary text-xs font-medium mb-1">
                         Admin
                       </div>
                       <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
