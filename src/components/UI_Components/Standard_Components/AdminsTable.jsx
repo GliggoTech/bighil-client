@@ -36,6 +36,7 @@ const AdminsTable = ({
   hideAction = false,
   userRole,
   handleDisable,
+
 }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [disableId, setDisableId] = useState(null);
@@ -50,7 +51,7 @@ const AdminsTable = ({
       toast({
         title: "Success",
         description: `${adminName} has been deleted successfully.`,
-        variant: "default",
+        variant: "success",
       });
     } catch (error) {
       toast({

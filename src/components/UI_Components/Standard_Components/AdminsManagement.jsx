@@ -9,13 +9,14 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import AdminsTable from "./AdminsTable";
 import useFetch from "@/custom hooks/useFetch";
 import useAccessToken from "@/custom hooks/useAccessToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { toast } from "@/hooks/use-toast";
 import useNotificationStore from "@/store/notificationStore";
+import AddAdminDialog from "./AddAdminDialog";
 
 const AdminsManagement = () => {
   const { token } = useAccessToken();
@@ -23,6 +24,7 @@ const AdminsManagement = () => {
   const [admins, setAdmins] = useState([]);
   const [loadingAdmins, setLoadingAdmins] = useState(false);
   const { userRole } = useNotificationStore();
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   const [ownRole, setOwnRole] = useState([]);
   const [otherRoles, setOtherRoles] = useState([]);
@@ -112,7 +114,7 @@ const AdminsManagement = () => {
 
       if (response.success) {
         // Remove the deleted admin from the state
-        setAdmins((prevAdmins) =>
+        setOtherRoles((prevAdmins) =>
           prevAdmins.filter((admin) => admin._id !== adminId)
         );
         return;
@@ -127,11 +129,7 @@ const AdminsManagement = () => {
 
   // Handle add new admin
   const handleAddAdmin = () => {
-    toast({
-      title: "Info",
-      description: "Add admin functionality will be implemented soon.",
-      variant: "default",
-    });
+    setShowAddDialog(true);
   };
   const handleDisableAdmin = async (adminId, sendtoBackend) => {
     try {
@@ -161,6 +159,45 @@ const AdminsManagement = () => {
       throw error; // Re-throw to be handled by the table component
     }
   };
+  const handleAddAdminSave = async (newAdminData) => {
+    try {
+      const response = await fetchData(
+        `${getBackendUrl()}/api/client-setting/create-admin`,
+        "POST",
+        newAdminData,
+        token,
+        false
+      );
+
+      if (response.success) {
+        // Add the new admin to the appropriate state based on role
+        if (response.data.role === userRole) {
+          setOwnRole((prevAdmins) => [...prevAdmins, response.data]);
+        } else {
+          setOtherRoles((prevAdmins) => [...prevAdmins, response.data]);
+        }
+        setAdmins((prevAdmins) => [...prevAdmins, response.data]);
+
+        toast({
+          title: "Success",
+          description: `Admin ${newAdminData.name} has been created successfully.`,
+          variant: "success",
+        });
+        setShowAddDialog(false);
+      } else {
+        throw new Error(response.message || "Failed to create admin");
+      }
+    } catch (error) {
+      console.error("Failed to create admin:", error);
+      throw error; // Re-throw to be handled by the dialog
+    }
+  };
+
+  // Add this function to handle closing the add dialog
+  const handleAddAdminClose = () => {
+    setShowAddDialog(false);
+  };
+
   return (
     <Card className="bg-white dark:bg-gray-800 rounded-none shadow-lg border-none">
       <CardHeader className="pb-3">
@@ -169,9 +206,6 @@ const AdminsManagement = () => {
             <CardTitle className="text-2xl font-semibold text-text_color dark:text-white p-0">
               Your Access
             </CardTitle>
-            {/* <CardDescription className="text-gray-900 dark:text-gray-400">
-              Manage admin users and their permissions.
-            </CardDescription> */}
           </div>
         </div>
       </CardHeader>
@@ -196,6 +230,17 @@ const AdminsManagement = () => {
                   Manage admins and their permissions.
                 </CardDescription>
               </div>
+              <Button
+                size="sm"
+                className="bg-primary dark:bg-gray-700 text-white dark:text-white hover:bg-primary/90 dark:hover:bg-gray-600"
+                onClick={handleAddAdmin}
+              >
+                <Plus className=" h-4 w-4" />
+                Add Admin
+                {loadingAdmins && (
+                  <Loader2 className="animate-spin h-4 w-4 ml-2 text-blue" />
+                )}
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -206,11 +251,16 @@ const AdminsManagement = () => {
               loading={loadingAdmins}
               userRole={userRole}
               handleDisable={handleDisableAdmin}
-              
+              addAdmin={handleAddAdmin}
             />
           </CardContent>
         </div>
       )}
+      <AddAdminDialog
+        open={showAddDialog}
+        onClose={handleAddAdminClose}
+        onSave={handleAddAdminSave}
+      />
     </Card>
   );
 };
