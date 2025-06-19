@@ -17,12 +17,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import useNotificationStore from "@/store/notificationStore";
 
-const TwoFactorSettings = ({ 
-  form, 
-  onSaveSettings, 
-  isSaving 
+const TwoFactorSettings = ({
+  form,
+  onSaveSettings,
+  isSaving,
+  onSaveEmailNotifocation,
 }) => {
+  const { userRole } = useNotificationStore();
   // Function to handle 2FA toggle with proper async handling
   const handleTwoFAToggle = useCallback(
     async (value) => {
@@ -45,6 +48,15 @@ const TwoFactorSettings = ({
       }
     },
     [form, onSaveSettings]
+  );
+  const handleEmailToggle = useCallback(
+    async (value) => {
+      console.log("Email Notification Toggle:", value);
+      form.setValue("emailNotificaion", value);
+      const formData = form.getValues();
+      onSaveEmailNotifocation(formData); // <-- No popup logic here
+    },
+    [form, onSaveEmailNotifocation]
   );
 
   return (
@@ -76,13 +88,40 @@ const TwoFactorSettings = ({
                   checked={field.value}
                   onCheckedChange={handleTwoFAToggle}
                   disabled={isSaving}
-                  className="data-[state=checked]:bg-primary bg-yellow data-[state=unchecked]:bg-gray-300"
+                  className="data-[state=checked]:bg-blue bg-yellow data-[state=unchecked]:bg-gray-300"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        {userRole === "SUPER ADMIN" && (
+          <FormField
+            control={form.control}
+            name="emailNotificaion"
+            render={({ field }) => (
+              <FormItem className="flex items-center justify-between space-x-2">
+                <div className="grid gap-1.5 leading-none">
+                  <FormLabel className="text-sm font-medium text-text_color dark:text-gray-300">
+                    Email Notification
+                  </FormLabel>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Receive instant email alerts for new complaints and updates.
+                  </p>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={handleEmailToggle}
+                    disabled={isSaving}
+                    className="data-[state=checked]:bg-blue bg-yellow data-[state=unchecked]:bg-gray-300"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </CardContent>
     </Card>
   );

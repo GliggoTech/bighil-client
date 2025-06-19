@@ -16,6 +16,7 @@ import AdminsManagement from "./AdminsManagement";
 
 const FormSchema = z.object({
   isTwoFactorEnabled: z.boolean().optional(),
+  emailNotificaion: z.boolean().optional(),
 });
 
 const SettingComponent = ({ initialData }) => {
@@ -27,6 +28,7 @@ const SettingComponent = ({ initialData }) => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       isTwoFactorEnabled: initialData?.isTwoFactorEnabled || false,
+      emailNotificaion: initialData?.emailNotificaion || false,
     },
   });
 
@@ -53,12 +55,43 @@ const SettingComponent = ({ initialData }) => {
           setShowPopup(true);
         } else {
           form.setValue("isTwoFactorEnabled", formData.isTwoFactorEnabled);
+
           toast({
             title: "Success",
             description: "Settings updated successfully.",
             variant: "success",
           });
         }
+      }
+    } catch (err) {
+      saveError = `An error occurred while saving settings: ${err.message}`;
+      toast({
+        title: "Fetch Error",
+        description: saveError,
+        variant: "destructive",
+      });
+    }
+  };
+  const saveEmailNotification = async (formData) => {
+    try {
+      const settingsToSave = {
+        emailNotificaion: formData.emailNotificaion,
+      };
+      const url = getBackendUrl();
+      const response = await fetchData(
+        `${url}/api/client-setting/update-email-notification`,
+        "PATCH",
+        settingsToSave,
+        token,
+        false
+      );
+      if (response.success) {
+        form.setValue("emailNotificaion", formData.emailNotificaion);
+        toast({
+          title: "Success",
+          description: "Settings updated successfully.",
+          variant: "success",
+        });
       }
     } catch (err) {
       saveError = `An error occurred while saving settings: ${err.message}`;
@@ -92,6 +125,7 @@ const SettingComponent = ({ initialData }) => {
                 form={form}
                 onSaveSettings={handleSaveSettings}
                 isSaving={isSaving}
+                onSaveEmailNotifocation={saveEmailNotification}
               />
             </div>
           </form>

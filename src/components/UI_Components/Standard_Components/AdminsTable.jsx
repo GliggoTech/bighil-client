@@ -167,7 +167,7 @@ const AdminsTable = ({
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className="font-medium text-white bg-blue "
+                      className="font-medium text-white bg-blue hover:bg-blue/90 dark:bg-blue-600 dark:hover:bg-blue-500 hover:text-white"
                     >
                       {roleName}
                     </Badge>
