@@ -21,22 +21,26 @@ const Client_Navbar = ({ isOpen }) => {
   const handleLogOut = async () => {
     try {
       setLoading(true);
-      const res = await clientLogout();
-      if (res.success) {
-        useNotificationStore.setState({
-          userId: null,
-          userRole: null,
-          notificationCount: 0,
-          notifications: [],
-          lastSync: null,
-        });
-        setError(null);
-        setLoading(false);
-        router.push("/");
-      } else {
-        setError(res.message || "Logout failed. Please try again.");
-        setLoading(false);
-      }
+
+      // Small delay to ensure dropdown closes before clearing store
+      setTimeout(async () => {
+        const res = await clientLogout();
+        if (res.success) {
+          useNotificationStore.setState({
+            userId: null,
+            userRole: null,
+            notificationCount: 0,
+            notifications: [],
+            lastSync: null,
+          });
+          setError(null);
+          setLoading(false);
+          router.push("/");
+        } else {
+          setError(res.message || "Logout failed. Please try again.");
+          setLoading(false);
+        }
+      }, 100); // 100ms delay
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
       setLoading(false);
@@ -82,6 +86,7 @@ const Client_Navbar = ({ isOpen }) => {
               {/* Right Section: User Info & Actions */}
               <div className="flex items-center space-x-1">
                 <h1>{userRole}</h1>
+
                 <AdvancedStyledDropdown
                   handleLogOut={handleLogOut}
                   loading={loading}
