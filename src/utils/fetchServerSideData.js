@@ -42,7 +42,8 @@ export async function fetchServerSideData(endpoint, options = {}) {
       throw new Error(res.message || "No data returned from API");
     }
   } catch (error) {
-    if (error.message == "Session expired or invalid") {
+    console.log("Error fetching server-side data:", error.statusCode);
+    if (error.message == "Session expired or invalid" || error.status == 401) {
       const deleteTokenResponse = await fetch(
         `${getFrontEndURL()}/api/delete-token`,
         {

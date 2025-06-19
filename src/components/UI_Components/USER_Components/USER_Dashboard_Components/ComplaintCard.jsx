@@ -5,7 +5,6 @@ import StatusBadge from "../../Standard_Components/StatusBadge";
 import { formatDate } from "@/lib/formatDateFun";
 import { FcDepartment } from "react-icons/fc";
 const ComplaintCard = ({ complaint }) => {
-
   return (
     <div className="group relative p-0 bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border-0 overflow-hidden">
       {/* Header Section with gradient background */}
@@ -14,7 +13,13 @@ const ComplaintCard = ({ complaint }) => {
           <h3 className="md:text-xl text-base font-bold text-white">
             Complaint Details
           </h3>
-          <StatusBadge status={complaint.status_of_client} />
+          <StatusBadge
+            status={
+              complaint.status_of_client == "Pending Authorization"
+                ? "In Progress"
+                : complaint.status_of_client
+            }
+          />
         </div>
       </div>
 
