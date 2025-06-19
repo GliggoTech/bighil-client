@@ -1,8 +1,7 @@
-import { deleteToken } from "@/app/actions/deleteToken";
 import { getBackendUrl } from "@/lib/getBackendUrl";
 import { getToken } from "@/lib/getToken";
 import { redirect } from "next/navigation";
-import { getFrontEndURL } from "./getFrontEndUrl";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -43,18 +42,21 @@ export async function fetchServerSideData(endpoint, options = {}) {
     }
   } catch (error) {
     console.log("Error fetching server-side data:", error.statusCode);
-    if (error.message == "Session expired or invalid" || error.status == 401) {
-      const deleteTokenResponse = await fetch(
-        `${getFrontEndURL()}/api/delete-token`,
-        {
-          method: "POST",
-        }
-      );
-      const deleteTokenjson = await deleteTokenResponse.json();
-
-      if (deleteTokenjson.success) {
-        redirect("/client/invalid-session");
+    if (
+      error.message == "Session expired or invalid" ||
+      error.statusCode == 401 ||
+      error.message == "User authentication required"
+    ) {
+      // ✅ Delete cookie directly and redirect
+      try {
+        const cookieStore = await cookies();
+        cookieStore.delete("access_token");
+        console.log("Token deleted successfully");
+      } catch (cookieError) {
+        console.log("Could not delete cookie:", cookieError.message);
       }
+
+      redirect("/client/invalid-session");
     }
   }
 }

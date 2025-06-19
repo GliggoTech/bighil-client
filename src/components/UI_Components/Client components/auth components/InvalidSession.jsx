@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AlertTriangle, RefreshCw, LogIn, Home } from "lucide-react";
 
-const InvalidSessionPage = () => {
+const InvalidSessionPage = ({ role = "client" }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
@@ -45,19 +45,21 @@ const InvalidSessionPage = () => {
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-3 pt-3">
-            <Button
+            {/* <Button
               className="w-full bg-blue hover:bg-blue/70 text-white font-medium py-2.5"
               size="lg"
               asChild
             >
               <Link
-                href="/client/client-login"
+                href={
+                  role == "client" ? "/client/client-login" : "user/user-login"
+                }
                 className="flex items-center justify-center"
               >
                 <LogIn className="w-4 h-4 mr-2" />
                 Sign In Again
               </Link>
-            </Button>
+            </Button> */}
 
             <div className="flex space-x-3 w-full">
               <Button className="flex-1 text-white" asChild>

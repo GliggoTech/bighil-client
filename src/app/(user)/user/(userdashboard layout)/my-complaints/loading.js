@@ -1,9 +1,9 @@
-import SkeletonComplaintCard from "@/components/UI_Components/Standard_Components/skeletons/SkeletonComplaintCard";
+import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
 
 export default function MyComplaintsPageLoading() {
   return (
     <div>
-      <SkeletonComplaintCard />
+      <GreenLoadingSkeleton />
     </div>
   );
 }

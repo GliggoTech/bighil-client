@@ -55,7 +55,10 @@ const useFetch = () => {
         console.log("Error:", error);
         setLoading(false);
         setError(error.message);
-        if (error.message == "Session expired or invalid") {
+        if (
+          error.message == "Session expired or invalid" ||
+          error.message == "User authentication required"
+        ) {
           const deleteTokenResponse = await deleteToken();
           if (deleteTokenResponse.success) {
             router.push("/client/invalid-session");

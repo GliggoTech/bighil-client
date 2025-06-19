@@ -1,9 +1,12 @@
 import GreenLoadingSkeleton from "@/components/UI_Components/Standard_Components/skeletons/GreenLoadingSkeleton";
+import React from "react";
 
-export default function Loading() {
+const Loading = () => {
   return (
-    <div className="p-6 space-y-6">
+    <div>
       <GreenLoadingSkeleton />
     </div>
   );
-}
+};
+
+export default Loading;
