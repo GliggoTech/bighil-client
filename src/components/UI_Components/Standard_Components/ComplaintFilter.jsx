@@ -48,18 +48,100 @@ const ComplaintFilter = ({ bighil = false }) => {
 
   const [complaintNumber, setComplaintNumber] = useState("");
   const [status, setStatus] = useState(searchParams.get("status") || "");
-  const [dateFilter, setDateFilter] = useState({
-    type: "day",
-    day: searchParams.get("day") || "",
-    month: searchParams.get("month") || "",
-    year: searchParams.get("year") || "",
+  const [dateFilter, setDateFilter] = useState(() => {
+    const weekParam = searchParams.get("week");
+    const dayParam = searchParams.get("day");
+    const monthParam = searchParams.get("month");
+    const yearParam = searchParams.get("year");
+
+    // Priority 1: Check for week parameter
+    if (weekParam === "current") {
+      return {
+        type: "week",
+        day: "",
+        month: "",
+        year: "",
+        week: "current",
+      };
+    }
+
+    // Priority 2: Check for specific day (requires day, month, year)
+    if (dayParam && monthParam && yearParam) {
+      return {
+        type: "day",
+        day: dayParam,
+        month: monthParam,
+        year: yearParam,
+        week: "",
+      };
+    }
+
+    // Priority 3: Check for month (requires month, year)
+    if (monthParam && yearParam) {
+      return {
+        type: "month",
+        day: "",
+        month: monthParam,
+        year: yearParam,
+        week: "",
+      };
+    }
+
+    // Priority 4: Check for year only
+    if (yearParam) {
+      return {
+        type: "year",
+        day: "",
+        month: "",
+        year: yearParam,
+        week: "",
+      };
+    }
+
+    // Default: empty day filter
+    return {
+      type: "day",
+      day: "",
+      month: "",
+      year: "",
+      week: "",
+    };
   });
+
+  // useEffect(() => {
+  //   const weekParam = searchParams.get("week");
+  //   const dayParam = searchParams.get("day");
+  //   const monthParam = searchParams.get("month");
+  //   const yearParam = searchParams.get("year");
+
+  //   // If week=current is in URL, set the filter to week mode
+  //   if (weekParam === "current") {
+  //     setDateFilter({
+  //       type: "week",
+  //       day: "",
+  //       month: "",
+  //       year: "",
+  //       week: "current",
+  //     });
+  //   }
+  //   // If day/month/year params exist, set to day mode
+  //   else if (dayParam && monthParam && yearParam) {
+  //     setDateFilter({
+  //       type: "day",
+  //       day: dayParam,
+  //       month: monthParam,
+  //       year: yearParam,
+  //       week: "",
+  //     });
+  //   }
+  // }, [searchParams]);
+  console.log("dateFilter", dateFilter);
   const [priority, setPriority] = useState(searchParams.get("priority") || "");
   const [department, setDepartment] = useState("");
   const { userRole } = useNotificationStore();
   const [clientName, setClientName] = useState("");
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-  const initialMount = useRef(true);
+
   const [complaints, setComplaints] = useState([]);
   const [totalComplaints, setTotalComplaints] = useState(0);
   const [activeFilters, setActiveFilters] = useState([]);
@@ -74,9 +156,12 @@ const ComplaintFilter = ({ bighil = false }) => {
       department,
       dateFilter: {
         ...dateFilter,
-        // Recalculate validity based on current dateFilter state
+        // Fixed validity calculation for week filter
         valid: (() => {
           switch (dateFilter.type) {
+            case "week":
+              // Week is valid when type is 'week' and week is set
+              return dateFilter.week === "current";
             case "day":
               // Valid if day, month, and year are non-empty and not 'any' placeholders
               return (
@@ -99,13 +184,13 @@ const ComplaintFilter = ({ bighil = false }) => {
               // Valid if year is non-empty and not 'any' placeholder
               return !!dateFilter.year && dateFilter.year !== "anyYear";
             default:
-              return false; // Should not happen if type is one of the above
+              return false;
           }
         })(),
       },
       clientName,
       priority,
-      page, // Include page in filterParams
+      page,
     }),
     [
       complaintNumber,
@@ -116,24 +201,26 @@ const ComplaintFilter = ({ bighil = false }) => {
       bighil,
       department,
       priority,
-    ] // Dependencies for memoization
+    ]
   );
 
-  // Active filters calculation
   useEffect(() => {
     const filters = [];
     if (complaintNumber) filters.push("complaintNumber");
     if (status) filters.push("Status");
     if (department) filters.push("Department");
     if (priority) filters.push("Priority");
+
     // Check validity from filterParams directly
     if (filterParams.dateFilter.valid) {
       let dateLabel = "Date";
-      // Format the date label based on the valid date filter parts
-      const { type, day, month, year } = filterParams.dateFilter;
+      const { type, day, month, year, week } = filterParams.dateFilter;
+
       try {
-        if (type === "day" && day && month && year) {
-          // Attempt to parse to format nicely, fallback to string
+        if (type === "week" && week === "current") {
+          dateLabel += `: This Week`;
+        } else if (type === "day" && day && month && year) {
+          // Existing day logic...
           const dateObj = parseISO(
             `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
               2,
@@ -146,6 +233,7 @@ const ComplaintFilter = ({ bighil = false }) => {
               : `${year}-${month}-${day}`
           }`;
         } else if (type === "month" && month && year) {
+          // Existing month logic...
           const dateObj = parseISO(`${year}-${String(month).padStart(2, "0")}`);
           dateLabel += `: ${
             isValid(dateObj) ? format(dateObj, "MMMM yyyy") : `${year}-${month}`
@@ -155,24 +243,25 @@ const ComplaintFilter = ({ bighil = false }) => {
         }
       } catch (e) {
         console.error("Error formatting active date filter label:", e);
-        dateLabel += `: Invalid Date`; // Indicate formatting error
+        dateLabel += `: Invalid Date`;
       }
+
       if (dateLabel !== "Date") {
-        // Only push if a specific date part was formatted
         filters.push(dateLabel);
       }
     }
+
     if (clientName) filters.push("Client");
     setActiveFilters(filters);
   }, [filterParams]);
 
   const debouncedSearch = useCallback(
-    // Use filterParams from the latest render within the debounce closure
     debounce(async (params) => {
       if (!token) return;
       try {
         const queryParams = new URLSearchParams();
-        // Append filter parameters only if they have a meaningful value
+
+        // Existing filter parameters...
         if (params.complaintNumber) {
           queryParams.append("complaintId", params.complaintNumber);
         }
@@ -188,55 +277,59 @@ const ComplaintFilter = ({ bighil = false }) => {
         if (params.priority && params.priority !== "all") {
           queryParams.append("priority", params.priority);
         }
-        // Date filter handling - append parameters only if the selection is valid for the current type
+
         const {
           type: dateType,
           day: dateDay,
           month: dateMonth,
           year: dateYear,
+          week: dateWeek,
           valid: isDateValid,
         } = params.dateFilter;
-        if (isDateValid) {
-          if (dateYear && dateYear !== "anyYear") {
-            // Year is required for all valid types
-            queryParams.append("year", dateYear);
-          }
-          // Append day and month only if the type is 'day' and they are selected
-          if (
-            dateType === "day" &&
-            dateDay &&
-            dateDay !== "allDay" &&
-            dateMonth &&
-            dateMonth !== "anyMonth"
-          ) {
-            queryParams.append("day", dateDay);
-            queryParams.append("month", dateMonth); // Month is also needed for day filter
-          }
 
-          if (dateType === "month" && dateMonth && dateMonth !== "anyMonth") {
-            queryParams.append("month", dateMonth);
+        if (isDateValid) {
+          if (dateType === "week" && dateWeek === "current") {
+            console.log("ComplaintFilter - week filter applied");
+            queryParams.append("week", "current");
+          } else if (dateType !== "week") {
+            // Existing date filter logic for day/month/year...
+            if (dateYear && dateYear !== "anyYear") {
+              queryParams.append("year", dateYear);
+            }
+            if (
+              dateType === "day" &&
+              dateDay &&
+              dateDay !== "allDay" &&
+              dateMonth &&
+              dateMonth !== "anyMonth"
+            ) {
+              queryParams.append("day", dateDay);
+              queryParams.append("month", dateMonth);
+            }
+            if (dateType === "month" && dateMonth && dateMonth !== "anyMonth") {
+              queryParams.append("month", dateMonth);
+            }
           }
         }
-        // Always append the current page from state
-        queryParams.append("page", params.page.toString());
-        // Build URL
-        const url = getBackendUrl();
 
+        // Rest of the function remains the same...
+        queryParams.append("page", params.page.toString());
+
+        const url = getBackendUrl();
         const finalUrl = bighil
           ? `${url}/api/bighil/get-filtered-complaints?${queryParams.toString()}`
           : `${url}/api/client/get-filtered-complaints?${queryParams.toString()}`;
-        // Fetch data
+
         const res = await fetchData(finalUrl, "GET", null, token);
 
         if (res?.data) {
           setComplaints(res.data.complaints);
-          // Use totalCount from response if available, otherwise fallback
           setTotalComplaints(
             res.data.totalCount ??
               res.data.pagination?.total ??
               res.data.complaints.length
           );
-          setResponse(res.data); // Store the full response for pagination info
+          setResponse(res.data);
         } else {
           setComplaints([]);
           setTotalComplaints(0);
@@ -250,7 +343,6 @@ const ComplaintFilter = ({ bighil = false }) => {
         );
       } catch (err) {
         console.error("Error fetching complaints:", err);
-        // Optionally reset complaints/totalComplaints/response on error
         setComplaints([]);
         setTotalComplaints(0);
         setResponse(null);
@@ -272,7 +364,6 @@ const ComplaintFilter = ({ bighil = false }) => {
 
     if (isAnyFilterActiveExcludingPage && page !== 1) {
       setPage(1);
-
       return;
     }
 
@@ -283,16 +374,13 @@ const ComplaintFilter = ({ bighil = false }) => {
     };
   }, [filterParams, debouncedSearch, token]);
 
-  // Clear filters
   const handleClearFilters = useCallback(() => {
     setComplaintNumber("");
     setStatus("");
     setDepartment("");
     setPriority("");
-
-    setDateFilter({ type: "day", day: "", month: "", year: "" });
+    setDateFilter({ type: "day", day: "", month: "", year: "", week: "" });
     setClientName("");
-
     setPage(1);
   }, []);
 
@@ -311,12 +399,23 @@ const ComplaintFilter = ({ bighil = false }) => {
 
   const handleDateTypeChange = useCallback(
     (type) => {
-      setDateFilter({
-        type,
-        day: "",
-        month: "",
-        year: "",
-      });
+      if (type === "week") {
+        setDateFilter({
+          type: "week",
+          day: "",
+          month: "",
+          year: "",
+          week: "current", // This ensures week filter is active
+        });
+      } else {
+        setDateFilter({
+          type,
+          day: "",
+          month: "",
+          year: "",
+          week: "", // Clear week when switching to other types
+        });
+      }
     },
     [setDateFilter]
   );
@@ -433,10 +532,16 @@ const ComplaintFilter = ({ bighil = false }) => {
           />
           {/* Use the new CalendarDateFilter for date selection */}
           {/* Pass the entire dateFilter state object and its setter */}
-          <CalendarDateFilter
+          {dateFilter.type != "week" && (
+            <CalendarDateFilter
+              dateFilter={dateFilter}
+              setDateFilter={setDateFilter}
+            />
+          )}
+          {/* <CalendarDateFilter
             dateFilter={dateFilter}
             setDateFilter={setDateFilter}
-          />
+          /> */}
         </FilterCard>
 
         {/* Client Name Filter */}

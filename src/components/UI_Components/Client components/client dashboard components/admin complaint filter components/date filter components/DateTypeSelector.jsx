@@ -23,6 +23,17 @@ const DateTypeSelector = ({ value, onChange }) => (
         Specific Day
       </SelectItem>
       <SelectItem
+        value="week"
+        className={`
+            cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light
+            flex items-center justify-start gap-2
+          bg-white
+            hover:bg-white hover:text-text_color transition-all
+          `}
+      >
+       This Week
+      </SelectItem>
+      <SelectItem
         value="month"
         className={`
             cursor-pointer w-full rounded-md px-3 py-2 text-sm font-light

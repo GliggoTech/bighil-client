@@ -19,6 +19,7 @@ const ActiveFilters = ({ activeFilters, onClear }) => (
     <Button
       variant="outline"
       size="sm"
+      disabled={activeFilters.length === 0}
       onClick={onClear}
       className="bg-red w-fit text-white border-none"
     >

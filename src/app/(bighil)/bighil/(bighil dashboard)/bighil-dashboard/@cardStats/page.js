@@ -45,7 +45,7 @@ export default async function CardsStatusPage() {
       iconBg: "bg-purple/30",
       iconOuterBg: "bg-purple/20",
       iconColor: "text-purple",
-      href: "/bighil/bighil-complaints?status=Pending",
+      href: "/bighil/bighil-complaints?week=current",
       clickable: true,
     },
     {
