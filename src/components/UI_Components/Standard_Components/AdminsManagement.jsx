@@ -23,7 +23,7 @@ const AdminsManagement = () => {
   const { loading: isFetching, fetchData } = useFetch();
   const [admins, setAdmins] = useState([]);
   const [loadingAdmins, setLoadingAdmins] = useState(false);
-  const { userRole } = useNotificationStore();
+  const { userRole, userId } = useNotificationStore();
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   const [ownRole, setOwnRole] = useState([]);
@@ -46,7 +46,7 @@ const AdminsManagement = () => {
 
         if (adminsListData.success) {
           setOwnRole(
-            adminsListData.data.filter((admin) => admin.role === userRole)
+            adminsListData.data.filter((admin) => admin._id === userId)
           );
           setOtherRoles(
             adminsListData.data.filter((admin) => admin.role !== userRole)
