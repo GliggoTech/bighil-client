@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Mail,
-
   Shield,
   AlertCircle,
   Loader2,
@@ -66,6 +65,7 @@ export default function LoginForm() {
     setCurrentUserName,
     setCurrentUserEmail,
     setCompanyId,
+    setPreferredRoleName,
   } = useNotificationStore();
 
   // State management
@@ -95,6 +95,7 @@ export default function LoginForm() {
         setCurrentUserName(res.user.name);
         setCurrentUserEmail(res.user.email);
         setCompanyId(res.user.companyId);
+        setPreferredRoleName(res.user.preferredRoleName || null);
 
         // Delay navigation for better UX
         setTimeout(() => {

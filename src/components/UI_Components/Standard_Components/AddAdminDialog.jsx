@@ -46,6 +46,10 @@ const addAdminSchema = z.object({
   role: z.enum(["SUPER ADMIN", "ADMIN", "SUB ADMIN"], {
     required_error: "Please select a role",
   }),
+  preferredRoleName: z
+    .string()
+    .min(2, "Role name must be at least 2 characters")
+    .optional(),
   isTwoFactorEnabled: z.boolean(),
 });
 
@@ -57,6 +61,7 @@ const AddAdminDialog = ({ open, onClose, onSave, loading = false }) => {
     defaultValues: {
       name: "",
       email: "",
+      preferredRoleName: "",
 
       role: "ADMIN",
       isTwoFactorEnabled: false,
@@ -153,6 +158,30 @@ const AddAdminDialog = ({ open, onClose, onSave, loading = false }) => {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="preferredRoleName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Preferred Role Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter preferred role name"
+                        className={`w-full border-primary ${
+                          form.formState.errors.preferredRoleName
+                            ? "border-red border-2"
+                            : ""
+                        }`}
+                        disabled={isSaving}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* Role Field */}
               <FormField
                 control={form.control}

@@ -16,7 +16,8 @@ import { getRoleTitle } from "@/utils/roleTitleHelper";
 
 const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
   const [open, setOpen] = useState(false);
-  const { userName, userRole, userEmail } = useNotificationStore();
+  const { userName, userRole, userEmail, preferredRoleName } =
+    useNotificationStore();
 
   // Store the role locally to prevent showing "unknown" during logout
   const [currentRole, setCurrentRole] = useState(userRole);
@@ -32,7 +33,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
     }
   }, [userRole, userName, loading]);
 
-  const title = getRoleTitle(currentRole);
+  const title = getRoleTitle(preferredRoleName || currentRole);
 
   const RoleTitle = ({ role, title }) => {
     const getRoleStyle = (role) => {
@@ -46,7 +47,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
         case "user":
           return "bg-gray text-white";
         default:
-          return "bg-gray-200 text-gray-800";
+          return "bg-sky-500 text-black";
       }
     };
 
@@ -61,7 +62,7 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
         case "user":
           return "👤"; // User
         default:
-          return "❓"; // Question mark
+          return "🛡️"; // Question mark
       }
     };
 
@@ -105,7 +106,10 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
                 {currentUserName}
               </div>
 
-              <RoleTitle role={currentRole} title={title} />
+              <RoleTitle
+                role={preferredRoleName || currentRole}
+                title={title}
+              />
             </div>
             <DropdownMenuSeparator className="bg-primary/10" />
             <DropdownMenuItem asChild>

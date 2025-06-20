@@ -18,6 +18,7 @@ const useNotificationStore = create(
       sessionId: null,
       lastActivity: null,
       isSessionActive: false,
+      preferredRoleName: null,
       // Actions
       setCurrentUserId: (userId) => set({ userId }),
       setCurrentUserRole: (userRole) => set({ userRole }),
@@ -26,6 +27,7 @@ const useNotificationStore = create(
       setSessionActive: (active) => set({ isSessionActive: active }),
       updateLastActivity: () => set({ lastActivity: new Date().toISOString() }),
       setCompanyId: (companyId) => set({ companyId }),
+      setPreferredRoleName: (preferredRoleName) => set({ preferredRoleName }),
       clearCurrentUser: () => {
         set({
           userId: null,
@@ -240,6 +242,7 @@ const useNotificationStore = create(
         userEmail: state.userEmail,
         currentTheme: state.currentTheme,
         companyId: state.companyId,
+        preferredRoleName: state.preferredRoleName,
         // Omitting notifications and lastSync from persistence
       }),
     }

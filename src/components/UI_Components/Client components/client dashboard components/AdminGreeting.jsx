@@ -9,7 +9,7 @@ import { DayProgressBar } from "./Admin greeting components/ProgressBar";
 import { SkeletonAdminGreeting } from "../../Standard_Components/skeletons/SkeletonAdminGreeting";
 
 const AdminGreeting = () => {
-  const { userRole } = useNotificationStore();
+  const { userRole, preferredRoleName } = useNotificationStore();
   const [currentTime, setCurrentTime] = useState(null);
   const [greeting, setGreeting] = useState("");
   const { formatTime, formatDate } = useTimeFormat();
@@ -57,7 +57,7 @@ const AdminGreeting = () => {
                   {greeting},
                 </h1>
                 <h1 className="text-xl mt-1 font-bold bg-gradient-to-r from-primary to-primary/90 bg-clip-text text-transparent">
-                  {userRole?.replace("_", " ") || "Admin"}
+                  {preferredRoleName || userRole?.replace("_", " ") || "Admin"}
                 </h1>
               </div>
             </div>

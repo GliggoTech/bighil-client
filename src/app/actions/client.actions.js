@@ -23,6 +23,7 @@ export async function clientLogin(loginData) {
 
     const { success, user, message, token, requiresTwoFactor } =
       await res.json();
+    console.log(user);
 
     if (success && token) {
       const cookieStore = await cookies();

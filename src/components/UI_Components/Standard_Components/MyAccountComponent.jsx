@@ -42,7 +42,7 @@ const formSchema = z
   });
 
 export default function MyAccountComponent({ data }) {
-  const { name, email, role } = data;
+  const { name, email, role, preferredRoleName } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -145,7 +145,7 @@ export default function MyAccountComponent({ data }) {
                     <span className="text-sm text-primary">Role</span>
                   </div>
                   <div className="font-light text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
-                    {role.toUpperCase()}
+                    {preferredRoleName.toUpperCase() || role.toUpperCase()}
                   </div>
                 </div>
               </div>

@@ -44,6 +44,10 @@ const editAdminSchema = z.object({
   role: z.enum(["SUPER ADMIN", "ADMIN", "SUB ADMIN"], {
     required_error: "Please select a role",
   }),
+  preferredRoleName: z
+    .string()
+    .min(2, "Role name must be at least 2 characters")
+    .optional(),
   isTwoFactorEnabled: z.boolean(),
 });
 
@@ -64,6 +68,7 @@ const EditAdminDialog = ({
       name: "",
       email: "",
       role: "ADMIN",
+      preferredRoleName: null,
       isTwoFactorEnabled: false,
     },
   });
@@ -75,6 +80,7 @@ const EditAdminDialog = ({
         name: admin.name || "",
         email: admin.email || "",
         role: admin.role || "ADMIN",
+        preferredRoleName: admin.preferredRoleName || null,
         isTwoFactorEnabled: admin.isTwoFactorEnabled || false,
       });
     }
@@ -143,6 +149,7 @@ const EditAdminDialog = ({
                         className="w-full border-primary"
                         disabled={isSaving}
                         readOnly={viewOnly}
+                        value={field.value || ""} // Safe default
                       />
                     </FormControl>
                     <FormMessage />
@@ -167,6 +174,29 @@ const EditAdminDialog = ({
                         className="w-full border-primary"
                         disabled={isSaving}
                         readOnly={viewOnly}
+                        value={field.value || ""} // Safe default
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="preferredRoleName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Preferred Role Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter preferred role name"
+                        className="w-full border-primary"
+                        disabled={isSaving}
+                        readOnly={viewOnly}
+                        value={field.value || ""} // Safe default
                       />
                     </FormControl>
                     <FormMessage />

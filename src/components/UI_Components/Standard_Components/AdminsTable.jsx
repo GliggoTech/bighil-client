@@ -36,7 +36,6 @@ const AdminsTable = ({
   hideAction = false,
   userRole,
   handleDisable,
-
 }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [disableId, setDisableId] = useState(null);
@@ -153,7 +152,9 @@ const AdminsTable = ({
           </TableHeader>
           <TableBody>
             {admins.map((admin) => {
-              const roleName = getRoleTitle(admin.role);
+              const roleName = getRoleTitle(
+                admin.preferredRoleName || admin.role
+              );
               return (
                 <TableRow
                   key={admin._id}

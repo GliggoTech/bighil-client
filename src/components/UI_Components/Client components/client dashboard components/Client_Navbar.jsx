@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Client_Navbar = ({ isOpen }) => {
-  const { userRole } = useNotificationStore();
+  const { userRole, preferredRoleName } = useNotificationStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,6 +32,7 @@ const Client_Navbar = ({ isOpen }) => {
             notificationCount: 0,
             notifications: [],
             lastSync: null,
+            preferredRoleName: null,
           });
           setError(null);
           setLoading(false);
@@ -50,6 +51,7 @@ const Client_Navbar = ({ isOpen }) => {
   const dismissError = () => {
     setError(null);
   };
+  console.log(preferredRoleName);
 
   return (
     <div>
@@ -85,7 +87,9 @@ const Client_Navbar = ({ isOpen }) => {
 
               {/* Right Section: User Info & Actions */}
               <div className="flex items-center space-x-1">
-                <h1>{userRole}</h1>
+                <h1>
+                  {preferredRoleName != null ? preferredRoleName : userRole}
+                </h1>
 
                 <AdvancedStyledDropdown
                   handleLogOut={handleLogOut}
