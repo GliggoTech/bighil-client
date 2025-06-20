@@ -68,7 +68,7 @@ const EditAdminDialog = ({
       name: "",
       email: "",
       role: "ADMIN",
-      preferredRoleName: null,
+      preferredRoleName: undefined,
       isTwoFactorEnabled: false,
     },
   });
@@ -80,7 +80,7 @@ const EditAdminDialog = ({
         name: admin.name || "",
         email: admin.email || "",
         role: admin.role || "ADMIN",
-        preferredRoleName: admin.preferredRoleName || null,
+        preferredRoleName: admin.preferredRoleName || undefined,
         isTwoFactorEnabled: admin.isTwoFactorEnabled || false,
       });
     }

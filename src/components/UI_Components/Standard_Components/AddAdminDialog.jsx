@@ -61,7 +61,7 @@ const AddAdminDialog = ({ open, onClose, onSave, loading = false }) => {
     defaultValues: {
       name: "",
       email: "",
-      preferredRoleName: "",
+      preferredRoleName: undefined,
 
       role: "ADMIN",
       isTwoFactorEnabled: false,
