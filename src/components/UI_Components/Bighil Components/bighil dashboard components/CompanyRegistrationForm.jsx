@@ -34,8 +34,6 @@ export default function CompanyRegistrationForm({
     }
 
     return selectedClient.admins.map((admin, index) => {
- 
-
       // Ensure we have a valid role
       let role = admin.role;
       if (!role || typeof role !== "string") {
@@ -54,6 +52,7 @@ export default function CompanyRegistrationForm({
         _id: admin._id,
         name: admin.name || "",
         email: admin.email || "",
+        confirmEmail: admin.email || "", // Add this line
         role: role,
       };
     });
@@ -81,16 +80,7 @@ export default function CompanyRegistrationForm({
   const { token } = useAccessToken();
   const { loading, error, fetchData } = useFetch();
 
-  // const admins = form.watch("admins");
 
-  // const getNextRoleInSequence = () => {
-  //   const currentAdmins = form.watch("admins");
-  //   if (currentAdmins.length === 0) return "SUPER ADMIN";
-  //   if (currentAdmins.length === 1) return "SUB ADMIN";
-  //   if (currentAdmins.length === 2) return "ADMIN";
-  //   // After 3 admins, only SUPER ADMIN can be added
-  //   return "SUPER ADMIN";
-  // };
 
   const goToNextStep = async () => {
     let canProceed = true;
@@ -118,6 +108,10 @@ export default function CompanyRegistrationForm({
 
   async function onSubmit(values) {
     const url = getBackendUrl();
+    const submitData = {
+      ...values,
+      admins: values.admins.map(({ confirmEmail, ...admin }) => admin),
+    };
     let res;
     if (selectedClient && viewMode == true) {
       setViewMode(false);
@@ -129,7 +123,7 @@ export default function CompanyRegistrationForm({
       res = await fetchData(
         `${url}/api/bighil-clients/edit-client/${selectedClient._id}`,
         "PATCH",
-        values,
+        submitData,
         token,
         false
       );
@@ -137,7 +131,7 @@ export default function CompanyRegistrationForm({
       res = await fetchData(
         `${url}/api/bighil-clients/add-new-client`,
         "POST",
-        values,
+        submitData,
         token,
         false
       );
