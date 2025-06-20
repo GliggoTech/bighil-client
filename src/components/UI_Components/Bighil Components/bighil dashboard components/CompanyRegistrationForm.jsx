@@ -17,6 +17,7 @@ import AdminAccountsStep from "./AdminAccountsStep";
 import { clientAdminSchema } from "@/utils/adminsConstants";
 import ReviewStep from "./ReviewStep";
 import { MdOutlineCancel } from "react-icons/md";
+
 export default function CompanyRegistrationForm({
   setOpen,
   selectedClient,
@@ -27,7 +28,9 @@ export default function CompanyRegistrationForm({
   setViewMode,
 }) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [validationLoading, setValidationLoading] = useState(false);
   const totalSteps = 3;
+
   const getDefaultAdmins = () => {
     if (!selectedClient?.admins) {
       return [{ name: "", email: "", role: "SUPER ADMIN" }];
@@ -57,6 +60,7 @@ export default function CompanyRegistrationForm({
       };
     });
   };
+
   const form = useForm({
     resolver: zodResolver(clientAdminSchema),
     defaultValues: {
@@ -80,15 +84,105 @@ export default function CompanyRegistrationForm({
   const { token } = useAccessToken();
   const { loading, error, fetchData } = useFetch();
 
+  // Function to validate company details for duplicates
+  const validateCompanyDetails = async (
+    companyName,
+    contactNumber,
+    companyEmail
+  ) => {
+    const url = getBackendUrl();
 
+    try {
+      setValidationLoading(true);
+
+      const validationData = {
+        companyName: companyName.trim(),
+        contactNumber: contactNumber.trim(),
+        companyEmail: companyEmail.trim(),
+        // Include current client ID if editing to exclude it from duplicate check
+        excludeClientId: selectedClient?._id || null,
+      };
+
+      const response = await fetchData(
+        `${url}/api/bighil-clients/validate-company-details`,
+        "POST",
+        validationData,
+        token,
+        false
+      );
+      console.log("Validation response:", response);
+
+      return response;
+    } catch (error) {
+      console.error("Validation error:", error);
+      return {
+        success: false,
+        message: "Failed to validate company details. Please try again.",
+      };
+    } finally {
+      setValidationLoading(false);
+    }
+  };
 
   const goToNextStep = async () => {
     let canProceed = true;
 
     if (currentStep === 1) {
-      canProceed = await form.trigger(["companyName", "contactNumber"], {
-        shouldFocus: true,
-      });
+      // Handle view mode
+      if (selectedClient && viewMode) {
+        setCurrentStep(2);
+        return;
+      }
+
+      // Validate fields
+      canProceed = await form.trigger(
+        ["companyName", "contactNumber", "companyEmail"],
+        { shouldFocus: true }
+      );
+
+      if (canProceed) {
+        const formValues = form.getValues();
+        const { companyName, contactNumber, companyEmail } = formValues;
+
+        // Skip validation if editing and fields unchanged
+        const isUnchanged =
+          selectedClient &&
+          companyName === selectedClient.companyName &&
+          contactNumber === selectedClient.contactNumber &&
+          companyEmail === selectedClient.companyEmail;
+
+        if (!isUnchanged) {
+          // Validate for duplicates only if fields changed
+          const validationResult = await validateCompanyDetails(
+            companyName,
+            contactNumber,
+            companyEmail
+          );
+
+          if (!validationResult.success) {
+            toast({
+              variant: "destructive",
+              title: "Duplicate Information Found",
+              description:
+                validationResult.message ||
+                "Company details already exist in the system.",
+              duration: 5000,
+            });
+
+            if (validationResult.duplicateFields) {
+              validationResult.duplicateFields.forEach((field) => {
+                form.setError(field, {
+                  type: "manual",
+                  message: `This ${field
+                    .replace(/([A-Z])/g, " $1")
+                    .toLowerCase()} is already registered.`,
+                });
+              });
+            }
+            canProceed = false;
+          }
+        }
+      }
     } else if (currentStep === 2) {
       canProceed = await form.trigger("admins", { shouldFocus: true });
     }
@@ -140,7 +234,6 @@ export default function CompanyRegistrationForm({
     if (res.success) {
       toast({
         variant: "success",
-
         description: selectedClient
           ? "The company details have been updated successfully."
           : "Your company has been registered successfully.",
@@ -215,6 +308,13 @@ export default function CompanyRegistrationForm({
       <Card className="border-0 shadow-none">
         <CardContent className="p-8 pt-6 bg-white dark:bg-gray-900">
           <StepIndicator />
+          {error && (
+            <div className="mt-2 mb-2">
+              <div className="bg-red/5 dark:bg-red-900/20 text-red dark:text-red rounded-lg p-4 text-center border border-red/20 dark:border-red-800">
+                {error}
+              </div>
+            </div>
+          )}
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -250,14 +350,6 @@ export default function CompanyRegistrationForm({
                 )}
               </div>
 
-              {error && (
-                <div className="mt-2 mb-2">
-                  <div className="bg-red/5 dark:bg-red-900/20 text-red dark:text-red rounded-lg p-4 text-center border border-red/20 dark:border-red-800">
-                    {error}
-                  </div>
-                </div>
-              )}
-
               <CardFooter className="flex justify-between items-center  pt-2 pb-2 px-0  mt-4">
                 <div>
                   {currentStep > 1 && (
@@ -292,10 +384,39 @@ export default function CompanyRegistrationForm({
                     <Button
                       type="button"
                       onClick={goToNextStep}
+                      disabled={validationLoading}
                       className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white shadow-md hover:shadow-primary/30 transition-all"
                     >
-                      <span className="hidden sm:block">Next</span>
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      {validationLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          <span className="hidden sm:block">Validating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="hidden sm:block">Next</span>
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </>
+                      )}
                     </Button>
                   ) : (
                     <Button

@@ -37,39 +37,35 @@ const AdminAccountsStep = ({
   remove,
   viewMode,
 }) => {
-  // Watch all admin emails to trigger validation when any email changes
-  const watchedEmails = form.watch(
-    fields.map((_, index) => `admins.${index}.email`)
-  );
-  const watchedConfirmEmails = form.watch(
-    fields.map((_, index) => `admins.${index}.confirmEmail`)
-  );
+  // Safe watch with fallbacks
+  const watchedEmails =
+    form.watch(fields.map((_, index) => `admins.${index}.email`)) || [];
 
-  // Debounced validation function to prevent excessive re-triggering
+  const watchedConfirmEmails =
+    form.watch(fields.map((_, index) => `admins.${index}.confirmEmail`)) || [];
+
   const debouncedValidation = useCallback(
     debounce((index) => {
-      const email = form.getValues(`admins.${index}.email`);
-      const confirmEmail = form.getValues(`admins.${index}.confirmEmail`);
+      const email = form.getValues(`admins.${index}.email`) || "";
+      const confirmEmail = form.getValues(`admins.${index}.confirmEmail`) || "";
 
-      if (email && confirmEmail) {
+      if (email.trim() && confirmEmail.trim()) {
         form.trigger(`admins.${index}.confirmEmail`);
       }
     }, 300),
     [form]
   );
-  // useEffect(() => {
-  //   if (selectedClient) {
-  //     fields.forEach((_, index) => {
-  //       const email = form.getValues(`admins.${index}.email`);
-  //       const confirmEmail = form.getValues(`admins.${index}.confirmEmail`);
+  // Safe validation effect
+  useEffect(() => {
+    fields.forEach((_, index) => {
+      const email = watchedEmails[index];
+      const confirmEmail = watchedConfirmEmails[index];
 
-  //       // If both email and confirmEmail exist, trigger validation
-  //       if (email && confirmEmail) {
-  //         form.trigger(`admins.${index}.confirmEmail`);
-  //       }
-  //     });
-  //   }
-  // }, [watchedEmails, selectedClient, form, fields]);
+      if (email && confirmEmail) {
+        debouncedValidation(index);
+      }
+    });
+  }, [watchedEmails, watchedConfirmEmails, debouncedValidation, fields]);
 
   // Simple debounce function
   function debounce(func, wait) {
@@ -271,6 +267,7 @@ const AdminAccountsStep = ({
                       <Input
                         placeholder="John Doe"
                         {...field}
+                        value={field.value || ""} // Safe default
                         className="border-gray-300   dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
                         readOnly={viewMode}
                       />
@@ -294,6 +291,7 @@ const AdminAccountsStep = ({
                         <Input
                           placeholder="john@company.com"
                           {...field}
+                          value={field.value || ""} // Safe default
                           className="border-gray-300   dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
                           type="email"
                           readOnly={viewMode}
@@ -339,6 +337,7 @@ const AdminAccountsStep = ({
                           <Input
                             placeholder="john@company.com"
                             {...field}
+                            value={field.value || ""} // Safe default
                             className="border-gray-300 dark:border-gray-600 dark:bg-texttext-text_color dark:text-white"
                             type="email"
                             readOnly={viewMode}
