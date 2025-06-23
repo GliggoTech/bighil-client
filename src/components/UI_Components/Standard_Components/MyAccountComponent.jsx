@@ -145,7 +145,9 @@ export default function MyAccountComponent({ data }) {
                     <span className="text-sm text-primary">Role</span>
                   </div>
                   <div className="font-light text-text_color dark:text-white bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-md">
-                    {preferredRoleName.toUpperCase() || role.toUpperCase()}
+                    {preferredRoleName != null
+                      ? preferredRoleName.toUpperCase()
+                      : role.toUpperCase()}
                   </div>
                 </div>
               </div>

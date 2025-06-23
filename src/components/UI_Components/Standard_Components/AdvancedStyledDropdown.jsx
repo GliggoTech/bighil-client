@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { User, LogOut, Settings, List } from "lucide-react";
+import { User, LogOut, Settings, List, Trash } from "lucide-react";
 import { useState, useEffect } from "react";
 import useNotificationStore from "@/store/notificationStore";
 import { getRoleTitle } from "@/utils/roleTitleHelper";
@@ -140,6 +140,18 @@ const AdvancedStyledDropdown = ({ handleLogOut, loading, error }) => {
             )}
 
             <DropdownMenuSeparator className="bg-dialog_inside_border_color" />
+
+            {currentRole === "user" && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/user/delete-myAccount"
+                  className="cursor-pointer hover:bg-primary/10 hover:text-text_color transition-all duration-200 py-2 px-3 rounded-md flex items-center gap-2 group"
+                >
+                  <Trash className="h-4 w-4 text-red group-hover:text-red transition-colors duration-200" />
+                  Delete Account
+                </Link>
+              </DropdownMenuItem>
+            )}
           </div>
         )}
 
