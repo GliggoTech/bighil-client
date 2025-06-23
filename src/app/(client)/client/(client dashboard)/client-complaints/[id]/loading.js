@@ -1,8 +1,8 @@
 import ParticularComplaintSkeleton from "@/components/UI_Components/Standard_Components/skeletons/ParticularComplaintSkeleton";
 import React from "react";
 
-const ParticularComplaintLoading = () => {
+const Loading = () => {
   return <ParticularComplaintSkeleton />;
 };
 
-export default ParticularComplaintLoading;
+export default Loading;
