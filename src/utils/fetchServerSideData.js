@@ -41,7 +41,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
       throw new Error(res.message || "No data returned from API");
     }
   } catch (error) {
-    console.log("Error fetching server-side data:", error);
+    console.log("Error fetching server-side data:", error.statusCode);
     if (
       error.message == "Session expired or invalid" ||
       error.statusCode == 401 ||
@@ -56,7 +56,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
         console.log("Could not delete cookie:", cookieError.message);
       }
 
-      redirect("/invalid-session?role=client");
+      redirect("/invalid-session?role=client"); // Redirect to invalid session page
     }
   }
 }
