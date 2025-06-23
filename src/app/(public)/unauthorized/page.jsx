@@ -12,9 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, ArrowLeft, Home, Lock, AlertTriangle } from "lucide-react";
-import { useEffect, useState } from "react";
-
-export default function Unauthorized() {
+import { Suspense, useEffect, useState } from "react";
+function UnauthoroizedContent() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
   const requiredRole = searchParams.get("required");
@@ -49,7 +48,6 @@ export default function Unauthorized() {
   if (!mounted) {
     return null; // Prevent hydration mismatch
   }
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       {/* Animated background elements */}
@@ -173,5 +171,18 @@ export default function Unauthorized() {
         <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-red rounded-full opacity-20 animate-bounce delay-700"></div>
       </div>
     </div>
+  );
+}
+export default function Unauthorized() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        </div>
+      }
+    >
+      <UnauthoroizedContent />
+    </Suspense>
   );
 }

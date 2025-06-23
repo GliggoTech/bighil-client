@@ -1,40 +1,28 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Clock, RefreshCw, Home, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 
-export default function InvalidSession() {
+function InvalidSessionContent() {
   const searchParams = useSearchParams();
-  const role = searchParams.get("role");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const role = searchParams.get('role');
 
   // Determine login path based on role
   const getLoginPath = () => {
     if (!role) return "/";
-
+    
     switch (role.toLowerCase()) {
-      case "client":
+      case 'client':
         return "/client/client-login";
-      case "user":
+      case 'user':
         return "/user/user-login";
-      case "bighil":
+      case 'bighil':
         return "/bighil/bighil-login";
-
       default:
         return "/";
     }
@@ -44,10 +32,6 @@ export default function InvalidSession() {
     if (!role) return "User";
     return role.charAt(0).toUpperCase() + role.slice(1);
   };
-
-  if (!mounted) {
-    return null; // Prevent hydration mismatch
-  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -77,11 +61,7 @@ export default function InvalidSession() {
               <AlertDescription className="text-red">
                 {role ? (
                   <>
-                    Your{" "}
-                    {/* <span className="font-semibold">
-                      {getRoleDisplayName()}
-                    </span>{" "} */}
-                    session has expired. Please log in again to continue.
+                    Your session has expired. Please log in again to continue.
                   </>
                 ) : (
                   "Your session has expired. Please log in again to continue."
@@ -139,5 +119,17 @@ export default function InvalidSession() {
         <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-primary rounded-full opacity-10 animate-bounce delay-700"></div>
       </div>
     </div>
+  );
+}
+
+export default function InvalidSession() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <InvalidSessionContent />
+    </Suspense>
   );
 }
