@@ -552,16 +552,12 @@ const SignupSigninForm = ({ mode = "signup" }) => {
                   disabled={isLoading || buttonLoading || isButtonDisabled()}
                   className="w-full h-10 mt-3 bg-gradient-to-r from-primary to-green hover:from-blue-700 hover:to-primary-700 transition-all duration-200 text-white font-medium"
                 >
-                  {isLoading ||
-                    (buttonLoading && (
-                      <Loader2
-                        className={`h-4 w-4 mr-2 ${
-                          isButtonDisabled() ? "animate-spin" : ""
-                        }`}
-                      />
-                    ))}
+                  {(isLoading || buttonLoading) && (
+                    <Loader2 className={`h-4 w-4 mr-2 animate-spin`} />
+                  )}
                   {getSubmitButtonText()}
                 </Button>
+
                 <div className="mt-2 ">
                   {mode === "signin" && (
                     <Link

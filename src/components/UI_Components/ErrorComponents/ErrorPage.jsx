@@ -1,4 +1,4 @@
-import { AlertTriangle, RefreshCw, Home, ArrowLeft } from "lucide-react";
+import { AlertTriangle, RefreshCw, Home, ArrowLeft, ChevronLeft } from "lucide-react";
 
 const ErrorPage = ({
   title = "Something went wrong",
@@ -12,6 +12,7 @@ const ErrorPage = ({
   icon: CustomIcon,
   className = "",
   size = "default", // "small", "default", "large"
+  role = "user",
 }) => {
   const handleRetry = () => {
     if (onRetry) {
@@ -27,7 +28,13 @@ const ErrorPage = ({
       onGoHome();
     } else {
       // Default home action - navigate to dashboard
-      window.location.href = "/client/client-dashboard";
+      if (role == "user") {
+        window.location.href = "/user/my-complaints";
+      } else if (role == "bighil") {
+        window.location.href = "/bighil/bighil-dashboard";
+      } else {
+        window.location.href = "/client/client-dashboard";
+      }
     }
   };
 
@@ -124,8 +131,8 @@ const ErrorPage = ({
                        transition-colors duration-200
                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`}
           >
-            <Home className="w-4 h-4" />
-            Go Home
+            <ChevronLeft className="w-4 h-4" />
+            Go Back
           </button>
         )}
 

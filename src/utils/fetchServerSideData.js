@@ -41,7 +41,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
       throw new Error(res.message || "No data returned from API");
     }
   } catch (error) {
-    console.log("Error fetching server-side data:", error.statusCode);
+    console.log("Error fetching server-side data:", error);
     if (
       error.message == "Session expired or invalid" ||
       error.statusCode == 401 ||
