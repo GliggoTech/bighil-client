@@ -1,6 +1,5 @@
 import "../../../globals.css";
-import { getToken } from "@/lib/getToken";
-import { redirect } from "next/navigation";
+
 import { SocketProvider } from "@/context/socketContext";
 import ClientLayoutWrapper from "@/components/UI_Components/Client components/ClientLayoutWrapper";
 import TabCloseLogout from "@/custom hooks/useTabCloseLogout";
@@ -14,7 +13,7 @@ export default async function ClientDashboard_Layout({ children }) {
   return (
     <SocketProvider>
       <ClientLayoutWrapper>
-        {/* <TabCloseLogout /> */}
+        <TabCloseLogout />
         {children}
       </ClientLayoutWrapper>
     </SocketProvider>

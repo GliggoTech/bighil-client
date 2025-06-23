@@ -354,7 +354,7 @@ export default function LoginForm() {
                           vijayakumar.r@gliggo.com
                         </span>
                         <span className="text-slate-500">Password:</span>
-                        <span className="text-text_color">123456</span>
+                        <span className="text-text_color">Vijay@123</span>
                       </div>
                     </div>
 
