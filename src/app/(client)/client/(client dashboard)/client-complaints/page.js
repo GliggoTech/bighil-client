@@ -4,7 +4,6 @@ export default async function ClientComplaintsPage() {
   return (
     <div>
       <ComplaintFilter />
-   
     </div>
   );
 }

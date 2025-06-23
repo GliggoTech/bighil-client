@@ -56,7 +56,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
         console.log("Could not delete cookie:", cookieError.message);
       }
 
-      redirect("/client/invalid-session");
+      redirect("/invalid-session?role=client");
     }
   }
 }

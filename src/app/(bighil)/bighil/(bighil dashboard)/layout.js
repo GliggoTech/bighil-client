@@ -12,10 +12,7 @@ export const metadata = {
 };
 
 export default async function BighilDashboard_Layout({ children }) {
-  const token = await getToken();
-  if (!token) {
-    redirect("/");
-  }
+ 
 
   return (
     <SocketProvider>

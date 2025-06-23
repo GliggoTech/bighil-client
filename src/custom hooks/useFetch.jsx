@@ -61,7 +61,7 @@ const useFetch = () => {
         ) {
           const deleteTokenResponse = await deleteToken();
           if (deleteTokenResponse.success) {
-            router.push("/client/invalid-session");
+            router.push("/invalid-session?role=client");
             return;
           } else {
             toast.error(deleteTokenResponse.message);
