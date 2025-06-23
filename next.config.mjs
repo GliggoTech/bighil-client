@@ -6,6 +6,7 @@ const nextConfig = {
         canvas: "./empty-module.ts",
       },
     },
+    serverComponentsExternalPackages: ["jose"],
   },
   async rewrites() {
     return [
