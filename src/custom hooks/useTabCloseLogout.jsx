@@ -1,11 +1,10 @@
 "use client";
+
 import { useEffect } from "react";
-import { getBackendUrl } from "@/lib/getBackendUrl";
 
 export default function TabCloseLogout() {
   useEffect(() => {
     let isRefresh = false;
-    const url = `${getBackendUrl()}/api/client-auth/client-beacon-logout`;
 
     // Detect refresh attempts
     const handleBeforeUnload = (e) => {
@@ -16,14 +15,21 @@ export default function TabCloseLogout() {
     const handleUnload = () => {
       if (!isRefresh) {
         try {
+          // Call clientLogout server action
+          // Note: This needs to be handled differently since server actions
+          // can't be called directly in unload events
+
+          // Option 1: Use sendBeacon with a custom endpoint that calls clientLogout
+          const logoutEndpoint = `/api/logout-beacon`; // You'll need to create this
+
           const blob = new Blob([JSON.stringify({})], {
             type: "application/json",
           });
 
           if (navigator.sendBeacon) {
-            navigator.sendBeacon(url, blob);
+            navigator.sendBeacon(logoutEndpoint, blob);
           } else {
-            fetch(url, {
+            fetch(logoutEndpoint, {
               method: "POST",
               body: blob,
               keepalive: true,
@@ -31,7 +37,7 @@ export default function TabCloseLogout() {
             });
           }
         } catch (e) {
-          console.error("Beacon error:", e);
+          console.error("Logout beacon error:", e);
         }
       }
     };
