@@ -1,9 +1,10 @@
 // app/logout-handler/page.js (or .tsx)
+import { getFrontEndURL } from "@/utils/getFrontEndUrl";
 import { redirect } from "next/navigation";
 
 export default async function LogoutHandlerPage() {
   // Call the API to delete the cookie
-  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/logout`, {
+  await fetch(`${getFrontEndURL()}/api/logout`, {
     cache: "no-store",
   });
 
