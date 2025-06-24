@@ -47,16 +47,7 @@ export async function fetchServerSideData(endpoint, options = {}) {
       error.statusCode == 401 ||
       error.message == "User authentication required"
     ) {
-      // ✅ Delete cookie directly and redirect
-      try {
-        const cookieStore = await cookies();
-        cookieStore.delete("access_token");
-        console.log("Token deleted successfully");
-      } catch (cookieError) {
-        console.log("Could not delete cookie:", cookieError.message);
-      }
-
-      redirect("/invalid-session?role=client"); // Redirect to invalid session page
+      redirect("/logout-handler");
     }
   }
 }
