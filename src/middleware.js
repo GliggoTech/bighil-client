@@ -9,7 +9,7 @@ export async function middleware(req) {
   const protectedRoutes = {
     "/client": ["ADMIN", "SUB ADMIN", "SUPER ADMIN"],
     "/bighil": ["BIGHIL"],
-    "/user": ["USER"],
+    "/user": ["user"],
   };
 
   // Unprotected routes (no middleware applied)

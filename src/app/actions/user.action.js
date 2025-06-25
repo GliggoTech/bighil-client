@@ -17,6 +17,7 @@ export async function userLogin(loginData) {
     });
 
     const { success, data, message, token } = await res.json();
+    console.log(data, token);
 
     if (success && token) {
       // First await cookies() to get the cookie store
