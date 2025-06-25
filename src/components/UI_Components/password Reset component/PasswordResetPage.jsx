@@ -36,6 +36,7 @@ import { endpoints } from "@/utils/endPointsHelper";
 import { cn } from "@/lib/utils";
 import PasswordStrengthIndicator from "../Standard_Components/PasswordStrengthIndicatorComponents/PasswordStrengthIndicator";
 import { passwordRegex } from "@/utils/passwordRegex";
+import { toast } from "@/hooks/use-toast";
 
 // Form schemas
 const emailSchema = z.object({
@@ -103,8 +104,18 @@ export default function PasswordResetPage({ role }) {
       false
     );
     if (res.success) {
-      setAnimateDirection("forward");
-      setCurrentStep("otp");
+      toast({
+        title: "Verification Email Sent",
+        description:
+          "We've sent a verification code to your email address. Please check your inbox (and spam folder) to proceed.",
+        variant: "success",
+        duration: 5000,
+      });
+
+      setTimeout(() => {
+        setAnimateDirection("forward");
+        setCurrentStep("otp");
+      }, 3000);
     }
   };
 
@@ -122,8 +133,18 @@ export default function PasswordResetPage({ role }) {
       false
     );
     if (res.success) {
-      setAnimateDirection("forward");
-      setCurrentStep("password");
+      toast({
+        title: "OTP Verified Successfully",
+        description:
+          "Your one-time password has been verified. You may now continue.",
+        variant: "success",
+        duration: 5000,
+      });
+
+      setTimeout(() => {
+        setAnimateDirection("forward");
+        setCurrentStep("password");
+      }, 3000);
     }
   };
 
@@ -531,21 +552,6 @@ export default function PasswordResetPage({ role }) {
 
               {currentStep === "success" && (
                 <div className="text-center ">
-                  {/* <div className="inline-flex items-center justify-center p-2 rounded-full bg-accent-success/10 mb-2">
-                    <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary rounded-full flex items-center justify-center text-white">
-                      <CheckCircle2 className="h-8 w-8 text-white" />
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-text_color">
-                    Password Reset Complete
-                  </h3>
-
-                  <p className="text-text-secondary max-w-sm mx-auto">
-                    Your password has been successfully reset. You can now log
-                    in with your new credentials.
-                  </p> */}
-
                   <Link href={loginLink} className="block">
                     <Button className="w-full py-6 rounded-xl bg-primary  text-white font-medium text-base shadow-lg shadow-primary/20">
                       Sign In
