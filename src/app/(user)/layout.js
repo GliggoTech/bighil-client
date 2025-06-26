@@ -1,6 +1,6 @@
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/context/theme-provider";
+
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
