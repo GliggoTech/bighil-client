@@ -28,7 +28,7 @@ export default async function MyComplaintsPage() {
   return (
     <div className="min-h-screen  p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
+     
         <div className="mb-8 space-y-2">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
             My Complaints
@@ -40,7 +40,7 @@ export default async function MyComplaintsPage() {
           </div>
         </div>
 
-        {/* Content Grid */}
+    
         {complaints?.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {complaints?.map((complaint) => (
