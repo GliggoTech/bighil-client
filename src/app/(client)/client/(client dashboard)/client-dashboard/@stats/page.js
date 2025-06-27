@@ -31,7 +31,7 @@ const ICON_CONFIG = {
 
 export default async function AdminStats() {
   const stats = await fetchServerSideData(
-    "/api/client-dashboard/stats?timeframe=7",
+    "/api/client-dashboard/stats?timeframe=30",
     {
       method: "GET",
       cache: "no-cache",

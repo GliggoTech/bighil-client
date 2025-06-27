@@ -71,7 +71,7 @@ export default function DashboardCard({ cards }) {
                 >
                   {trendStyles.icon}
                   <span>{card.percentage}%</span>
-                  <span className="ml-2 text-text_color">than last 7 Days</span>
+                  <span className="ml-2 text-text_color">than last 30 Days</span>
                 </div>
               )}
               {card.description ? (
