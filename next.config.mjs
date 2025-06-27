@@ -11,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://new-bighil-server.onrender.com/api/:path*",
+        destination: "https://api.bighil.com/api/:path*",
       },
     ];
   },
